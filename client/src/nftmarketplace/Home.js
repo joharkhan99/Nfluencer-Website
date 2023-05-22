@@ -7,6 +7,7 @@ import "react-multi-carousel/lib/styles.css";
 
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
+import Footer from "./components/Footer";
 
 function Home() {
   const responsive = {
@@ -1354,7 +1355,7 @@ function Home() {
         </div>
       </div>
 
-      <div className="mt-28 mb-96">
+      <div className="mt-28">
         <div className="container mx-auto">
           <div class="text-center mb-11">
             <h1 class="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
@@ -2507,6 +2508,8 @@ function Home() {
           </div>
         </div>
       </div>
+
+      <Footer />
     </>
   );
 }

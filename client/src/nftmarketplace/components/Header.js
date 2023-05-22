@@ -1,10 +1,22 @@
 import React from "react";
 
-const Header = () => {
+const Header = ({ transparent = false }) => {
   return (
     <>
-      <header class="absolute inset-x-0 top-0 z-50">
-        <nav class="bg-transparent">
+      <header
+        class={
+          transparent
+            ? "relative inset-x-0 top-0 z-50"
+            : "absolute inset-x-0 top-0 z-50"
+        }
+      >
+        <nav
+          class={
+            transparent
+              ? "bg-white shadow-md shadow-gray-200"
+              : "bg-transparent"
+          }
+        >
           <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <a href="https://flowbite.com/" class="flex items-center">
               <img

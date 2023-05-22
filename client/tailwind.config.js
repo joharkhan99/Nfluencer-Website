@@ -17,6 +17,10 @@ module.exports = {
         "nft-primary-light": "rgb(120,82,243)",
         "nft-primary-dark": "rgb(96,66,196)",
         "nft-primary-transparent": "rgb(226,221,251)",
+        "fb-color": "#3b5998",
+        "twitter-color": "#55acee",
+        "pinterest-color": "#bd081c",
+        "linkedin-color": "#0077b5",
       },
       // backgroundImage: {
       //   "hero-left1": "url('./src/nftmarketplace/assets/nft1.jpg')",

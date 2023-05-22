@@ -4,12 +4,14 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./nftmarketplace/Home";
 import "./index.css";
+import Explore from "./nftmarketplace/Explore";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Routes>
       <Route path="/marketplace" Component={Home} />
+      <Route path="/explore" Component={Explore} />
     </Routes>
   </BrowserRouter>
 );
