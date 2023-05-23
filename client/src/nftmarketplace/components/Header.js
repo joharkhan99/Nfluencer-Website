@@ -18,14 +18,42 @@ const Header = ({ transparent = false }) => {
           }
         >
           <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <a href="https://flowbite.com/" class="flex items-center">
-              <img
-                src="https://flowbite.com/docs/images/logo.svg"
-                class="h-8 mr-3"
-                alt="Nfluencer Logo"
-              />
-              <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"></span>
-            </a>
+            <div className="flex items-center">
+              <a href="https://flowbite.com/" class="flex items-center">
+                <img
+                  src="https://flowbite.com/docs/images/logo.svg"
+                  class="h-8 mr-3"
+                  alt="Nfluencer Logo"
+                />
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"></span>
+              </a>
+              {transparent ? (
+                <div className="flex relative max-sm:hidden">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="gray"
+                    className="w-5 h-5 absolute top-2 left-3"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                    />
+                  </svg>
+
+                  <input
+                    type="text"
+                    placeholder="Search items, collections"
+                    className="bg-gray-100 p-2 rounded-full outline-none px-6 pl-10 md:w-96 text-gray-500 placeholder:text-gray-500 text-sm focus:shadow-sm focus:shadow-gray-300"
+                  />
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
             <button
               data-collapse-toggle="navbar-default"
               type="button"
@@ -48,6 +76,7 @@ const Header = ({ transparent = false }) => {
                 ></path>
               </svg>
             </button>
+
             <div class="hidden w-full md:block md:w-auto" id="navbar-default">
               <ul class="font-bold flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-3 md:mt-0 md:border-0 items-center">
                 <li>
@@ -71,7 +100,7 @@ const Header = ({ transparent = false }) => {
                 </li>
                 <li>
                   <button class="rounded-full bg-nft-primary-light text-sm text-white px-4 py-2">
-                    Sign Up
+                    Create
                   </button>
                 </li>
                 <li>
