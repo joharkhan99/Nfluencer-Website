@@ -21,6 +21,11 @@ module.exports = {
         "twitter-color": "#55acee",
         "pinterest-color": "#bd081c",
         "linkedin-color": "#0077b5",
+        "web-primary-light": "#5BBB7B",
+        "web-primary-dark": "#1F4B3F",
+        "web-primary-transparent": "#F1FCFA",
+        "web-secondary-light": "#FFEDE8",
+        "web-secondary-transparent": "#FBF7ED",
       },
       // backgroundImage: {
       //   "hero-left1": "url('./src/nftmarketplace/assets/nft1.jpg')",

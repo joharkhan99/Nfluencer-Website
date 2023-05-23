@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import "./styles/style.css";
 import Header from "./components/Header";
 
@@ -1227,7 +1228,6 @@ function Home() {
               </div>
             </a>
           </Carousel>
-          ;
         </div>
       </div>
 

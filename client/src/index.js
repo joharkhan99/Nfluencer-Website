@@ -7,11 +7,13 @@ import "./index.css";
 import Explore from "./nftmarketplace/Explore";
 import NFTDetail from "./nftmarketplace/NFTDetail";
 import NewNFT from "./nftmarketplace/NewNFT";
+import LandingPage from "./website/LandingPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <Routes>
+      <Route path="/" Component={LandingPage} />
       <Route path="/marketplace" Component={Home} />
       <Route path="/explore" Component={Explore} />
       <Route path="/nftdetail" Component={NFTDetail} />

@@ -1,0 +1,12 @@
+.hombg {
+  background: url("../assets/h8-bg4.jpg");
+}
+
+.bg-2 {
+  background: url("../assets/h8-bg2.jpg");
+}
+
+.react-multiple-carousel__arrow--left:hover,
+.react-multiple-carousel__arrow--right:hover {
+  background: #5BBB7B !important;
+}
