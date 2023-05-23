@@ -10,3 +10,10 @@
 .react-multiple-carousel__arrow--right:hover {
   background: #5BBB7B !important;
 }
+
+.active-form-look {
+  color: #5BBB7B !important;
+  border-radius: 100px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.082);
+  border: 1px solid rgba(128, 128, 128, 0.178);
+}

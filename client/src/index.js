@@ -8,6 +8,8 @@ import Explore from "./nftmarketplace/Explore";
 import NFTDetail from "./nftmarketplace/NFTDetail";
 import NewNFT from "./nftmarketplace/NewNFT";
 import LandingPage from "./website/LandingPage";
+import Register from "./website/Register";
+import Services from "./website/Services";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -18,6 +20,8 @@ root.render(
       <Route path="/explore" Component={Explore} />
       <Route path="/nftdetail" Component={NFTDetail} />
       <Route path="/create" Component={NewNFT} />
+      <Route path="/signup" Component={Register} />
+      <Route path="/services" Component={Services} />
     </Routes>
   </BrowserRouter>
 );

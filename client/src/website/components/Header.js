@@ -13,7 +13,7 @@ function Header({ transparent = false }) {
         <nav
           class={
             transparent
-              ? "bg-white shadow-md shadow-gray-200"
+              ? "bg-[rgb(34,34,34)] shadow-md shadow-gray-200"
               : "bg-transparent"
           }
         >
@@ -27,32 +27,6 @@ function Header({ transparent = false }) {
                 />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"></span>
               </a>
-              {transparent ? (
-                <div className="flex relative max-sm:hidden">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="gray"
-                    className="w-5 h-5 absolute top-2 left-3"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                    />
-                  </svg>
-
-                  <input
-                    type="text"
-                    placeholder="Search items, collections"
-                    className="bg-gray-100 p-2 rounded-full outline-none px-6 pl-10 md:w-96 text-gray-500 placeholder:text-gray-500 text-sm focus:shadow-sm focus:shadow-gray-300"
-                  />
-                </div>
-              ) : (
-                ""
-              )}
 
               <div class="group">
                 <button class="ml-5 px-5 py-4 text-white flex items-center gap-2 text-sm">
@@ -75,246 +49,246 @@ function Header({ transparent = false }) {
                 <div class="hidden group-hover:flex flex-col absolute p-10  bg-white text-black duration-300 rounded-lg">
                   <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-web-primary-dark">
+                      <h3 class="mb-4 text-md text-black font-semibold">
                         Design & Creative
                       </h3>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Web Design
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         UI and Interactive Design
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Motion Graphics
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Packaging Design
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Game Design
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Illustration
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Publication
                       </a>
                     </div>
 
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-web-primary-dark">
+                      <h3 class="mb-4 text-md text-black font-semibold">
                         Digital Marketing
                       </h3>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Content Marketing
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         SEO
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Pay-per-Click
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Social Media Marketing
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Influencer Marketing
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Email Marketing
                       </a>
                     </div>
 
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-web-primary-dark">
+                      <h3 class="mb-4 text-md text-black font-semibold">
                         Development & IT
                       </h3>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Front-end development
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Back-end development
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Full stack development
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Application development
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         API development
                       </a>
                     </div>
 
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-web-primary-dark">
+                      <h3 class="mb-4 text-md text-black font-semibold">
                         Music & Audio
                       </h3>
                     </div>
 
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-web-primary-dark">
+                      <h3 class="mb-4 text-md text-black font-semibold">
                         Finance & Accounting
                       </h3>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Financial accounting
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Managerial accounting
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Cost accounting
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Auditing
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Tax accounting
                       </a>
                     </div>
 
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-web-primary-dark">
+                      <h3 class="mb-4 text-md text-black font-semibold">
                         Programming & Tech
                       </h3>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Web developer
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Computer programmer
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Computer systems engineer
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Systems analyst
                       </a>
                     </div>
 
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-web-primary-dark">
+                      <h3 class="mb-4 text-md text-black font-semibold">
                         Video & Animation
                       </h3>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         2D animation videos
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         3D animation videos
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Motion graphic videos
                       </a>
                     </div>
 
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-web-primary-dark">
+                      <h3 class="mb-4 text-md text-black font-semibold">
                         Writing & Translation
                       </h3>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Script Translation
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Multimedia Localization
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-800 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Commercial Translation
                       </a>
