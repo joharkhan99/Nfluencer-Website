@@ -9,6 +9,7 @@ import "react-multi-carousel/lib/styles.css";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import Footer from "./components/Footer";
+import { Link } from "react-router-dom";
 
 function Home() {
   const responsive = {
@@ -155,8 +156,8 @@ function Home() {
             </h1>
           </div>
           <div class="flex flex-wrap justify-center gap-6 mt-16">
-            <a
-              href="#sd"
+            <Link
+              to="/nftdetails"
               className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300"
             >
               <div class="w-64">
@@ -232,7 +233,7 @@ function Home() {
                   </div>
                 </div>
               </div>
-            </a>
+            </Link>
             <a
               href="#sd"
               className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300"

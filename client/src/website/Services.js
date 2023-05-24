@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import { Link } from "react-router-dom";
 function Services() {
   return (
     <>
@@ -305,19 +306,19 @@ function Services() {
                         className="h-60 w-full object-cover"
                       />
                       <div className="mt-4 p-5 py-2">
-                        <a
-                          href="s"
+                        <Link
+                          to="/gigdetails"
                           className="block text-sm text-gray-500 mb-3 hover:text-black"
                         >
                           Development & IT
-                        </a>
-                        <a
-                          href="d"
+                        </Link>
+                        <Link
+                          to="/gigdetails"
                           className="mb-4 font-semibold text-lg block hover:text-web-primary-light hover:underline"
                         >
                           Management software to help you manage your mobile
                           workers
-                        </a>
+                        </Link>
                         <div className="flex items-center gap-2 border-b pb-5 mb-5">
                           <div>
                             <svg

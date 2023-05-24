@@ -1,8 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 function Register() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!email.trim()) {
+      errors.email = "Email is required";
+    }
+
+    if (!password.trim()) {
+      errors.password = "Password is required";
+    }
+
+    if (password !== confirmPassword) {
+      errors.confirmPassword = "Passwords do not match";
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (validateForm()) {
+      setIsSubmitting(true);
+
+      // Perform AJAX request to the backend using fetch or axios
+      // Replace the URL and data with your actual endpoint and payload
+      fetch("http://localhost:8080/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          // Handle the response from the backend
+          alert(data.message);
+        })
+        .catch((error) => {
+          // Handle error
+          console.error(error);
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+        });
+    }
+  };
+
   return (
     <>
       <div className="bg-transparent hombg">
@@ -72,9 +132,18 @@ function Register() {
                       </label>
                       <input
                         type="email"
-                        className="border border-gray-200 rounded w-full p-4 outline-none"
+                        className={`border ${
+                          errors.email ? "border-red-500" : "border-gray-200"
+                        } rounded w-full p-4 outline-none`}
                         placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                       />
+                      {errors.email && (
+                        <p className="text-red-500 text-xs mt-1">
+                          {errors.email}
+                        </p>
+                      )}
                     </div>
                     <div className="mb-6">
                       <label className="block text-md font-semibold mb-2">
@@ -82,8 +151,11 @@ function Register() {
                       </label>
                       <input
                         type="email"
-                        className="border border-gray-200 rounded w-full p-4 outline-none"
+                        className={`border ${
+                          errors.password ? "border-red-500" : "border-gray-200"
+                        } rounded w-full p-4 outline-none`}
                         placeholder="Password"
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                     </div>
                     <div className="mb-6">
@@ -93,9 +165,19 @@ function Register() {
                       </label>
                       <input
                         type="email"
-                        className="border border-gray-200 rounded w-full p-4 outline-none"
+                        className={`border ${
+                          errors.confirmPassword
+                            ? "border-red-500"
+                            : "border-gray-200"
+                        } rounded w-full p-4 outline-none`}
                         placeholder="Confirm Password"
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                       />
+                      {errors.confirmPassword && (
+                        <p className="text-red-500 text-xs mt-1">
+                          {errors.confirmPassword}
+                        </p>
+                      )}
                     </div>
                     <div className="mb-6">
                       <label className="block font-semibold text-sm mb-2">
@@ -106,8 +188,16 @@ function Register() {
                       </label>
                     </div>
                     <div className="mt-10">
-                      <button className="bg-web-primary-light h-full py-5 px-10 rounded-md font-semibold text-white hover:bg-web-primary-dark transition-colors text-sm w-full">
-                        <span>Register Now</span>
+                      <button
+                        className="bg-web-primary-light h-full py-5 px-10 rounded-md font-semibold text-white hover:bg-web-primary-dark transition-colors text-sm w-full"
+                        disabled={isSubmitting}
+                        onClick={handleSubmit}
+                      >
+                        <span>
+                          {" "}
+                          {isSubmitting ? "Submitting..." : "Register Now"}
+                        </span>
+                        {/* <span>Register Now</span> */}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"

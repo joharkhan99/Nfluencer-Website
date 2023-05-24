@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Header = ({ transparent = false }) => {
   return (
@@ -19,14 +20,14 @@ const Header = ({ transparent = false }) => {
         >
           <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <div className="flex items-center">
-              <a href="https://flowbite.com/" class="flex items-center">
+              <Link to="/marketplace" class="flex items-center">
                 <img
                   src="https://flowbite.com/docs/images/logo.svg"
                   class="h-8 mr-3"
                   alt="Nfluencer Logo"
                 />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"></span>
-              </a>
+              </Link>
               {transparent ? (
                 <div className="flex relative max-sm:hidden">
                   <svg
@@ -80,13 +81,13 @@ const Header = ({ transparent = false }) => {
             <div class="hidden w-full md:block md:w-auto" id="navbar-default">
               <ul class="font-bold flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-3 md:mt-0 md:border-0 items-center">
                 <li>
-                  <a
-                    href="#dd"
+                  <Link
+                    to="/marketplace"
                     class="text-sm text-black px-4 py-2"
                     aria-current="page"
                   >
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a href="#dd" class="text-sm text-black px-4 py-2">
@@ -94,19 +95,25 @@ const Header = ({ transparent = false }) => {
                   </a>
                 </li>
                 <li>
-                  <a href="#dd" class="text-sm text-black px-4 py-2">
-                    Services
-                  </a>
+                  <Link to="/explore" class="text-sm text-black px-4 py-2">
+                    Explore
+                  </Link>
                 </li>
                 <li>
-                  <button class="rounded-full bg-nft-primary-light text-sm text-white px-4 py-2">
+                  <Link
+                    to="/create"
+                    class="rounded-full bg-nft-primary-light text-sm text-white px-4 py-3"
+                  >
                     Create
-                  </button>
+                  </Link>
                 </li>
                 <li>
-                  <button class="rounded-full bg-white text-sm text-black px-4 py-2 shadow-md">
+                  <Link
+                    to="/signup"
+                    class="rounded-full bg-white text-sm text-black px-4 py-3 shadow-md"
+                  >
                     Login
-                  </button>
+                  </Link>
                 </li>
               </ul>
             </div>

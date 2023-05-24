@@ -1,6 +1,13 @@
+import Cookies from "js-cookie";
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 function Header({ transparent = false }) {
+  const navigate = useNavigate();
+  const logout = () => {
+    Cookies.remove("token");
+    navigate("/");
+  };
   return (
     <>
       <header
@@ -19,14 +26,14 @@ function Header({ transparent = false }) {
         >
           <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <div className="flex items-center">
-              <a href="https://flowbite.com/" class="flex items-center">
+              <Link class="flex items-center" to="/">
                 <img
                   src="https://flowbite.com/docs/images/logo.svg"
                   class="h-8 mr-3"
                   alt="Nfluencer Logo"
                 />
                 <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"></span>
-              </a>
+              </Link>
 
               <div class="group">
                 <button class="ml-5 px-5 py-4 text-white flex items-center gap-2 text-sm">
@@ -52,60 +59,60 @@ function Header({ transparent = false }) {
                       <h3 class="mb-4 text-md text-black font-semibold">
                         Design & Creative
                       </h3>
-                      <a
-                        href="#z"
+                      <Link
+                        to="/services"
                         class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Web Design
-                      </a>
-                      <a
-                        href="#z"
+                      </Link>
+                      <Link
+                        to="/services"
                         class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         UI and Interactive Design
-                      </a>
-                      <a
-                        href="#z"
+                      </Link>
+                      <Link
+                        to="/services"
                         class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Motion Graphics
-                      </a>
-                      <a
-                        href="#z"
+                      </Link>
+                      <Link
+                        to="/services"
                         class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Packaging Design
-                      </a>
-                      <a
-                        href="#z"
+                      </Link>
+                      <Link
+                        to="/services"
                         class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Game Design
-                      </a>
-                      <a
-                        href="#z"
+                      </Link>
+                      <Link
+                        to="/services"
                         class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Illustration
-                      </a>
-                      <a
-                        href="#z"
+                      </Link>
+                      <Link
+                        to="/services"
                         class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Publication
-                      </a>
+                      </Link>
                     </div>
 
                     <div class="flex flex-col">
                       <h3 class="mb-4 text-md text-black font-semibold">
                         Digital Marketing
                       </h3>
-                      <a
-                        href="#z"
+                      <Link
+                        to="/services"
                         class="text-sm text-gray-600 mt-1 hover:text-black"
                       >
                         Content Marketing
-                      </a>
+                      </Link>
                       <a
                         href="#z"
                         class="text-sm text-gray-600 mt-1 hover:text-black"
@@ -324,34 +331,62 @@ function Header({ transparent = false }) {
             <div class="hidden w-full md:block md:w-auto" id="navbar-default">
               <ul class=" flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-3 md:mt-0 md:border-0 items-center">
                 <li>
-                  <a
-                    href="#dd"
+                  <Link
+                    to="/marketplace"
                     class="text-sm text-white px-4 py-2 hover:text-web-primary-light"
                   >
                     NFT Marketplace
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="#dd"
+                  <Link
+                    to="/signup"
                     class="text-sm text-white px-4 py-2 hover:text-web-primary-light"
                   >
                     Become a Seller
-                  </a>
+                  </Link>
                 </li>
-                <li>
-                  <a
-                    href="#dd"
-                    class="text-sm text-white px-4 py-2 hover:text-web-primary-light"
-                  >
-                    Login
-                  </a>
-                </li>
-                <li>
-                  <button class="rounded bg-white text-sm text-black px-4 py-2 shadow-md hover:bg-web-primary-light hover:text-white">
-                    Sign Up
-                  </button>
-                </li>
+                {Cookies.get("token") === "" ||
+                Cookies.get("token") === null ||
+                Cookies.get("token") === undefined ? (
+                  <>
+                    <li>
+                      <Link
+                        to="/login"
+                        class="text-sm text-white px-4 py-2 hover:text-web-primary-light"
+                      >
+                        Login
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/signup"
+                        class="rounded bg-white text-sm text-black px-4 py-3 shadow-md hover:bg-web-primary-light hover:text-white"
+                      >
+                        Sign Up
+                      </Link>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      <Link
+                        to="/"
+                        class="text-sm text-white px-4 py-2 hover:text-web-primary-light"
+                      >
+                        Dashboard
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        class="rounded bg-white text-sm text-black px-4 py-2 shadow-md hover:bg-web-primary-light hover:text-white"
+                        onClick={logout}
+                      >
+                        Logout
+                      </button>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </div>
