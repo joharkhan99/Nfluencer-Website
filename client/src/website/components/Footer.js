@@ -277,7 +277,7 @@ function Footer() {
               <input
                 type="text"
                 placeholder="Your email address"
-                className="rounded-lg p-4 w-full bg-transparent border-none font-normal text-sm outline-none placeholder:text-gray-400 text-gray-400 bg-neutral-700"
+                className="rounded-lg p-4 w-full bg-transparent border-none font-normal text-sm outline-none placeholder:text-gray-400 text-gray-400 bg-neutral-600"
               />
               <button className="text-md font-semibold block text-white absolute top-3 right-4 transform hover:text-web-primary-light">
                 Send
@@ -306,11 +306,11 @@ function Footer() {
           <div className="container mx-auto">
             <div className="flex flex-col justify-between md:flex-row gap-4 py-6">
               <div class="flex items-center justify-center gap-7 font-normal text-xs text-gray-400">
-                © Freeio. 2022 CreativeLayers. All rights reserved.
+                © 2022 All rights reserved.
               </div>
 
               <div>
-                <select class="bg-transparent outline-none appearance-none text-gray-400 bg-neutral-700 p-2 rounded text-sm text-center cursor-pointer">
+                <select class="bg-transparent outline-none appearance-none text-gray-400 bg-neutral-600 p-2 rounded text-sm text-center cursor-pointer">
                   <option value="en">English</option>
                   <option value="fr">French</option>
                   <option value="es">Spanish</option>
