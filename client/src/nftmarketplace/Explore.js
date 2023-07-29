@@ -67,10 +67,10 @@ function Explore() {
     <>
       <Header transparent={true} />
       <div className="container mx-auto">
-        <div class="py-11">
-          <h1 class="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
+        <div class="py-11 pt-0">
+          {/* <h1 class="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
             Explore NFTs
-          </h1>
+          </h1> */}
 
           {/* LAYOUT */}
           <div className="bg-white">
@@ -109,6 +109,7 @@ function Explore() {
                           <h2 className="text-lg font-medium text-gray-900">
                             Filters
                           </h2>
+
                           <button
                             type="button"
                             className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
@@ -129,8 +130,6 @@ function Explore() {
                                 d="M6 18L18 6M6 6l12 12"
                               />
                             </svg>
-
-                            {/* <XMarkIcon className="h-6 w-6" aria-hidden="true" /> */}
                           </button>
                         </div>
 
@@ -168,10 +167,6 @@ function Explore() {
                                       </span>
                                       <span className="ml-6 flex items-center">
                                         {open ? (
-                                          // <MinusIcon
-                                          //   className="h-5 w-5"
-                                          //   aria-hidden="true"
-                                          // />
                                           <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
@@ -201,11 +196,6 @@ function Explore() {
                                               d="M12 4.5v15m7.5-7.5h-15"
                                             />
                                           </svg>
-
-                                          // <PlusIcon
-                                          //   className="h-5 w-5"
-                                          //   aria-hidden="true"
-                                          // />
                                         )}
                                       </span>
                                     </Disclosure.Button>
@@ -251,21 +241,21 @@ function Explore() {
               <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
                   <h1 className="text-4xl font-bold tracking-tight text-gray-900">
-                    New Arrivals
+                    Filters
                   </h1>
 
                   <div className="flex items-center">
                     <Menu as="div" className="relative inline-block text-left">
                       <div>
-                        <Menu.Button className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900">
-                          Sort
+                        <Menu.Button className="group inline-flex justify-between  text-black gap-20 items-center border p-3 rounded-xl font-bold focus:border-black focus:border">
+                          <span>Sort</span>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
-                            className="w-6 h-6"
+                            className="w-5 h-5"
                           >
                             <path
                               strokeLinecap="round"
@@ -273,10 +263,6 @@ function Explore() {
                               d="M19.5 8.25l-7.5 7.5-7.5-7.5"
                             />
                           </svg>
-                          {/* <ChevronDownIcon
-                      className="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                      aria-hidden="true"
-                    /> */}
                         </Menu.Button>
                       </div>
 
@@ -289,7 +275,7 @@ function Explore() {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-52 origin-top-right rounded-xl bg-white shadow-2xl p-2 focus:outline-none">
                           <div className="py-1">
                             {sortOptions.map((option) => (
                               <Menu.Item key={option.name}>
@@ -301,7 +287,7 @@ function Explore() {
                                         ? "font-medium text-gray-900"
                                         : "text-gray-500",
                                       active ? "bg-gray-100" : "",
-                                      "block px-4 py-2 text-sm"
+                                      "block px-3 py-4 rounded-lg"
                                     )}
                                   >
                                     {option.name}
@@ -333,8 +319,6 @@ function Explore() {
                           d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"
                         />
                       </svg>
-
-                      {/* <Squares2X2Icon className="h-5 w-5" aria-hidden="true" /> */}
                     </button>
                     <button
                       type="button"
@@ -342,7 +326,6 @@ function Explore() {
                       onClick={() => setMobileFiltersOpen(true)}
                     >
                       <span className="sr-only">Filters</span>
-                      {/* <FunnelIcon className="h-5 w-5" aria-hidden="true" /> */}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -365,51 +348,31 @@ function Explore() {
                   aria-labelledby="products-heading"
                   className="pb-24 pt-6"
                 >
-                  <h2 id="products-heading" className="sr-only">
-                    Products
-                  </h2>
-
                   <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                     {/* Filters */}
                     <form className="hidden lg:block">
-                      <h3 className="sr-only">Categories</h3>
-                      <ul
-                        role="list"
-                        className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"
-                      >
-                        {subCategories.map((category) => (
-                          <li key={category.name}>
-                            <a href={category.href}>{category.name}</a>
-                          </li>
-                        ))}
-                      </ul>
-
                       {filters.map((section) => (
                         <Disclosure
                           as="div"
                           key={section.id}
-                          className="border-b border-gray-200 py-6"
+                          className="border-b border-gray-100 py-5"
                         >
                           {({ open }) => (
                             <>
-                              <h3 className="-my-3 flow-root">
-                                <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
-                                  <span className="font-medium text-gray-900">
+                              <h3 className="-my-3 flow-root p-3 py-0 rounded-xl font-bold hover:bg-gray-100">
+                                <Disclosure.Button className="flex w-full items-center justify-between py-3 hover:text-gray-500">
+                                  <span className="font-bold text-black">
                                     {section.name}
                                   </span>
                                   <span className="ml-6 flex items-center">
                                     {open ? (
-                                      // <MinusIcon
-                                      //   className="h-5 w-5"
-                                      //   aria-hidden="true"
-                                      // />
                                       <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
                                         viewBox="0 0 24 24"
                                         strokeWidth={1.5}
                                         stroke="currentColor"
-                                        className="w-6 h-6"
+                                        className="w-5 h-5"
                                       >
                                         <path
                                           strokeLinecap="round"
@@ -424,7 +387,7 @@ function Explore() {
                                         viewBox="0 0 24 24"
                                         strokeWidth={1.5}
                                         stroke="currentColor"
-                                        className="w-6 h-6"
+                                        className="w-5 h-5"
                                       >
                                         <path
                                           strokeLinecap="round"
@@ -432,21 +395,16 @@ function Explore() {
                                           d="M12 4.5v15m7.5-7.5h-15"
                                         />
                                       </svg>
-
-                                      // <PlusIcon
-                                      //   className="h-5 w-5"
-                                      //   aria-hidden="true"
-                                      // />
                                     )}
                                   </span>
                                 </Disclosure.Button>
                               </h3>
-                              <Disclosure.Panel className="pt-6">
-                                <div className="space-y-4">
+                              <Disclosure.Panel className="pt-2 px-2">
+                                <div className="space-y-0">
                                   {section.options.map((option, optionIdx) => (
                                     <div
                                       key={option.value}
-                                      className="flex items-center"
+                                      className="flex p-3 rounded-xl py-4 hover:bg-gray-100  items-center"
                                     >
                                       <input
                                         id={`filter-${section.id}-${optionIdx}`}
@@ -458,7 +416,7 @@ function Explore() {
                                       />
                                       <label
                                         htmlFor={`filter-${section.id}-${optionIdx}`}
-                                        className="ml-3 text-sm text-gray-600"
+                                        className="ml-3 cursor-pointer text-gray-600"
                                       >
                                         {option.label}
                                       </label>
@@ -1123,168 +1081,6 @@ function Explore() {
             </div>
           </div>
           {/* LAYOUT */}
-
-          {/* backup */}
-          {/* <div className="filters mt-6">
-            <div className="flex flex-row justify-between">
-              <div className="flex gap-3 flex-row justify-start">
-                <div className="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
-                  <label>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-4 h-4"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0l4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0l-5.571 3-5.571-3"
-                      />
-                    </svg>
-                  </label>
-                  <select className="appearance-none outline-none cursor-pointer bg-transparent">
-                    <option>Ethereum</option>
-                    <option>Bitcoin</option>
-                    <option>Litecoin</option>
-                    <option>Doge</option>
-                  </select>
-                </div>
-                <div className="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
-                  <label>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-4 h-4"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"
-                      />
-                    </svg>
-                  </label>
-                  <select className="appearance-none outline-none cursor-pointer bg-transparent">
-                    <option>Category</option>
-                    <option>All</option>
-                    <option>Gaming</option>
-                    <option>Art</option>
-                    <option>Photography</option>
-                    <option>Music</option>
-                  </select>
-                </div>
-                <div className="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
-                  <label>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="w-4 h-4"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </label>
-                  <select className="appearance-none outline-none cursor-pointer bg-transparent">
-                    <option>Sale type</option>
-                    <option>All</option>
-                    <option>Gaming</option>
-                    <option>Art</option>
-                    <option>Photography</option>
-                    <option>Music</option>
-                  </select>
-                </div>
-                <div className="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
-                  <label>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-4 h-4"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </label>
-                  <select className="appearance-none outline-none cursor-pointer bg-transparent">
-                    <option>Price range</option>
-                    <option>All</option>
-                    <option>Gaming</option>
-                    <option>Art</option>
-                    <option>Photography</option>
-                    <option>Music</option>
-                  </select>
-                </div>
-
-                <div>
-                  <div className="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
-                    <label>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m0 0h7.5"
-                        />
-                      </svg>
-                    </label>
-                    <select className="appearance-none outline-none cursor-pointer bg-transparent">
-                      <option>Collections</option>
-                      <option>Angry Apes</option>
-                      <option>PLUR Official</option>
-                      <option>Lil Pudgy's</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <div className="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
-                  <label>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-4 h-4"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5"
-                      />
-                    </svg>
-                  </label>
-                  <select className="appearance-none outline-none cursor-pointer bg-transparent">
-                    <option>Date added</option>
-                    <option>12/12/2023</option>
-                    <option>12/12/2023</option>
-                    <option>12/12/2023</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div> */}
         </div>
 
         <div className="text-center mt-9">
