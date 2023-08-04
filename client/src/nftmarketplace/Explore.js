@@ -621,6 +621,9 @@ function Explore() {
                                 </svg>
                               </span>
                             </button>
+                            <button className="flex items-center justify-between gap-2 bg-gray-100 rounded-xl p-2 px-4 text-md hover:bg-gray-200">
+                              <span className="font-semibold">Clear all</span>
+                            </button>
                           </div>
                         </div>
                         <div class="flex flex-wrap justify-center gap-3">

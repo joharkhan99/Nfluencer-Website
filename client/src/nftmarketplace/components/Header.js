@@ -90,9 +90,9 @@ const Header = ({ transparent = false }) => {
                   </Link>
                 </li>
                 <li>
-                  <a href="#dd" class="text-sm text-black px-4 py-2">
-                    About
-                  </a>
+                  <Link to="/stats" class="text-sm text-black px-4 py-2">
+                    Stats
+                  </Link>
                 </li>
                 <li>
                   <Link to="/explore" class="text-sm text-black px-4 py-2">
