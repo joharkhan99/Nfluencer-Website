@@ -19,7 +19,7 @@ export default function DropDown() {
     <div className="w-48">
       <Listbox value={selected} onChange={setSelected}>
         <div className="relative">
-          <Listbox.Button className="relative w-full cursor-pointer rounded-lg text-left font-semibold hover:bg-gray-200 bg-gray-100 px-6 py-3">
+          <Listbox.Button className="relative w-full cursor-pointer rounded-xl text-left font-semibold hover:bg-gray-200 bg-gray-100 py-3 px-6">
             <span className="block truncate text-md">{selected.name}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center">
               <ChevronUpDownIcon className="h-6 w-6" aria-hidden="true" />
