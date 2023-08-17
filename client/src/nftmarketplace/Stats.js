@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import DropDown from "./components/dropdown";
+import StatsTable from "./components/table/StatsTable";
 
 const Stats = () => {
   const [selectedOption, setSelectedOption] = useState("option1");
@@ -329,9 +330,12 @@ const Stats = () => {
                 </div>
               </div>
 
-              <TabPanel>Trending</TabPanel>
+              <TabPanel>
+                <StatsTable />
+              </TabPanel>
 
               <TabPanel>Top</TabPanel>
+
               <TabPanel>Watchlist</TabPanel>
             </Tabs>
           </div>
