@@ -9,7 +9,7 @@ const Table = ({ caption, data, columns }) => {
   return (
     <>
       <table className="table">
-        <caption>{caption}</caption>
+        {/* <caption>{caption}</caption> */}
         <TableHead {...{ columns, handleSorting }} />
         <TableBody {...{ columns, tableData }} />
       </table>

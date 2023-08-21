@@ -28,8 +28,8 @@ const Stats = () => {
           </div>
 
           <div className="flex flex-wrap">
-            <Tabs className="w-full" selectedTabClassName="active-tab-look">
-              <TabList className="border-b border-gray-200 w-full pb-7 mb-7">
+            <Tabs className="w-full " selectedTabClassName="active-tab-look">
+              <TabList className="border-b border-gray-200 w-full pb-7 mb-7 ">
                 <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:text-black transition-colors">
                   Trending
                 </Tab>
@@ -340,11 +340,11 @@ const Stats = () => {
             </Tabs>
           </div>
 
-          <div className="text-center mt-14">
+          {/* <div className="text-center mt-14">
             <button class="bg-nft-primary-transparent rounded-full px-6 py-3 font-semibold text-sm text-nft-primary-light w-1/5 hover:bg-nft-primary-light hover:text-white duration-300 transition-colors">
               <span>Load More</span>
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
       <Footer />

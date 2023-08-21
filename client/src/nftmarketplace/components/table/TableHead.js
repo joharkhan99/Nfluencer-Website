@@ -12,25 +12,37 @@ const TableHead = ({ columns, handleSorting }) => {
   };
 
   return (
-    <thead>
+    <thead className="sticky top-0 bg-white">
       <tr>
         {columns.map(({ label, accessor, sortable }) => {
-          const cl = sortable
-            ? sortField === accessor && order === "asc"
-              ? "up"
+          const img =
+            sortField === accessor && order === "asc"
+              ? "up_arrow.png"
               : sortField === accessor && order === "desc"
-              ? "down"
-              : "default"
-            : "";
+              ? "down_arrow.png"
+              : "default.png";
+
           return (
             <th
               key={accessor}
               onClick={sortable ? () => handleSortingChange(accessor) : null}
-              className={
-                cl + " text-start font-normal text-sm text-gray-500 pb-6"
-              }
+              className="p-3 py-5"
             >
-              {label}
+              <div
+                className={
+                  "flex font-normal text-sm text-gray-500 items-center cursor-pointer " +
+                  (accessor !== "collection" && accessor !== "s_no"
+                    ? "justify-end"
+                    : "justify-start")
+                }
+              >
+                <span>{label}</span>
+                {sortable ? (
+                  <span>
+                    <img src={require(`../../assets/table/${img}`)} alt={img} />
+                  </span>
+                ) : null}
+              </div>
             </th>
           );
         })}
