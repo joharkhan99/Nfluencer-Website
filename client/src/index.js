@@ -13,6 +13,7 @@ import Services from "./website/pages/Services";
 import GigDetails from "./website/pages/GigDetails";
 import Login from "./website/pages/Login";
 import Stats from "./nftmarketplace/pages/Stats";
+import { SellerHomePage } from "./dashboard/seller/pages/SellerHomePage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -28,6 +29,7 @@ root.render(
       <Route path="/login" Component={Login} />
       <Route path="/services" Component={Services} />
       <Route path="/gigdetails" Component={GigDetails} />
+      <Route path="/seller" Component={SellerHomePage} />
     </Routes>
   </BrowserRouter>
 );
