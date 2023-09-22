@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
-import "./styles/style.css";
-import Header from "./components/Header";
+import "../styles/style.css";
+import Header from "../components/Header";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-import Footer from "./components/Footer";
+import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 
 function Home() {
@@ -192,7 +192,7 @@ function Home() {
                   style={{ height: "300px" }}
                 >
                   <img
-                    src={require("./assets/nft1.jpg")}
+                    src={require("../assets/nft1.jpg")}
                     alt="sd"
                     className="h-full w-full object-cover"
                   />
@@ -203,7 +203,7 @@ function Home() {
                   </h3>
                   <div class="flex items-center text-gray-500 text-sm mt-2">
                     <img
-                      src={require("./assets/eth.png")}
+                      src={require("../assets/eth.png")}
                       alt="sd"
                       className="h-5 w-5 object-contain"
                     />
@@ -217,17 +217,17 @@ function Home() {
                   <div class="flex -space-x-2 mt-5">
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user1.jpeg")}
+                      src={require("../assets/user1.jpeg")}
                       alt="User Imageas"
                     />
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user2.jpeg")}
+                      src={require("../assets/user2.jpeg")}
                       alt="User Imageas"
                     />
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user3.webp")}
+                      src={require("../assets/user3.webp")}
                       alt="User Imageas"
                     />
                   </div>
@@ -266,7 +266,7 @@ function Home() {
                   style={{ height: "300px" }}
                 >
                   <img
-                    src={require("./assets/nft3.jpg")}
+                    src={require("../assets/nft3.jpg")}
                     alt="sd"
                     className="h-full w-full object-cover"
                   />
@@ -277,7 +277,7 @@ function Home() {
                   </h3>
                   <div class="flex items-center text-gray-500 text-sm mt-2">
                     <img
-                      src={require("./assets/bitcoin.png")}
+                      src={require("../assets/bitcoin.png")}
                       alt="sd"
                       className="h-5 w-5 object-contain"
                     />
@@ -291,12 +291,12 @@ function Home() {
                   <div class="flex -space-x-2 mt-5">
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user3.webp")}
+                      src={require("../assets/user3.webp")}
                       alt="User Imageas"
                     />
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user1.jpeg")}
+                      src={require("../assets/user1.jpeg")}
                       alt="User Imageas"
                     />
                   </div>
@@ -339,7 +339,7 @@ function Home() {
                   style={{ height: "300px" }}
                 >
                   <img
-                    src={require("./assets/nft2.jpg")}
+                    src={require("../assets/nft2.jpg")}
                     alt="sd"
                     className="h-full w-full object-cover"
                   />
@@ -350,7 +350,7 @@ function Home() {
                   </h3>
                   <div class="flex items-center text-gray-500 text-sm mt-2">
                     <img
-                      src={require("./assets/uniswap.png")}
+                      src={require("../assets/uniswap.png")}
                       alt="sd"
                       className="h-5 w-5 object-contain"
                     />
@@ -364,7 +364,7 @@ function Home() {
                   <div class="flex -space-x-2 mt-5">
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user2.jpeg")}
+                      src={require("../assets/user2.jpeg")}
                       alt="User Imageas"
                     />
                   </div>
@@ -403,7 +403,7 @@ function Home() {
                   style={{ height: "300px" }}
                 >
                   <img
-                    src={require("./assets/nft4.jpg")}
+                    src={require("../assets/nft4.jpg")}
                     alt="sd"
                     className="h-full w-full object-cover"
                   />
@@ -414,7 +414,7 @@ function Home() {
                   </h3>
                   <div class="flex items-center text-gray-500 text-sm mt-2">
                     <img
-                      src={require("./assets/litecoin.png")}
+                      src={require("../assets/litecoin.png")}
                       alt="sd"
                       className="h-5 w-5 object-contain"
                     />
@@ -428,17 +428,17 @@ function Home() {
                   <div class="flex -space-x-2 mt-5">
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user2.jpeg")}
+                      src={require("../assets/user2.jpeg")}
                       alt="User Imageas"
                     />
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user3.webp")}
+                      src={require("../assets/user3.webp")}
                       alt="User Imageas"
                     />
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user1.jpeg")}
+                      src={require("../assets/user1.jpeg")}
                       alt="User Imageas"
                     />
                   </div>
@@ -497,7 +497,7 @@ function Home() {
                       <span class="text-sm font-bold mr-2">1</span>
                       <img
                         class="w-14 h-14 rounded-full object-cover"
-                        src={require("./assets/nft12.jpg")}
+                        src={require("../assets/nft12.jpg")}
                         alt="Images 1"
                       />
                       <div class="ml-2">
@@ -506,7 +506,7 @@ function Home() {
                         </h3>
                         <div class="flex items-center text-gray-500 text-sm mt-2">
                           <img
-                            src={require("./assets/eth.png")}
+                            src={require("../assets/eth.png")}
                             alt="sd"
                             className="h-5 w-5 object-contain"
                           />
@@ -535,14 +535,14 @@ function Home() {
                       <span class="text-sm font-bold mr-2">2</span>
                       <img
                         class="w-14 h-14 rounded-full object-cover"
-                        src={require("./assets/nft13.jpg")}
+                        src={require("../assets/nft13.jpg")}
                         alt="Images 1"
                       />
                       <div class="ml-2">
                         <h3 class="text-base font-bold">Worldwide Webb Land</h3>
                         <div class="flex items-center text-gray-500 text-sm mt-2">
                           <img
-                            src={require("./assets/litecoin.png")}
+                            src={require("../assets/litecoin.png")}
                             alt="sd"
                             className="h-5 w-5 object-contain"
                           />
@@ -571,7 +571,7 @@ function Home() {
                       <span class="text-sm font-bold mr-2">3</span>
                       <img
                         class="w-14 h-14 rounded-full object-cover"
-                        src={require("./assets/nft14.jpg")}
+                        src={require("../assets/nft14.jpg")}
                         alt="Images 1"
                       />
                       <div class="ml-2">
@@ -580,7 +580,7 @@ function Home() {
                         </h3>
                         <div class="flex items-center text-gray-500 text-sm mt-2">
                           <img
-                            src={require("./assets/bitcoin.png")}
+                            src={require("../assets/bitcoin.png")}
                             alt="sd"
                             className="h-5 w-5 object-contain"
                           />
@@ -607,7 +607,7 @@ function Home() {
                       <span class="text-sm font-bold mr-2">4</span>
                       <img
                         class="w-14 h-14 rounded-full object-cover"
-                        src={require("./assets/nft15.jpg")}
+                        src={require("../assets/nft15.jpg")}
                         alt="Images 1"
                       />
                       <div class="ml-2">
@@ -616,7 +616,7 @@ function Home() {
                         </h3>
                         <div class="flex items-center text-gray-500 text-sm mt-2">
                           <img
-                            src={require("./assets/uniswap.png")}
+                            src={require("../assets/uniswap.png")}
                             alt="sd"
                             className="h-5 w-5 object-contain"
                           />
@@ -643,14 +643,14 @@ function Home() {
                       <span class="text-sm font-bold mr-2">4</span>
                       <img
                         class="w-14 h-14 rounded-full object-cover"
-                        src={require("./assets/nft16.jpg")}
+                        src={require("../assets/nft16.jpg")}
                         alt="Images 1"
                       />
                       <div class="ml-2">
                         <h3 class="text-base font-bold">Lil Pudgys</h3>
                         <div class="flex items-center text-gray-500 text-sm mt-2">
                           <img
-                            src={require("./assets/theta.png")}
+                            src={require("../assets/theta.png")}
                             alt="sd"
                             className="h-5 w-5 object-contain rotate-45"
                           />
@@ -677,14 +677,14 @@ function Home() {
                       <span class="text-sm font-bold mr-2">4</span>
                       <img
                         class="w-14 h-14 rounded-full object-cover"
-                        src={require("./assets/nft17.jpg")}
+                        src={require("../assets/nft17.jpg")}
                         alt="Images 1"
                       />
                       <div class="ml-2">
                         <h3 class="text-base font-bold">D3LUSION</h3>
                         <div class="flex items-center text-gray-500 text-sm mt-2">
                           <img
-                            src={require("./assets/eth.png")}
+                            src={require("../assets/eth.png")}
                             alt="sd"
                             className="h-5 w-5 object-contain"
                           />
@@ -711,14 +711,14 @@ function Home() {
                       <span class="text-sm font-bold mr-2">4</span>
                       <img
                         class="w-14 h-14 rounded-full object-cover"
-                        src={require("./assets/nft18.jpg")}
+                        src={require("../assets/nft18.jpg")}
                         alt="Images 1"
                       />
                       <div class="ml-2">
                         <h3 class="text-base font-bold">Dapper Dinos NFT</h3>
                         <div class="flex items-center text-gray-500 text-sm mt-2">
                           <img
-                            src={require("./assets/bitcoin.png")}
+                            src={require("../assets/bitcoin.png")}
                             alt="sd"
                             className="h-5 w-5 object-contain"
                           />
@@ -745,14 +745,14 @@ function Home() {
                       <span class="text-sm font-bold mr-2">4</span>
                       <img
                         class="w-14 h-14 rounded-full object-cover"
-                        src={require("./assets/nft19.jpg")}
+                        src={require("../assets/nft19.jpg")}
                         alt="Images 1"
                       />
                       <div class="ml-2">
                         <h3 class="text-base font-bold">Zeeverse: Masks</h3>
                         <div class="flex items-center text-gray-500 text-sm mt-2">
                           <img
-                            src={require("./assets/uniswap.png")}
+                            src={require("../assets/uniswap.png")}
                             alt="sd"
                             className="h-5 w-5 object-contain"
                           />
@@ -779,14 +779,14 @@ function Home() {
                       <span class="text-sm font-bold mr-2">4</span>
                       <img
                         class="w-14 h-14 rounded-full object-cover"
-                        src={require("./assets/nft20.jpg")}
+                        src={require("../assets/nft20.jpg")}
                         alt="Images 1"
                       />
                       <div class="ml-2">
                         <h3 class="text-base font-bold">Zed Run</h3>
                         <div class="flex items-center text-gray-500 text-sm mt-2">
                           <img
-                            src={require("./assets/litecoin.png")}
+                            src={require("../assets/litecoin.png")}
                             alt="sd"
                             className="h-5 w-5 object-contain"
                           />
@@ -856,14 +856,14 @@ function Home() {
                     </button>
                   </div>
                   <img
-                    src={require("./assets/nft7.jpeg")}
+                    src={require("../assets/nft7.jpeg")}
                     alt="Card Imagea"
                     className="h-80 w-full object-cover"
                   />
                   <div className="flex items-center justify-center">
                     <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                       <img
-                        src={require("./assets/user1.jpeg")}
+                        src={require("../assets/user1.jpeg")}
                         alt="User Idmage"
                         className="w-full h-full object-cover"
                       />
@@ -883,7 +883,7 @@ function Home() {
                     </p>
                   </div>
                 </div>
-                {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
               </div>
             </a>
 
@@ -913,14 +913,14 @@ function Home() {
                     </button>
                   </div>
                   <img
-                    src={require("./assets/nft25.PNG")}
+                    src={require("../assets/nft25.PNG")}
                     alt="Card Imagea"
                     className="h-80 w-full object-cover"
                   />
                   <div className="flex items-center justify-center">
                     <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                       <img
-                        src={require("./assets/user2.jpeg")}
+                        src={require("../assets/user2.jpeg")}
                         alt="User Idmage"
                         className="w-full h-full object-cover"
                       />
@@ -940,7 +940,7 @@ function Home() {
                     </p>
                   </div>
                 </div>
-                {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
               </div>
             </a>
 
@@ -970,14 +970,14 @@ function Home() {
                     </button>
                   </div>
                   <img
-                    src={require("./assets/nft6.PNG")}
+                    src={require("../assets/nft6.PNG")}
                     alt="Card Imagea"
                     className="h-80 w-full object-cover"
                   />
                   <div className="flex items-center justify-center">
                     <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                       <img
-                        src={require("./assets/user3.webp")}
+                        src={require("../assets/user3.webp")}
                         alt="User Idmage"
                         className="w-full h-full object-cover"
                       />
@@ -997,7 +997,7 @@ function Home() {
                     </p>
                   </div>
                 </div>
-                {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
               </div>
             </a>
 
@@ -1027,14 +1027,14 @@ function Home() {
                     </button>
                   </div>
                   <img
-                    src={require("./assets/nft21.PNG")}
+                    src={require("../assets/nft21.PNG")}
                     alt="Card Imagea"
                     className="h-80 w-full object-cover"
                   />
                   <div className="flex items-center justify-center">
                     <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                       <img
-                        src={require("./assets/user1.jpeg")}
+                        src={require("../assets/user1.jpeg")}
                         alt="User Idmage"
                         className="w-full h-full object-cover"
                       />
@@ -1054,7 +1054,7 @@ function Home() {
                     </p>
                   </div>
                 </div>
-                {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
               </div>
             </a>
 
@@ -1084,14 +1084,14 @@ function Home() {
                     </button>
                   </div>
                   <img
-                    src={require("./assets/nft22.PNG")}
+                    src={require("../assets/nft22.PNG")}
                     alt="Card Imagea"
                     className="h-80 w-full object-cover"
                   />
                   <div className="flex items-center justify-center">
                     <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                       <img
-                        src={require("./assets/user2.jpeg")}
+                        src={require("../assets/user2.jpeg")}
                         alt="User Idmage"
                         className="w-full h-full object-cover"
                       />
@@ -1111,7 +1111,7 @@ function Home() {
                     </p>
                   </div>
                 </div>
-                {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
               </div>
             </a>
 
@@ -1141,14 +1141,14 @@ function Home() {
                     </button>
                   </div>
                   <img
-                    src={require("./assets/nft23.png")}
+                    src={require("../assets/nft23.png")}
                     alt="Card Imagea"
                     className="h-80 w-full object-cover"
                   />
                   <div className="flex items-center justify-center">
                     <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                       <img
-                        src={require("./assets/user3.webp")}
+                        src={require("../assets/user3.webp")}
                         alt="User Idmage"
                         className="w-full h-full object-cover"
                       />
@@ -1168,7 +1168,7 @@ function Home() {
                     </p>
                   </div>
                 </div>
-                {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
               </div>
             </a>
 
@@ -1198,14 +1198,14 @@ function Home() {
                     </button>
                   </div>
                   <img
-                    src={require("./assets/nft24.PNG")}
+                    src={require("../assets/nft24.PNG")}
                     alt="Card Imagea"
                     className="h-80 w-full object-cover"
                   />
                   <div className="flex items-center justify-center">
                     <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                       <img
-                        src={require("./assets/user1.jpeg")}
+                        src={require("../assets/user1.jpeg")}
                         alt="User Idmage"
                         className="w-full h-full object-cover"
                       />
@@ -1225,7 +1225,7 @@ function Home() {
                     </p>
                   </div>
                 </div>
-                {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
               </div>
             </a>
           </Carousel>
@@ -1245,7 +1245,7 @@ function Home() {
               <div className="bg-white rounded-xl shadow-lg p-5">
                 <img
                   className="h-48 object-cover rounded-t-lg w-full rounded-xl"
-                  src={require("./assets/recource1.jpg")}
+                  src={require("../assets/recource1.jpg")}
                   alt="Card 1"
                 />
                 <div className="pt-6">
@@ -1282,7 +1282,7 @@ function Home() {
               <div className="bg-white rounded-xl shadow-lg p-5">
                 <img
                   className="h-48 object-cover rounded-t-lg w-full rounded-xl"
-                  src={require("./assets/recource3.jpg")}
+                  src={require("../assets/recource3.jpg")}
                   alt="Card 1"
                 />
                 <div className="pt-6">
@@ -1319,7 +1319,7 @@ function Home() {
               <div className="bg-white rounded-xl shadow-lg p-5">
                 <img
                   className="h-48 object-cover rounded-t-lg w-full rounded-xl"
-                  src={require("./assets/recource2.jpg")}
+                  src={require("../assets/recource2.jpg")}
                   alt="Card 1"
                 />
                 <div className="pt-6">
@@ -1413,14 +1413,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft29.PNG")}
+                            src={require("../assets/nft29.PNG")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user1.jpeg")}
+                                src={require("../assets/user1.jpeg")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -1438,7 +1438,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/eth.png")}
+                                src={require("../assets/eth.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -1450,7 +1450,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>
@@ -1482,14 +1482,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft28.PNG")}
+                            src={require("../assets/nft28.PNG")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user2.jpeg")}
+                                src={require("../assets/user2.jpeg")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -1507,7 +1507,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/bitcoin.png")}
+                                src={require("../assets/bitcoin.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -1519,7 +1519,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>
@@ -1551,14 +1551,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft26.PNG")}
+                            src={require("../assets/nft26.PNG")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user3.webp")}
+                                src={require("../assets/user3.webp")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -1576,7 +1576,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/litecoin.png")}
+                                src={require("../assets/litecoin.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -1588,7 +1588,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>
@@ -1620,14 +1620,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft27.PNG")}
+                            src={require("../assets/nft27.PNG")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user1.jpeg")}
+                                src={require("../assets/user1.jpeg")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -1645,7 +1645,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/uniswap.png")}
+                                src={require("../assets/uniswap.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -1657,7 +1657,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>
@@ -1693,14 +1693,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft19.jpg")}
+                            src={require("../assets/nft19.jpg")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user1.jpeg")}
+                                src={require("../assets/user1.jpeg")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -1718,7 +1718,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/eth.png")}
+                                src={require("../assets/eth.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -1730,7 +1730,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>
@@ -1762,14 +1762,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft9.jpg")}
+                            src={require("../assets/nft9.jpg")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user2.jpeg")}
+                                src={require("../assets/user2.jpeg")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -1785,7 +1785,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/bitcoin.png")}
+                                src={require("../assets/bitcoin.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -1797,7 +1797,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>
@@ -1829,14 +1829,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft5.jpg")}
+                            src={require("../assets/nft5.jpg")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user3.webp")}
+                                src={require("../assets/user3.webp")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -1854,7 +1854,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/litecoin.png")}
+                                src={require("../assets/litecoin.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -1866,7 +1866,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>
@@ -1898,14 +1898,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft11.jpeg")}
+                            src={require("../assets/nft11.jpeg")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user1.jpeg")}
+                                src={require("../assets/user1.jpeg")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -1923,7 +1923,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/uniswap.png")}
+                                src={require("../assets/uniswap.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -1935,7 +1935,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>
@@ -1971,14 +1971,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft30.jpg")}
+                            src={require("../assets/nft30.jpg")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user1.jpeg")}
+                                src={require("../assets/user1.jpeg")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -1996,7 +1996,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/eth.png")}
+                                src={require("../assets/eth.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -2008,7 +2008,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>
@@ -2040,14 +2040,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft31.jpg")}
+                            src={require("../assets/nft31.jpg")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user2.jpeg")}
+                                src={require("../assets/user2.jpeg")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -2065,7 +2065,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/bitcoin.png")}
+                                src={require("../assets/bitcoin.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -2077,7 +2077,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>
@@ -2109,14 +2109,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft32.PNG")}
+                            src={require("../assets/nft32.PNG")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user3.webp")}
+                                src={require("../assets/user3.webp")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -2134,7 +2134,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/litecoin.png")}
+                                src={require("../assets/litecoin.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -2146,7 +2146,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>
@@ -2178,14 +2178,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft15.jpg")}
+                            src={require("../assets/nft15.jpg")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user1.jpeg")}
+                                src={require("../assets/user1.jpeg")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -2203,7 +2203,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/uniswap.png")}
+                                src={require("../assets/uniswap.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -2215,7 +2215,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>
@@ -2251,14 +2251,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft11.jpeg")}
+                            src={require("../assets/nft11.jpeg")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user1.jpeg")}
+                                src={require("../assets/user1.jpeg")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -2276,7 +2276,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/uniswap.png")}
+                                src={require("../assets/uniswap.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -2288,7 +2288,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>
@@ -2320,14 +2320,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft5.jpg")}
+                            src={require("../assets/nft5.jpg")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user3.webp")}
+                                src={require("../assets/user3.webp")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -2345,7 +2345,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/litecoin.png")}
+                                src={require("../assets/litecoin.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -2357,7 +2357,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>
@@ -2389,14 +2389,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft19.jpg")}
+                            src={require("../assets/nft19.jpg")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user1.jpeg")}
+                                src={require("../assets/user1.jpeg")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -2414,7 +2414,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/eth.png")}
+                                src={require("../assets/eth.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -2426,7 +2426,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>
@@ -2458,14 +2458,14 @@ function Home() {
                             </button>
                           </div>
                           <img
-                            src={require("./assets/nft9.jpg")}
+                            src={require("../assets/nft9.jpg")}
                             alt="Card Imagea"
                             className="h-80 w-full object-cover"
                           />
                           <div className="flex items-center justify-center">
                             <div className="rounded-full overflow-hidden w-14 h-14 -mt-7 border-2 border-white">
                               <img
-                                src={require("./assets/user2.jpeg")}
+                                src={require("../assets/user2.jpeg")}
                                 alt="User Idmage"
                                 className="w-full h-full object-cover"
                               />
@@ -2481,7 +2481,7 @@ function Home() {
                             </div>
                             <div class="flex items-center text-gray-500 justify-center pt-2 text-sm mt-2">
                               <img
-                                src={require("./assets/bitcoin.png")}
+                                src={require("../assets/bitcoin.png")}
                                 alt="sd"
                                 className="h-5 w-5 object-contain"
                               />
@@ -2493,7 +2493,7 @@ function Home() {
                             </div>
                           </div>
                         </div>
-                        {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                        {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
                       </div>
                     </a>
                   </div>

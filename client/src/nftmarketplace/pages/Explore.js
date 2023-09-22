@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from "react";
-import "./styles/style.css";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import "../styles/style.css";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import Carousel from "react-multi-carousel";
 
@@ -505,7 +505,7 @@ function Explore() {
                               <div className="relative shadow-sm rounded-xl shadow-gray-100">
                                 <div className="max-w-sm rounded-xl overflow-hidden pb-2">
                                   <img
-                                    src={require("./assets/nft7.jpeg")}
+                                    src={require("../assets/nft7.jpeg")}
                                     alt="Card Imagea"
                                     className="h-40 w-full object-cover"
                                   />
@@ -515,7 +515,7 @@ function Explore() {
                                       style={{ width: "70px", height: "70px" }}
                                     >
                                       <img
-                                        src={require("./assets/user1.jpeg")}
+                                        src={require("../assets/user1.jpeg")}
                                         alt="User Idmage"
                                         className="w-full h-full object-cover"
                                       />
@@ -532,7 +532,7 @@ function Explore() {
                               <div className="relative shadow-sm rounded-xl shadow-gray-100">
                                 <div className="max-w-sm rounded-xl overflow-hidden pb-2">
                                   <img
-                                    src={require("./assets/nft7.jpeg")}
+                                    src={require("../assets/nft7.jpeg")}
                                     alt="Card Imagea"
                                     className="h-40 w-full object-cover"
                                   />
@@ -542,7 +542,7 @@ function Explore() {
                                       style={{ width: "70px", height: "70px" }}
                                     >
                                       <img
-                                        src={require("./assets/user1.jpeg")}
+                                        src={require("../assets/user1.jpeg")}
                                         alt="User Idmage"
                                         className="w-full h-full object-cover"
                                       />
@@ -559,7 +559,7 @@ function Explore() {
                               <div className="relative shadow-sm rounded-xl shadow-gray-100">
                                 <div className="max-w-sm rounded-xl overflow-hidden pb-2">
                                   <img
-                                    src={require("./assets/nft7.jpeg")}
+                                    src={require("../assets/nft7.jpeg")}
                                     alt="Card Imagea"
                                     className="h-40 w-full object-cover"
                                   />
@@ -569,7 +569,7 @@ function Explore() {
                                       style={{ width: "70px", height: "70px" }}
                                     >
                                       <img
-                                        src={require("./assets/user1.jpeg")}
+                                        src={require("../assets/user1.jpeg")}
                                         alt="User Idmage"
                                         className="w-full h-full object-cover"
                                       />
@@ -633,17 +633,17 @@ function Explore() {
                                 <div class="flex -space-x-2">
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user1.jpeg")}
+                                    src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user2.jpeg")}
+                                    src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user3.webp")}
+                                    src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
@@ -658,7 +658,7 @@ function Explore() {
                                 style={{ height: "300px" }}
                               >
                                 <img
-                                  src={require("./assets/nft20.jpg")}
+                                  src={require("../assets/nft20.jpg")}
                                   alt="sd"
                                   className="h-full w-full object-cover"
                                 />
@@ -669,7 +669,7 @@ function Explore() {
                                 </h3>
                                 <div class="flex items-center text-gray-500 text-sm mt-2">
                                   <img
-                                    src={require("./assets/eth.png")}
+                                    src={require("../assets/eth.png")}
                                     alt="sd"
                                     className="h-5 w-5 object-contain"
                                   />
@@ -715,17 +715,17 @@ function Explore() {
                                 <div class="flex -space-x-2">
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user1.jpeg")}
+                                    src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user2.jpeg")}
+                                    src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user3.webp")}
+                                    src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
@@ -740,7 +740,7 @@ function Explore() {
                                 style={{ height: "300px" }}
                               >
                                 <img
-                                  src={require("./assets/nft36.jpg")}
+                                  src={require("../assets/nft36.jpg")}
                                   alt="sd"
                                   className="h-full w-full object-cover"
                                 />
@@ -751,7 +751,7 @@ function Explore() {
                                 </h3>
                                 <div class="flex items-center text-gray-500 text-sm mt-2">
                                   <img
-                                    src={require("./assets/eth.png")}
+                                    src={require("../assets/eth.png")}
                                     alt="sd"
                                     className="h-5 w-5 object-contain"
                                   />
@@ -797,17 +797,17 @@ function Explore() {
                                 <div class="flex -space-x-2">
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user1.jpeg")}
+                                    src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user2.jpeg")}
+                                    src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user3.webp")}
+                                    src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
@@ -822,7 +822,7 @@ function Explore() {
                                 style={{ height: "300px" }}
                               >
                                 <img
-                                  src={require("./assets/nft33.PNG")}
+                                  src={require("../assets/nft33.PNG")}
                                   alt="sd"
                                   className="h-full w-full object-cover"
                                 />
@@ -833,7 +833,7 @@ function Explore() {
                                 </h3>
                                 <div class="flex items-center text-gray-500 text-sm mt-2">
                                   <img
-                                    src={require("./assets/eth.png")}
+                                    src={require("../assets/eth.png")}
                                     alt="sd"
                                     className="h-5 w-5 object-contain"
                                   />
@@ -879,17 +879,17 @@ function Explore() {
                                 <div class="flex -space-x-2">
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user1.jpeg")}
+                                    src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user2.jpeg")}
+                                    src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user3.webp")}
+                                    src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
@@ -904,7 +904,7 @@ function Explore() {
                                 style={{ height: "300px" }}
                               >
                                 <img
-                                  src={require("./assets/nft8.png")}
+                                  src={require("../assets/nft8.png")}
                                   alt="sd"
                                   className="h-full w-full object-cover"
                                 />
@@ -915,7 +915,7 @@ function Explore() {
                                 </h3>
                                 <div class="flex items-center text-gray-500 text-sm mt-2">
                                   <img
-                                    src={require("./assets/eth.png")}
+                                    src={require("../assets/eth.png")}
                                     alt="sd"
                                     className="h-5 w-5 object-contain"
                                   />
@@ -961,17 +961,17 @@ function Explore() {
                                 <div class="flex -space-x-2">
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user1.jpeg")}
+                                    src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user2.jpeg")}
+                                    src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user3.webp")}
+                                    src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
@@ -986,7 +986,7 @@ function Explore() {
                                 style={{ height: "300px" }}
                               >
                                 <img
-                                  src={require("./assets/nft34.PNG")}
+                                  src={require("../assets/nft34.PNG")}
                                   alt="sd"
                                   className="h-full w-full object-cover"
                                 />
@@ -997,7 +997,7 @@ function Explore() {
                                 </h3>
                                 <div class="flex items-center text-gray-500 text-sm mt-2">
                                   <img
-                                    src={require("./assets/eth.png")}
+                                    src={require("../assets/eth.png")}
                                     alt="sd"
                                     className="h-5 w-5 object-contain"
                                   />
@@ -1043,17 +1043,17 @@ function Explore() {
                                 <div class="flex -space-x-2">
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user1.jpeg")}
+                                    src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user2.jpeg")}
+                                    src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user3.webp")}
+                                    src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
@@ -1068,7 +1068,7 @@ function Explore() {
                                 style={{ height: "300px" }}
                               >
                                 <img
-                                  src={require("./assets/nft35.PNG")}
+                                  src={require("../assets/nft35.PNG")}
                                   alt="sd"
                                   className="h-full w-full object-cover"
                                 />
@@ -1079,7 +1079,7 @@ function Explore() {
                                 </h3>
                                 <div class="flex items-center text-gray-500 text-sm mt-2">
                                   <img
-                                    src={require("./assets/eth.png")}
+                                    src={require("../assets/eth.png")}
                                     alt="sd"
                                     className="h-5 w-5 object-contain"
                                   />
@@ -1125,17 +1125,17 @@ function Explore() {
                                 <div class="flex -space-x-2">
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user1.jpeg")}
+                                    src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user2.jpeg")}
+                                    src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user3.webp")}
+                                    src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
@@ -1150,7 +1150,7 @@ function Explore() {
                                 style={{ height: "300px" }}
                               >
                                 <img
-                                  src={require("./assets/nft10.jpg")}
+                                  src={require("../assets/nft10.jpg")}
                                   alt="sd"
                                   className="h-full w-full object-cover"
                                 />
@@ -1161,7 +1161,7 @@ function Explore() {
                                 </h3>
                                 <div class="flex items-center text-gray-500 text-sm mt-2">
                                   <img
-                                    src={require("./assets/eth.png")}
+                                    src={require("../assets/eth.png")}
                                     alt="sd"
                                     className="h-5 w-5 object-contain"
                                   />
@@ -1207,17 +1207,17 @@ function Explore() {
                                 <div class="flex -space-x-2">
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user1.jpeg")}
+                                    src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user2.jpeg")}
+                                    src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
                                     class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("./assets/user3.webp")}
+                                    src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
@@ -1232,7 +1232,7 @@ function Explore() {
                                 style={{ height: "300px" }}
                               >
                                 <img
-                                  src={require("./assets/nft38.PNG")}
+                                  src={require("../assets/nft38.PNG")}
                                   alt="sd"
                                   className="h-full w-full object-cover"
                                 />
@@ -1243,7 +1243,7 @@ function Explore() {
                                 </h3>
                                 <div class="flex items-center text-gray-500 text-sm mt-2">
                                   <img
-                                    src={require("./assets/eth.png")}
+                                    src={require("../assets/eth.png")}
                                     alt="sd"
                                     className="h-5 w-5 object-contain"
                                   />

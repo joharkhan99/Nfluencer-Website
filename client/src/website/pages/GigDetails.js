@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import Carousel from "react-multi-carousel";
 function GigDetails() {
   const responsive2 = {
@@ -35,7 +35,7 @@ function GigDetails() {
           <div className="flex items-center gap-10">
             <div className="flex items-center gap-2 text-sm">
               <img
-                src={require("./assets/man.jpg")}
+                src={require("../assets/man.jpg")}
                 className="rounded-full h-10 w-10 object-cover"
                 alt=""
               />
@@ -115,7 +115,7 @@ function GigDetails() {
               >
                 <div className="h-full w-full">
                   <img
-                    src={require("./assets/trend5.webp")}
+                    src={require("../assets/trend5.webp")}
                     alt=""
                     className="w-full h-full object-cover"
                   />
@@ -123,14 +123,14 @@ function GigDetails() {
                 <div className="h-full w-full">
                   {" "}
                   <img
-                    src={require("./assets/trend6.jpg")}
+                    src={require("../assets/trend6.jpg")}
                     alt=""
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="h-full w-full">
                   <img
-                    src={require("./assets/trend7.png")}
+                    src={require("../assets/trend7.png")}
                     alt=""
                     className="w-full h-full object-cover"
                   />
@@ -189,7 +189,7 @@ function GigDetails() {
                   <div class="bg-white rounded-lg p-4">
                     <div class="flex items-center mb-4">
                       <img
-                        src={require("./assets/man.jpg")}
+                        src={require("../assets/man.jpg")}
                         alt="User"
                         class="rounded-full h-12 w-12 mr-4 object-cover"
                       />
@@ -226,7 +226,7 @@ function GigDetails() {
                   <div class="bg-white rounded-lg p-4">
                     <div class="flex items-center mb-4">
                       <img
-                        src={require("./assets/man.jpg")}
+                        src={require("../assets/man.jpg")}
                         alt="User"
                         class="rounded-full h-12 w-12 mr-4 object-cover"
                       />
@@ -263,7 +263,7 @@ function GigDetails() {
                   <div class="bg-white rounded-lg p-4">
                     <div class="flex items-center mb-4">
                       <img
-                        src={require("./assets/man.jpg")}
+                        src={require("../assets/man.jpg")}
                         alt="User"
                         class="rounded-full h-12 w-12 mr-4 object-cover"
                       />
@@ -303,7 +303,7 @@ function GigDetails() {
           </div>
 
           <div class="col-span-4">
-            <div class="p-4">
+            <div class="p-4 sticky top-0">
               <div className="border p-8 shadow-lg rounded-lg">
                 <div className="text-xl font-bold mb-5">$29</div>
                 <div className="flex gap-5 border-b pb-4 mb-4">
@@ -362,7 +362,7 @@ function GigDetails() {
                   <div class="bg-white rounded-lg">
                     <div class="flex items-center mb-6 border-b pb-7">
                       <img
-                        src={require("./assets/man.jpg")}
+                        src={require("../assets/man.jpg")}
                         alt="User"
                         class="rounded-full h-24 w-24 mr-4 object-cover"
                       />
@@ -451,7 +451,7 @@ function GigDetails() {
                   </button>
                 </div>
                 <img
-                  src={require("./assets/trend1.jpg")}
+                  src={require("../assets/trend1.jpg")}
                   alt="Card Imagea"
                   className="h-60 w-full object-cover"
                 />
@@ -489,7 +489,7 @@ function GigDetails() {
                   <div className="flex items-center justify-between">
                     <div className="flex gap-2 items-center">
                       <img
-                        src={require("./assets/slider8.png")}
+                        src={require("../assets/slider8.png")}
                         alt="s"
                         className="w-8 h-8 rounded-full"
                       />
@@ -502,7 +502,7 @@ function GigDetails() {
                   </div>
                 </div>
               </div>
-              {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+              {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
             </div>
           </div>
           <div
@@ -530,7 +530,7 @@ function GigDetails() {
                   </button>
                 </div>
                 <img
-                  src={require("./assets/trend2.jpg")}
+                  src={require("../assets/trend2.jpg")}
                   alt="Card Imagea"
                   className="h-60 w-full object-cover"
                 />
@@ -568,7 +568,7 @@ function GigDetails() {
                   <div className="flex items-center justify-between">
                     <div className="flex gap-2 items-center">
                       <img
-                        src={require("./assets/slider8.png")}
+                        src={require("../assets/slider8.png")}
                         alt="s"
                         className="w-8 h-8 rounded-full"
                       />
@@ -581,7 +581,7 @@ function GigDetails() {
                   </div>
                 </div>
               </div>
-              {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+              {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
             </div>
           </div>
           <div
@@ -609,7 +609,7 @@ function GigDetails() {
                   </button>
                 </div>
                 <img
-                  src={require("./assets/trend3.webp")}
+                  src={require("../assets/trend3.webp")}
                   alt="Card Imagea"
                   className="h-60 w-full object-cover"
                 />
@@ -647,7 +647,7 @@ function GigDetails() {
                   <div className="flex items-center justify-between">
                     <div className="flex gap-2 items-center">
                       <img
-                        src={require("./assets/slider8.png")}
+                        src={require("../assets/slider8.png")}
                         alt="s"
                         className="w-8 h-8 rounded-full"
                       />
@@ -660,7 +660,7 @@ function GigDetails() {
                   </div>
                 </div>
               </div>
-              {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+              {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
             </div>
           </div>
           <div
@@ -688,7 +688,7 @@ function GigDetails() {
                   </button>
                 </div>
                 <img
-                  src={require("./assets/trend4.png")}
+                  src={require("../assets/trend4.png")}
                   alt="Card Imagea"
                   className="h-60 w-full object-cover"
                 />
@@ -726,7 +726,7 @@ function GigDetails() {
                   <div className="flex items-center justify-between">
                     <div className="flex gap-2 items-center">
                       <img
-                        src={require("./assets/slider8.png")}
+                        src={require("../assets/slider8.png")}
                         alt="s"
                         className="w-8 h-8 rounded-full"
                       />
@@ -739,7 +739,7 @@ function GigDetails() {
                   </div>
                 </div>
               </div>
-              {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+              {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
             </div>
           </div>
         </div>

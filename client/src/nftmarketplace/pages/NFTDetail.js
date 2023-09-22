@@ -1,7 +1,7 @@
 import React from "react";
-import "./styles/style.css";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import "../styles/style.css";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import {
   LineChart,
   Line,
@@ -66,7 +66,7 @@ function NFTDetail() {
         <div class="flex flex-col md:flex-row gap-16">
           <div class="md:w-1/2">
             <img
-              src={require("./assets/nft4.jpg")}
+              src={require("../assets/nft4.jpg")}
               alt="NFT Imasge"
               class="rounded-lg h-auto w-full md:h-full object-cover"
             />
@@ -130,7 +130,7 @@ function NFTDetail() {
             </h1>
             <div class="flex items-center text-gray-500 text-sm my-3 mb-7">
               <img
-                src={require("./assets/bitcoin.png")}
+                src={require("../assets/bitcoin.png")}
                 alt="sd"
                 class="h-5 w-5 object-contain"
               />
@@ -154,7 +154,7 @@ function NFTDetail() {
                 </span>
                 <a href="s" class="flex items-center">
                   <img
-                    src={require("./assets/user2.jpeg")}
+                    src={require("../assets/user2.jpeg")}
                     alt="User Imasge"
                     class="rounded-full h-10 w-10"
                   />
@@ -167,7 +167,7 @@ function NFTDetail() {
                 </span>
                 <a href="s" class="flex items-center">
                   <img
-                    src={require("./assets/nft1.jpg")}
+                    src={require("../assets/nft1.jpg")}
                     alt="User Imasge"
                     class="rounded-full h-10 w-10"
                   />
@@ -180,7 +180,7 @@ function NFTDetail() {
               <div className="text-gray-500 mb-1">Blockchain</div>
               <div className="text-black font-bold flex gap-2">
                 <img
-                  src={require("./assets/bitcoin.png")}
+                  src={require("../assets/bitcoin.png")}
                   alt="sd"
                   class="h-5 w-5 object-contain"
                 />
@@ -309,7 +309,7 @@ function NFTDetail() {
               <span className="text-gray-500 text-sm font-bold">Top bid</span>
               <div class="flex items-center text-gray-500 text-sm my-3 mb-7">
                 <img
-                  src={require("./assets/bitcoin.png")}
+                  src={require("../assets/bitcoin.png")}
                   alt="sd"
                   class="h-10 w-10 object-contain bg-orange-100 rounded-full p-2"
                 />
@@ -363,7 +363,7 @@ function NFTDetail() {
                     <td className="pb-5 pt-5">
                       <div class="flex items-center text-sm">
                         <img
-                          src={require("./assets/bitcoin.png")}
+                          src={require("../assets/bitcoin.png")}
                           alt="sd"
                           class="h-5 w-5 object-contain"
                         />
@@ -383,7 +383,7 @@ function NFTDetail() {
                     <td className="pb-5 pt-5">
                       <div class="flex items-center text-sm">
                         <img
-                          src={require("./assets/bitcoin.png")}
+                          src={require("../assets/bitcoin.png")}
                           alt="sd"
                           class="h-5 w-5 object-contain"
                         />
@@ -403,7 +403,7 @@ function NFTDetail() {
                     <td className="pb-5 pt-5">
                       <div class="flex items-center text-sm">
                         <img
-                          src={require("./assets/bitcoin.png")}
+                          src={require("../assets/bitcoin.png")}
                           alt="sd"
                           class="h-5 w-5 object-contain"
                         />
@@ -423,7 +423,7 @@ function NFTDetail() {
                     <td className="pb-5 pt-5">
                       <div class="flex items-center text-sm">
                         <img
-                          src={require("./assets/bitcoin.png")}
+                          src={require("../assets/bitcoin.png")}
                           alt="sd"
                           class="h-5 w-5 object-contain"
                         />
@@ -443,7 +443,7 @@ function NFTDetail() {
                     <td className="pb-5 pt-5">
                       <div class="flex items-center text-sm">
                         <img
-                          src={require("./assets/bitcoin.png")}
+                          src={require("../assets/bitcoin.png")}
                           alt="sd"
                           class="h-5 w-5 object-contain"
                         />
@@ -617,7 +617,7 @@ function NFTDetail() {
                     <td className="pb-5 pt-5">
                       <div class="flex items-center text-sm">
                         <img
-                          src={require("./assets/bitcoin.png")}
+                          src={require("../assets/bitcoin.png")}
                           alt="sd"
                           class="h-5 w-5 object-contain"
                         />
@@ -658,7 +658,7 @@ function NFTDetail() {
                     <td className="pb-5 pt-5">
                       <div class="flex items-center text-sm">
                         <img
-                          src={require("./assets/bitcoin.png")}
+                          src={require("../assets/bitcoin.png")}
                           alt="sd"
                           class="h-5 w-5 object-contain"
                         />
@@ -729,7 +729,7 @@ function NFTDetail() {
                     <td className="pb-5 pt-5">
                       <div class="flex items-center text-sm">
                         <img
-                          src={require("./assets/bitcoin.png")}
+                          src={require("../assets/bitcoin.png")}
                           alt="sd"
                           class="h-5 w-5 object-contain"
                         />
@@ -762,17 +762,17 @@ function NFTDetail() {
                   <div class="flex -space-x-2">
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user1.jpeg")}
+                      src={require("../assets/user1.jpeg")}
                       alt="User Imageas"
                     />
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user2.jpeg")}
+                      src={require("../assets/user2.jpeg")}
                       alt="User Imageas"
                     />
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user3.webp")}
+                      src={require("../assets/user3.webp")}
                       alt="User Imageas"
                     />
                   </div>
@@ -787,7 +787,7 @@ function NFTDetail() {
                   style={{ height: "300px" }}
                 >
                   <img
-                    src={require("./assets/nft20.jpg")}
+                    src={require("../assets/nft20.jpg")}
                     alt="sd"
                     className="h-full w-full object-cover"
                   />
@@ -800,7 +800,7 @@ function NFTDetail() {
                   <div class="flex justify-between items-center mt-2">
                     <div class="flex items-center text-gray-500 text-sm mt-2">
                       <img
-                        src={require("./assets/eth.png")}
+                        src={require("../assets/eth.png")}
                         alt="sd"
                         className="h-5 w-5 object-contain"
                       />
@@ -840,12 +840,12 @@ function NFTDetail() {
                   <div class="flex -space-x-2">
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user2.jpeg")}
+                      src={require("../assets/user2.jpeg")}
                       alt="User Imageas"
                     />
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user3.webp")}
+                      src={require("../assets/user3.webp")}
                       alt="User Imageas"
                     />
                   </div>
@@ -860,7 +860,7 @@ function NFTDetail() {
                   style={{ height: "300px" }}
                 >
                   <img
-                    src={require("./assets/nft36.jpg")}
+                    src={require("../assets/nft36.jpg")}
                     alt="sd"
                     className="h-full w-full object-cover"
                   />
@@ -873,7 +873,7 @@ function NFTDetail() {
                   <div class="flex justify-between items-center mt-2">
                     <div class="flex items-center text-gray-500 text-sm mt-2">
                       <img
-                        src={require("./assets/theta.png")}
+                        src={require("../assets/theta.png")}
                         alt="sd"
                         className="h-5 w-5 object-contain"
                       />
@@ -913,7 +913,7 @@ function NFTDetail() {
                   <div class="flex -space-x-2">
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user1.jpeg")}
+                      src={require("../assets/user1.jpeg")}
                       alt="User Imageas"
                     />
                   </div>
@@ -928,7 +928,7 @@ function NFTDetail() {
                   style={{ height: "300px" }}
                 >
                   <img
-                    src={require("./assets/nft39.PNG")}
+                    src={require("../assets/nft39.PNG")}
                     alt="sd"
                     className="h-full w-full object-cover"
                   />
@@ -941,7 +941,7 @@ function NFTDetail() {
                   <div class="flex justify-between items-center mt-2">
                     <div class="flex items-center text-gray-500 text-sm mt-2">
                       <img
-                        src={require("./assets/uniswap.png")}
+                        src={require("../assets/uniswap.png")}
                         alt="sd"
                         className="h-5 w-5 object-contain"
                       />
@@ -981,17 +981,17 @@ function NFTDetail() {
                   <div class="flex -space-x-2">
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user3.webp")}
+                      src={require("../assets/user3.webp")}
                       alt="User Imageas"
                     />
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user1.jpeg")}
+                      src={require("../assets/user1.jpeg")}
                       alt="User Imageas"
                     />
                     <img
                       class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("./assets/user2.jpeg")}
+                      src={require("../assets/user2.jpeg")}
                       alt="User Imageas"
                     />
                   </div>
@@ -1006,7 +1006,7 @@ function NFTDetail() {
                   style={{ height: "300px" }}
                 >
                   <img
-                    src={require("./assets/nft30.jpg")}
+                    src={require("../assets/nft30.jpg")}
                     alt="sd"
                     className="h-full w-full object-cover"
                   />
@@ -1019,7 +1019,7 @@ function NFTDetail() {
                   <div class="flex justify-between items-center mt-2">
                     <div class="flex items-center text-gray-500 text-sm mt-2">
                       <img
-                        src={require("./assets/bitcoin.png")}
+                        src={require("../assets/bitcoin.png")}
                         alt="sd"
                         className="h-5 w-5 object-contain"
                       />

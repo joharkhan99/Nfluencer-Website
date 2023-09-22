@@ -2,17 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./nftmarketplace/Home";
 import "./index.css";
-import Explore from "./nftmarketplace/Explore";
-import NFTDetail from "./nftmarketplace/NFTDetail";
-import NewNFT from "./nftmarketplace/NewNFT";
-import LandingPage from "./website/LandingPage";
-import Register from "./website/Register";
-import Services from "./website/Services";
-import GigDetails from "./website/GigDetails";
-import Login from "./website/Login";
-import Stats from "./nftmarketplace/Stats";
+import Home from "./nftmarketplace/pages/Home";
+import Explore from "./nftmarketplace/pages/Explore";
+import NFTDetail from "./nftmarketplace/pages/NFTDetail";
+import NewNFT from "./nftmarketplace/pages/NewNFT";
+import LandingPage from "./website/pages/LandingPage";
+import Register from "./website/pages/Register";
+import Services from "./website/pages/Services";
+import GigDetails from "./website/pages/GigDetails";
+import Login from "./website/pages/Login";
+import Stats from "./nftmarketplace/pages/Stats";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

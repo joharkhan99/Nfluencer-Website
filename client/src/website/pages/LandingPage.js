@@ -1,10 +1,10 @@
 import React from "react";
-import Header from "./components/Header";
-import "./styles/style.css";
+import Header from "../components/Header";
+import "../styles/style.css";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import Footer from "./components/Footer";
+import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 
 function LandingPage() {
@@ -141,7 +141,7 @@ function LandingPage() {
             <div class="w-full sm:w-1/2 ">
               <div class="p-4">
                 <img
-                  src={require("./assets/slider8.png")}
+                  src={require("../assets/slider8.png")}
                   alt="Ismage"
                   class="mb-[-50px] ml-[250px]"
                 />
@@ -185,7 +185,7 @@ function LandingPage() {
             >
               <div class="relative inline-block">
                 <img
-                  src={require("./assets/it.PNG")}
+                  src={require("../assets/it.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
                 />
@@ -207,7 +207,7 @@ function LandingPage() {
             >
               <div class="relative inline-block">
                 <img
-                  src={require("./assets/design.PNG")}
+                  src={require("../assets/design.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
                 />
@@ -229,7 +229,7 @@ function LandingPage() {
             >
               <div class="relative inline-block">
                 <img
-                  src={require("./assets/marketing.PNG")}
+                  src={require("../assets/marketing.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
                 />
@@ -251,7 +251,7 @@ function LandingPage() {
             >
               <div class="relative inline-block">
                 <img
-                  src={require("./assets/writing.PNG")}
+                  src={require("../assets/writing.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
                 />
@@ -273,7 +273,7 @@ function LandingPage() {
             >
               <div class="relative inline-block">
                 <img
-                  src={require("./assets/music.PNG")}
+                  src={require("../assets/music.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
                 />
@@ -295,7 +295,7 @@ function LandingPage() {
             >
               <div class="relative inline-block">
                 <img
-                  src={require("./assets/video.PNG")}
+                  src={require("../assets/video.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
                 />
@@ -317,7 +317,7 @@ function LandingPage() {
             >
               <div class="relative inline-block">
                 <img
-                  src={require("./assets/construct.PNG")}
+                  src={require("../assets/construct.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
                 />
@@ -339,7 +339,7 @@ function LandingPage() {
             >
               <div class="relative inline-block">
                 <img
-                  src={require("./assets/finance.PNG")}
+                  src={require("../assets/finance.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
                 />
@@ -361,7 +361,7 @@ function LandingPage() {
         <div className="container mx-auto">
           <div class="flex flex-wrap items-center">
             <div class="w-1/2">
-              <img src={require("./assets/h34.png")} alt="s" />
+              <img src={require("../assets/h34.png")} alt="s" />
             </div>
             <div class="w-1/2 md:p-8">
               <div>
@@ -524,7 +524,7 @@ function LandingPage() {
                     </button>
                   </div>
                   <img
-                    src={require("./assets/trend1.jpg")}
+                    src={require("../assets/trend1.jpg")}
                     alt="Card Imagea"
                     className="h-60 w-full object-cover"
                   />
@@ -562,7 +562,7 @@ function LandingPage() {
                     <div className="flex items-center justify-between">
                       <div className="flex gap-2 items-center">
                         <img
-                          src={require("./assets/slider8.png")}
+                          src={require("../assets/slider8.png")}
                           alt="s"
                           className="w-8 h-8 rounded-full"
                         />
@@ -577,7 +577,7 @@ function LandingPage() {
                     </div>
                   </div>
                 </div>
-                {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
               </div>
             </div>
             <div
@@ -605,7 +605,7 @@ function LandingPage() {
                     </button>
                   </div>
                   <img
-                    src={require("./assets/trend2.jpg")}
+                    src={require("../assets/trend2.jpg")}
                     alt="Card Imagea"
                     className="h-60 w-full object-cover"
                   />
@@ -643,7 +643,7 @@ function LandingPage() {
                     <div className="flex items-center justify-between">
                       <div className="flex gap-2 items-center">
                         <img
-                          src={require("./assets/slider8.png")}
+                          src={require("../assets/slider8.png")}
                           alt="s"
                           className="w-8 h-8 rounded-full"
                         />
@@ -658,7 +658,7 @@ function LandingPage() {
                     </div>
                   </div>
                 </div>
-                {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
               </div>
             </div>
             <div
@@ -686,7 +686,7 @@ function LandingPage() {
                     </button>
                   </div>
                   <img
-                    src={require("./assets/trend3.webp")}
+                    src={require("../assets/trend3.webp")}
                     alt="Card Imagea"
                     className="h-60 w-full object-cover"
                   />
@@ -724,7 +724,7 @@ function LandingPage() {
                     <div className="flex items-center justify-between">
                       <div className="flex gap-2 items-center">
                         <img
-                          src={require("./assets/slider8.png")}
+                          src={require("../assets/slider8.png")}
                           alt="s"
                           className="w-8 h-8 rounded-full"
                         />
@@ -739,7 +739,7 @@ function LandingPage() {
                     </div>
                   </div>
                 </div>
-                {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
               </div>
             </div>
             <div
@@ -767,7 +767,7 @@ function LandingPage() {
                     </button>
                   </div>
                   <img
-                    src={require("./assets/trend4.png")}
+                    src={require("../assets/trend4.png")}
                     alt="Card Imagea"
                     className="h-60 w-full object-cover"
                   />
@@ -805,7 +805,7 @@ function LandingPage() {
                     <div className="flex items-center justify-between">
                       <div className="flex gap-2 items-center">
                         <img
-                          src={require("./assets/slider8.png")}
+                          src={require("../assets/slider8.png")}
                           alt="s"
                           className="w-8 h-8 rounded-full"
                         />
@@ -820,7 +820,7 @@ function LandingPage() {
                     </div>
                   </div>
                 </div>
-                {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
               </div>
             </div>
             <div
@@ -848,7 +848,7 @@ function LandingPage() {
                     </button>
                   </div>
                   <img
-                    src={require("./assets/trend5.webp")}
+                    src={require("../assets/trend5.webp")}
                     alt="Card Imagea"
                     className="h-60 w-full object-cover"
                   />
@@ -886,7 +886,7 @@ function LandingPage() {
                     <div className="flex items-center justify-between">
                       <div className="flex gap-2 items-center">
                         <img
-                          src={require("./assets/slider8.png")}
+                          src={require("../assets/slider8.png")}
                           alt="s"
                           className="w-8 h-8 rounded-full"
                         />
@@ -901,7 +901,7 @@ function LandingPage() {
                     </div>
                   </div>
                 </div>
-                {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
               </div>
             </div>
             <div
@@ -929,7 +929,7 @@ function LandingPage() {
                     </button>
                   </div>
                   <img
-                    src={require("./assets/trend6.jpg")}
+                    src={require("../assets/trend6.jpg")}
                     alt="Card Imagea"
                     className="h-60 w-full object-cover"
                   />
@@ -967,7 +967,7 @@ function LandingPage() {
                     <div className="flex items-center justify-between">
                       <div className="flex gap-2 items-center">
                         <img
-                          src={require("./assets/slider8.png")}
+                          src={require("../assets/slider8.png")}
                           alt="s"
                           className="w-8 h-8 rounded-full"
                         />
@@ -982,7 +982,7 @@ function LandingPage() {
                     </div>
                   </div>
                 </div>
-                {/* <img src={require("./assets/nft1.jpg")} alt="" /> */}
+                {/* <img src={require("../assets/nft1.jpg")} alt="" /> */}
               </div>
             </div>
           </Carousel>
@@ -993,7 +993,7 @@ function LandingPage() {
         <div className="container mx-auto">
           <div class="flex flex-wrap items-center">
             <div class="w-1/2">
-              <img src={require("./assets/h1.jpg")} alt="s" />
+              <img src={require("../assets/h1.jpg")} alt="s" />
             </div>
             <div class="w-1/2 md:p-8 md:pl-20">
               <div>
@@ -1004,7 +1004,7 @@ function LandingPage() {
                 <div className="mt-14">
                   <div className="flex items-center gap-4 mb-6">
                     <div className="rounded-full p-1">
-                      <img src={require("./assets/medal.PNG")} alt="s" />
+                      <img src={require("../assets/medal.PNG")} alt="s" />
                     </div>
                     <div>
                       <div className="font-semibold text-lg mb-2">
@@ -1018,7 +1018,7 @@ function LandingPage() {
                   </div>
                   <div className="flex items-center gap-4 mb-6">
                     <div className="rounded-full p-1">
-                      <img src={require("./assets/cost.PNG")} alt="s" />
+                      <img src={require("../assets/cost.PNG")} alt="s" />
                     </div>
                     <div>
                       <div className="font-semibold text-lg mb-2">
@@ -1032,7 +1032,7 @@ function LandingPage() {
                   </div>
                   <div className="flex items-center gap-4 mb-6">
                     <div className="rounded-full p-1">
-                      <img src={require("./assets/safe.PNG")} alt="s" />
+                      <img src={require("../assets/safe.PNG")} alt="s" />
                     </div>
                     <div>
                       <div className="font-semibold text-lg mb-2">
@@ -1064,7 +1064,7 @@ function LandingPage() {
             <div href="s" class="block overflow-hidden">
               <div class="relative inline-block">
                 <img
-                  src={require("./assets/job.PNG")}
+                  src={require("../assets/job.PNG")}
                   className="object-cover"
                   alt=""
                 />
@@ -1083,7 +1083,7 @@ function LandingPage() {
             <div href="s" class="block overflow-hidden">
               <div class="relative inline-block">
                 <img
-                  src={require("./assets/freelancer.PNG")}
+                  src={require("../assets/freelancer.PNG")}
                   className="object-cover"
                   alt=""
                 />
@@ -1102,7 +1102,7 @@ function LandingPage() {
             <div href="s" class="block overflow-hidden">
               <div class="relative inline-block">
                 <img
-                  src={require("./assets/pay.PNG")}
+                  src={require("../assets/pay.PNG")}
                   className="object-cover"
                   alt=""
                 />
@@ -1121,7 +1121,7 @@ function LandingPage() {
             <div href="s" class="block overflow-hidden">
               <div class="relative inline-block">
                 <img
-                  src={require("./assets/help.PNG")}
+                  src={require("../assets/help.PNG")}
                   className="object-cover"
                   alt=""
                 />
@@ -1210,7 +1210,7 @@ function LandingPage() {
               </Carousel>
             </div>
             <div class="w-1/2">
-              <img src={require("./assets/h1.jpg")} alt="s" />
+              <img src={require("../assets/h1.jpg")} alt="s" />
             </div>
           </div>
         </div>
@@ -1253,42 +1253,42 @@ function LandingPage() {
           <div class="flex flex-wrap mt-10 pb-7">
             <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
               <img
-                src={require("./assets/amazon.png")}
+                src={require("../assets/amazon.png")}
                 alt=""
                 className="opacity-80 hover:opacity-100"
               />
             </div>
             <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
               <img
-                src={require("./assets/amd.png")}
+                src={require("../assets/amd.png")}
                 alt=""
                 className="opacity-80 hover:opacity-100"
               />
             </div>
             <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
               <img
-                src={require("./assets/cisco.png")}
+                src={require("../assets/cisco.png")}
                 alt=""
                 className="opacity-80 hover:opacity-100"
               />
             </div>
             <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
               <img
-                src={require("./assets/dropcam.png")}
+                src={require("../assets/dropcam.png")}
                 alt=""
                 className="opacity-80 hover:opacity-100"
               />
             </div>
             <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
               <img
-                src={require("./assets/logitech.png")}
+                src={require("../assets/logitech.png")}
                 alt=""
                 className="opacity-80 hover:opacity-100"
               />
             </div>
             <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
               <img
-                src={require("./assets/spotify.png")}
+                src={require("../assets/spotify.png")}
                 alt=""
                 className="opacity-80 hover:opacity-100"
               />
@@ -1333,7 +1333,7 @@ function LandingPage() {
             </div>
             <div class="w-1/2 text-right">
               <img
-                src={require("./assets/h16.png")}
+                src={require("../assets/h16.png")}
                 alt="s"
                 className="h-72 mx-auto"
               />

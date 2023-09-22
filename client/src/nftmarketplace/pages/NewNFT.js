@@ -1,7 +1,7 @@
 import React from "react";
-import "./styles/style.css";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import "../styles/style.css";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 function NewNFT() {
   return (
@@ -25,7 +25,7 @@ function NewNFT() {
               <div className="flex gap-3 flex-wrap mt-6">
                 <div className="flex gap-2 flex-row  border border-gray-200 text-gray-600 rounded-full p-3 px-12 text-sm font-semibold items-center hover:bg-gray-100">
                   <img
-                    src={require("./assets/metamask.png")}
+                    src={require("../assets/metamask.png")}
                     alt="s"
                     className="w-5 h-5"
                   />
@@ -33,7 +33,7 @@ function NewNFT() {
                 </div>
                 <div className="flex gap-2 flex-row  border border-gray-200 text-gray-600 rounded-full p-3 px-12 text-sm font-semibold items-center hover:bg-gray-100">
                   <img
-                    src={require("./assets/coinbase.png")}
+                    src={require("../assets/coinbase.png")}
                     alt="s"
                     className="w-5 h-5"
                   />
@@ -41,7 +41,7 @@ function NewNFT() {
                 </div>
                 <div className="flex gap-2 flex-row  border border-gray-200 text-gray-600 rounded-full p-3 px-12 text-sm font-semibold items-center hover:bg-gray-100">
                   <img
-                    src={require("./assets/torus.png")}
+                    src={require("../assets/torus.png")}
                     alt="s"
                     className="w-5 h-5"
                   />
@@ -49,7 +49,7 @@ function NewNFT() {
                 </div>
                 <div className="flex gap-2 flex-row border border-gray-200 text-gray-600 rounded-full p-3 px-12 text-sm font-semibold items-center hover:bg-gray-100">
                   <img
-                    src={require("./assets/fort.png")}
+                    src={require("../assets/fort.png")}
                     alt="s"
                     className="w-5 h-5"
                   />
@@ -69,7 +69,7 @@ function NewNFT() {
               <div className="flex gap-3 flex-row mt-6">
                 <div className="flex gap-2 w-full flex-row py-8 shadow-md text-black rounded-xl p-3 px-12 text-sm font-bold items-center hover:bg-gray-100">
                   <img
-                    src={require("./assets/single.png")}
+                    src={require("../assets/single.png")}
                     alt="s"
                     className="w-7 h-7"
                   />
@@ -77,7 +77,7 @@ function NewNFT() {
                 </div>
                 <div className="flex gap-2 w-full flex-row py-8 shadow-md text-gray-600 rounded-xl p-3 px-12 text-sm font-semibold items-center hover:bg-gray-100">
                   <img
-                    src={require("./assets/collection.png")}
+                    src={require("../assets/collection.png")}
                     alt="s"
                     className="w-5 h-5"
                   />
@@ -215,7 +215,7 @@ function NewNFT() {
                 </div>
                 <div className="flex gap-2 w-full flex-row py-4 border text-black rounded-xl p-1 px-4 text-md font-bold items-center hover:bg-gray-100">
                   <img
-                    src={require("./assets/nft32.PNG")}
+                    src={require("../assets/nft32.PNG")}
                     alt=""
                     className="w-14 h-14 rounded-xl"
                   />
@@ -315,17 +315,17 @@ function NewNFT() {
                     <div class="flex -space-x-2">
                       <img
                         class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                        src={require("./assets/user1.jpeg")}
+                        src={require("../assets/user1.jpeg")}
                         alt="User Imageas"
                       />
                       <img
                         class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                        src={require("./assets/user2.jpeg")}
+                        src={require("../assets/user2.jpeg")}
                         alt="User Imageas"
                       />
                       <img
                         class="w-8 h-8 rounded-full border-2 object-cover border-white"
-                        src={require("./assets/user3.webp")}
+                        src={require("../assets/user3.webp")}
                         alt="User Imageas"
                       />
                     </div>
@@ -340,7 +340,7 @@ function NewNFT() {
                     style={{ height: "300px" }}
                   >
                     <img
-                      src={require("./assets/nft36.jpg")}
+                      src={require("../assets/nft36.jpg")}
                       alt="sd"
                       className="h-full w-full object-cover"
                     />
@@ -351,7 +351,7 @@ function NewNFT() {
                     </h3>
                     <div class="flex items-center text-gray-500 text-sm mt-2">
                       <img
-                        src={require("./assets/eth.png")}
+                        src={require("../assets/eth.png")}
                         alt="sd"
                         className="h-5 w-5 object-contain"
                       />

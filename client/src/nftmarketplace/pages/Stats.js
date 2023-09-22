@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import DropDown from "./components/dropdown";
-import StatsTable from "./components/table/StatsTable";
+import DropDown from "../components/dropdown";
+import StatsTable from "../components/table/StatsTable";
 
 const Stats = () => {
   const [selectedOption, setSelectedOption] = useState("option1");
