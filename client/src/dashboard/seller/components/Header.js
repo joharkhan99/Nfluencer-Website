@@ -9,7 +9,7 @@ import {
 const Header = () => {
   return (
     <>
-      <div className="p-4 flex justify-between items-center border-b border-gray-100">
+      <div className="p-4 flex justify-between items-center border-b border-gray-100 bg-white">
         <div className="flex items-center gap-36">
           <div className="flex items-center">
             <img

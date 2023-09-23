@@ -14,6 +14,7 @@ import GigDetails from "./website/pages/GigDetails";
 import Login from "./website/pages/Login";
 import Stats from "./nftmarketplace/pages/Stats";
 import { SellerHomePage } from "./dashboard/seller/pages/SellerHomePage";
+import SellerDashboardLayout from "./dashboard/seller/layout/SellerDashboardLayout";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -29,7 +30,12 @@ root.render(
       <Route path="/login" Component={Login} />
       <Route path="/services" Component={Services} />
       <Route path="/gigdetails" Component={GigDetails} />
-      <Route path="/seller" Component={SellerHomePage} />
+      {/* <Route path="/seller" Component={SellerHomePage} /> */}
+
+      {/* Dashboard Section */}
+      <Route path="seller" Component={SellerDashboardLayout}>
+        <Route path="home" Component={SellerHomePage} />
+      </Route>
     </Routes>
   </BrowserRouter>
 );
