@@ -42,7 +42,7 @@ const Sidebar = () => {
             <img
               src="https://flowbite.com/docs/images/logo.svg"
               alt="logo"
-              className="w-12 h-12 rounded-full"
+              className="w-9 h-9 rounded-full"
             />
             {/* <span className="text-lg ml-2">Nfluencer</span> */}
           </div>
@@ -50,7 +50,7 @@ const Sidebar = () => {
           <div className="overflow-hidden h-screen">
             <ul className="pt-6 mt-6 overflow-auto h-screen custom-scrollbar">
               <li
-                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-600 text-sm items-center gap-x-4 hover:bg-gray-100 mb-2`}
+                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 bg-nft-primary-light shadow-lg mb-2`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -76,11 +76,11 @@ const Sidebar = () => {
                 </span>
               </li>
 
-              <li className="rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center hover:bg-gray-100 mb-2">
+              <li className="text-sm text-gray-600 items-center mb-2">
                 <Disclosure>
                   {({ open }) => (
                     <>
-                      <Disclosure.Button className="flex gap-x-4 w-full items-center">
+                      <Disclosure.Button className="flex gap-x-4 rounded-md cursor-pointer w-full items-center hover:bg-gray-100 p-2">
                         <span>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -118,10 +118,10 @@ const Sidebar = () => {
                         </div>
                       </Disclosure.Button>
 
-                      <Disclosure.Panel className="px-4 pt-4 text-sm text-gray-500">
-                        <ul className="p-2 pb-0">
+                      <Disclosure.Panel className="px-2 pt-3 text-sm text-gray-500">
+                        <ul className="bg-gray-100 rounded-lg p-2">
                           <li
-                            className={`flex rounded-md cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-5`}
+                            className={`flex rounded-md cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-200 p-3`}
                           >
                             <span className="h-2 w-2 bg-gray-400 rounded-full"></span>
                             <span
@@ -133,9 +133,9 @@ const Sidebar = () => {
                             </span>
                           </li>
                           <li
-                            className={`flex rounded-md cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-3`}
+                            className={`flex rounded-md cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-200 p-3`}
                           >
-                            <span className="h-2 w-2 bg-blue-500 rounded-full"></span>
+                            <span className="h-2 w-2 bg-blue-400 rounded-full"></span>
                             <span
                               className={`${
                                 !sideBarOpen && "hidden"
@@ -315,249 +315,6 @@ const Sidebar = () => {
                   } origin-left duration-200 font-semibold`}
                 >
                   Your Earnings
-                </span>
-              </li>
-
-              <li
-                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-2`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-6 h-6 text-gray-600"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25"
-                  />
-                </svg>
-
-                <span
-                  className={`${
-                    !sideBarOpen && "hidden"
-                  } origin-left duration-200 font-semibold`}
-                >
-                  Manage NFTs
-                </span>
-              </li>
-
-              <li
-                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-2`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-6 h-6 text-gray-600"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-
-                <span
-                  className={`${
-                    !sideBarOpen && "hidden"
-                  } origin-left duration-200 font-semibold`}
-                >
-                  Your Earnings
-                </span>
-              </li>
-
-              <li
-                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-2`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-6 h-6 text-gray-600"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25"
-                  />
-                </svg>
-
-                <span
-                  className={`${
-                    !sideBarOpen && "hidden"
-                  } origin-left duration-200 font-semibold`}
-                >
-                  Manage NFTs
-                </span>
-              </li>
-
-              <li
-                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-2`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-6 h-6 text-gray-600"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25"
-                  />
-                </svg>
-
-                <span
-                  className={`${
-                    !sideBarOpen && "hidden"
-                  } origin-left duration-200 font-semibold`}
-                >
-                  Manage NFTs
-                </span>
-              </li>
-
-              <li
-                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-2`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-6 h-6 text-gray-600"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25"
-                  />
-                </svg>
-
-                <span
-                  className={`${
-                    !sideBarOpen && "hidden"
-                  } origin-left duration-200 font-semibold`}
-                >
-                  Manage NFTs
-                </span>
-              </li>
-
-              <li
-                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-2`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-6 h-6 text-gray-600"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25"
-                  />
-                </svg>
-
-                <span
-                  className={`${
-                    !sideBarOpen && "hidden"
-                  } origin-left duration-200 font-semibold`}
-                >
-                  Manage NFTs
-                </span>
-              </li>
-
-              <li
-                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-2`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-6 h-6 text-gray-600"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25"
-                  />
-                </svg>
-
-                <span
-                  className={`${
-                    !sideBarOpen && "hidden"
-                  } origin-left duration-200 font-semibold`}
-                >
-                  Manage NFTs
-                </span>
-              </li>
-
-              <li
-                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-2`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-6 h-6 text-gray-600"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25"
-                  />
-                </svg>
-
-                <span
-                  className={`${
-                    !sideBarOpen && "hidden"
-                  } origin-left duration-200 font-semibold`}
-                >
-                  Manage NFTs
-                </span>
-              </li>
-
-              <li
-                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-2`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-6 h-6 text-gray-600"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25"
-                  />
-                </svg>
-
-                <span
-                  className={`${
-                    !sideBarOpen && "hidden"
-                  } origin-left duration-200 font-semibold`}
-                >
-                  Manage NFTs
                 </span>
               </li>
 
