@@ -9,16 +9,6 @@ import "../assets/styles/style.css";
 
 const Sidebar = () => {
   const [sideBarOpen, setSideBarOpen] = useState(true);
-  const Menus = [
-    { title: "Dashboard", src: "<Squares2X2Icon/>" },
-    { title: "Inbox", src: "Chat" },
-    { title: "Accounts", src: "User", gap: true },
-    { title: "Schedule ", src: "Calendar" },
-    { title: "Search", src: "Search" },
-    { title: "Analytics", src: "Chart" },
-    { title: "Files ", src: "Folder" },
-    { title: "Setting", src: "Setting" },
-  ];
 
   const toggleSidebar = () => {
     setSideBarOpen(!sideBarOpen);
@@ -34,21 +24,19 @@ const Sidebar = () => {
           {sideBarOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </button>
         <div
-          className={` ${
-            sideBarOpen ? "w-56" : "w-20 "
-          } p-4 pr-1 relative duration-300`}
+          className={` ${sideBarOpen ? "w-56" : "w-20 "} relative duration-300`}
         >
-          <div className="flex items-center">
+          <div className="flex items-center p-4 gap-4">
             <img
               src="https://flowbite.com/docs/images/logo.svg"
               alt="logo"
-              className="w-9 h-9 rounded-full"
+              className="w-10 h-10 rounded-full"
             />
-            {/* <span className="text-lg ml-2">Nfluencer</span> */}
+            <span className="font-semibold text-blue-600">Nfluencer</span>
           </div>
 
-          <div className="overflow-hidden h-screen">
-            <ul className="pt-6 mt-6 overflow-auto h-screen custom-scrollbar">
+          <div className="overflow-hidden h-screen border-t p-4 mt-1.5 border-gray-100 pt-6">
+            <ul className="overflow-auto h-screen custom-scrollbar">
               <li
                 className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 bg-nft-primary-light shadow-lg mb-2`}
               >
