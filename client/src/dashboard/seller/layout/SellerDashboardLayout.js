@@ -11,7 +11,7 @@ function SellerDashboardLayout({ children }) {
       <div className="flex flex-col flex-1 w-full">
         <Header />
 
-        <main className="h-full overflow-y-auto bg-gray-100 p-8">
+        <main className="h-full overflow-y-auto bg-gray-100 p-8 pt-10">
           <Outlet />
         </main>
       </div>
