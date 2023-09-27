@@ -247,7 +247,7 @@ export const SellerHomePage = () => {
           </div> */}
         </div>
 
-        <div className="bg-white rounded-xl p-6 w-full my-6 max-w-full">
+        <div className="bg-white rounded-xl p-6 w-full my-6 max-w-full shadow-xl shadow-gray-200">
           <div className="mb-3 flex justify-between items-center">
             <span className="font-bold text-2xl text-gray-900">
               Overview Orders
@@ -267,7 +267,7 @@ export const SellerHomePage = () => {
           </div>
         </div>
 
-        <div class="p-6 bg-white shadow-sm rounded-xl">
+        <div class="p-6 bg-white shadow-lg rounded-xl shadow-gray-200">
           <div className="mb-3">
             <span className="font-bold text-2xl text-gray-900 block">
               Earning Report
@@ -276,7 +276,122 @@ export const SellerHomePage = () => {
 
           <div className="lg:flex rounded-xl">
             <div class="lg:w-1/3">
-              <div></div>
+              <div className="flex gap-3 items-center mb-5">
+                <div>
+                  <span className="rounded-full bg-green-200 block p-1">
+                    <ArrowTrendingUpIcon className="w-4 h-4 text-green-700" />
+                  </span>
+                </div>
+                <div className="text-green-600 font-semibold">+7.2%</div>
+                <div className="text-gray-500 text-xs">
+                  - Increased This Week
+                </div>
+              </div>
+
+              <div>
+                <ul>
+                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
+                    <div className="flex items-center gap-5">
+                      <div className="bg-gray-100 p-1.5 rounded-full">
+                        <img
+                          src="https://mir-s3-cdn-cf.behance.net/user/50/2ec25f505091121.64c0087b7bd73.png"
+                          alt=""
+                          className="h-12 w-12 rounded-full"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-xs text-gray-500">Facebook</span>
+                        <span className="text-lg font-bold">$2.13K</span>
+                      </div>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
+                      <span className="text-xs text-green-700 font-medium">
+                        5.7%
+                      </span>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
+                      <span className="text-xs text-gray-700 font-medium">
+                        22 May 2023
+                      </span>
+                    </div>
+                  </li>
+                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
+                    <div className="flex items-center gap-5">
+                      <div className="bg-gray-100 p-1.5 rounded-full">
+                        <img
+                          src="https://mir-s3-cdn-cf.behance.net/user/50/2ec25f505091121.64c0087b7bd73.png"
+                          alt=""
+                          className="h-12 w-12 rounded-full"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-xs text-gray-500">Facebook</span>
+                        <span className="text-lg font-bold">$2.13K</span>
+                      </div>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
+                      <span className="text-xs text-green-700 font-medium">
+                        5.7%
+                      </span>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
+                      <span className="text-xs text-gray-700 font-medium">
+                        22 May 2023
+                      </span>
+                    </div>
+                  </li>
+                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
+                    <div className="flex items-center gap-5">
+                      <div className="bg-gray-100 p-1.5 rounded-full">
+                        <img
+                          src="https://mir-s3-cdn-cf.behance.net/user/50/2ec25f505091121.64c0087b7bd73.png"
+                          alt=""
+                          className="h-12 w-12 rounded-full"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-xs text-gray-500">Facebook</span>
+                        <span className="text-lg font-bold">$2.13K</span>
+                      </div>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
+                      <span className="text-xs text-green-700 font-medium">
+                        5.7%
+                      </span>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
+                      <span className="text-xs text-gray-700 font-medium">
+                        22 May 2023
+                      </span>
+                    </div>
+                  </li>
+                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
+                    <div className="flex items-center gap-5">
+                      <div className="bg-gray-100 p-1.5 rounded-full">
+                        <img
+                          src="https://mir-s3-cdn-cf.behance.net/user/50/2ec25f505091121.64c0087b7bd73.png"
+                          alt=""
+                          className="h-12 w-12 rounded-full"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-xs text-gray-500">Facebook</span>
+                        <span className="text-lg font-bold">$2.13K</span>
+                      </div>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
+                      <span className="text-xs text-green-700 font-medium">
+                        5.7%
+                      </span>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
+                      <span className="text-xs text-gray-700 font-medium">
+                        22 May 2023
+                      </span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </div>
             <div class="lg:w-2/3 mt-4 lg:mt-0">
               <div>
