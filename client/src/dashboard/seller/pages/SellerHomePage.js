@@ -319,7 +319,7 @@ export const SellerHomePage = () => {
                     <div className="flex items-center gap-5">
                       <div className="bg-gray-100 p-1.5 rounded-full">
                         <img
-                          src="https://mir-s3-cdn-cf.behance.net/user/50/2ec25f505091121.64c0087b7bd73.png"
+                          src="https://cdn.dribbble.com/users/14379669/avatars/normal/1f4ebd77a0db9bb01986ed2c943485f2.jpg?1671474840&resize=40x40"
                           alt=""
                           className="h-12 w-12 rounded-full"
                         />
@@ -344,7 +344,7 @@ export const SellerHomePage = () => {
                     <div className="flex items-center gap-5">
                       <div className="bg-gray-100 p-1.5 rounded-full">
                         <img
-                          src="https://mir-s3-cdn-cf.behance.net/user/50/2ec25f505091121.64c0087b7bd73.png"
+                          src="https://cdn.dribbble.com/users/16361925/avatars/normal/27e34e235e95b7eb13d137903a49c31e.png?1695370101&resize=40x40"
                           alt=""
                           className="h-12 w-12 rounded-full"
                         />
@@ -369,7 +369,7 @@ export const SellerHomePage = () => {
                     <div className="flex items-center gap-5">
                       <div className="bg-gray-100 p-1.5 rounded-full">
                         <img
-                          src="https://mir-s3-cdn-cf.behance.net/user/50/2ec25f505091121.64c0087b7bd73.png"
+                          src="https://cdn.dribbble.com/users/9196316/avatars/normal/f6e9f41f806541156d32e40ce1652055.png?1690621521&resize=40x40"
                           alt=""
                           className="h-12 w-12 rounded-full"
                         />
