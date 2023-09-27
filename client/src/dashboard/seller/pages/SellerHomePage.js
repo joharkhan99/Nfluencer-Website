@@ -3,9 +3,13 @@ import {
   ArrowTrendingDownIcon,
   ArrowTrendingUpIcon,
   ChevronRightIcon,
-  ClipboardDocumentListIcon,
   EyeIcon,
+  LightBulbIcon,
+  PresentationChartBarIcon,
+  UsersIcon,
 } from "@heroicons/react/20/solid";
+import EarningChart from "../components/charts/EarningChart";
+import OrderChart from "../components/charts/OrdersChart";
 
 export const SellerHomePage = () => {
   return (
@@ -57,8 +61,13 @@ export const SellerHomePage = () => {
           <div class="lg:w-1/4 md:w-2/4 w-full bg-white shadow-lg hover:border-transparent shadow-gray-200 transition-all hover:bg-nft-primary-light hover:shadow-[0_10px_20px_rgba(120,82,243,0.5)] rounded-xl p-6 group hover:scale-105 border border-gray-200 cursor-pointer">
             <div>
               <div className="flex justify-between items-center mb-4">
-                <div className="font-semibold text-sm group-hover:text-white">
-                  Total Views
+                <div className="flex gap-2 items-center font-semibold text-sm group-hover:text-white text-nft-primary-dark">
+                  <div>
+                    <span className="bg-nft-primary-light text-nft-primary-dark block p-1 bg-opacity-30 rounded-full group-hover:bg-white transition-all">
+                      <EyeIcon className="w-4 h-4" />
+                    </span>
+                  </div>
+                  <div>Total Views</div>
                 </div>
                 <div>
                   <span>
@@ -68,7 +77,9 @@ export const SellerHomePage = () => {
               </div>
 
               <div className="flex items-center gap-4 group-hover:text-white">
-                <div className="text-2xl font-semibold">12.32K</div>
+                <div className="text-2xl font-semibold text-gray-900 group-hover:text-white">
+                  12.32K
+                </div>
                 <div className="flex rounded-full p-1 px-2.5 text-xs items-center bg-green-200 gap-1">
                   <span>
                     <ArrowTrendingUpIcon className="w-4 h-4 text-green-700" />
@@ -90,8 +101,13 @@ export const SellerHomePage = () => {
           <div class="lg:w-1/4 md:w-2/4 w-full bg-white shadow-lg hover:border-transparent shadow-gray-200 transition-all hover:bg-nft-primary-light hover:shadow-[0_10px_20px_rgba(120,82,243,0.5)] rounded-xl p-6 group hover:scale-105 border border-gray-200 cursor-pointer">
             <div>
               <div className="flex justify-between items-center mb-4">
-                <div className="font-semibold text-sm group-hover:text-white">
-                  Total Profits
+                <div className="flex gap-2 items-center font-semibold text-sm group-hover:text-white text-nft-primary-dark">
+                  <div>
+                    <span className="bg-nft-primary-light text-nft-primary-dark block p-1 bg-opacity-30 rounded-full group-hover:bg-white transition-all">
+                      <PresentationChartBarIcon className="w-4 h-4" />
+                    </span>
+                  </div>
+                  <div>Total Profits</div>
                 </div>
                 <div>
                   <span>
@@ -101,7 +117,9 @@ export const SellerHomePage = () => {
               </div>
 
               <div className="flex items-center gap-4 group-hover:text-white">
-                <div className="text-2xl font-semibold">$12,233.21</div>
+                <div className="text-2xl font-semibold text-gray-900 group-hover:text-white">
+                  $12,233.21
+                </div>
                 <div className="flex rounded-full p-1 px-2.5 text-xs items-center bg-red-200 gap-1">
                   <span>
                     <ArrowTrendingDownIcon className="w-4 h-4 text-red-700" />
@@ -124,8 +142,13 @@ export const SellerHomePage = () => {
           <div class="lg:w-1/4 md:w-2/4 w-full bg-white shadow-lg hover:border-transparent shadow-gray-200 transition-all hover:bg-nft-primary-light hover:shadow-[0_10px_20px_rgba(120,82,243,0.5)] rounded-xl p-6 group hover:scale-105 border border-gray-200 cursor-pointer">
             <div>
               <div className="flex justify-between items-center mb-4">
-                <div className="font-semibold text-sm group-hover:text-white">
-                  New Customers
+                <div className="flex gap-2 items-center font-semibold text-sm group-hover:text-white text-nft-primary-dark">
+                  <div>
+                    <span className="bg-nft-primary-light text-nft-primary-dark block p-1 bg-opacity-30 rounded-full group-hover:bg-white transition-all">
+                      <UsersIcon className="w-4 h-4" />
+                    </span>
+                  </div>
+                  <div>New Customers</div>
                 </div>
                 <div>
                   <span>
@@ -135,7 +158,9 @@ export const SellerHomePage = () => {
               </div>
 
               <div className="flex items-center gap-4 group-hover:text-white">
-                <div className="text-2xl font-semibold">630</div>
+                <div className="text-2xl font-semibold text-gray-900 group-hover:text-white">
+                  630
+                </div>
                 <div className="flex rounded-full p-1 px-2.5 text-xs items-center bg-green-200 gap-1">
                   <span>
                     <ArrowTrendingUpIcon className="w-4 h-4 text-green-700" />
@@ -158,8 +183,13 @@ export const SellerHomePage = () => {
           <div class="lg:w-1/4 md:w-2/4 w-full bg-white shadow-lg hover:border-transparent shadow-gray-200 transition-all hover:bg-nft-primary-light hover:shadow-[0_10px_20px_rgba(120,82,243,0.5)] rounded-xl p-6 group hover:scale-105 border border-gray-200 cursor-pointer">
             <div>
               <div className="flex justify-between items-center mb-4">
-                <div className="font-semibold text-sm group-hover:text-white">
-                  Running Projects
+                <div className="flex gap-2 items-center font-semibold text-sm group-hover:text-white text-nft-primary-dark">
+                  <div>
+                    <span className="bg-nft-primary-light text-nft-primary-dark block p-1 bg-opacity-30 rounded-full group-hover:bg-white transition-all">
+                      <LightBulbIcon className="w-4 h-4" />
+                    </span>
+                  </div>
+                  <div>Running Projects</div>
                 </div>
                 <div>
                   <span>
@@ -169,12 +199,14 @@ export const SellerHomePage = () => {
               </div>
 
               <div className="flex items-center gap-4 group-hover:text-white">
-                <div className="text-2xl font-semibold">25</div>
-                <div className="flex rounded-full p-1 px-2.5 text-xs items-center bg-green-200 gap-1">
+                <div className="text-2xl font-semibold text-gray-900 group-hover:text-white">
+                  25
+                </div>
+                <div className="flex rounded-full p-1 px-2.5 text-xs items-center bg-red-200 gap-1">
                   <span>
-                    <ArrowTrendingUpIcon className="w-4 h-4 text-green-700" />
+                    <ArrowTrendingDownIcon className="w-4 h-4 text-red-700" />
                   </span>
-                  <span className="text-green-700 font-semibold">15%</span>
+                  <span className="text-red-700 font-semibold">15%</span>
                 </div>
               </div>
 
@@ -213,6 +245,45 @@ export const SellerHomePage = () => {
               </div>
             </div>
           </div> */}
+        </div>
+
+        <div className="bg-white rounded-xl p-6 w-full my-6 max-w-full">
+          <div className="mb-3 flex justify-between items-center">
+            <span className="font-bold text-2xl text-gray-900">
+              Overview Orders
+            </span>
+            <div>
+              <select className="text-sm bg-gray-100 rounded-lg p-2 px-3 text-gray-600 outline-none focus:ring focus:ring-gray-200 cursor-pointer">
+                <option value="1" selected>
+                  Last 7 days
+                </option>
+                <option value="2">Last 30 days</option>
+                <option value="3">Last 90 days</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <OrderChart />
+          </div>
+        </div>
+
+        <div class="p-6 bg-white shadow-sm rounded-xl">
+          <div className="mb-3">
+            <span className="font-bold text-2xl text-gray-900 block">
+              Earning Report
+            </span>
+          </div>
+
+          <div className="lg:flex rounded-xl">
+            <div class="lg:w-1/3">
+              <div></div>
+            </div>
+            <div class="lg:w-2/3 mt-4 lg:mt-0">
+              <div>
+                <EarningChart />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

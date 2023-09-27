@@ -21,3 +21,7 @@
 .custom-scrollbar:active::-webkit-scrollbar-thumb {
   background-color: #c1c3c5;
 }
+
+.apexcharts-legend-marker, .apexcharts-legend-marker {
+  /* border-radius: 50% !important; */
+}
