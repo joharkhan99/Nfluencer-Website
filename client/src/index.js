@@ -16,6 +16,7 @@ import Stats from "./nftmarketplace/pages/Stats";
 import { SellerHomePage } from "./dashboard/seller/pages/SellerHomePage";
 import SellerDashboardLayout from "./dashboard/seller/layout/SellerDashboardLayout";
 import { SellerAbout } from "./dashboard/seller/pages/SellerAbout";
+import { SellerGigs } from "./dashboard/seller/pages/SellerGigs";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -37,6 +38,7 @@ root.render(
       <Route path="seller" Component={SellerDashboardLayout}>
         <Route path="/seller" Component={SellerHomePage} />
         <Route path="about" Component={SellerAbout} />
+        <Route path="gigs" Component={SellerGigs} />
       </Route>
     </Routes>
   </BrowserRouter>

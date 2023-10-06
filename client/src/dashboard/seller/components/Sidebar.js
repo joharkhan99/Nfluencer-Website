@@ -3,9 +3,12 @@ import {
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  BriefcaseIcon,
+  Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import React, { useState } from "react";
 import "../assets/styles/style.css";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const [sideBarOpen, setSideBarOpen] = useState(true);
@@ -40,21 +43,7 @@ const Sidebar = () => {
               <li
                 className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 bg-nft-primary-light shadow-lg mb-2`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-6 h-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"
-                  />
-                </svg>
-
+                <Squares2X2Icon class="w-6 h-6" />
                 <span
                   className={`${
                     !sideBarOpen && "hidden"
@@ -140,30 +129,18 @@ const Sidebar = () => {
               </li>
 
               <li
-                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-2`}
+                className={`rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 hover:bg-gray-100 mb-2`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-6 h-6 text-gray-600"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"
-                  />
-                </svg>
-
-                <span
-                  className={`${
-                    !sideBarOpen && "hidden"
-                  } origin-left duration-200 font-semibold`}
-                >
-                  Analytics
-                </span>
+                <Link to="/seller/gigs" className="flex items-center gap-x-4">
+                  <BriefcaseIcon class="w-6 h-6 text-gray-600" />
+                  <span
+                    className={`${
+                      !sideBarOpen && "hidden"
+                    } origin-left duration-200 font-semibold`}
+                  >
+                    Manage Gigs
+                  </span>
+                </Link>
               </li>
 
               <li
