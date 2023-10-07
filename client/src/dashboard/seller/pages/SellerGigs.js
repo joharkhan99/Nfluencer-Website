@@ -1,6 +1,8 @@
 import { Menu, Transition } from "@headlessui/react";
 import {
   ArchiveBoxXMarkIcon,
+  ArrowTrendingDownIcon,
+  ArrowTrendingUpIcon,
   ClockIcon,
   EllipsisVerticalIcon,
   EyeIcon,
@@ -11,6 +13,7 @@ import {
   TrashIcon,
 } from "@heroicons/react/20/solid";
 import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 
 export const SellerGigs = () => {
@@ -116,23 +119,34 @@ export const SellerGigs = () => {
           className="w-full"
           selectedTabClassName="bg-nft-primary-light text-white shadow-lg shadow-purple-200"
         >
-          <TabList className="border-b border-gray-100 w-full p-4">
-            <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors">
-              Active
-            </Tab>
-            <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors">
-              Pending Approval
-            </Tab>
-            <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors">
-              Draft
-            </Tab>
-            <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors">
-              Denied
-            </Tab>
-            <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors">
-              Paused
-            </Tab>
-          </TabList>
+          <div className="flex justify-between items-center">
+            <TabList className="border-b border-gray-100 p-4">
+              <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors outline-none">
+                Active
+              </Tab>
+              <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors outline-none">
+                Pending Approval
+              </Tab>
+              <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors outline-none">
+                Draft
+              </Tab>
+              <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors outline-none">
+                Denied
+              </Tab>
+              <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors outline-none">
+                Paused
+              </Tab>
+            </TabList>
+
+            <div className="text-right p-4">
+              <Link
+                to="/seller/newgig"
+                className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
+              >
+                Create New Gig
+              </Link>
+            </div>
+          </div>
 
           <TabPanel>
             <div className="p-4">
@@ -200,7 +214,14 @@ export const SellerGigs = () => {
                           NFT14df36f41b0d4c4b
                         </a>
                       </td>
-                      <td class="p-3 py-5">1.9K</td>
+                      <td class="p-3 py-5">
+                        <div className="flex items-center gap-1 text-green-500 font-medium">
+                          <span>1.9K</span>
+                          <span>
+                            <ArrowTrendingUpIcon className="w-4 h-4" />
+                          </span>
+                        </div>
+                      </td>
                       <td class="p-3 py-5">15</td>
                       <td class="p-3 py-5">2</td>
                       <td class="p-3 py-5">0%</td>
@@ -319,7 +340,14 @@ export const SellerGigs = () => {
                           NFT14df36f41b0d4c4b
                         </a>
                       </td>
-                      <td class="p-3 py-5">1.9K</td>
+                      <td class="p-3 py-5">
+                        <div className="flex items-center gap-1 text-red-500 font-medium">
+                          <span>300</span>
+                          <span>
+                            <ArrowTrendingDownIcon className="w-4 h-4" />
+                          </span>
+                        </div>
+                      </td>
                       <td class="p-3 py-5">15</td>
                       <td class="p-3 py-5">2</td>
                       <td class="p-3 py-5">0%</td>
