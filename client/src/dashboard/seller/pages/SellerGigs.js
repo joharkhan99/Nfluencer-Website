@@ -19,7 +19,12 @@ import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 export const SellerGigs = () => {
   return (
     <div>
-      <h2 className="font-bold text-2xl text-gray-800 block">Gigs Overview</h2>
+      <h2 className="font-extrabold tracking-tight text-3xl text-gray-800 block">
+        Gigs Overview
+      </h2>
+      {/* <h1 class="text-4xl font-extrabold tracking-tight text-gray-800 sm:text-4xl">
+        Gigs Overview
+      </h1> */}
 
       <div class="lg:flex md:flex w-full my-6 gap-3">
         <div class="lg:w-1/4 md:w-2/4 w-full bg-[rgb(15,220,156)] shadow-lg hover:border-transparent shadow-green-200 transition-all rounded-xl p-6 group hover:scale-105 cursor-pointer relative">
