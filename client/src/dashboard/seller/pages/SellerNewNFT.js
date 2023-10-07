@@ -18,38 +18,98 @@ const SellerNewNFT = () => {
               one.
             </p>
             <div className="flex gap-3 flex-wrap mt-6">
-              <div className="flex gap-2 flex-row  border border-gray-200 text-gray-600 rounded-full p-3 px-12 text-sm font-semibold items-center hover:bg-gray-100">
-                <img
-                  src={require("../../../nftmarketplace/assets/metamask.png")}
-                  alt="s"
-                  className="w-5 h-5"
+              <div>
+                <input
+                  type="radio"
+                  name="option"
+                  id="1"
+                  value="1"
+                  class="peer hidden"
                 />
-                <button>MetaMask</button>
+                <label
+                  for="1"
+                  class="cursor-pointer select-none rounded-full text-center peer-checked:bg-purple-100 peer-checked:text-nft-primary-light peer-checked:border-nft-primary-light border font-semibold text-sm border-gray-200 text-gray-600 flex gap-2 items-center p-3 px-6 transition-colors duration-300"
+                >
+                  <span>
+                    <img
+                      src={require("../../../nftmarketplace/assets/metamask.png")}
+                      alt="s"
+                      className="w-5 h-5"
+                    />
+                  </span>
+                  <span>MetaMask</span>
+                </label>
               </div>
-              <div className="flex gap-2 flex-row  border border-gray-200 text-gray-600 rounded-full p-3 px-12 text-sm font-semibold items-center hover:bg-gray-100">
-                <img
-                  src={require("../../../nftmarketplace/assets/coinbase.png")}
-                  alt="s"
-                  className="w-5 h-5"
+
+              <div>
+                <input
+                  type="radio"
+                  name="option"
+                  id="2"
+                  value="2"
+                  class="peer hidden"
                 />
-                <button>Coinbase</button>
+                <label
+                  for="2"
+                  class="cursor-pointer select-none rounded-full text-center peer-checked:bg-purple-100 peer-checked:text-nft-primary-light peer-checked:border-nft-primary-light border font-semibold text-sm border-gray-200 text-gray-600 flex gap-2 items-center p-3 px-6 transition-colors duration-300"
+                >
+                  <span>
+                    <img
+                      src={require("../../../nftmarketplace/assets/coinbase.png")}
+                      alt="s"
+                      className="w-5 h-5"
+                    />
+                  </span>
+                  <span>Coinbase</span>
+                </label>
               </div>
-              <div className="flex gap-2 flex-row  border border-gray-200 text-gray-600 rounded-full p-3 px-12 text-sm font-semibold items-center hover:bg-gray-100">
-                <img
-                  src={require("../../../nftmarketplace/assets/torus.png")}
-                  alt="s"
-                  className="w-5 h-5"
+
+              <div>
+                <input
+                  type="radio"
+                  name="option"
+                  id="3"
+                  value="3"
+                  class="peer hidden"
                 />
-                <button>Torus</button>
+                <label
+                  for="3"
+                  class="cursor-pointer select-none rounded-full text-center peer-checked:bg-purple-100 peer-checked:text-nft-primary-light peer-checked:border-nft-primary-light border font-semibold text-sm border-gray-200 text-gray-600 flex gap-2 items-center p-3 px-6 transition-colors duration-300"
+                >
+                  <span>
+                    <img
+                      src={require("../../../nftmarketplace/assets/torus.png")}
+                      alt="s"
+                      className="w-5 h-5"
+                    />
+                  </span>
+                  <span>Torus</span>
+                </label>
               </div>
-              <div className="flex gap-2 flex-row border border-gray-200 text-gray-600 rounded-full p-3 px-12 text-sm font-semibold items-center hover:bg-gray-100">
-                <img
-                  src={require("../../../nftmarketplace/assets/fort.png")}
-                  alt="s"
-                  className="w-5 h-5"
+
+              <div>
+                <input
+                  type="radio"
+                  name="option"
+                  id="4"
+                  value="4"
+                  class="peer hidden"
                 />
-                <button>Fortmatic</button>
+                <label
+                  for="4"
+                  class="cursor-pointer select-none rounded-full text-center peer-checked:bg-purple-100 peer-checked:text-nft-primary-light peer-checked:border-nft-primary-light border font-semibold text-sm border-gray-200 text-gray-600 flex gap-2 items-center p-3 px-6 transition-colors duration-300"
+                >
+                  <span>
+                    <img
+                      src={require("../../../nftmarketplace/assets/fort.png")}
+                      alt="s"
+                      className="w-5 h-5"
+                    />
+                  </span>
+                  <span>Fortmatic</span>
+                </label>
               </div>
+
               <div className="flex gap-2 flex-row border border-gray-200 text-gray-600 rounded-full p-3 px-12 text-sm font-semibold items-center hover:bg-gray-100">
                 <button>Show more options</button>
               </div>
@@ -126,7 +186,7 @@ const SellerNewNFT = () => {
                 <input
                   type="text"
                   placeholder="e.g. Brown Grizzly Bear Smile"
-                  className="w-full rounded-full border-gray-200 border p-3 outline-none text-sm placeholder:text-gray-600 font-semibold px-5"
+                  className="w-full rounded-full border-gray-200 border p-3 outline-none text-sm placeholder:text-gray-500 font-semibold px-5"
                 />
               </div>
               <div className="mb-6">
@@ -135,7 +195,7 @@ const SellerNewNFT = () => {
                 </label>
                 <input
                   type="text"
-                  className="w-full rounded-full border-gray-200 border p-3 outline-none text-sm placeholder:text-gray-600 font-semibold px-5"
+                  className="w-full rounded-full border-gray-200 border p-3 outline-none text-sm placeholder:text-gray-500 font-semibold px-5"
                   placeholder="e.g. Description about the NFT"
                 />
               </div>
@@ -143,7 +203,7 @@ const SellerNewNFT = () => {
                 <label className="block font-semibold text-sm text-gray-800 mb-2">
                   Add properties
                 </label>
-                <div className="w-full rounded-full border-gray-200 border p-3 outline-none text-sm placeholder:text-gray-600 font-semibold px-5">
+                <div className="w-full rounded-full border-gray-200 border p-3 outline-none text-sm placeholder:text-gray-500 font-semibold px-5">
                   <span className="bg-gray-200 p-2 px-3 rounded-full mr-2 text-sm">
                     Art<span className="pl-3">x</span>
                   </span>
@@ -163,7 +223,7 @@ const SellerNewNFT = () => {
                   </label>
                   <input
                     type="text"
-                    className="w-full rounded-full border-gray-200 border p-3 outline-none text-sm placeholder:text-gray-600 font-semibold px-5"
+                    className="w-full rounded-full border-gray-200 border p-3 outline-none text-sm placeholder:text-gray-500 font-semibold px-5"
                     placeholder="e.g. 230"
                   />
                 </div>
@@ -173,7 +233,7 @@ const SellerNewNFT = () => {
                   </label>
                   <input
                     type="text"
-                    className="w-full rounded-full border-gray-200 border p-3 outline-none text-sm placeholder:text-gray-600 font-semibold px-5"
+                    className="w-full rounded-full border-gray-200 border p-3 outline-none text-sm placeholder:text-gray-500 font-semibold px-5"
                     placeholder="e.g. 12"
                   />
                 </div>
@@ -201,9 +261,9 @@ const SellerNewNFT = () => {
                   />
                 </svg>
 
-                <button className="text-left">
+                <button className="text-left text-sm">
                   Create new collection
-                  <span className="block text-sm text-gray-600 font-semibold">
+                  <span className="block text-xs text-gray-600 font-semibold">
                     Type to create
                   </span>
                 </button>
@@ -215,9 +275,9 @@ const SellerNewNFT = () => {
                   className="w-14 h-14 rounded-xl"
                 />
 
-                <button className="text-left">
+                <button className="text-left text-sm">
                   Battle for Digital
-                  <span className="block text-sm text-gray-600 font-semibold">
+                  <span className="block text-xs text-gray-600 font-semibold">
                     17 items
                   </span>
                 </button>
@@ -231,7 +291,7 @@ const SellerNewNFT = () => {
               They all serve the same purpose.
             </p>
             <div className="mt-6">
-              <div className="border-b flex flex-row justify-between items-center py-3 pb-5">
+              <div className="border-b flex flex-row justify-between items-center py-3 pb-5 gap-4">
                 <div>
                   <div className="text-sm font-semibold text-gray-600">
                     Product updates
@@ -243,11 +303,11 @@ const SellerNewNFT = () => {
                 <div>
                   <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" value="" class="sr-only peer" />
-                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:bg-nft-primary-transparent rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
                   </label>
                 </div>
               </div>
-              <div className="border-b flex flex-row justify-between items-center py-5">
+              <div className="border-b flex flex-row justify-between items-center py-5 gap-4">
                 <div>
                   <div className="text-sm font-semibold text-gray-600">
                     Reminders
@@ -259,11 +319,11 @@ const SellerNewNFT = () => {
                 <div>
                   <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" value="" class="sr-only peer" />
-                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:bg-nft-primary-transparent rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
                   </label>
                 </div>
               </div>
-              <div className="border-b flex flex-row justify-between items-center py-5">
+              <div className="border-b flex flex-row justify-between items-center py-5 gap-4">
                 <div>
                   <div className="text-sm font-semibold text-gray-600">
                     Account support
@@ -276,7 +336,7 @@ const SellerNewNFT = () => {
                 <div>
                   <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" value="" class="sr-only peer" />
-                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:bg-nft-primary-transparent rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
+                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
                   </label>
                 </div>
               </div>
@@ -331,7 +391,7 @@ const SellerNewNFT = () => {
                   </div>
                 </div> */}
                 <div
-                  class="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                  class="h-auto rounded-xl bg-gray-100 overflow-hidden"
                   style={{ height: "300px" }}
                 >
                   <img
@@ -341,7 +401,7 @@ const SellerNewNFT = () => {
                   />
                 </div>
                 <div class="py-2 pt-3">
-                  <h3 class="text-xl font-bold tracking-tight text-gray-800">
+                  <h3 class="text-lg font-bold tracking-tight text-gray-800">
                     Capturing Memories
                   </h3>
                   <div class="flex items-center text-gray-500 text-sm mt-2">
@@ -351,8 +411,8 @@ const SellerNewNFT = () => {
                       className="h-5 w-5 object-contain"
                     />
                     <span className="pl-2">
-                      from{" "}
-                      <span className="font-bold text-sm text-gray-800">
+                      from
+                      <span className="font-bold text-sm text-gray-800 ml-2">
                         0.45 ETH
                       </span>
                     </span>
