@@ -1,4 +1,5 @@
 import React from "react";
+import { HeartIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const SellerNewNFT = () => {
   return (
@@ -203,15 +204,24 @@ const SellerNewNFT = () => {
                 <label className="block font-semibold text-sm text-gray-800 mb-2">
                   Add properties
                 </label>
-                <div className="w-full rounded-full border-gray-200 border p-3 outline-none text-sm placeholder:text-gray-500 font-semibold px-5">
-                  <span className="bg-gray-200 p-2 px-3 rounded-full mr-2 text-sm">
-                    Art<span className="pl-3">x</span>
+                <div className="w-full rounded-full border-gray-200 border p-1.5 outline-none text-sm placeholder:text-gray-500 font-medium px-3 flex">
+                  <span className="bg-gray-200 p-2 px-3 rounded-full mr-2 text-sm flex items-center gap-2">
+                    <span>Art</span>
+                    <span>
+                      <XMarkIcon className="w-4 h-4" />
+                    </span>
                   </span>
-                  <span className="bg-gray-200 p-2 px-3 rounded-full mr-2 text-sm">
-                    Color<span className="pl-3">x</span>
+                  <span className="bg-gray-200 p-2 px-3 rounded-full mr-2 text-sm flex items-center gap-2">
+                    <span>Color</span>
+                    <span>
+                      <XMarkIcon className="w-4 h-4" />
+                    </span>
                   </span>
-                  <span className="bg-gray-200 p-2 px-3 rounded-full mr-2 text-sm">
-                    Body Type<span className="pl-3">x</span>
+                  <span className="bg-gray-200 p-2 px-3 rounded-full mr-2 text-sm flex items-center gap-2">
+                    <span>Body Type</span>
+                    <span>
+                      <XMarkIcon className="w-4 h-4" />
+                    </span>
                   </span>
                 </div>
               </div>
@@ -345,12 +355,12 @@ const SellerNewNFT = () => {
             <div className="mt-24">
               <div className="flex justify-between items-center  flex-row">
                 <div className="text-center w-full">
-                  <button class="bg-nft-primary-light rounded-full px-6 py-4 font-semibold text-sm text-white w-4/5">
+                  <button class="bg-nft-primary-light rounded-full px-6 py-4 font-semibold text-sm text-white w-4/5 hover:shadow-lg hover:shadow-purple-100">
                     <span>Publish</span>
                   </button>
                 </div>
                 <div className="text-center w-full">
-                  <button class="bg-nft-primary-transparent rounded-full px-6 py-4 font-semibold text-sm text-nft-primary-light w-4/5 hover:bg-nft-primary-light hover:text-white duration-300 transition-colors">
+                  <button class="bg-nft-primary-transparent rounded-full px-6 py-4 font-semibold text-sm text-nft-primary-light w-4/5 hover:bg-nft-primary-light hover:text-white duration-300 transition-colors hover:shadow-lg hover:shadow-purple-100">
                     <span>Discard all</span>
                   </button>
                 </div>
@@ -423,23 +433,10 @@ const SellerNewNFT = () => {
                         Buy Now
                       </button>
                     </div>
-                    <div class="flex items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-4 h-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                        />
-                      </svg>
-                      <span class="pl-1 font-bold text-sm">10</span>
-                    </div>
+                    <button class="flex items-center gap-1">
+                      <HeartIcon className="w-4 h-4" />
+                      <span class="font-bold text-sm">10</span>
+                    </button>
                   </div>
                 </div>
               </div>
