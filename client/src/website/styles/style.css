@@ -17,3 +17,20 @@
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.082);
   border: 1px solid rgba(128, 128, 128, 0.178);
 }
+
+.vert-line::after {
+  content: "";
+  display: inline-block;
+  width: 0.1px;
+  height: 25px;
+  background-color: #f3f4f6;
+  /* margin-left: '0.5rem'; */
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translate(-50%, -50%);
+}
+
+.vert-line:last-child:after {
+  display: none;
+}
