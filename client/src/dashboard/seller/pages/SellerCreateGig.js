@@ -407,6 +407,23 @@ const SellerCreateGig = () => {
             </div>
           </div>
         </div>
+
+        <div className="flex w-full justify-between md:w-2/3 p-4 pb-0 mt-5">
+          <div>
+            <button className="rounded-xl px-6 py-3 bg-gray-200 text-gray-800 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors border border-gray-300">
+              Cancel
+            </button>
+          </div>
+          <div className="flex gap-4">
+            <button className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200">
+              Previous
+            </button>
+            <button className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200">
+              Save and Continue
+            </button>
+          </div>
+        </div>
+
         {/* overview */}
       </div>
     </div>
