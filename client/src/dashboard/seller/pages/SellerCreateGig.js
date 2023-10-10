@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import OverviewTab from "../components/gig/OverviewTab";
 import DescriptionTab from "../components/gig/DescriptionTab";
+import PricingTab from "../components/gig/PricingTab";
 
 const SellerCreateGig = () => {
   return (
@@ -53,12 +54,12 @@ const SellerCreateGig = () => {
             <button className="p-2.5 rounded-full bg-nft-primary-light shadow-md shadow-purple-300">
               <CurrencyDollarIcon className="h-6 w-6 text-white" />
             </button>
-            <div className=" flex-col justify-start text-left hidden">
+            <div className=" flex-col justify-start text-left flex">
               <span className="text-xs text-nft-primary-light font-medium">
-                Step 2/6
+                Step 3/6
               </span>
               <span className="text-sm font-semibold text-gray-800">
-                Pricing & Packages
+                Scope & Pricing
               </span>
             </div>
           </div>
@@ -111,8 +112,12 @@ const SellerCreateGig = () => {
         {/* overview */}
 
         {/* description */}
-        <DescriptionTab />
+        {/* <DescriptionTab /> */}
         {/* description */}
+
+        {/* pricing */}
+        <PricingTab />
+        {/* pricing */}
 
         <div className="flex w-full justify-between md:w-2/3 p-4 pb-0 mt-5">
           <div>
