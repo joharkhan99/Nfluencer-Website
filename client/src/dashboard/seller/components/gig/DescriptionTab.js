@@ -36,7 +36,7 @@ const DescriptionTab = () => {
   };
 
   return (
-    <div id="overview">
+    <div id="description">
       <div className="p-4 text-3xl border-b mb-6 pt-2 text-gray-800 font-normal border-gray-100">
         <h2>Description</h2>
       </div>
