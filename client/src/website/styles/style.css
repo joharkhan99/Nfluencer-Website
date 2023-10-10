@@ -34,3 +34,9 @@
 .vert-line:last-child:after {
   display: none;
 }
+
+.ql-editor {
+  font-size: 16px;
+  font-family: "Inter", sans-serif;
+  color: #1f2937;
+}
