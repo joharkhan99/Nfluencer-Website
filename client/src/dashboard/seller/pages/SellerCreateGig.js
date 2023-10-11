@@ -14,6 +14,7 @@ import PricingTab from "../components/gig/PricingTab";
 import GalleryTab from "../components/gig/GalleryTab";
 import RequirementsTab from "../components/gig/RequirementsTab";
 import FAQTab from "../components/gig/FAQTab";
+import PublishTab from "../components/gig/PublishTab";
 
 const SellerCreateGig = () => {
   return (
@@ -153,8 +154,12 @@ const SellerCreateGig = () => {
         {/* Requirements */}
 
         {/* FAQ */}
-        <FAQTab />
+        {/* <FAQTab /> */}
         {/* FAQ */}
+
+        {/* Publish */}
+        <PublishTab />
+        {/* Publish */}
 
         <div className="flex w-full justify-between md:w-2/3 p-4 pb-0 mt-5">
           <div>

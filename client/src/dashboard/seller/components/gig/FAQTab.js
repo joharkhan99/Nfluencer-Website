@@ -79,7 +79,7 @@ const FAQTab = () => {
                             } h-5 w-5 text-purple-500`}
                           />
                         </Disclosure.Button>
-                        <Disclosure.Panel className="text-sm px-4 pt-4 pb-2 text-gray-500 bg-gray-100 rounded-xl">
+                        <Disclosure.Panel className="text-sm px-4 pt-4 pb-2 text-gray-700 bg-gray-100 rounded-xl">
                           <p>
                             If you're unhappy with your purchase for any reason,
                             email us within 90 days and we'll refund you in
