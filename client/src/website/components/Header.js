@@ -36,7 +36,7 @@ function Header({ transparent = false }) {
               </Link>
 
               <div class="group">
-                <button class="ml-5 px-5 py-4 text-white flex items-center gap-2 text-sm">
+                <button class="ml-5 px-5 py-4 text-white flex items-center gap-2 text-sm hover:opacity-80">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -53,7 +53,7 @@ function Header({ transparent = false }) {
                   </svg>
                   <span>Categories</span>
                 </button>
-                <div class="hidden group-hover:flex flex-col absolute p-10  bg-white text-black duration-300 rounded-lg">
+                <div class="hidden group-hover:flex flex-col absolute p-10  bg-white text-black rounded-lg">
                   <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
                     <div class="flex flex-col">
                       <h3 class="mb-4 text-md text-black font-semibold">
@@ -333,7 +333,7 @@ function Header({ transparent = false }) {
                 <li>
                   <Link
                     to="/marketplace"
-                    class="text-sm text-white px-4 py-2 hover:text-web-primary-light"
+                    class="text-sm text-white px-4 py-2 hover:opacity-80 transition-colors"
                   >
                     NFT Marketplace
                   </Link>
@@ -341,7 +341,7 @@ function Header({ transparent = false }) {
                 <li>
                   <Link
                     to="/signup"
-                    class="text-sm text-white px-4 py-2 hover:text-web-primary-light"
+                    class="text-sm text-white px-4 py-2 hover:opacity-80 transition-colors"
                   >
                     Become a Seller
                   </Link>
@@ -353,7 +353,7 @@ function Header({ transparent = false }) {
                     <li>
                       <Link
                         to="/login"
-                        class="text-sm text-white px-4 py-2 hover:text-web-primary-light"
+                        class="text-sm text-white px-4 py-2 hover:opacity-80 transition-colors"
                       >
                         Login
                       </Link>
@@ -361,7 +361,7 @@ function Header({ transparent = false }) {
                     <li>
                       <Link
                         to="/signup"
-                        class="rounded bg-white text-sm text-black px-4 py-3 shadow-md hover:bg-web-primary-light hover:text-white"
+                        class="rounded-xl bg-white text-sm text-black px-4 py-3 shadow-md hover:bg-nft-primary-light hover:text-white transition-colors"
                       >
                         Sign Up
                       </Link>
@@ -372,14 +372,14 @@ function Header({ transparent = false }) {
                     <li>
                       <Link
                         to="/"
-                        class="text-sm text-white px-4 py-2 hover:text-web-primary-light"
+                        class="text-sm text-white px-4 py-2 hover:text-nft-primary-light"
                       >
                         Dashboard
                       </Link>
                     </li>
                     <li>
                       <button
-                        class="rounded bg-white text-sm text-black px-4 py-2 shadow-md hover:bg-web-primary-light hover:text-white"
+                        class="rounded bg-white text-sm text-black px-4 py-2 shadow-md hover:bg-nft-primary-light hover:text-white"
                         onClick={logout}
                       >
                         Logout

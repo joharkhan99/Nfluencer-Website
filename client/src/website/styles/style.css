@@ -1,5 +1,6 @@
 .hombg {
-  background: url("../assets/h8-bg4.jpg");
+  background: url("../assets/herobg.jpg");
+  background-size: cover;
 }
 
 .bg-2 {
@@ -8,7 +9,7 @@
 
 .react-multiple-carousel__arrow--left:hover,
 .react-multiple-carousel__arrow--right:hover {
-  background: #5BBB7B !important;
+  background: #7852F3 !important;
 }
 
 .active-form-look {

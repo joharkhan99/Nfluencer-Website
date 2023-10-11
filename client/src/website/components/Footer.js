@@ -29,7 +29,7 @@ function Footer() {
                   <li>
                     <a
                       href="s"
-                      className="hover:bg-gray-700 transition-colors rounded-full block p-3"
+                      className="hover:bg-nft-primary-light transition-colors rounded-full block p-3"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +43,7 @@ function Footer() {
                   <li>
                     <a
                       href="s"
-                      className="hover:bg-gray-700 transition-colors rounded-full block p-3"
+                      className="hover:bg-nft-primary-light transition-colors rounded-full block p-3"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -57,7 +57,7 @@ function Footer() {
                   <li>
                     <a
                       href="s"
-                      className="hover:bg-gray-700 transition-colors rounded-full block p-3"
+                      className="hover:bg-nft-primary-light transition-colors rounded-full block p-3"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +71,7 @@ function Footer() {
                   <li>
                     <a
                       href="s"
-                      className="hover:bg-gray-700 transition-colors rounded-full block p-3"
+                      className="hover:bg-nft-primary-light transition-colors rounded-full block p-3"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -277,9 +277,9 @@ function Footer() {
               <input
                 type="text"
                 placeholder="Your email address"
-                className="rounded-lg p-4 w-full bg-transparent border-none font-normal text-sm outline-none placeholder:text-gray-400 text-gray-400 bg-neutral-600"
+                className="rounded-xl p-4 w-full bg-transparent border-2 text-white font-normal text-sm outline-none placeholder:text-gray-400 bg-neutral-600 border-gray-600 focus:border-nft-primary-light"
               />
-              <button className="text-md font-semibold block text-white absolute top-3 right-4 transform hover:text-web-primary-light">
+              <button className="text-md font-semibold block text-white absolute top-3.5 right-4 transform hover:text-nft-primary-light">
                 Send
               </button>
             </div>

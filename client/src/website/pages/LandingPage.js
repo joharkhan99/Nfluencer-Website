@@ -6,6 +6,16 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
+import {
+  BuildingStorefrontIcon,
+  ChartBarSquareIcon,
+  CommandLineIcon,
+  ComputerDesktopIcon,
+  FilmIcon,
+  LanguageIcon,
+  MicrophoneIcon,
+  PaintBrushIcon,
+} from "@heroicons/react/24/outline";
 
 function LandingPage() {
   const responsive = {
@@ -45,12 +55,12 @@ function LandingPage() {
 
   return (
     <>
-      <div className="bg-transparent hombg">
+      <div className="bg-transparent hombg lg:h-screen">
         <Header />
 
-        <div class="relative isolate px-4 pt-8  overflow-x-clip overflow-y-visible">
-          <div class="flex flex-wrap items-center">
-            <div class="w-full sm:w-1/2">
+        <div class="relative container mx-auto h-full">
+          <div class="flex flex-wrap items-center h-full w-full">
+            <div class="w-full md:w-1/2">
               <div class="p-1 py-0">
                 <div class="text-left">
                   <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">
@@ -58,7 +68,7 @@ function LandingPage() {
                   </h1>
                 </div>
 
-                <div className="flex flex-col md:flex-row bg-white rounded-md p-4 py-2 pr-2 w-full mt-10 items-center gap-2">
+                <div className="flex flex-col md:flex-row bg-white rounded-xl p-4 py-2 pr-2 w-full mt-10 items-center gap-2">
                   <div className="w-full">
                     <div className="flex relative items-center border-r">
                       <svg
@@ -79,12 +89,12 @@ function LandingPage() {
                       <input
                         type="text"
                         placeholder="What are you looking for?"
-                        className="p-2 outline-none px-6 pl-10 md:w-80 text-black placeholder:text-black text-sm"
+                        className="p-2 outline-none px-6 pl-10 md:w-80 text-gray-800 placeholder:text-gray-800 text-sm"
                       />
                     </div>
                   </div>
                   <div className="w-full">
-                    <select className="w-full outline-none text-black text-sm appearance-none text-center cursor-pointer">
+                    <select className="w-full outline-none text-gray-800 text-sm appearance-none text-center cursor-pointer">
                       <option>Categories</option>
                       <option>Photography</option>
                       <option>Marketing</option>
@@ -95,7 +105,7 @@ function LandingPage() {
                     </select>
                   </div>
                   <div className="w-full">
-                    <button className="bg-web-primary-light h-full py-5 w-full rounded-md font-semibold text-white hover:bg-web-primary-dark transition-colors text-sm">
+                    <button className=" hover:opacity-80 bg-nft-primary-light h-full py-5 w-full rounded-xl font-semibold text-white hover:bg-nft-primary-dark transition-colors text-sm">
                       Search
                     </button>
                   </div>
@@ -103,34 +113,34 @@ function LandingPage() {
 
                 <div className="mt-12 text-white">
                   <span className="mb-5 block">Popular Searches</span>
-                  <div>
+                  <div className="flex gap-2">
                     <a
                       href="ss"
-                      className="rounded-full bg-gray-700 backdrop-blur-sm hover:bg-web-primary-light text-sm mr-4 p-3 px-5"
+                      className="rounded-full bg-white text-gray-800 backdrop-blur-sm hover:bg-nft-primary-light text-sm p-2 px-4 hover:text-white transition-colors"
                     >
                       Designer
                     </a>
                     <a
                       href="ss"
-                      className="rounded-full bg-gray-700 backdrop-blur-sm hover:bg-web-primary-light text-sm mr-4 p-3 px-5"
+                      className="rounded-full bg-white text-gray-800 backdrop-blur-sm hover:bg-nft-primary-light text-sm p-2 px-4 hover:text-white transition-colors"
                     >
                       Marketing
                     </a>
                     <a
                       href="ss"
-                      className="rounded-full bg-gray-700 backdrop-blur-sm hover:bg-web-primary-light text-sm mr-4 p-3 px-5"
+                      className="rounded-full bg-white text-gray-800 backdrop-blur-sm hover:bg-nft-primary-light text-sm p-2 px-4 hover:text-white transition-colors"
                     >
                       Social Media
                     </a>
                     <a
                       href="ss"
-                      className="rounded-full bg-gray-700 backdrop-blur-sm hover:bg-web-primary-light text-sm mr-4 p-3 px-5"
+                      className="rounded-full bg-white text-gray-800 backdrop-blur-sm hover:bg-nft-primary-light text-sm p-2 px-4 hover:text-white transition-colors"
                     >
                       Enterpreneur
                     </a>
                     <a
                       href="ss"
-                      className="rounded-full bg-gray-700 backdrop-blur-sm hover:bg-web-primary-light text-sm mr-4 p-3 px-5"
+                      className="rounded-full bg-white text-gray-800 backdrop-blur-sm hover:bg-nft-primary-light text-sm p-2 px-4 hover:text-white transition-colors"
                     >
                       Speaker
                     </a>
@@ -138,7 +148,7 @@ function LandingPage() {
                 </div>
               </div>
             </div>
-            <div class="w-full sm:w-1/2 ">
+            {/* <div class="w-full sm:w-1/2 ">
               <div class="p-4">
                 <img
                   src={require("../assets/slider8.png")}
@@ -146,20 +156,20 @@ function LandingPage() {
                   class="mb-[-50px] ml-[250px]"
                 />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
 
       <div className="container mx-auto mt-44 mb-20">
         <div>
-          <h2 className="text-3xl mb-1 font-extrabold">
+          <h2 className="text-3xl mb-1 font-extrabold text-gray-800">
             Browse talent by category​
           </h2>
           <p className="text-sm text-gray-600">
             Get some Inspirations from 1800+ skills
           </p>
-          <div className="text-right flex flex-row justify-end items-center font-bold text-sm gap-2">
+          <div className="text-right flex flex-row justify-end items-center font-bold text-sm gap-2 hover:text-nft-primary-light text-gray-800">
             <a href="sd">All Categories</a>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -181,20 +191,25 @@ function LandingPage() {
           <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-md hover:border-black hover:border overflow-hidden border p-7 py-8"
+              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
               <div class="relative inline-block">
-                <img
+                <ComputerDesktopIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
+                {/* <img
                   src={require("../assets/it.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
-                />
-                <span class="text-sm mt-5 mb-2 block">8 Services</span>
+                /> */}
+                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                  8 Services
+                </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2">Development & IT</h3>
-                <p class="text-sm text-gray-600">
+                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                  Development & IT
+                </h3>
+                <p class="text-sm text-gray-600 group-hover:text-white">
                   Software Engineer, Web / Mobile Developer & More
                 </p>
               </div>
@@ -203,20 +218,25 @@ function LandingPage() {
           <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-md hover:border-black hover:border overflow-hidden border p-7 py-8"
+              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
               <div class="relative inline-block">
-                <img
+                {/* <img
                   src={require("../assets/design.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
-                />
-                <span class="text-sm mt-5 mb-2 block">8 Services</span>
+                /> */}
+                <PaintBrushIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
+                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                  8 Services
+                </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2">Design & Creative</h3>
-                <p class="text-sm text-gray-600">
+                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                  Design & Creative
+                </h3>
+                <p class="text-sm text-gray-600 group-hover:text-white">
                   Website Design Adobe XD, Figma, Adobe Photoshop
                 </p>
               </div>
@@ -225,20 +245,26 @@ function LandingPage() {
           <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-md hover:border-black hover:border overflow-hidden border p-7 py-8"
+              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
               <div class="relative inline-block">
-                <img
+                {/* <img
                   src={require("../assets/marketing.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
-                />
-                <span class="text-sm mt-5 mb-2 block">3 Services</span>
+                /> */}
+                <BuildingStorefrontIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
+
+                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                  3 Services
+                </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2">Digital Marketing</h3>
-                <p class="text-sm text-gray-600">
+                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                  Digital Marketing
+                </h3>
+                <p class="text-sm text-gray-600 group-hover:text-white">
                   Service Digital and Social Media Management
                 </p>
               </div>
@@ -247,20 +273,25 @@ function LandingPage() {
           <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-md hover:border-black hover:border overflow-hidden border p-7 py-8"
+              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
               <div class="relative inline-block">
-                <img
+                {/* <img
                   src={require("../assets/writing.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
-                />
-                <span class="text-sm mt-5 mb-2 block">1 Service</span>
+                /> */}
+                <LanguageIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
+                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                  1 Service
+                </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2">Writing & Translation</h3>
-                <p class="text-sm text-gray-600">
+                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                  Writing & Translation
+                </h3>
+                <p class="text-sm text-gray-600 group-hover:text-white">
                   Writing , Translation Project, get It Quickly done
                 </p>
               </div>
@@ -269,20 +300,25 @@ function LandingPage() {
           <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-md hover:border-black hover:border overflow-hidden border p-7 py-8"
+              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
               <div class="relative inline-block">
-                <img
+                {/* <img
                   src={require("../assets/music.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
-                />
-                <span class="text-sm mt-5 mb-2 block">4 Services</span>
+                /> */}
+                <MicrophoneIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
+                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                  4 Services
+                </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2">Music & Audio</h3>
-                <p class="text-sm text-gray-600">
+                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                  Music & Audio
+                </h3>
+                <p class="text-sm text-gray-600 group-hover:text-white">
                   Freelancer Music, Audio Services, Music Projects
                 </p>
               </div>
@@ -291,20 +327,25 @@ function LandingPage() {
           <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-md hover:border-black hover:border overflow-hidden border p-7 py-8"
+              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
               <div class="relative inline-block">
-                <img
+                {/* <img
                   src={require("../assets/video.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
-                />
-                <span class="text-sm mt-5 mb-2 block">8 Services</span>
+                /> */}
+                <FilmIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
+                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                  8 Services
+                </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2">Video & Animation</h3>
-                <p class="text-sm text-gray-600">
+                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                  Video & Animation
+                </h3>
+                <p class="text-sm text-gray-600 group-hover:text-white">
                   Animation Video Maker that Brings Studio Quality
                 </p>
               </div>
@@ -313,20 +354,25 @@ function LandingPage() {
           <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-md hover:border-black hover:border overflow-hidden border p-7 py-8"
+              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
               <div class="relative inline-block">
-                <img
+                {/* <img
                   src={require("../assets/construct.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
-                />
-                <span class="text-sm mt-5 mb-2 block">12 Services</span>
+                /> */}
+                <CommandLineIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
+                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                  12 Services
+                </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2">Programming & Tech</h3>
-                <p class="text-sm text-gray-600">
+                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                  Programming & Tech
+                </h3>
+                <p class="text-sm text-gray-600 group-hover:text-white">
                   Programmers and coders Both for Your Project
                 </p>
               </div>
@@ -335,20 +381,25 @@ function LandingPage() {
           <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-md hover:border-black hover:border overflow-hidden border p-7 py-8"
+              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
               <div class="relative inline-block">
-                <img
+                {/* <img
                   src={require("../assets/finance.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
-                />
-                <span class="text-sm mt-5 mb-2 block">5 Services</span>
+                /> */}
+                <ChartBarSquareIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
+                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                  5 Services
+                </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2">Finance & Accounting</h3>
-                <p class="text-sm text-gray-600">
+                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                  Finance & Accounting
+                </h3>
+                <p class="text-sm text-gray-600 group-hover:text-white">
                   Team Works , Collaboration Meet for Your Business
                 </p>
               </div>
@@ -365,17 +416,17 @@ function LandingPage() {
             </div>
             <div class="w-1/2 md:p-8">
               <div>
-                <h2 className="text-3xl mb-1 font-extrabold">
+                <h2 className="text-3xl mb-1 font-extrabold text-gray-800">
                   Trusted By Best
                   <br /> Freelancers
                 </h2>
-                <p class="text-md text-black my-5">
+                <p class="text-md text-gray-800 my-5">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt.
                 </p>
                 <div>
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="bg-web-primary-light rounded-full p-1">
+                    <div className="bg-nft-primary-light rounded-full p-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -396,7 +447,7 @@ function LandingPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="bg-web-primary-light rounded-full p-1">
+                    <div className="bg-nft-primary-light rounded-full p-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -417,7 +468,7 @@ function LandingPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="bg-web-primary-light rounded-full p-1">
+                    <div className="bg-nft-primary-light rounded-full p-1">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -440,7 +491,7 @@ function LandingPage() {
                 </div>
 
                 <div className="mt-4">
-                  <button className="bg-web-primary-dark h-full py-5 px-10 rounded-md font-semibold text-white hover:bg-web-primary-dark transition-colors text-sm">
+                  <button className=" hover:opacity-80 bg-nft-primary-dark h-full py-5 px-10 rounded-xl font-semibold text-white hover:bg-nft-primary-dark transition-colors text-sm">
                     <span>See More</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -466,11 +517,13 @@ function LandingPage() {
 
       <div className="container mx-auto mt-44 mb-20">
         <div className="mb-10">
-          <h2 className="text-3xl mb-1 font-extrabold">Trending Services</h2>
+          <h2 className="text-3xl mb-1 font-extrabold text-gray-800">
+            Trending Services
+          </h2>
           <p className="text-sm text-gray-600">
             Most viewed and all-time top-selling services
           </p>
-          <div className="text-right flex flex-row justify-end items-center font-bold text-sm gap-2">
+          <div className="text-right flex flex-row justify-end items-center font-bold text-sm gap-2 text-gray-800 hover:text-nft-primary-light">
             <a href="sd">All Services</a>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -503,9 +556,9 @@ function LandingPage() {
               href="#sd"
               className="decoration-transparent shadow-sm shadow-gray-50 rounded-xl transition-colors duration-300 p-0 m-2 block cursor-pointer"
             >
-              <div className="relative shadow-md rounded-md shadow-gray-200">
-                <div className="max-w-sm rounded-md overflow-hidden pb-2">
-                  <div className="absolute top-2 right-2 p-2 bg-white hover:bg-web-primary-light text-black rounded-full">
+              <div className="relative shadow-md rounded-xl shadow-gray-200">
+                <div className="max-w-sm rounded-xl overflow-hidden pb-2">
+                  <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-gray-800 rounded-full">
                     <button class="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -531,13 +584,13 @@ function LandingPage() {
                   <div className="mt-4 p-2">
                     <a
                       href="s"
-                      className="block text-sm text-gray-500 mb-3 hover:text-black"
+                      className="block text-sm text-gray-500 mb-3 hover:text-gray-800"
                     >
                       Development & IT
                     </a>
                     <Link
                       to="/gigdetails"
-                      className="mb-4 font-semibold text-lg block hover:text-web-primary-light hover:underline"
+                      className="mb-4 font-semibold text-lg block hover:text-nft-primary-light hover:underline"
                     >
                       Management software to help you manage your mobile workers
                     </Link>
@@ -570,7 +623,7 @@ function LandingPage() {
                       </div>
                       <div className="flex gap-2 items-center text-sm text-gray-500">
                         Starting at:
-                        <span className="text-lg text-black font-bold">
+                        <span className="text-lg text-gray-800 font-bold">
                           $29
                         </span>
                       </div>
@@ -584,9 +637,9 @@ function LandingPage() {
               href="#sd"
               className="decoration-transparent shadow-sm shadow-gray-50 rounded-xl transition-colors duration-300 p-0 m-2 block cursor-pointer"
             >
-              <div className="relative shadow-md rounded-md shadow-gray-200">
-                <div className="max-w-sm rounded-md overflow-hidden pb-2">
-                  <div className="absolute top-2 right-2 p-2 bg-white hover:bg-web-primary-light text-black rounded-full">
+              <div className="relative shadow-md rounded-xl shadow-gray-200">
+                <div className="max-w-sm rounded-xl overflow-hidden pb-2">
+                  <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-gray-800 rounded-full">
                     <button class="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -612,13 +665,13 @@ function LandingPage() {
                   <div className="mt-4 p-2">
                     <a
                       href="s"
-                      className="block text-sm text-gray-500 mb-3 hover:text-black"
+                      className="block text-sm text-gray-500 mb-3 hover:text-gray-800"
                     >
                       Development & IT
                     </a>
                     <a
                       href="d"
-                      className="mb-4 font-semibold text-lg block hover:text-web-primary-light hover:underline"
+                      className="mb-4 font-semibold text-lg block hover:text-nft-primary-light hover:underline"
                     >
                       Management software to help you manage your mobile workers
                     </a>
@@ -651,7 +704,7 @@ function LandingPage() {
                       </div>
                       <div className="flex gap-2 items-center text-sm text-gray-500">
                         Starting at:
-                        <span className="text-lg text-black font-bold">
+                        <span className="text-lg text-gray-800 font-bold">
                           $29
                         </span>
                       </div>
@@ -665,9 +718,9 @@ function LandingPage() {
               href="#sd"
               className="decoration-transparent shadow-sm shadow-gray-50 rounded-xl transition-colors duration-300 p-0 m-2 block cursor-pointer"
             >
-              <div className="relative shadow-md rounded-md shadow-gray-200">
-                <div className="max-w-sm rounded-md overflow-hidden pb-2">
-                  <div className="absolute top-2 right-2 p-2 bg-white hover:bg-web-primary-light text-black rounded-full">
+              <div className="relative shadow-md rounded-xl shadow-gray-200">
+                <div className="max-w-sm rounded-xl overflow-hidden pb-2">
+                  <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-gray-800 rounded-full">
                     <button class="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -693,13 +746,13 @@ function LandingPage() {
                   <div className="mt-4 p-2">
                     <a
                       href="s"
-                      className="block text-sm text-gray-500 mb-3 hover:text-black"
+                      className="block text-sm text-gray-500 mb-3 hover:text-gray-800"
                     >
                       Development & IT
                     </a>
                     <a
                       href="d"
-                      className="mb-4 font-semibold text-lg block hover:text-web-primary-light hover:underline"
+                      className="mb-4 font-semibold text-lg block hover:text-nft-primary-light hover:underline"
                     >
                       Management software to help you manage your mobile workers
                     </a>
@@ -732,7 +785,7 @@ function LandingPage() {
                       </div>
                       <div className="flex gap-2 items-center text-sm text-gray-500">
                         Starting at:
-                        <span className="text-lg text-black font-bold">
+                        <span className="text-lg text-gray-800 font-bold">
                           $29
                         </span>
                       </div>
@@ -746,9 +799,9 @@ function LandingPage() {
               href="#sd"
               className="decoration-transparent shadow-sm shadow-gray-50 rounded-xl transition-colors duration-300 p-0 m-2 block cursor-pointer"
             >
-              <div className="relative shadow-md rounded-md shadow-gray-200">
-                <div className="max-w-sm rounded-md overflow-hidden pb-2">
-                  <div className="absolute top-2 right-2 p-2 bg-white hover:bg-web-primary-light text-black rounded-full">
+              <div className="relative shadow-md rounded-xl shadow-gray-200">
+                <div className="max-w-sm rounded-xl overflow-hidden pb-2">
+                  <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-gray-800 rounded-full">
                     <button class="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -774,13 +827,13 @@ function LandingPage() {
                   <div className="mt-4 p-2">
                     <a
                       href="s"
-                      className="block text-sm text-gray-500 mb-3 hover:text-black"
+                      className="block text-sm text-gray-500 mb-3 hover:text-gray-800"
                     >
                       Development & IT
                     </a>
                     <a
                       href="d"
-                      className="mb-4 font-semibold text-lg block hover:text-web-primary-light hover:underline"
+                      className="mb-4 font-semibold text-lg block hover:text-nft-primary-light hover:underline"
                     >
                       Management software to help you manage your mobile workers
                     </a>
@@ -813,7 +866,7 @@ function LandingPage() {
                       </div>
                       <div className="flex gap-2 items-center text-sm text-gray-500">
                         Starting at:
-                        <span className="text-lg text-black font-bold">
+                        <span className="text-lg text-gray-800 font-bold">
                           $29
                         </span>
                       </div>
@@ -827,9 +880,9 @@ function LandingPage() {
               href="#sd"
               className="decoration-transparent shadow-sm shadow-gray-50 rounded-xl transition-colors duration-300 p-0 m-2 block cursor-pointer"
             >
-              <div className="relative shadow-md rounded-md shadow-gray-200">
-                <div className="max-w-sm rounded-md overflow-hidden pb-2">
-                  <div className="absolute top-2 right-2 p-2 bg-white hover:bg-web-primary-light text-black rounded-full">
+              <div className="relative shadow-md rounded-xl shadow-gray-200">
+                <div className="max-w-sm rounded-xl overflow-hidden pb-2">
+                  <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-gray-800 rounded-full">
                     <button class="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -855,13 +908,13 @@ function LandingPage() {
                   <div className="mt-4 p-2">
                     <a
                       href="s"
-                      className="block text-sm text-gray-500 mb-3 hover:text-black"
+                      className="block text-sm text-gray-500 mb-3 hover:text-gray-800"
                     >
                       Development & IT
                     </a>
                     <a
                       href="d"
-                      className="mb-4 font-semibold text-lg block hover:text-web-primary-light hover:underline"
+                      className="mb-4 font-semibold text-lg block hover:text-nft-primary-light hover:underline"
                     >
                       Management software to help you manage your mobile workers
                     </a>
@@ -894,7 +947,7 @@ function LandingPage() {
                       </div>
                       <div className="flex gap-2 items-center text-sm text-gray-500">
                         Starting at:
-                        <span className="text-lg text-black font-bold">
+                        <span className="text-lg text-gray-800 font-bold">
                           $29
                         </span>
                       </div>
@@ -908,9 +961,9 @@ function LandingPage() {
               href="#sd"
               className="decoration-transparent shadow-sm shadow-gray-50 rounded-xl transition-colors duration-300 p-0 m-2 block cursor-pointer"
             >
-              <div className="relative shadow-md rounded-md shadow-gray-200">
-                <div className="max-w-sm rounded-md overflow-hidden pb-2">
-                  <div className="absolute top-2 right-2 p-2 bg-white hover:bg-web-primary-light text-black rounded-full">
+              <div className="relative shadow-md rounded-xl shadow-gray-200">
+                <div className="max-w-sm rounded-xl overflow-hidden pb-2">
+                  <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-gray-800 rounded-full">
                     <button class="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -936,13 +989,13 @@ function LandingPage() {
                   <div className="mt-4 p-2">
                     <a
                       href="s"
-                      className="block text-sm text-gray-500 mb-3 hover:text-black"
+                      className="block text-sm text-gray-500 mb-3 hover:text-gray-800"
                     >
                       Development & IT
                     </a>
                     <a
                       href="d"
-                      className="mb-4 font-semibold text-lg block hover:text-web-primary-light hover:underline"
+                      className="mb-4 font-semibold text-lg block hover:text-nft-primary-light hover:underline"
                     >
                       Management software to help you manage your mobile workers
                     </a>
@@ -975,7 +1028,7 @@ function LandingPage() {
                       </div>
                       <div className="flex gap-2 items-center text-sm text-gray-500">
                         Starting at:
-                        <span className="text-lg text-black font-bold">
+                        <span className="text-lg text-gray-800 font-bold">
                           $29
                         </span>
                       </div>
@@ -990,7 +1043,7 @@ function LandingPage() {
       </div>
 
       <div className="py-0 bg-web-secondary-transparent">
-        <div className="container mx-auto">
+        <div className="container text-gray-800">
           <div class="flex flex-wrap items-center">
             <div class="w-1/2">
               <img src={require("../assets/h1.jpg")} alt="s" />
@@ -1051,7 +1104,7 @@ function LandingPage() {
         </div>
       </div>
 
-      <div className="container mx-auto mt-36 mb-20">
+      <div className="container mx-auto mt-36 mb-20 text-gray-800">
         <h2 className="text-3xl mb-2 font-extrabold text-center">
           Need something done?
         </h2>
@@ -1139,7 +1192,7 @@ function LandingPage() {
         </div>
       </div>
 
-      <div className="py-10 bg-web-primary-dark">
+      <div className="py-10 bg-nft-primary-dark">
         <div className="container mx-auto">
           <div class="flex flex-wrap items-center">
             <div class="w-1/2 md:p-8">
@@ -1157,7 +1210,7 @@ function LandingPage() {
                 itemClass="carousel-item-padding-40-px"
               >
                 <div className="text-white">
-                  <h3 className="text-web-primary-light text-3xl font-bold mb-5">
+                  <h3 className="text-purple-300 text-3xl font-bold mb-5">
                     Envato
                   </h3>
                   <div className="font-semibold text-xl mb-10">
@@ -1174,7 +1227,7 @@ function LandingPage() {
                   </div>
                 </div>
                 <div className="text-white">
-                  <h3 className="text-web-primary-light text-3xl font-bold mb-5">
+                  <h3 className="text-purple-300 text-3xl font-bold mb-5">
                     Envato
                   </h3>
                   <div className="font-semibold text-xl mb-10">
@@ -1191,7 +1244,7 @@ function LandingPage() {
                   </div>
                 </div>
                 <div className="text-white">
-                  <h3 className="text-web-primary-light text-3xl font-bold mb-5">
+                  <h3 className="text-purple-300 text-3xl font-bold mb-5">
                     Themeforest
                   </h3>
                   <div className="font-semibold text-xl mb-10">
@@ -1216,7 +1269,7 @@ function LandingPage() {
         </div>
       </div>
 
-      <div className="py-16 pt-0">
+      <div className="py-16 pt-0 text-gray-800">
         <div className="container mx-auto">
           <div class="flex flex-wrap mt-10 border-b pb-7">
             <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
@@ -1305,13 +1358,13 @@ function LandingPage() {
                 <h2 className="text-3xl mb-1 font-extrabold">
                   Find the talent needed to get your business growing.
                 </h2>
-                <p class="text-md text-black my-5">
+                <p class="text-md text-gray-800 my-5">
                   Advertise your jobs to millions of monthly users and search
                   15.8 million CVs
                 </p>
 
                 <div className="mt-4">
-                  <button className="bg-web-primary-dark h-full py-5 px-10 rounded-md font-semibold text-white hover:bg-web-primary-dark transition-colors text-sm">
+                  <button className=" hover:opacity-80 bg-nft-primary-dark h-full py-5 px-10 rounded-xl font-semibold text-white hover:bg-nft-primary-dark transition-colors text-sm">
                     <span>Find Talent</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
