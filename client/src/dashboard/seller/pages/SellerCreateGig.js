@@ -11,6 +11,7 @@ import {
 import OverviewTab from "../components/gig/OverviewTab";
 import DescriptionTab from "../components/gig/DescriptionTab";
 import PricingTab from "../components/gig/PricingTab";
+import GalleryTab from "../components/gig/GalleryTab";
 
 const SellerCreateGig = () => {
   return (
@@ -65,11 +66,19 @@ const SellerCreateGig = () => {
           </div>
         </div>
 
-        <div className="vert-line text-center px-4 relative">
+        <div className="vert-line relative text-center px-4">
           <div className="flex items-center gap-3">
-            <button className="p-2.5 rounded-full bg-gray-50">
-              <PhotoIcon className="h-6 w-6 text-gray-400" />
+            <button className="p-2.5 rounded-full bg-nft-primary-light shadow-md shadow-purple-300">
+              <PhotoIcon className="h-6 w-6 text-white" />
             </button>
+            <div className=" flex-col justify-start text-left flex">
+              <span className="text-xs text-nft-primary-light font-medium">
+                Step 4/6
+              </span>
+              <span className="text-sm font-semibold text-gray-800">
+                Gallery
+              </span>
+            </div>
           </div>
         </div>
 
@@ -116,8 +125,12 @@ const SellerCreateGig = () => {
         {/* description */}
 
         {/* pricing */}
-        <PricingTab />
+        {/* <PricingTab /> */}
         {/* pricing */}
+
+        {/* Gallery */}
+        <GalleryTab />
+        {/* Gallery */}
 
         <div className="flex w-full justify-between md:w-2/3 p-4 pb-0 mt-5">
           <div>
