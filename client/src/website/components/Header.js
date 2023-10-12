@@ -26,11 +26,15 @@ function Header({ transparent = false }) {
                   class="h-8 mr-3"
                   alt="Nfluencer Logo"
                 />
-                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-black"></span>
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-gray-800"></span>
               </Link>
 
               <div class="group">
-                <button class="ml-5 px-5 py-4 text-black flex items-center gap-2 text-sm hover:opacity-80">
+                <button
+                  class={`ml-5 px-5 py-4 flex items-center gap-2 text-sm hover:opacity-80 ${
+                    transparent ? "text-gray-800" : "text-white"
+                  }`}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -47,249 +51,249 @@ function Header({ transparent = false }) {
                   </svg>
                   <span>Categories</span>
                 </button>
-                <div class="hidden group-hover:flex flex-col absolute p-10  bg-white text-black rounded-lg">
+                <div class="hidden group-hover:flex flex-col absolute p-10  bg-white text-gray-800 rounded-lg">
                   <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-black font-semibold">
+                      <h3 class="mb-4 text-md text-gray-800 font-semibold">
                         Design & Creative
                       </h3>
                       <Link
                         to="/services"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Web Design
                       </Link>
                       <Link
                         to="/services"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         UI and Interactive Design
                       </Link>
                       <Link
                         to="/services"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Motion Graphics
                       </Link>
                       <Link
                         to="/services"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Packaging Design
                       </Link>
                       <Link
                         to="/services"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Game Design
                       </Link>
                       <Link
                         to="/services"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Illustration
                       </Link>
                       <Link
                         to="/services"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Publication
                       </Link>
                     </div>
 
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-black font-semibold">
+                      <h3 class="mb-4 text-md text-gray-800 font-semibold">
                         Digital Marketing
                       </h3>
                       <Link
                         to="/services"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Content Marketing
                       </Link>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         SEO
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Pay-per-Click
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Social Media Marketing
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Influencer Marketing
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Email Marketing
                       </a>
                     </div>
 
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-black font-semibold">
+                      <h3 class="mb-4 text-md text-gray-800 font-semibold">
                         Development & IT
                       </h3>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Front-end development
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Back-end development
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Full stack development
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Application development
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         API development
                       </a>
                     </div>
 
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-black font-semibold">
+                      <h3 class="mb-4 text-md text-gray-800 font-semibold">
                         Music & Audio
                       </h3>
                     </div>
 
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-black font-semibold">
+                      <h3 class="mb-4 text-md text-gray-800 font-semibold">
                         Finance & Accounting
                       </h3>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Financial accounting
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Managerial accounting
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Cost accounting
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Auditing
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Tax accounting
                       </a>
                     </div>
 
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-black font-semibold">
+                      <h3 class="mb-4 text-md text-gray-800 font-semibold">
                         Programming & Tech
                       </h3>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Web developer
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Computer programmer
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Computer systems engineer
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Systems analyst
                       </a>
                     </div>
 
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-black font-semibold">
+                      <h3 class="mb-4 text-md text-gray-800 font-semibold">
                         Video & Animation
                       </h3>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         2D animation videos
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         3D animation videos
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Motion graphic videos
                       </a>
                     </div>
 
                     <div class="flex flex-col">
-                      <h3 class="mb-4 text-md text-black font-semibold">
+                      <h3 class="mb-4 text-md text-gray-800 font-semibold">
                         Writing & Translation
                       </h3>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Script Translation
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Multimedia Localization
                       </a>
                       <a
                         href="#z"
-                        class="text-sm text-gray-600 mt-1 hover:text-black"
+                        class="text-sm text-gray-600 mt-1 hover:text-gray-800"
                       >
                         Commercial Translation
                       </a>
@@ -327,7 +331,9 @@ function Header({ transparent = false }) {
                 <li>
                   <Link
                     to="/marketplace"
-                    class="text-sm text-black px-4 py-2 hover:opacity-80 transition-colors"
+                    class={`text-sm px-4 py-2 hover:opacity-80 ${
+                      transparent ? "text-gray-800" : "text-white"
+                    }`}
                   >
                     NFT Marketplace
                   </Link>
@@ -335,7 +341,9 @@ function Header({ transparent = false }) {
                 <li>
                   <Link
                     to="/signup"
-                    class="text-sm text-black px-4 py-2 hover:opacity-80 transition-colors"
+                    class={`text-sm px-4 py-2 hover:opacity-80 ${
+                      transparent ? "text-gray-800" : "text-white"
+                    }`}
                   >
                     Become a Seller
                   </Link>
@@ -347,7 +355,9 @@ function Header({ transparent = false }) {
                     <li>
                       <Link
                         to="/login"
-                        class="text-sm text-black px-4 py-2 hover:opacity-80 transition-colors"
+                        class={`text-sm px-4 py-2 hover:opacity-80 ${
+                          transparent ? "text-gray-800" : "text-white"
+                        }`}
                       >
                         Login
                       </Link>
@@ -355,7 +365,11 @@ function Header({ transparent = false }) {
                     <li>
                       <Link
                         to="/signup"
-                        class="rounded-xl bg-white text-sm text-black px-4 py-3 shadow-md hover:bg-nft-primary-light hover:text-black transition-colors"
+                        class={`rounded-xl text-sm px-4 py-3 shadow-md transition-colors ${
+                          transparent
+                            ? "bg-nft-primary-light text-white hover:bg-nft-primary-dark hover:text-white"
+                            : "bg-white text-gray-800 hover:bg-nft-primary-light hover:text-white"
+                        }`}
                       >
                         Sign Up
                       </Link>
@@ -366,14 +380,20 @@ function Header({ transparent = false }) {
                     <li>
                       <Link
                         to="/"
-                        class="text-sm text-black px-4 py-2 hover:text-nft-primary-light"
+                        class={`text-sm px-4 py-2 hover:opacity-80 ${
+                          transparent ? "text-gray-800" : "text-white"
+                        }`}
                       >
                         Dashboard
                       </Link>
                     </li>
                     <li>
                       <button
-                        class="rounded bg-white text-sm text-black px-4 py-2 shadow-md hover:bg-nft-primary-light hover:text-black"
+                        class={`rounded-xl text-sm px-4 py-3 shadow-md transition-colors ${
+                          transparent
+                            ? "bg-nft-primary-light text-white hover:bg-nft-primary-dark hover:text-white"
+                            : "bg-white text-gray-800 hover:bg-nft-primary-light hover:text-white"
+                        }`}
                         onClick={logout}
                       >
                         Logout
