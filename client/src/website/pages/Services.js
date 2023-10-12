@@ -12,12 +12,11 @@ function Services() {
       <div class="relative">
         <div class="bg-cover bg-center h-64">
           <img
-            src={require("../assets/trend4.png")}
+            src={require("../assets/fluid_background.jpg")}
             alt="Background Iamage"
             class="w-full h-full object-cover"
           />
-          <div class="absolute inset-0 bg-black opacity-40"></div>
-          {/* <!-- Overlay --> */}
+          <div class="absolute inset-0 serv-hero"></div>
         </div>
         <div class="absolute inset-0 flex flex-col items-start justify-center text-white p-5">
           <h1 class="text-4xl font-bold mb-5">Design & Creative</h1>

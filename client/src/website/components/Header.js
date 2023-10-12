@@ -17,13 +17,7 @@ function Header({ transparent = false }) {
             : "relative inset-x-0 top-0 z-50"
         }
       >
-        <nav
-          class={
-            transparent
-              ? "bg-[rgb(34,34,34)] shadow-md shadow-gray-200"
-              : "bg-transparent"
-          }
-        >
+        <nav class={transparent ? "bg-white shadow-md" : "bg-transparent"}>
           <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <div className="flex items-center">
               <Link class="flex items-center" to="/">
@@ -32,11 +26,11 @@ function Header({ transparent = false }) {
                   class="h-8 mr-3"
                   alt="Nfluencer Logo"
                 />
-                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"></span>
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-black"></span>
               </Link>
 
               <div class="group">
-                <button class="ml-5 px-5 py-4 text-white flex items-center gap-2 text-sm hover:opacity-80">
+                <button class="ml-5 px-5 py-4 text-black flex items-center gap-2 text-sm hover:opacity-80">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -333,7 +327,7 @@ function Header({ transparent = false }) {
                 <li>
                   <Link
                     to="/marketplace"
-                    class="text-sm text-white px-4 py-2 hover:opacity-80 transition-colors"
+                    class="text-sm text-black px-4 py-2 hover:opacity-80 transition-colors"
                   >
                     NFT Marketplace
                   </Link>
@@ -341,7 +335,7 @@ function Header({ transparent = false }) {
                 <li>
                   <Link
                     to="/signup"
-                    class="text-sm text-white px-4 py-2 hover:opacity-80 transition-colors"
+                    class="text-sm text-black px-4 py-2 hover:opacity-80 transition-colors"
                   >
                     Become a Seller
                   </Link>
@@ -353,7 +347,7 @@ function Header({ transparent = false }) {
                     <li>
                       <Link
                         to="/login"
-                        class="text-sm text-white px-4 py-2 hover:opacity-80 transition-colors"
+                        class="text-sm text-black px-4 py-2 hover:opacity-80 transition-colors"
                       >
                         Login
                       </Link>
@@ -361,7 +355,7 @@ function Header({ transparent = false }) {
                     <li>
                       <Link
                         to="/signup"
-                        class="rounded-xl bg-white text-sm text-black px-4 py-3 shadow-md hover:bg-nft-primary-light hover:text-white transition-colors"
+                        class="rounded-xl bg-white text-sm text-black px-4 py-3 shadow-md hover:bg-nft-primary-light hover:text-black transition-colors"
                       >
                         Sign Up
                       </Link>
@@ -372,14 +366,14 @@ function Header({ transparent = false }) {
                     <li>
                       <Link
                         to="/"
-                        class="text-sm text-white px-4 py-2 hover:text-nft-primary-light"
+                        class="text-sm text-black px-4 py-2 hover:text-nft-primary-light"
                       >
                         Dashboard
                       </Link>
                     </li>
                     <li>
                       <button
-                        class="rounded bg-white text-sm text-black px-4 py-2 shadow-md hover:bg-nft-primary-light hover:text-white"
+                        class="rounded bg-white text-sm text-black px-4 py-2 shadow-md hover:bg-nft-primary-light hover:text-black"
                         onClick={logout}
                       >
                         Logout

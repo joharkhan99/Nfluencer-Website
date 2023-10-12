@@ -105,7 +105,7 @@ function LandingPage() {
                     </select>
                   </div>
                   <div className="w-full">
-                    <button className=" hover:opacity-80 bg-nft-primary-light h-full py-5 w-full rounded-xl font-semibold text-white hover:bg-nft-primary-dark transition-colors text-sm">
+                    <button className="hover:opacity-80 bg-nft-primary-dark h-full py-5 w-full rounded-xl font-semibold text-white transition-colors text-sm">
                       Search
                     </button>
                   </div>
