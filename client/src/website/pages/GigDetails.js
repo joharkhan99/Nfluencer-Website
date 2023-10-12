@@ -970,14 +970,14 @@ function GigDetails() {
                   </div>
                 </div>
 
-                <div className="border p-8 shadow-lg rounded-lg mt-12">
+                <div className="border shadow-lg rounded-xl shadow-gray-200 border-gray-100 p-5 mt-12">
                   <div className="font-semibold text-xl mb-6">
                     About The Seller
                   </div>
 
                   <div class="grid grid-cols-1 gap-4 mb-3">
                     <div class="bg-white rounded-lg">
-                      <div class="flex items-center mb-6 border-b pb-7">
+                      <div class="flex items-center mb-6 border-b border-gray-100 pb-7">
                         <img
                           src={require("../assets/man.jpg")}
                           alt="User"
@@ -987,18 +987,7 @@ function GigDetails() {
                           <h3 class="font-medium text-lg">John Doe</h3>
                           <div className="flex flex-row gap-3 items-center">
                             <div className="flex flex-row items-center gap-1">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                className="w-4 h-4 fill-yellow-500"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
+                              <StarIcon className="w-5 h-5 fill-yellow-500" />
                               <span>4.0</span>
                             </div>
                             <p class="text-gray-500 text-sm">(4 reviews)</p>
@@ -1006,33 +995,51 @@ function GigDetails() {
                         </div>
                       </div>
 
-                      <div className="flex justify-between text-sm mb-2">
-                        <div>Location:</div>
-                        <div>Los Angeles</div>
+                      <div className="flex flex-col gap-5 border-b border-gray-100 pb-7 mb-7">
+                        <div className="flex justify-between gap-5">
+                          <div className="flex flex-col w-full text-start">
+                            <span>From</span>
+                            <span className="font-bold">India</span>
+                          </div>
+                          <div className="flex flex-col w-full text-start">
+                            <span>Joined on</span>
+                            <span className="font-bold">Dec 2012</span>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-between gap-5">
+                          <div className="flex flex-col w-full text-start">
+                            <span>Avg. response time</span>
+                            <span className="font-bold">3 hours</span>
+                          </div>
+                          <div className="flex flex-col w-full text-start">
+                            <span>Last delivery</span>
+                            <span className="font-bold">about 2 days ago</span>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-between gap-5">
+                          <div className="flex flex-col w-full text-start">
+                            <span>Languages</span>
+                            <span className="font-bold">
+                              English, Hindi, Urdu
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex justify-between text-sm">
-                        <div>Rate:</div>
-                        <div>$25 - $30 / hr</div>
-                      </div>
+
+                      <p>
+                        A professional graphic designer with an experience of 6
+                        to 7 years in this field. I'm providing my skillful
+                        services and creative designing on this platform
+                        Providing good and reliable services. Feel free to
+                        contact me for creative logo design
+                      </p>
                     </div>
                   </div>
 
-                  <button className="bg-nft-primary-light h-full py-5 px-10 rounded-md font-semibold text-white hover:bg-nft-primary-dark transition-colors text-sm w-full mt-10">
+                  <button className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10">
                     <span>Contact Me</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-6 h-6 inline-block stroke-1 ml-2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
-                      />
-                    </svg>
                   </button>
                 </div>
               </div>
