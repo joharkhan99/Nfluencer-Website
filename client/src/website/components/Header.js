@@ -431,6 +431,12 @@ function Header({ transparent = false }) {
               <button class="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
                 AI & Data
               </button>
+              <button class="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                Lifestyle
+              </button>
+              <button class="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                Advertising
+              </button>
             </div>
           </div>
         </div>

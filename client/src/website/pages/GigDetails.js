@@ -9,6 +9,7 @@ import {
   HeartIcon,
   ShareIcon,
   StarIcon,
+  ChartBarIcon,
 } from "@heroicons/react/24/solid";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import {
@@ -18,6 +19,8 @@ import {
   MagnifyingGlassIcon,
   ArrowSmallUpIcon,
   ArrowSmallDownIcon,
+  ClockIcon,
+  ArrowPathIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 function GigDetails() {
@@ -46,7 +49,7 @@ function GigDetails() {
       </div>
 
       <div className="pt-0">
-        <div className="p-10">
+        <div className="p-10 pt-0">
           <div className="flex justify-end my-8 gap-4 text-sm items-center text-gray-800">
             <button className="flex items-center border rounded-xl hover:bg-gray-50 p-2 gap-2">
               <HeartIcon className="w-5 h-5 text-gray-300" />
@@ -110,6 +113,12 @@ function GigDetails() {
                         @Pakulla123
                       </span>
                     </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-md">
+                    <span>
+                      <ChartBarIcon className="w-6 h-6 text-gray-400" />
+                    </span>
+                    <span className="font-semibold">Level 1</span>
                   </div>
                   <div className="flex items-center gap-2 text-md">
                     <span>
@@ -282,19 +291,19 @@ function GigDetails() {
                               <th className="font-normal p-5">Package</th>
                               <th className="border-collapse border border-gray-100 p-5 py-7">
                                 <span className="block text-lg font-medium mb-2">
-                                  PKR 2,296
+                                  $ 2,296
                                 </span>
                                 <span className="text-base">BASIC</span>
                               </th>
                               <th className="border-collapse border border-gray-100 p-5 py-7">
                                 <span className="block text-lg font-medium mb-2">
-                                  PKR 4,296
+                                  $ 4,296
                                 </span>
                                 <span className="text-base">STANDARD</span>
                               </th>
                               <th className="border-collapse border border-gray-100 p-5 py-7">
                                 <span className="block text-lg font-medium mb-2">
-                                  PKR 10,296
+                                  $ 10,296
                                 </span>
                                 <span className="text-base">PREMIUM</span>
                               </th>
@@ -847,55 +856,120 @@ function GigDetails() {
 
             <div className="md:w-1/3 w-full">
               <div class="md:sticky relative top-0">
-                <div className="border p-8 shadow-lg rounded-lg">
-                  <div className="text-xl font-bold mb-5">$29</div>
-                  <div className="flex gap-5 border-b pb-4 mb-4">
-                    <div>
-                      <input type="checkbox" />
-                    </div>
-                    <div>
-                      <span className="block text-md mb-3 font-semibold">
-                        1000 Words (+5 days)
-                      </span>
-                      <span className="text-sm block mb-3">
-                        I will professionalyy translate english to german
-                      </span>
-                      <span className="block text-md font-semibold">$85</span>
-                    </div>
-                  </div>
-                  <div className="flex gap-5 border-b pb-4 mb-4">
-                    <div>
-                      <input type="checkbox" />
-                    </div>
-                    <div>
-                      <span className="block text-md mb-3 font-semibold">
-                        3000 Words (+8 days)
-                      </span>
-                      <span className="text-sm block mb-3">
-                        I will professionaly translate english to german
-                      </span>
-                      <span className="block text-md font-semibold">$120</span>
-                    </div>
-                  </div>
-
-                  <button className="bg-nft-primary-light h-full py-5 px-10 rounded-md font-semibold text-white hover:bg-nft-primary-dark transition-colors text-sm w-full">
-                    <span>Buy Now $29</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-6 h-6 inline-block stroke-1 ml-2"
+                <div className="border shadow-lg rounded-xl shadow-gray-200 border-gray-100">
+                  <div class="w-full">
+                    <Tabs
+                      className="w-full"
+                      selectedTabClassName="border-nft-primary-light text-nft-primary-light opacity-100 bg-purple-100"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
-                      />
-                    </svg>
-                  </button>
+                      <TabList className="flex justify-between items-center w-full mb-2">
+                        <Tab className="w-full border-b-2 text-base cursor-pointer text-gray-600 text-center p-3 py-4 rounded-tl-xl font-semibold">
+                          Basic
+                        </Tab>
+                        <Tab className="w-full border-b-2 text-base cursor-pointer text-gray-600 text-center p-3 py-4 font-semibold">
+                          Standard
+                        </Tab>
+                        <Tab className="w-full border-b-2 text-base cursor-pointer text-gray-600 text-center p-3 py-4 rounded-tr-xl font-semibold">
+                          Premium
+                        </Tab>
+                      </TabList>
+
+                      <TabPanel>
+                        <div className="p-5">
+                          <div className="flex text-base text-gray-600 justify-between items-center">
+                            <div className="uppercase font-bold">Basic</div>
+                            <div className="uppercase font-medium text-2xl">
+                              $ 120.00
+                            </div>
+                          </div>
+
+                          <p className="my-7">
+                            1 logos + unlimited revisions + PNG file + basic
+                            designs
+                          </p>
+
+                          <div className="flex justify-between items-center text-gray-800">
+                            <div className="flex gap-1 items-center text-sm font-semibold">
+                              <ClockIcon className="w-5 h-5" />
+                              <span>3 days Delivery</span>
+                            </div>
+                            <div className="flex gap-1 items-center text-sm font-semibold">
+                              <ArrowPathIcon className="w-5 h-5" />
+                              <span>5 Revisions</span>
+                            </div>
+                          </div>
+
+                          <button className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10">
+                            <span>Buy This Package</span>
+                          </button>
+                        </div>
+                      </TabPanel>
+
+                      <TabPanel>
+                        <div className="p-5">
+                          <div className="flex text-base text-gray-600 justify-between items-center">
+                            <div className="uppercase font-bold">Standard</div>
+                            <div className="uppercase font-medium text-2xl">
+                              $ 120.00
+                            </div>
+                          </div>
+
+                          <p className="my-7">
+                            1 logos + unlimited revisions + PNG file + basic
+                            designs
+                          </p>
+
+                          <div className="flex justify-between items-center text-gray-800">
+                            <div className="flex gap-1 items-center text-sm font-semibold">
+                              <ClockIcon className="w-5 h-5" />
+                              <span>3 days Delivery</span>
+                            </div>
+                            <div className="flex gap-1 items-center text-sm font-semibold">
+                              <ArrowPathIcon className="w-5 h-5" />
+                              <span>5 Revisions</span>
+                            </div>
+                          </div>
+
+                          <button className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10">
+                            <span>Buy This Package</span>
+                          </button>
+                        </div>
+                      </TabPanel>
+
+                      <TabPanel>
+                        <div className="p-5">
+                          <div className="flex text-base text-gray-600 justify-between items-center">
+                            <div className="uppercase font-bold">Premium</div>
+                            <div className="uppercase font-medium text-2xl">
+                              $ 120.00
+                            </div>
+                          </div>
+
+                          <p className="my-7">
+                            1 logos + unlimited revisions + PNG file + basic
+                            designs
+                          </p>
+
+                          <div className="flex justify-between items-center text-gray-800">
+                            <div className="flex gap-1 items-center text-sm font-semibold">
+                              <ClockIcon className="w-5 h-5" />
+                              <span>3 days Delivery</span>
+                            </div>
+                            <div className="flex gap-1 items-center text-sm font-semibold">
+                              <ArrowPathIcon className="w-5 h-5" />
+                              <span>5 Revisions</span>
+                            </div>
+                          </div>
+
+                          <button className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10">
+                            <span>Buy This Package</span>
+                          </button>
+                        </div>
+                      </TabPanel>
+                    </Tabs>
+                  </div>
                 </div>
+
                 <div className="border p-8 shadow-lg rounded-lg mt-12">
                   <div className="font-semibold text-xl mb-6">
                     About The Seller
