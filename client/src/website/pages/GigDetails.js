@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import Carousel from "react-multi-carousel";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import {
   CubeIcon,
@@ -21,32 +20,90 @@ import {
   ArrowSmallDownIcon,
   ClockIcon,
   ArrowPathIcon,
+  PaperAirplaneIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 function GigDetails() {
-  const responsive2 = {
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 1,
-      slidesToSlide: 1,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 1,
-      slidesToSlide: 1,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-      slidesToSlide: 1,
-    },
-  };
-
   return (
     <>
       <div className="bg-transparent hombg">
         <Header transparent={true} />
       </div>
+
+      {/* messaging */}
+      <button className="fixed z-50 bottom-10 left-10 bg-white rounded-full shadow-lg text-gray-800 p-1.5 pr-4 hover:bg-gray-100 cursor-pointer block">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 relative">
+            <span className="absolute w-3 h-3 rounded-full bottom-0 right-0 bg-green-500 z-40 ring-2 ring-white"></span>
+            <img
+              src={require("../assets/man.jpg")}
+              alt=""
+              className="w-full h-full object-cover overflow-hidden rounded-full"
+            />
+          </div>
+          <div className="flex flex-col text-sm gap-2 text-start">
+            <div className="font-bold">Message Agent Pakulla</div>
+            <div className="flex gap-1 text-xs items-center">
+              <span>Away</span>
+              <span className="font-bold">·</span>
+              <span>
+                <span>Avg. response time:</span>
+                <span className="font-semibold"> 1 Hour</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </button>
+
+      <div className="fixed z-50 bottom-10 left-10 bg-white rounded-xl shadow-lg w-1/3 hidden">
+        <div className="flex items-center gap-4 w-full bg-nft-primary-light p-4 rounded-t-xl text-white relative py-8">
+          <button className="absolute right-2 top-2 p-2 text-nft-primary-light rounded-full bg-white">
+            <XMarkIcon className="w-5 h-5" />
+          </button>
+
+          <div className="w-16 h-16 relative">
+            <span className="absolute w-3 h-3 rounded-full bottom-1 right-1 bg-green-500 z-40 ring-2 ring-white"></span>
+            <img
+              src={require("../assets/man.jpg")}
+              alt=""
+              className="w-full h-full object-cover overflow-hidden rounded-full"
+            />
+          </div>
+          <div className="flex flex-col text-base gap-2 text-start">
+            <div className="font-bold">Message Agent Pakulla</div>
+            <div className="flex gap-1 text-sm items-center">
+              <span>Away</span>
+              <span className="font-bold">·</span>
+              <span>
+                <span>Avg. response time:</span>
+                <span className="font-semibold"> 1 Hour</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <textarea
+            className="border-b-2 resize-none outline-none border-gray-200 focus:border-nft-primary-light h-52 w-full p-4 text-gray-800 text-base"
+            placeholder="Ask Pakulla a question or share your project details (requirements, timeline, budget, etc.)"
+          ></textarea>
+          <div className="p-4 pt-0">
+            <div className="text-right text-sm text-gray-500 italic">
+              <span>0/2500</span>
+            </div>
+
+            <div className="flex justify-end mt-5">
+              <button className="px-4 p-3 bg-nft-primary-light flex gap-2 text-white rounded-xl text-base hover:opacity-80">
+                <PaperAirplaneIcon className="w-5 h-5 text-white transform -rotate-45" />
+                <span>Send message</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* messaging */}
 
       <div className="pt-0">
         <div className="p-10 pt-0">
@@ -1051,7 +1108,7 @@ function GigDetails() {
           <div className="container mx-auto mb-28">
             <h1 className="text-2xl py-4 pb-6 font-bold">Related Services</h1>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1">
               {/* cards */}
 
               <div className="decoration-transparent shadow-sm shadow-gray-50 rounded-xl transition-all duration-300 p-0 m-2 block hover:scale-105 transform bg-white">
