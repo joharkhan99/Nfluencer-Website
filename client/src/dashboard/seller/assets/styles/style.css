@@ -14,6 +14,10 @@
   display: none;
 }
 
+.custom-scrollbar.scrollbar-thin::-webkit-scrollbar {
+  height: 5px;
+}
+
 .custom-scrollbar:hover::-webkit-scrollbar-thumb {
   display: block;
 }

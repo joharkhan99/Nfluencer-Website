@@ -1,23 +1,31 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Carousel from "react-multi-carousel";
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import {
+  EllipsisHorizontalIcon,
+  HeartIcon,
+  ShareIcon,
+} from "@heroicons/react/24/solid";
+import { Menu, Transition } from "@headlessui/react";
+import { FlagIcon } from "@heroicons/react/24/outline";
 function GigDetails() {
   const responsive2 = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
       items: 1,
-      slidesToSlide: 1, // optional, default to 1.
+      slidesToSlide: 1,
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
       items: 1,
-      slidesToSlide: 1, // optional, default to 1.
+      slidesToSlide: 1,
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
       items: 1,
-      slidesToSlide: 1, // optional, default to 1.
+      slidesToSlide: 1,
     },
   };
 
@@ -27,62 +35,104 @@ function GigDetails() {
         <Header transparent={true} />
       </div>
 
-      <div className="bg-gray-100">
-        <div className="container mx-auto py-28">
-          <h1 className="text-4xl font-bold mb-7">
-            I will show your product for 10s in my video
-          </h1>
-          <div className="flex items-center gap-10">
-            <div className="flex items-center gap-2 text-sm">
-              <img
-                src={require("../assets/man.jpg")}
-                className="rounded-full h-10 w-10 object-cover"
-                alt=""
-              />
-              <span>Freelancer</span>
-            </div>
-            <div className="flex items-center gap-2 text-sm">
-              <span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </span>
-              <span>4.7 (3 Reviews)</span>
-            </div>
-            <div className="flex items-center gap-2 text-sm">
-              <span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
-                  <path
-                    fillRule="evenodd"
-                    d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </span>
-              <span>3063 Views</span>
-            </div>
-          </div>
-        </div>
+      <div className="flex justify-end my-8 px-7 gap-4 text-sm items-center text-gray-800">
+        <button className="flex items-center border rounded-xl hover:bg-gray-50 p-2 gap-2">
+          <HeartIcon className="w-5 h-5 text-gray-300" />
+          <span className="font-semibold">1,505</span>
+        </button>
+        <button className="border rounded-xl hover:bg-gray-50 p-2 px-4">
+          <ShareIcon className="w-5 h-5" />
+        </button>
+        <Menu
+          as="button"
+          className="border rounded-xl hover:bg-gray-50 p-1 px-3 relative"
+        >
+          <Menu.Button className="flex">
+            <EllipsisHorizontalIcon className="w-7 h-7" />
+          </Menu.Button>
+
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Menu.Items className="absolute right-0 z-10 -mt-0 w-32 origin-top-right rounded-md bg-white shadow-lg focus:outline-none p-0 overflow-hidden border py-2">
+              <div>
+                <Menu.Item>
+                  <a
+                    href="{option.href}"
+                    className="text-gray-700 p-2 hover:bg-gray-100 flex gap-2 items-center"
+                  >
+                    <span>
+                      <FlagIcon className="h-5 w-5 text-gray-700" />
+                    </span>
+                    <span>Report Gig</span>
+                  </a>
+                </Menu.Item>
+              </div>
+            </Menu.Items>
+          </Transition>
+        </Menu>
       </div>
 
-      <div className="container mx-auto p-10 pt-0">
-        <div class="grid grid-cols-12 gap-4 bg-transparent">
-          <div class="col-span-8 bg-transparent">
+      <div className="flex justify-between w-full">
+        <div className="md:w-2/3 w-full p-4">
+          <div>
+            <h1 className="text-4xl font-bold mb-7">
+              I will show your product for 10s in my video
+            </h1>
+            <div className="flex items-center gap-10">
+              <div className="flex items-center gap-2 text-sm">
+                <img
+                  src={require("../assets/man.jpg")}
+                  className="rounded-full h-10 w-10 object-cover"
+                  alt=""
+                />
+                <span>Freelancer</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span>
+                <span>4.7 (3 Reviews)</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm">
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-6 h-6"
+                  >
+                    <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                    <path
+                      fillRule="evenodd"
+                      d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span>
+                <span>3063 Views</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="block bg-transparent">
             <div className="flex justify-between py-10">
               <div>
                 <div className="font-semibold">Delivery Time</div>
@@ -99,7 +149,30 @@ function GigDetails() {
             </div>
 
             <div class="mb-6 w-full">
-              <Carousel
+              <Tabs
+                className="w-full"
+                selectedTabClassName="bg-nft-primary-light text-white shadow-lg shadow-purple-200"
+              >
+                <TabPanel>
+                  <div className="p-4">
+                    <div className="text-sm mb-5 pl-4 text-gray-400">
+                      Pending Gigs
+                    </div>
+                  </div>
+                </TabPanel>
+
+                <div className="flex justify-between items-center">
+                  <TabList className="border-b border-gray-100 p-4">
+                    <Tab>Active</Tab>
+                    <Tab>Pending Approval</Tab>
+                    <Tab>Draft</Tab>
+                    <Tab>Denied</Tab>
+                    <Tab>Paused</Tab>
+                  </TabList>
+                </div>
+              </Tabs>
+
+              {/* <Carousel
                 swipeable={true}
                 draggable={true}
                 showDots={true}
@@ -108,10 +181,6 @@ function GigDetails() {
                 arrows={false}
                 autoPlay={true}
                 autoPlaySpeed={7000}
-                // focusOnSelect={true}
-                dotListClass="custom-dot-list-style"
-                itemClass="carousel-item-padding-40-px"
-                // className="w-full h-full"
               >
                 <div className="h-full w-full">
                   <img
@@ -121,7 +190,6 @@ function GigDetails() {
                   />
                 </div>
                 <div className="h-full w-full">
-                  {" "}
                   <img
                     src={require("../assets/trend6.jpg")}
                     alt=""
@@ -135,7 +203,7 @@ function GigDetails() {
                     className="w-full h-full object-cover"
                   />
                 </div>
-              </Carousel>
+              </Carousel> */}
             </div>
 
             <h3 className="font-semibold text-xl my-5 mt-10">
@@ -301,123 +369,121 @@ function GigDetails() {
 
             <div class="mb-6"></div>
           </div>
+        </div>
 
-          <div class="col-span-4">
-            <div class="p-4 sticky top-0">
-              <div className="border p-8 shadow-lg rounded-lg">
-                <div className="text-xl font-bold mb-5">$29</div>
-                <div className="flex gap-5 border-b pb-4 mb-4">
-                  <div>
-                    <input type="checkbox" />
-                  </div>
-                  <div>
-                    <span className="block text-md mb-3 font-semibold">
-                      1000 Words (+5 days)
-                    </span>
-                    <span className="text-sm block mb-3">
-                      I will professionalyy translate english to german
-                    </span>
-                    <span className="block text-md font-semibold">$85</span>
-                  </div>
+        <div className="md:w-1/3 w-full">
+          <div class="p-4 md:sticky relative top-0">
+            <div className="border p-8 shadow-lg rounded-lg">
+              <div className="text-xl font-bold mb-5">$29</div>
+              <div className="flex gap-5 border-b pb-4 mb-4">
+                <div>
+                  <input type="checkbox" />
                 </div>
-                <div className="flex gap-5 border-b pb-4 mb-4">
-                  <div>
-                    <input type="checkbox" />
-                  </div>
-                  <div>
-                    <span className="block text-md mb-3 font-semibold">
-                      3000 Words (+8 days)
-                    </span>
-                    <span className="text-sm block mb-3">
-                      I will professionaly translate english to german
-                    </span>
-                    <span className="block text-md font-semibold">$120</span>
-                  </div>
+                <div>
+                  <span className="block text-md mb-3 font-semibold">
+                    1000 Words (+5 days)
+                  </span>
+                  <span className="text-sm block mb-3">
+                    I will professionalyy translate english to german
+                  </span>
+                  <span className="block text-md font-semibold">$85</span>
                 </div>
-
-                <button className="bg-web-primary-light h-full py-5 px-10 rounded-md font-semibold text-white hover:bg-web-primary-dark transition-colors text-sm w-full">
-                  <span>Buy Now $29</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6 inline-block stroke-1 ml-2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
-                    />
-                  </svg>
-                </button>
               </div>
-              <div className="border p-8 shadow-lg rounded-lg mt-12">
-                <div className="font-semibold text-xl mb-6">
-                  About The Seller
+              <div className="flex gap-5 border-b pb-4 mb-4">
+                <div>
+                  <input type="checkbox" />
                 </div>
+                <div>
+                  <span className="block text-md mb-3 font-semibold">
+                    3000 Words (+8 days)
+                  </span>
+                  <span className="text-sm block mb-3">
+                    I will professionaly translate english to german
+                  </span>
+                  <span className="block text-md font-semibold">$120</span>
+                </div>
+              </div>
 
-                <div class="grid grid-cols-1 gap-4 mb-3">
-                  <div class="bg-white rounded-lg">
-                    <div class="flex items-center mb-6 border-b pb-7">
-                      <img
-                        src={require("../assets/man.jpg")}
-                        alt="User"
-                        class="rounded-full h-24 w-24 mr-4 object-cover"
-                      />
-                      <div>
-                        <h3 class="font-medium text-lg">John Doe</h3>
-                        <div className="flex flex-row gap-3 items-center">
-                          <div className="flex flex-row items-center gap-1">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                              fill="currentColor"
-                              className="w-4 h-4 fill-yellow-500"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                            <span>4.0</span>
-                          </div>
-                          <p class="text-gray-500 text-sm">(4 reviews)</p>
+              <button className="bg-nft-primary-light h-full py-5 px-10 rounded-md font-semibold text-white hover:bg-nft-primary-dark transition-colors text-sm w-full">
+                <span>Buy Now $29</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6 inline-block stroke-1 ml-2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="border p-8 shadow-lg rounded-lg mt-12">
+              <div className="font-semibold text-xl mb-6">About The Seller</div>
+
+              <div class="grid grid-cols-1 gap-4 mb-3">
+                <div class="bg-white rounded-lg">
+                  <div class="flex items-center mb-6 border-b pb-7">
+                    <img
+                      src={require("../assets/man.jpg")}
+                      alt="User"
+                      class="rounded-full h-24 w-24 mr-4 object-cover"
+                    />
+                    <div>
+                      <h3 class="font-medium text-lg">John Doe</h3>
+                      <div className="flex flex-row gap-3 items-center">
+                        <div className="flex flex-row items-center gap-1">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="w-4 h-4 fill-yellow-500"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                          <span>4.0</span>
                         </div>
+                        <p class="text-gray-500 text-sm">(4 reviews)</p>
                       </div>
                     </div>
+                  </div>
 
-                    <div className="flex justify-between text-sm mb-2">
-                      <div>Location:</div>
-                      <div>Los Angeles</div>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <div>Rate:</div>
-                      <div>$25 - $30 / hr</div>
-                    </div>
+                  <div className="flex justify-between text-sm mb-2">
+                    <div>Location:</div>
+                    <div>Los Angeles</div>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <div>Rate:</div>
+                    <div>$25 - $30 / hr</div>
                   </div>
                 </div>
-
-                <button className="bg-web-primary-light h-full py-5 px-10 rounded-md font-semibold text-white hover:bg-web-primary-dark transition-colors text-sm w-full mt-10">
-                  <span>Contact Me</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6 inline-block stroke-1 ml-2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
-                    />
-                  </svg>
-                </button>
               </div>
+
+              <button className="bg-nft-primary-light h-full py-5 px-10 rounded-md font-semibold text-white hover:bg-nft-primary-dark transition-colors text-sm w-full mt-10">
+                <span>Contact Me</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6 inline-block stroke-1 ml-2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
         </div>
@@ -432,7 +498,7 @@ function GigDetails() {
           >
             <div className="relative shadow-md rounded-md shadow-gray-200">
               <div className="max-w-sm rounded-md overflow-hidden pb-2">
-                <div className="absolute top-2 right-2 p-2 bg-white hover:bg-web-primary-light text-black rounded-full">
+                <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-black rounded-full">
                   <button class="flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -464,7 +530,7 @@ function GigDetails() {
                   </a>
                   <a
                     href="d"
-                    className="mb-4 font-semibold text-lg block hover:text-web-primary-light hover:underline"
+                    className="mb-4 font-semibold text-lg block hover:text-nftbg-nft-primary-light hover:underline"
                   >
                     Management software to help you manage your mobile workers
                   </a>
@@ -511,7 +577,7 @@ function GigDetails() {
           >
             <div className="relative shadow-md rounded-md shadow-gray-200">
               <div className="max-w-sm rounded-md overflow-hidden pb-2">
-                <div className="absolute top-2 right-2 p-2 bg-white hover:bg-web-primary-light text-black rounded-full">
+                <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-black rounded-full">
                   <button class="flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -543,7 +609,7 @@ function GigDetails() {
                   </a>
                   <a
                     href="d"
-                    className="mb-4 font-semibold text-lg block hover:text-web-primary-light hover:underline"
+                    className="mb-4 font-semibold text-lg block hover:text-nftbg-nft-primary-light hover:underline"
                   >
                     Management software to help you manage your mobile workers
                   </a>
@@ -590,7 +656,7 @@ function GigDetails() {
           >
             <div className="relative shadow-md rounded-md shadow-gray-200">
               <div className="max-w-sm rounded-md overflow-hidden pb-2">
-                <div className="absolute top-2 right-2 p-2 bg-white hover:bg-web-primary-light text-black rounded-full">
+                <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-black rounded-full">
                   <button class="flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -622,7 +688,7 @@ function GigDetails() {
                   </a>
                   <a
                     href="d"
-                    className="mb-4 font-semibold text-lg block hover:text-web-primary-light hover:underline"
+                    className="mb-4 font-semibold text-lg block hover:text-nftbg-nft-primary-light hover:underline"
                   >
                     Management software to help you manage your mobile workers
                   </a>
@@ -669,7 +735,7 @@ function GigDetails() {
           >
             <div className="relative shadow-md rounded-md shadow-gray-200">
               <div className="max-w-sm rounded-md overflow-hidden pb-2">
-                <div className="absolute top-2 right-2 p-2 bg-white hover:bg-web-primary-light text-black rounded-full">
+                <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-black rounded-full">
                   <button class="flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -701,7 +767,7 @@ function GigDetails() {
                   </a>
                   <a
                     href="d"
-                    className="mb-4 font-semibold text-lg block hover:text-web-primary-light hover:underline"
+                    className="mb-4 font-semibold text-lg block hover:text-nftbg-nft-primary-light hover:underline"
                   >
                     Management software to help you manage your mobile workers
                   </a>

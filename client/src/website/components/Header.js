@@ -1,3 +1,4 @@
+import { Squares2X2Icon } from "@heroicons/react/24/outline";
 import Cookies from "js-cookie";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,8 +18,12 @@ function Header({ transparent = false }) {
             : "relative inset-x-0 top-0 z-50"
         }
       >
-        <nav class={transparent ? "bg-white shadow-md" : "bg-transparent"}>
-          <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <nav
+          class={
+            transparent ? "bg-white border-b border-gray-100" : "bg-transparent"
+          }
+        >
+          <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2">
             <div className="flex items-center">
               <Link class="flex items-center" to="/">
                 <img
@@ -35,23 +40,12 @@ function Header({ transparent = false }) {
                     transparent ? "text-gray-800" : "text-white"
                   }`}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"
-                    />
-                  </svg>
+                  <Squares2X2Icon class="w-5 h-5" />
                   <span>Categories</span>
                 </button>
-                <div class="hidden group-hover:flex flex-col absolute p-10  bg-white text-gray-800 rounded-lg">
+                <div
+                  class={`hidden group-hover:flex flex-col absolute p-10  bg-white text-gray-800 shadow-lg border border-gray-100 rounded-xl z-10`}
+                >
                   <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
                     <div class="flex flex-col">
                       <h3 class="mb-4 text-md text-gray-800 font-semibold">
@@ -405,6 +399,41 @@ function Header({ transparent = false }) {
             </div>
           </div>
         </nav>
+
+        <div
+          class={`relative flex items-center bg-white justify-center shadow-md shadow-gray-100 p-0 w-full ${
+            transparent ? "" : "hidden"
+          }`}
+        >
+          <div className="w-full overflow-x-auto px-3 custom-scrollbar scrollbar-thin">
+            <div class="flex space-x-6 w-screen justify-center">
+              <button class="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                Graphics & Design
+              </button>
+              <button class="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                Digital Marketing
+              </button>
+              <button class="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                Writing & Translation
+              </button>
+              <button class="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                Video & Animation
+              </button>
+              <button class="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                Music & Audio
+              </button>
+              <button class="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                Programming & Tech
+              </button>
+              <button class="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                Business
+              </button>
+              <button class="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                AI & Data
+              </button>
+            </div>
+          </div>
+        </div>
       </header>
     </>
   );
