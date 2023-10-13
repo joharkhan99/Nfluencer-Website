@@ -3,8 +3,12 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/slices/UserSlice";
 
 function RegisterUserDetails() {
+  const dispatch = useDispatch();
+
   let { verificationToken } = useParams();
   const [selectedImage, setSelectedImage] = useState(null);
   const [userId, setUserId] = useState(null);
@@ -31,6 +35,11 @@ function RegisterUserDetails() {
     })
       .then((res) => res.json())
       .then((data) => {
+        if (data.emailValidated) {
+          navigate("/login");
+          return;
+        }
+
         if (data.error) {
           navigate("/signup");
           return;
@@ -74,6 +83,14 @@ function RegisterUserDetails() {
       errors.avatar = "Upload Profile picture";
     }
 
+    if (username.includes(" ") || !/^[a-zA-Z0-9_-]*$/.test(username)) {
+      errors.username = "Avoid spaces or special characters";
+    }
+
+    if (username.length < 3 || username.length > 20) {
+      errors.username = "Username should be 3-20 characters long";
+    }
+
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -99,13 +116,19 @@ function RegisterUserDetails() {
       })
         .then((response) => response.json())
         .then((data) => {
-          // if (data.error) {
-          //   setErrors({ email: data.message });
-          // } else {
-          //   alert(data.message);
-          //   navigate("/login");
-          // }
+          if (data.error && data.usernameExist) {
+            setErrors({ username: data.message });
+            return;
+          }
+          if (data.error) {
+            alert(data.message);
+            return;
+          }
+
+          dispatch(setUser(data.user));
           console.log(data);
+          console.log(data.user);
+          // navigate("/seller");
         })
         .catch((error) => {
           console.error(error);

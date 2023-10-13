@@ -20,36 +20,40 @@ import { SellerGigs } from "./dashboard/seller/pages/SellerGigs";
 import SellerCreateGig from "./dashboard/seller/pages/SellerCreateGig";
 import SellerNewNFT from "./dashboard/seller/pages/SellerNewNFT";
 import RegisterUserDetails from "./website/pages/RegisterUserDetails";
+import { Provider } from "react-redux";
+import Store from "./redux/Store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" Component={LandingPage} />
-      <Route path="/marketplace" Component={Home} />
-      <Route path="/stats" Component={Stats} />
-      <Route path="/explore" Component={Explore} />
-      <Route path="/nftdetails" Component={NFTDetail} />
-      <Route path="/create" Component={NewNFT} />
-      <Route path="/signup" Component={Register} />
-      <Route path="/login" Component={Login} />
-      <Route path="/services" Component={Services} />
-      <Route path="/gigdetails" Component={GigDetails} />
-      <Route
-        path="/user-details/:verificationToken"
-        Component={RegisterUserDetails}
-      />
+  <Provider store={Store}>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" Component={LandingPage} />
+        <Route path="/marketplace" Component={Home} />
+        <Route path="/stats" Component={Stats} />
+        <Route path="/explore" Component={Explore} />
+        <Route path="/nftdetails" Component={NFTDetail} />
+        <Route path="/create" Component={NewNFT} />
+        <Route path="/signup" Component={Register} />
+        <Route path="/login" Component={Login} />
+        <Route path="/services" Component={Services} />
+        <Route path="/gigdetails" Component={GigDetails} />
+        <Route
+          path="/user-details/:verificationToken"
+          Component={RegisterUserDetails}
+        />
 
-      {/* Dashboard Section */}
-      <Route path="seller" Component={SellerDashboardLayout}>
-        <Route path="/seller" Component={SellerHomePage} />
-        <Route path="about" Component={SellerAbout} />
-        <Route path="gigs" Component={SellerGigs} />
-        <Route path="newgig" Component={SellerCreateGig} />
-        <Route path="newnft" Component={SellerNewNFT} />
-      </Route>
-    </Routes>
-  </BrowserRouter>
+        {/* Dashboard Section */}
+        <Route path="seller" Component={SellerDashboardLayout}>
+          <Route path="/seller" Component={SellerHomePage} />
+          <Route path="about" Component={SellerAbout} />
+          <Route path="gigs" Component={SellerGigs} />
+          <Route path="newgig" Component={SellerCreateGig} />
+          <Route path="newnft" Component={SellerNewNFT} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

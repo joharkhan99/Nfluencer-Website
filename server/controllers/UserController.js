@@ -108,10 +108,9 @@ const verifyEmail = async (req, res) => {
     return res.status(409).json({ error: true });
   }
 
-  await User.updateOne(
-    { validationToken: verificationToken },
-    { emailValidated: true }
-  );
+  if (findUser.emailValidated) {
+    return res.status(409).json({ error: false, emailValidated: true });
+  }
 
   return res.status(200).json({ error: false, userId: findUser._id });
 };
@@ -119,7 +118,7 @@ const verifyEmail = async (req, res) => {
 async function handleUpload(file) {
   const res = await cloudinary.uploader.upload(file, {
     resource_type: "auto",
-    folder: "products",
+    folder: "nfluencer-users",
   });
   return res.url;
 }
@@ -131,13 +130,23 @@ const userDetails = async (req, res) => {
     const cldRes = await handleUpload(dataURI);
 
     const { name, username, languages, location, bio, userId } = req.body;
-    const user = await User.findOne({ _id: userId });
 
-    if (!user) {
+    // check if username exists
+    const usernameExist = await User.findOne({ username });
+    if (usernameExist) {
+      return res.status(409).json({
+        error: true,
+        usernameExist: true,
+        message: "Username exists. Try again.",
+      });
+    }
+
+    const findUser = await User.findOne({ _id: userId });
+    if (!findUser) {
       return res.status(404).json({ error: true, message: "User not found" });
     }
 
-    await User.updateOne(
+    const updatedUser = await User.updateOne(
       { _id: userId },
       {
         name,
@@ -146,10 +155,22 @@ const userDetails = async (req, res) => {
         location,
         bio,
         avatar: cldRes,
+        emailValidated: true,
       }
     );
 
-    return res.status(200).json({ error: false, message: "User updated" });
+    return res.status(200).json({
+      error: false,
+      message: "User updated",
+      user: {
+        name,
+        username,
+        languages,
+        location,
+        bio,
+        avatar: cldRes,
+      },
+    });
   } catch (error) {
     res.json({
       error: true,
