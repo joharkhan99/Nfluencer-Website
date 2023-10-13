@@ -36,7 +36,7 @@ root.render(
       <Route path="/services" Component={Services} />
       <Route path="/gigdetails" Component={GigDetails} />
       <Route
-        path="/user-details/:verificationLink"
+        path="/user-details/:verificationToken"
         Component={RegisterUserDetails}
       />
 

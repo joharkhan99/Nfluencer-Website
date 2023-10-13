@@ -2,12 +2,19 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import userRoutes from "./routers/UserRoutes.js";
+import dotenv from "dotenv";
+import multer from "multer";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+dotenv.config();
 
-app.use("/api/user", userRoutes);
+// file upload
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+app.use("/api/user", upload.single("avatar"), userRoutes);
 
 // Start the server, Connect to MongoDB
 const port = process.env.PORT || 8080;

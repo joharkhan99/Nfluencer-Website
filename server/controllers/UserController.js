@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import generateToken from "../utils/tokenGenerator.js";
 import transporter from "../utils/emailConfig.js";
+import cloudinary from "../utils/cloudinaryConfig.js";
 
 const encryptPassword = (password) => {
   const salt = bcrypt.genSaltSync(10);
@@ -99,6 +100,64 @@ const registerUser = async (req, res) => {
   });
 };
 
+const verifyEmail = async (req, res) => {
+  const { verificationToken } = req.body;
+
+  const findUser = await User.findOne({ validationToken: verificationToken });
+  if (!findUser) {
+    return res.status(409).json({ error: true });
+  }
+
+  await User.updateOne(
+    { validationToken: verificationToken },
+    { emailValidated: true }
+  );
+
+  return res.status(200).json({ error: false, userId: findUser._id });
+};
+
+async function handleUpload(file) {
+  const res = await cloudinary.uploader.upload(file, {
+    resource_type: "auto",
+    folder: "products",
+  });
+  return res.url;
+}
+
+const userDetails = async (req, res) => {
+  try {
+    const b64 = Buffer.from(req.file.buffer).toString("base64");
+    let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+    const cldRes = await handleUpload(dataURI);
+
+    const { name, username, languages, location, bio, userId } = req.body;
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      return res.status(404).json({ error: true, message: "User not found" });
+    }
+
+    await User.updateOne(
+      { _id: userId },
+      {
+        name,
+        username,
+        languages,
+        location,
+        bio,
+        avatar: cldRes,
+      }
+    );
+
+    return res.status(200).json({ error: false, message: "User updated" });
+  } catch (error) {
+    res.json({
+      error: true,
+      message: error,
+    });
+  }
+};
+
 // Generate jwt
 function jwtToken(user) {
   const payload = {
@@ -129,4 +188,4 @@ const loginUser = async (req, res) => {
     });
 };
 
-export { registerUser, loginUser };
+export { registerUser, loginUser, verifyEmail, userDetails };
