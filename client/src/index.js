@@ -19,6 +19,7 @@ import { SellerAbout } from "./dashboard/seller/pages/SellerAbout";
 import { SellerGigs } from "./dashboard/seller/pages/SellerGigs";
 import SellerCreateGig from "./dashboard/seller/pages/SellerCreateGig";
 import SellerNewNFT from "./dashboard/seller/pages/SellerNewNFT";
+import RegisterUserDetails from "./website/pages/RegisterUserDetails";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -34,7 +35,10 @@ root.render(
       <Route path="/login" Component={Login} />
       <Route path="/services" Component={Services} />
       <Route path="/gigdetails" Component={GigDetails} />
-      {/* <Route path="/seller" Component={SellerHomePage} /> */}
+      <Route
+        path="/user-details/:verificationLink"
+        Component={RegisterUserDetails}
+      />
 
       {/* Dashboard Section */}
       <Route path="seller" Component={SellerDashboardLayout}>

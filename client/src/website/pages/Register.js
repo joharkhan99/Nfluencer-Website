@@ -15,6 +15,7 @@ function Register() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [showVerifyEmail, setShowVerifyEmail] = useState(false);
 
   const validateForm = () => {
     const errors = {};
@@ -61,12 +62,15 @@ function Register() {
       })
         .then((response) => response.json())
         .then((data) => {
+          if (data.error) {
+            setErrors({ email: data.message });
+          } else {
+            alert(data.message);
+            setShowVerifyEmail(true);
+          }
           console.log(data);
-          // Handle the response from the backend
-          // alert(data.message);
         })
         .catch((error) => {
-          // Handle error
           console.error(error);
         })
         .finally(() => {
@@ -84,7 +88,11 @@ function Register() {
       <div className="authbg">
         <div className="container mx-auto py-28">
           <div>
-            <div className="md:w-2/5 w-full mx-auto bg-white rounded-xl p-7 shadow-lg text-gray-800">
+            <div
+              className={`md:w-2/5 w-full mx-auto bg-white rounded-xl p-7 shadow-lg text-gray-800 ${
+                showVerifyEmail && "hidden"
+              }`}
+            >
               <h3 className="text-3xl font-extrabold text-center mb-2">
                 Register
               </h3>
@@ -122,6 +130,7 @@ function Register() {
                     <button
                       className="absolute right-3 top-5 text-gray-500"
                       onClick={() => setShowPassword(!showPassword)}
+                      type="button"
                     >
                       {showPassword ? (
                         <EyeIcon className="w-5 h-5 ml-2" />
@@ -214,6 +223,22 @@ function Register() {
                   Login
                 </Link>
               </div>
+            </div>
+
+            <div
+              className={`md:w-2/5 w-full mx-auto bg-white rounded-xl p-14 shadow-lg text-gray-800 ${
+                !showVerifyEmail && "hidden"
+              }`}
+            >
+              <h3 className="text-3xl font-extrabold text-center mb-2">
+                Verification Email Sent
+              </h3>
+              <p className="text-center text-sm mt-5">
+                A verification email has been sent to your email address{" "}
+                <b>{email}</b>. Please check your email for a verification link.
+                If you don't see it, check your spam folder.
+                <br /> Thank you!
+              </p>
             </div>
           </div>
         </div>
