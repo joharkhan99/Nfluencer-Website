@@ -401,7 +401,7 @@ function Header({ transparent = false }) {
         </nav>
 
         <div
-          class={`relative flex items-center bg-white justify-center shadow-md shadow-gray-100 p-0 w-full ${
+          class={`relative flex items-center bg-white justify-center shadow-md p-0 w-full ${
             transparent ? "" : "hidden"
           }`}
         >
