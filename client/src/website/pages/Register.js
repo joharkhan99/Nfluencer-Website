@@ -1,13 +1,20 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowSmallRightIcon,
+  EyeIcon,
+  EyeSlashIcon,
+} from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
+
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateForm = () => {
     const errors = {};
@@ -18,6 +25,14 @@ function Register() {
 
     if (!password.trim()) {
       errors.password = "Password is required";
+    }
+
+    if (!confirmPassword.trim()) {
+      errors.confirmPassword = "Confirm Password is required";
+    }
+
+    if (password.length < 8) {
+      errors.password = "Password must be at least 8 characters long";
     }
 
     if (password !== confirmPassword) {
@@ -34,9 +49,7 @@ function Register() {
     if (validateForm()) {
       setIsSubmitting(true);
 
-      // Perform AJAX request to the backend using fetch or axios
-      // Replace the URL and data with your actual endpoint and payload
-      fetch("http://localhost:8080/register", {
+      fetch("http://localhost:8080/api/user/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,12 +59,11 @@ function Register() {
           password,
         }),
       })
-        .then((response) => {
-          return response.json();
-        })
+        .then((response) => response.json())
         .then((data) => {
+          console.log(data);
           // Handle the response from the backend
-          alert(data.message);
+          // alert(data.message);
         })
         .catch((error) => {
           // Handle error
@@ -72,7 +84,7 @@ function Register() {
       <div className="authbg">
         <div className="container mx-auto py-28">
           <div>
-            <div className="md:w-1/2 w-full mx-auto bg-white rounded-xl p-5 px-14 py-10 shadow-lg text-gray-800">
+            <div className="md:w-2/5 w-full mx-auto bg-white rounded-xl p-7 shadow-lg text-gray-800">
               <h3 className="text-3xl font-extrabold text-center mb-2">
                 Register
               </h3>
@@ -80,7 +92,8 @@ function Register() {
                 Give your visitor a smooth online experience with a solid UX
                 design
               </p>
-              <form className="mt-10 text-left">
+              <form className="mt-10 text-left" onSubmit={handleSubmit}>
+                {/* Email input */}
                 <div className="mb-6">
                   <label className="block text-sm font-semibold mb-2">
                     Email<span className="text-red-500 ml-2">*</span>
@@ -88,48 +101,119 @@ function Register() {
                   <input
                     type="email"
                     className="rounded-xl bg-gray-50 focus:bg-white border-2 border-gray-200 hover:bg-gray-100 focus:border-nft-primary-light w-full p-4 outline-none"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="Please enter your email address"
+                    disabled={isSubmitting}
                   />
+                  {errors.email && (
+                    <span className="text-red-400 text-sm font-medium px-4">
+                      {errors.email}
+                    </span>
+                  )}
                 </div>
+
+                {/* Password input with show/hide feature */}
                 <div className="mb-6">
                   <label className="block text-sm font-semibold mb-2">
                     Password<span className="text-red-500 ml-2">*</span>
                   </label>
-                  <input
-                    type="email"
-                    className="rounded-xl bg-gray-50 focus:bg-white border-2 border-gray-200 hover:bg-gray-100 focus:border-nft-primary-light w-full p-4 outline-none"
-                    placeholder="Please enter your password"
-                  />
+                  <div className="relative">
+                    <button
+                      className="absolute right-3 top-5 text-gray-500"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <EyeIcon className="w-5 h-5 ml-2" />
+                      ) : (
+                        <EyeSlashIcon className="w-5 h-5 ml-2" />
+                      )}
+                    </button>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      className="rounded-xl bg-gray-50 focus:bg-white border-2 border-gray-200 hover:bg-gray-100 focus:border-nft-primary-light w-full p-4 outline-none"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Please enter your password"
+                      disabled={isSubmitting}
+                    />
+                    {errors.password && (
+                      <span className="text-red-400 text-sm font-medium px-4">
+                        {errors.password}
+                      </span>
+                    )}
+                  </div>
                 </div>
+
+                {/* Confirm Password input */}
                 <div className="mb-6">
                   <label className="block text-sm font-semibold mb-2">
                     Confirm Password
                     <span className="text-red-500 ml-2">*</span>
                   </label>
                   <input
-                    type="email"
-                    className="rounded-xl bg-gray-50 focus:bg-white border-2 border-gray-200 hover:bg-gray-100 focus:border-nft-primary-light w-full p-4 outline-none"
+                    type="password"
+                    className="rounded-xl bg-gray-50 focus:bg-white border-2 border-gray-200 hover:bg-gray-100 focus.border-nft-primary-light w-full p-4 outline-none"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Please confirm your password"
+                    disabled={isSubmitting}
                   />
-                </div>
-                {/* <div className="mb-6">
-                  <label className="block font-semibold text-sm mb-2">
-                    <input type="checkbox" className="mr-2" />
-                    <span>
-                      You accept our Terms and Conditions and Privacy Policy
+                  {errors.confirmPassword && (
+                    <span className="text-red-400 text-sm font-medium px-4">
+                      {errors.confirmPassword}
                     </span>
-                  </label>
-                </div> */}
+                  )}
+                </div>
+
+                {/* Submit button */}
                 <div className="mt-10">
                   <button
                     className="bg-nft-primary-light h-full py-5 px-10 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full"
                     type="submit"
+                    disabled={isSubmitting}
                   >
-                    <span>Register Now</span>
-                    <ArrowSmallRightIcon className="inline-block w-5 h-5 ml-2" />
+                    {isSubmitting ? (
+                      <div className="h-5 w-5 mx-auto rounded-full border-t border-r animate-spin border-white"></div>
+                    ) : (
+                      <>
+                        <span>Register Now</span>
+                        <ArrowSmallRightIcon className="inline-block w-5 h-5 ml-2" />
+                      </>
+                    )}
                   </button>
                 </div>
               </form>
+
+              {/* Or separator */}
+              <div className="flex items-center space-x-4 my-8">
+                <hr className="flex-1 border-t border-gray-200" />
+                <div className="text-sm font-medium uppercase">or</div>
+                <hr className="flex-1 border-t border-gray-200" />
+              </div>
+
+              {/* Sign Up with Google button */}
+              <button className="bg-gray-200 h-full py-4 px-10 rounded-xl font-semibold text-gray-700 hover:opacity-80 transition-colors text-sm w-full flex items-center justify-center gap-5">
+                <span>
+                  <img
+                    src={require("../assets/google.png")}
+                    alt=""
+                    className="w-7 h-7"
+                  />
+                </span>
+                <span>Sign Up with Google</span>
+              </button>
+
+              {/* Login link */}
+              <div className="flex gap-2 text-sm text-gray-400 justify-center mt-6">
+                <span>Already have an account?</span>
+                <Link
+                  to="/login"
+                  className="text-nft-primary-light font-medium"
+                >
+                  Login
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -139,4 +223,5 @@ function Register() {
     </>
   );
 }
+
 export default Register;
