@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/slices/UserSlice";
+import Cookies from "js-cookie";
 
 function RegisterUserDetails() {
   const dispatch = useDispatch();
@@ -126,9 +127,9 @@ function RegisterUserDetails() {
           }
 
           dispatch(setUser(data.user));
-          console.log(data);
-          console.log(data.user);
-          // navigate("/seller");
+          localStorage.setItem("user", JSON.stringify(data.user));
+          Cookies.set("authId", data.user.jwtToken);
+          navigate("/seller");
         })
         .catch((error) => {
           console.error(error);

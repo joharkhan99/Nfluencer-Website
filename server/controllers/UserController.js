@@ -9,7 +9,25 @@ const encryptPassword = (password) => {
   const salt = bcrypt.genSaltSync(10);
   return bcrypt.hashSync(password, salt);
 };
+function jwtToken(username) {
+  const payload = {
+    sub: username,
+    iat: Date.now(),
+    exp: Math.floor(Date.now() / 1000) + 7 * 24 * 60 * 60,
+  };
+  const secretKey = process.env.JWT_SECRET;
+  const token = jwt.sign(payload, secretKey);
 
+  return token;
+}
+
+async function handleUpload(file) {
+  const res = await cloudinary.uploader.upload(file, {
+    resource_type: "auto",
+    folder: "nfluencer-users",
+  });
+  return res.url;
+}
 const sendRegistrationEmail = async (email, token) => {
   const emailLink = `http://localhost:3000/user-details/${token}`;
 
@@ -115,14 +133,6 @@ const verifyEmail = async (req, res) => {
   return res.status(200).json({ error: false, userId: findUser._id });
 };
 
-async function handleUpload(file) {
-  const res = await cloudinary.uploader.upload(file, {
-    resource_type: "auto",
-    folder: "nfluencer-users",
-  });
-  return res.url;
-}
-
 const userDetails = async (req, res) => {
   try {
     const b64 = Buffer.from(req.file.buffer).toString("base64");
@@ -156,8 +166,11 @@ const userDetails = async (req, res) => {
         bio,
         avatar: cldRes,
         emailValidated: true,
+        validationToken: "",
       }
     );
+
+    const jwttoken = jwtToken(username);
 
     return res.status(200).json({
       error: false,
@@ -169,6 +182,8 @@ const userDetails = async (req, res) => {
         location,
         bio,
         avatar: cldRes,
+        jwtToken: jwttoken,
+        email: user.email,
       },
     });
   } catch (error) {
@@ -179,34 +194,78 @@ const userDetails = async (req, res) => {
   }
 };
 
-// Generate jwt
-function jwtToken(user) {
-  const payload = {
-    id: user._id,
-    email: user.email,
-  };
-
-  const token = jwt.sign(payload, "your-secret-key", { expiresIn: "3h" });
-  return token;
-}
-
 const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  User.findOne({ email })
-    .then((user) => {
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
 
-      if (user.password !== password) {
-        return res.status(401).json({ message: "Incorrect password" });
-      }
-      const token = jwtToken(user);
-      res.json({ message: "Success", token, user });
-    })
-    .catch((error) => {
-      res.status(500).json({ message: "Failed to log in" });
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        error: true,
+        message: "User email not found",
+        emailNotFound: true,
+      });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({
+        error: true,
+        message: "Incorrect password",
+        incorrectPassword: true,
+      });
+    }
+
+    const token = jwtToken(user.username);
+
+    res.json({
+      error: false,
+      message: "Login successful",
+      token,
+      user: {
+        name: user.name,
+        username: user.username,
+        languages: user.languages,
+        location: user.location,
+        bio: user.bio,
+        avatar: user.avatar,
+        jwtToken: token,
+        email: user.email,
+      },
     });
+  } catch (error) {
+    res.status(500).json({ error: true, message: "Failed to log in" });
+  }
 };
 
-export { registerUser, loginUser, verifyEmail, userDetails };
+const getUser = async (req, res) => {
+  const { jwtToken } = req.body;
+  console.log(jwtToken);
+
+  const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
+  const user = await User.findOne({ username: decoded.sub });
+
+  if (!user) {
+    return res.status(404).json({
+      error: true,
+      message: "User not found",
+    });
+  }
+
+  return res.status(200).json({
+    error: false,
+    message: "User found",
+    user: {
+      name: user.name,
+      username: user.username,
+      languages: user.languages,
+      location: user.location,
+      bio: user.bio,
+      avatar: user.avatar,
+      jwtToken: jwtToken,
+      email: user.email,
+    },
+  });
+};
+
+export { registerUser, loginUser, verifyEmail, userDetails, getUser };

@@ -7,6 +7,7 @@ import {
   EyeSlashIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
 
 function Register() {
   const [email, setEmail] = useState("");

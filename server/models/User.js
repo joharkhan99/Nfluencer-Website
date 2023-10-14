@@ -34,6 +34,9 @@ const userSchema = new mongoose.Schema(
     username: {
       type: String,
     },
+    jwtToken: {
+      type: String,
+    },
   },
   {
     timestamps: true,

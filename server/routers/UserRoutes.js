@@ -4,6 +4,7 @@ import {
   registerUser,
   verifyEmail,
   userDetails,
+  getUser,
 } from "../controllers/UserController.js";
 const router = Router();
 
@@ -12,5 +13,6 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/verifyemail", verifyEmail);
 router.post("/userdetails", userDetails);
+router.post("/getuser", getUser);
 
 export default router;

@@ -3,10 +3,72 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Cookies from "js-cookie";
 import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/slices/UserSlice";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!email.trim()) {
+      errors.email = "Email is required";
+    }
+
+    if (!password.trim()) {
+      errors.password = "Password is required";
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (validateForm()) {
+      setIsSubmitting(true);
+
+      fetch("http://localhost:8080/api/user/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setIsSubmitting(false);
+
+          if (data.error && data.emailNotFound) {
+            setErrors({ email: data.message });
+            return;
+          }
+
+          if (data.error && data.incorrectPassword) {
+            setErrors({ password: data.message });
+            return;
+          }
+
+          dispatch(setUser(data.user));
+          localStorage.setItem("user", JSON.stringify(data.user));
+          Cookies.set("authId", data.token);
+          navigate("/seller");
+        })
+        .catch((err) => {
+          setIsSubmitting(false);
+          setErrors({ message: err.message });
+        });
+    }
+  };
 
   return (
     <>
@@ -25,7 +87,7 @@ function Login() {
                 Give your visitor a smooth online experience with a solid UX
                 design
               </p>
-              <form className="mt-10 text-left">
+              <form className="mt-10 text-left" onSubmit={handleSubmit}>
                 <div className="mb-6">
                   <label className="block text-sm font-semibold mb-2">
                     Email<span className="text-red-500 ml-2">*</span>
@@ -34,34 +96,49 @@ function Login() {
                     type="email"
                     className="rounded-xl bg-gray-50 focus:bg-white border-2 border-gray-200 hover:bg-gray-100 focus:border-nft-primary-light w-full p-4 outline-none"
                     placeholder="Please enter your email address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
+
+                  {errors.email && (
+                    <span className="text-red-400 text-sm font-medium px-4">
+                      {errors.email}
+                    </span>
+                  )}
                 </div>
                 <div className="mb-6">
                   <label className="block text-sm font-semibold mb-2">
                     Password<span className="text-red-500 ml-2">*</span>
                   </label>
                   <input
-                    type="email"
+                    type="password"
                     className="rounded-xl bg-gray-50 focus:bg-white border-2 border-gray-200 hover:bg-gray-100 focus:border-nft-primary-light w-full p-4 outline-none"
                     placeholder="Please enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
+
+                  {errors.password && (
+                    <span className="text-red-400 text-sm font-medium px-4">
+                      {errors.password}
+                    </span>
+                  )}
                 </div>
 
-                {/* <div className="mb-6">
-                  <label className="block font-semibold text-sm mb-2">
-                    <input type="checkbox" className="mr-2" />
-                    <span>
-                      You accept our Terms and Conditions and Privacy Policy
-                    </span>
-                  </label>
-                </div> */}
                 <div className="mt-10">
                   <button
                     className="bg-nft-primary-light h-full py-5 px-10 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full"
                     type="submit"
+                    disabled={isSubmitting}
                   >
-                    <span>Continue</span>
-                    <ArrowSmallRightIcon className="inline-block w-5 h-5 ml-2" />
+                    {isSubmitting ? (
+                      <div className="h-5 w-5 mx-auto rounded-full border-t border-r animate-spin border-white"></div>
+                    ) : (
+                      <>
+                        <span>Continue</span>
+                        <ArrowSmallRightIcon className="inline-block w-5 h-5 ml-2" />
+                      </>
+                    )}
                   </button>
                 </div>
               </form>
