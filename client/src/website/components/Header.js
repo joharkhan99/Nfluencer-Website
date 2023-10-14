@@ -426,11 +426,15 @@ function Header({ transparent = false }) {
                                       </div>
                                       <div className="flex flex-col items-center justify-start text-start">
                                         <div className="text-gray-800 text-sm font-semibold text-start w-full flex gap-1">
-                                          <span>{user.name}</span>
-                                          <span>({user.username})</span>
+                                          <span>
+                                            {user.name
+                                              .concat(" (", user.username, ")")
+                                              .substring(0, 18)}
+                                            ...
+                                          </span>
                                         </div>
                                         <div className="text-gray-500 text-sm w-full">
-                                          {user.email}
+                                          {user.email.substring(0, 18)}...
                                         </div>
                                       </div>
                                     </div>

@@ -18,13 +18,15 @@ import SellerCreateGig from "./dashboard/seller/pages/SellerCreateGig";
 import SellerNewNFT from "./dashboard/seller/pages/SellerNewNFT";
 import RegisterUserDetails from "./website/pages/RegisterUserDetails";
 import Cookies from "js-cookie";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "./redux/slices/UserSlice";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import Loader from "./utils/Loader";
 
 function App() {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true); // New loading state
 
   const getUser = async (jwtAuthId) => {
     const user = await fetch(
@@ -42,6 +44,7 @@ function App() {
 
     const res = await user.json();
     if (res.error) {
+      setLoading(false);
       return {};
     }
     return res.user;
@@ -51,6 +54,7 @@ function App() {
     if (Cookies.get("authId") === undefined) {
       localStorage.removeItem("user");
       dispatch(setUser(null));
+      setLoading(false);
       return;
     }
 
@@ -60,15 +64,21 @@ function App() {
 
       localStorage.setItem("user", JSON.stringify(user));
       dispatch(setUser(user));
+      setLoading(false);
       return;
     } else {
       dispatch(setUser(JSON.parse(localStorage.getItem("user"))));
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchUser();
   });
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <BrowserRouter>
