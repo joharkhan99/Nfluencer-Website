@@ -9,6 +9,7 @@ import { setUser } from "../../../redux/slices/UserSlice";
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const logout = () => {
     Cookies.remove("authId");
     localStorage.removeItem("user");
@@ -22,15 +23,6 @@ const Header = () => {
     <>
       <div className="p-4 flex justify-between items-center border-b border-gray-100 bg-white">
         <div className="flex items-center">
-          {/* <div className="flex items-center">
-            <img
-              src="https://flowbite.com/docs/images/logo.svg"
-              alt="logo"
-              className="w-10 h-10 rounded-full"
-            />
-            <span className="text-lg ml-2">Nfluencer</span>
-          </div> */}
-
           <div className="w-full">
             <div class="relative w-full max-w-xl pl-6">
               <div class="absolute inset-y-0 flex items-center pl-2 text-gray-100">

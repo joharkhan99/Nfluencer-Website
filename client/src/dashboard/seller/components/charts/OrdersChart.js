@@ -6,6 +6,7 @@ const OrderChart = () => {
     chart: {
       id: "grouped-bar",
       fontFamily: "Inter, Graphik, sans-serif",
+      width: "100%",
     },
     xaxis: {
       categories: [
@@ -36,7 +37,7 @@ const OrderChart = () => {
     plotOptions: {
       bar: {
         borderRadius: 5,
-        columnWidth: "40%",
+        columnWidth: "50%",
       },
     },
     stroke: {
@@ -62,8 +63,14 @@ const OrderChart = () => {
   ]);
 
   return (
-    <div>
-      <Chart options={options} series={series} type="bar" height="350px" />
+    <div className="w-full">
+      <Chart
+        options={options}
+        series={series}
+        type="bar"
+        height="350px"
+        width="100%"
+      />
     </div>
   );
 };

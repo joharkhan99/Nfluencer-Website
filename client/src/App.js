@@ -50,7 +50,6 @@ function App() {
     if (Cookies.get("authId") === undefined) {
       localStorage.removeItem("user");
       dispatch(setUser(null));
-      console.log("No user");
       return;
     }
 

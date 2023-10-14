@@ -14,7 +14,7 @@ import OrderChart from "../components/charts/OrdersChart";
 export const SellerHomePage = () => {
   return (
     <>
-      <div>
+      <div className="w-full">
         <div className="lg:flex gap-4">
           <div className="lg:w-3/4 p-0 bg-purple-300 rounded-xl relative">
             <div className="w-full h-full overflow-hidden absolute rounded-xl">
@@ -262,8 +262,130 @@ export const SellerHomePage = () => {
               </select>
             </div>
           </div>
-          <div>
-            <OrderChart />
+          <div className="w-full flex">
+            <div class="lg:w-1/3">
+              <div className="flex gap-3 items-center mb-5">
+                <div>
+                  <span className="rounded-full bg-green-200 block p-1">
+                    <ArrowTrendingUpIcon className="w-4 h-4 text-green-700" />
+                  </span>
+                </div>
+                <div className="text-green-600 font-semibold">+7.2%</div>
+                <div className="text-gray-500 text-xs">
+                  - Increased This Week
+                </div>
+              </div>
+
+              <div>
+                <ul>
+                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
+                    <div className="flex items-center gap-5">
+                      <div className="bg-gray-100 p-1.5 rounded-full">
+                        <img
+                          src="https://mir-s3-cdn-cf.behance.net/user/50/2ec25f505091121.64c0087b7bd73.png"
+                          alt=""
+                          className="h-12 w-12 rounded-full"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-xs text-gray-500">Facebook</span>
+                        <span className="text-lg font-bold">$2.13K</span>
+                      </div>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
+                      <span className="text-xs text-green-700 font-medium">
+                        5.7%
+                      </span>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
+                      <span className="text-xs text-gray-700 font-medium">
+                        22 May 2023
+                      </span>
+                    </div>
+                  </li>
+                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
+                    <div className="flex items-center gap-5">
+                      <div className="bg-gray-100 p-1.5 rounded-full">
+                        <img
+                          src="https://cdn.dribbble.com/users/14379669/avatars/normal/1f4ebd77a0db9bb01986ed2c943485f2.jpg?1671474840&resize=40x40"
+                          alt=""
+                          className="h-12 w-12 rounded-full"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-xs text-gray-500">Facebook</span>
+                        <span className="text-lg font-bold">$2.13K</span>
+                      </div>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
+                      <span className="text-xs text-green-700 font-medium">
+                        5.7%
+                      </span>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
+                      <span className="text-xs text-gray-700 font-medium">
+                        22 May 2023
+                      </span>
+                    </div>
+                  </li>
+                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
+                    <div className="flex items-center gap-5">
+                      <div className="bg-gray-100 p-1.5 rounded-full">
+                        <img
+                          src="https://cdn.dribbble.com/users/16361925/avatars/normal/27e34e235e95b7eb13d137903a49c31e.png?1695370101&resize=40x40"
+                          alt=""
+                          className="h-12 w-12 rounded-full"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-xs text-gray-500">Facebook</span>
+                        <span className="text-lg font-bold">$2.13K</span>
+                      </div>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
+                      <span className="text-xs text-green-700 font-medium">
+                        5.7%
+                      </span>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
+                      <span className="text-xs text-gray-700 font-medium">
+                        22 May 2023
+                      </span>
+                    </div>
+                  </li>
+                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
+                    <div className="flex items-center gap-5">
+                      <div className="bg-gray-100 p-1.5 rounded-full">
+                        <img
+                          src="https://cdn.dribbble.com/users/9196316/avatars/normal/f6e9f41f806541156d32e40ce1652055.png?1690621521&resize=40x40"
+                          alt=""
+                          className="h-12 w-12 rounded-full"
+                        />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-xs text-gray-500">Facebook</span>
+                        <span className="text-lg font-bold">$2.13K</span>
+                      </div>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
+                      <span className="text-xs text-green-700 font-medium">
+                        5.7%
+                      </span>
+                    </div>
+                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
+                      <span className="text-xs text-gray-700 font-medium">
+                        22 May 2023
+                      </span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="lg:w-2/3 mt-4 lg:mt-0 overflow-hidden">
+              <div>
+                <OrderChart />
+              </div>
+            </div>
           </div>
         </div>
 
