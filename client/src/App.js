@@ -27,7 +27,7 @@ function App() {
   const dispatch = useDispatch();
 
   const getUser = async (jwtAuthId) => {
-    await fetch("http://localhost:8080/api/user/getuser", {
+    const user = await fetch("http://localhost:8080/api/user/getuser", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,16 +35,13 @@ function App() {
       body: JSON.stringify({
         jwtToken: jwtAuthId,
       }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        // if (data.error) {
-        //   console.log(data.message);
-        // } else {
-        //   return data.user;
-        // }
-      });
+    });
+
+    const res = await user.json();
+    if (res.error) {
+      return {};
+    }
+    return res.user;
   };
 
   const fetchUser = async () => {
@@ -56,9 +53,9 @@ function App() {
 
     const jwtAuthId = Cookies.get("authId");
     if (localStorage.getItem("user") === null) {
-      const user = getUser(jwtAuthId);
-      localStorage.setItem("user", JSON.stringify(user));
+      const user = await getUser(jwtAuthId);
 
+      localStorage.setItem("user", JSON.stringify(user));
       dispatch(setUser(user));
       return;
     } else {
@@ -68,7 +65,6 @@ function App() {
 
   useEffect(() => {
     fetchUser();
-    // console.log(Cookies.get("authId"));
   });
 
   return (
