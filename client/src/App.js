@@ -18,9 +18,10 @@ import SellerCreateGig from "./dashboard/seller/pages/SellerCreateGig";
 import SellerNewNFT from "./dashboard/seller/pages/SellerNewNFT";
 import RegisterUserDetails from "./website/pages/RegisterUserDetails";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "./redux/slices/UserSlice";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 function App() {
   const dispatch = useDispatch();
@@ -83,13 +84,21 @@ function App() {
         <Route path="/login" Component={Login} />
         <Route path="/services" Component={Services} />
         <Route path="/gigdetails" Component={GigDetails} />
+
         <Route
           path="/user-details/:verificationToken"
           Component={RegisterUserDetails}
         />
 
         {/* Dashboard Section */}
-        <Route path="seller" Component={SellerDashboardLayout}>
+        <Route
+          path="seller"
+          element={
+            <ProtectedRoute>
+              <SellerDashboardLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route path="/seller" Component={SellerHomePage} />
           <Route path="about" Component={SellerAbout} />
           <Route path="gigs" Component={SellerGigs} />
