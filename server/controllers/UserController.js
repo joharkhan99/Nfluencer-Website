@@ -83,11 +83,9 @@ const sendRegistrationEmail = async (email, token) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.log(error);
       return false;
     } else {
       return true;
-      // console.log("Email sent:", info.response);
     }
   });
 };
@@ -240,7 +238,6 @@ const loginUser = async (req, res) => {
 
 const getUser = async (req, res) => {
   const { jwtToken } = req.body;
-  console.log(jwtToken);
 
   const decoded = jwt.verify(jwtToken, process.env.JWT_SECRET);
   const user = await User.findOne({ username: decoded.sub });

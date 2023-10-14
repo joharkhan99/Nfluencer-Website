@@ -37,7 +37,7 @@ function Login() {
     if (validateForm()) {
       setIsSubmitting(true);
 
-      fetch("http://localhost:8080/api/user/login", {
+      fetch(`${process.env.REACT_APP_API_URL}/api/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

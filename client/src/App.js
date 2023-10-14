@@ -27,15 +27,18 @@ function App() {
   const dispatch = useDispatch();
 
   const getUser = async (jwtAuthId) => {
-    const user = await fetch("http://localhost:8080/api/user/getuser", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        jwtToken: jwtAuthId,
-      }),
-    });
+    const user = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/user/getuser`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          jwtToken: jwtAuthId,
+        }),
+      }
+    );
 
     const res = await user.json();
     if (res.error) {

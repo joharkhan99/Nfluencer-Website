@@ -25,7 +25,7 @@ function RegisterUserDetails() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:8080/api/user/verifyemail`, {
+    fetch(`${process.env.REACT_APP_API_URL}/api/user/verifyemail`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -111,7 +111,7 @@ function RegisterUserDetails() {
       formData.append("avatar", avatar);
       formData.append("userId", userId);
 
-      fetch(`http://localhost:8080/api/user/userdetails`, {
+      fetch(`${process.env.REACT_APP_API_URL}/api/user/userdetails`, {
         method: "POST",
         body: formData,
       })

@@ -51,7 +51,7 @@ function Register() {
     if (validateForm()) {
       setIsSubmitting(true);
 
-      fetch("http://localhost:8080/api/user/register", {
+      fetch(`${process.env.REACT_APP_API_URL}/api/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
