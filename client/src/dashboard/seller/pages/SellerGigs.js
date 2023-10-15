@@ -23,8 +23,8 @@ export const SellerGigs = () => {
         Gigs Overview
       </h2>
 
-      <div class="lg:flex md:flex w-full my-6 gap-3">
-        <div class="lg:w-1/4 md:w-2/4 w-full bg-[rgb(15,220,156)] shadow-lg hover:border-transparent shadow-green-200 transition-all rounded-xl p-6 group hover:scale-105 cursor-pointer relative">
+      <div className="lg:flex md:flex w-full my-6 gap-3">
+        <div className="lg:w-1/4 md:w-2/4 w-full bg-[rgb(15,220,156)] shadow-lg hover:border-transparent shadow-green-200 transition-all rounded-xl p-6 group hover:scale-105 cursor-pointer relative">
           <div>
             <div className="flex justify-between items-center mb-4">
               <div className="flex gap-2 items-center font-md text-sm text-white">
@@ -42,7 +42,7 @@ export const SellerGigs = () => {
             </div>
           </div>
         </div>
-        <div class="lg:w-1/4 md:w-2/4 w-full bg-[rgb(95,70,212)] shadow-lg hover:border-transparent shadow-purple-200 transition-all rounded-xl p-6 group hover:scale-105 cursor-pointer">
+        <div className="lg:w-1/4 md:w-2/4 w-full bg-[rgb(95,70,212)] shadow-lg hover:border-transparent shadow-purple-200 transition-all rounded-xl p-6 group hover:scale-105 cursor-pointer">
           <div>
             <div className="flex justify-between items-center mb-4">
               <div className="flex gap-2 items-center font-md text-sm text-white">
@@ -60,7 +60,7 @@ export const SellerGigs = () => {
             </div>
           </div>
         </div>
-        <div class="lg:w-1/4 md:w-2/4 w-full bg-[rgb(253,116,71)] shadow-lg hover:border-transparent shadow-red-200 transition-all rounded-xl p-6 group hover:scale-105 cursor-pointer">
+        <div className="lg:w-1/4 md:w-2/4 w-full bg-[rgb(253,116,71)] shadow-lg hover:border-transparent shadow-red-200 transition-all rounded-xl p-6 group hover:scale-105 cursor-pointer">
           <div>
             <div className="flex justify-between items-center mb-4">
               <div className="flex gap-2 items-center font-md text-sm text-white">
@@ -78,7 +78,7 @@ export const SellerGigs = () => {
             </div>
           </div>
         </div>
-        <div class="lg:w-1/4 md:w-2/4 w-full bg-[rgb(21,124,253)] shadow-lg hover:border-transparent shadow-blue-200 transition-all rounded-xl p-6 group hover:scale-105 cursor-pointer">
+        <div className="lg:w-1/4 md:w-2/4 w-full bg-[rgb(21,124,253)] shadow-lg hover:border-transparent shadow-blue-200 transition-all rounded-xl p-6 group hover:scale-105 cursor-pointer">
           <div>
             <div className="flex justify-between items-center mb-4">
               <div className="flex gap-2 items-center font-md text-sm text-white">
@@ -96,7 +96,7 @@ export const SellerGigs = () => {
             </div>
           </div>
         </div>
-        <div class="lg:w-1/4 md:w-2/4 w-full bg-[rgb(21,180,253)] shadow-lg hover:border-transparent shadow-blue-300 transition-all rounded-xl p-6 group hover:scale-105 cursor-pointer">
+        <div className="lg:w-1/4 md:w-2/4 w-full bg-[rgb(21,180,253)] shadow-lg hover:border-transparent shadow-blue-300 transition-all rounded-xl p-6 group hover:scale-105 cursor-pointer">
           <div>
             <div className="flex justify-between items-center mb-4">
               <div className="flex gap-2 items-center font-md text-sm text-white">
@@ -154,49 +154,49 @@ export const SellerGigs = () => {
             <div className="p-4">
               <div className="text-sm mb-5 pl-4 text-gray-400">Active Gigs</div>
               {/* overflow-x-auto */}
-              <div class="relative w-full h-full rounded-xl shadow-lg shadow-gray-50">
-                <table class="w-full text-sm text-left text-gray-700">
-                  <thead class="text-xs text-gray-500 uppercase border-b">
+              <div className="relative w-full h-full rounded-xl shadow-lg shadow-gray-50">
+                <table className="w-full text-sm text-left text-gray-700">
+                  <thead className="text-xs text-gray-500 uppercase border-b">
                     <tr>
-                      <th scope="col" class="p-3">
+                      <th scope="col" className="p-3">
                         <input
                           id="checked-checkbox"
                           type="checkbox"
                           value=""
-                          class="w-4 h-4 focus:ring-nft-primary-light cursor-pointer hover:accent-nft-primary-light accent-nft-primary-light"
+                          className="w-4 h-4 focus:ring-nft-primary-light cursor-pointer hover:accent-nft-primary-light accent-nft-primary-light"
                         />
                       </th>
-                      <th scope="col" class="p-3">
+                      <th scope="col" className="p-3">
                         Gig
                       </th>
-                      <th scope="col" class="p-3">
+                      <th scope="col" className="p-3">
                         NFT Reward
                       </th>
-                      <th scope="col" class="p-3">
+                      <th scope="col" className="p-3">
                         Impressions
                       </th>
-                      <th scope="col" class="p-3">
+                      <th scope="col" className="p-3">
                         Clicks
                       </th>
-                      <th scope="col" class="p-3">
+                      <th scope="col" className="p-3">
                         Orders
                       </th>
-                      <th scope="col" class="p-3">
+                      <th scope="col" className="p-3">
                         Cancellations
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr className="hover:bg-gray-50 transition-colors">
-                      <td class="p-3 py-5">
+                      <td className="p-3 py-5">
                         <input
                           id="checked-checkbox"
                           type="checkbox"
                           value=""
-                          class="w-4 h-4 focus:ring-nft-primary-light cursor-pointer hover:accent-nft-primary-light accent-nft-primary-light"
+                          className="w-4 h-4 focus:ring-nft-primary-light cursor-pointer hover:accent-nft-primary-light accent-nft-primary-light"
                         />
                       </td>
-                      <td class="p-3 py-5">
+                      <td className="p-3 py-5">
                         <div className="flex items-center gap-3">
                           <img
                             src="https://img.freepik.com/free-psd/3d-rendering-search-engine-background_23-2150562443.jpg?w=740&t=st=1696684061~exp=1696684661~hmac=d3a9859ef6a2aa01d1164440ccbd66e542071035f257b02d4cc990f1c2169c55"
@@ -208,7 +208,7 @@ export const SellerGigs = () => {
                           </p>
                         </div>
                       </td>
-                      <td class="p-3 py-5">
+                      <td className="p-3 py-5">
                         <a
                           href="s"
                           className="text-nft-primary-light bg-purple-100 p-1 rounded-md hover:bg-purple-200"
@@ -216,7 +216,7 @@ export const SellerGigs = () => {
                           NFT14df36f41b0d4c4b
                         </a>
                       </td>
-                      <td class="p-3 py-5">
+                      <td className="p-3 py-5">
                         <div className="flex items-center gap-1 text-green-500 font-medium">
                           <span>1.9K</span>
                           <span>
@@ -224,10 +224,10 @@ export const SellerGigs = () => {
                           </span>
                         </div>
                       </td>
-                      <td class="p-3 py-5">15</td>
-                      <td class="p-3 py-5">2</td>
-                      <td class="p-3 py-5">0%</td>
-                      <td class="p-3 py-5">
+                      <td className="p-3 py-5">15</td>
+                      <td className="p-3 py-5">2</td>
+                      <td className="p-3 py-5">0%</td>
+                      <td className="p-3 py-5">
                         <Menu
                           as="div"
                           className="relative inline-block text-left"
@@ -313,15 +313,15 @@ export const SellerGigs = () => {
                       </td>
                     </tr>
                     <tr className="hover:bg-gray-50 transition-colors">
-                      <td class="p-3 py-5">
+                      <td className="p-3 py-5">
                         <input
                           id="checked-checkbox"
                           type="checkbox"
                           value=""
-                          class="w-4 h-4 focus:ring-nft-primary-light cursor-pointer hover:accent-nft-primary-light accent-nft-primary-light"
+                          className="w-4 h-4 focus:ring-nft-primary-light cursor-pointer hover:accent-nft-primary-light accent-nft-primary-light"
                         />
                       </td>
-                      <td class="p-3 py-5">
+                      <td className="p-3 py-5">
                         <div className="flex items-center gap-3">
                           <img
                             src="https://img.freepik.com/free-vector/gradient-computer-screen-illustration-color-year-2023_23-2149989551.jpg?w=740&t=st=1696684289~exp=1696684889~hmac=02474ee0f5001926da32a6577f63edff7e3f66e091f9d7a814612a40362a6e6c"
@@ -334,7 +334,7 @@ export const SellerGigs = () => {
                           </p>
                         </div>
                       </td>
-                      <td class="p-3 py-5">
+                      <td className="p-3 py-5">
                         <a
                           href="s"
                           className="text-nft-primary-light bg-purple-100 p-1 rounded-md hover:bg-purple-200"
@@ -342,7 +342,7 @@ export const SellerGigs = () => {
                           NFT14df36f41b0d4c4b
                         </a>
                       </td>
-                      <td class="p-3 py-5">
+                      <td className="p-3 py-5">
                         <div className="flex items-center gap-1 text-red-500 font-medium">
                           <span>300</span>
                           <span>
@@ -350,10 +350,10 @@ export const SellerGigs = () => {
                           </span>
                         </div>
                       </td>
-                      <td class="p-3 py-5">15</td>
-                      <td class="p-3 py-5">2</td>
-                      <td class="p-3 py-5">0%</td>
-                      <td class="p-3 py-5">
+                      <td className="p-3 py-5">15</td>
+                      <td className="p-3 py-5">2</td>
+                      <td className="p-3 py-5">0%</td>
+                      <td className="p-3 py-5">
                         <Menu
                           as="div"
                           className="relative inline-block text-left"

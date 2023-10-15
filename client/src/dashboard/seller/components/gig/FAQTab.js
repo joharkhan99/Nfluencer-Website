@@ -21,17 +21,17 @@ const FAQTab = () => {
         </p>
       </div>
 
-      <div class="flex justify-between">
-        <div class="text-gray-500 p-4 md:w-2/3 w-full">
-          <div class="flex items-center space-x-4">
-            <hr class="flex-1 border-t border-gray-100" />
-            <div class="text-sm font-semibold uppercase flex items-center gap-1">
+      <div className="flex justify-between">
+        <div className="text-gray-500 p-4 md:w-2/3 w-full">
+          <div className="flex items-center space-x-4">
+            <hr className="flex-1 border-t border-gray-100" />
+            <div className="text-sm font-semibold uppercase flex items-center gap-1">
               <span>Your FAQs</span>
               <span>
                 <QuestionMarkCircleIcon className="h-5 w-5" />
               </span>
             </div>
-            <hr class="flex-1 border-t border-gray-100" />
+            <hr className="flex-1 border-t border-gray-100" />
           </div>
 
           <div className="bg-gray-100 rounded-xl p-4 text-gray-700 mt-10 text-sm">
@@ -103,7 +103,7 @@ const FAQTab = () => {
           </div>
         </div>
 
-        <div class="p-4 md:w-1/3 md:block hidden">
+        <div className="p-4 md:w-1/3 md:block hidden">
           <div className="flex justify-center items-center sticky top-0">
             <div className=" bg-purple-200 w-full p-3 rounded-xl">
               <div className="text-center -mt-8">

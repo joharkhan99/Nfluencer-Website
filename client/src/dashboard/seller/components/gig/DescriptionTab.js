@@ -41,8 +41,8 @@ const DescriptionTab = () => {
         <h2>Description</h2>
       </div>
 
-      <div class="flex justify-between">
-        <div class="text-gray-600 p-4 md:w-2/3 w-full">
+      <div className="flex justify-between">
+        <div className="text-gray-600 p-4 md:w-2/3 w-full">
           <div className="flex flex-col gap-10">
             <div>
               <label className="capitalize font-bold text-sm mb-2 block">
@@ -71,7 +71,7 @@ const DescriptionTab = () => {
           </div>
         </div>
 
-        <div class="p-4 md:w-1/3 md:block hidden">
+        <div className="p-4 md:w-1/3 md:block hidden">
           <div className="flex justify-center items-center sticky top-0">
             <div className=" bg-purple-200 w-full p-3 rounded-xl">
               <div className="text-center -mt-8">

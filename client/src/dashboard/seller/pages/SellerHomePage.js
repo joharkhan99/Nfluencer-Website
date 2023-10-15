@@ -57,8 +57,8 @@ export const SellerHomePage = () => {
           </div>
         </div>
 
-        <div class="lg:flex md:flex w-full my-6 gap-3">
-          <div class="lg:w-1/4 md:w-2/4 w-full bg-white shadow-lg hover:border-transparent shadow-gray-200 transition-all hover:bg-nft-primary-light hover:shadow-[0_10px_20px_rgba(120,82,243,0.5)] rounded-xl p-6 group hover:scale-105 border border-gray-200 cursor-pointer">
+        <div className="lg:flex md:flex w-full my-6 gap-3">
+          <div className="lg:w-1/4 md:w-2/4 w-full bg-white shadow-lg hover:border-transparent shadow-gray-200 transition-all hover:bg-nft-primary-light hover:shadow-[0_10px_20px_rgba(120,82,243,0.5)] rounded-xl p-6 group hover:scale-105 border border-gray-200 cursor-pointer">
             <div>
               <div className="flex justify-between items-center mb-4">
                 <div className="flex gap-2 items-center font-semibold text-sm group-hover:text-white text-nft-primary-dark">
@@ -98,7 +98,7 @@ export const SellerHomePage = () => {
               </div>
             </div>
           </div>
-          <div class="lg:w-1/4 md:w-2/4 w-full bg-white shadow-lg hover:border-transparent shadow-gray-200 transition-all hover:bg-nft-primary-light hover:shadow-[0_10px_20px_rgba(120,82,243,0.5)] rounded-xl p-6 group hover:scale-105 border border-gray-200 cursor-pointer">
+          <div className="lg:w-1/4 md:w-2/4 w-full bg-white shadow-lg hover:border-transparent shadow-gray-200 transition-all hover:bg-nft-primary-light hover:shadow-[0_10px_20px_rgba(120,82,243,0.5)] rounded-xl p-6 group hover:scale-105 border border-gray-200 cursor-pointer">
             <div>
               <div className="flex justify-between items-center mb-4">
                 <div className="flex gap-2 items-center font-semibold text-sm group-hover:text-white text-nft-primary-dark">
@@ -139,7 +139,7 @@ export const SellerHomePage = () => {
             </div>
           </div>
 
-          <div class="lg:w-1/4 md:w-2/4 w-full bg-white shadow-lg hover:border-transparent shadow-gray-200 transition-all hover:bg-nft-primary-light hover:shadow-[0_10px_20px_rgba(120,82,243,0.5)] rounded-xl p-6 group hover:scale-105 border border-gray-200 cursor-pointer">
+          <div className="lg:w-1/4 md:w-2/4 w-full bg-white shadow-lg hover:border-transparent shadow-gray-200 transition-all hover:bg-nft-primary-light hover:shadow-[0_10px_20px_rgba(120,82,243,0.5)] rounded-xl p-6 group hover:scale-105 border border-gray-200 cursor-pointer">
             <div>
               <div className="flex justify-between items-center mb-4">
                 <div className="flex gap-2 items-center font-semibold text-sm group-hover:text-white text-nft-primary-dark">
@@ -180,7 +180,7 @@ export const SellerHomePage = () => {
             </div>
           </div>
 
-          <div class="lg:w-1/4 md:w-2/4 w-full bg-white shadow-lg hover:border-transparent shadow-gray-200 transition-all hover:bg-nft-primary-light hover:shadow-[0_10px_20px_rgba(120,82,243,0.5)] rounded-xl p-6 group hover:scale-105 border border-gray-200 cursor-pointer">
+          <div className="lg:w-1/4 md:w-2/4 w-full bg-white shadow-lg hover:border-transparent shadow-gray-200 transition-all hover:bg-nft-primary-light hover:shadow-[0_10px_20px_rgba(120,82,243,0.5)] rounded-xl p-6 group hover:scale-105 border border-gray-200 cursor-pointer">
             <div>
               <div className="flex justify-between items-center mb-4">
                 <div className="flex gap-2 items-center font-semibold text-sm group-hover:text-white text-nft-primary-dark">
@@ -221,9 +221,9 @@ export const SellerHomePage = () => {
             </div>
           </div>
 
-          {/* <div class="lg:w-1/4 md:w-2/4 w-full bg-white shadow-lg shadow-gray-200 transition-all hover:bg-nft-primary-light hover:shadow-[0_10px_20px_rgba(120,82,243,0.5)] rounded-xl p-3 py-4 group hover:scale-105">
+          {/* <div className="lg:w-1/4 md:w-2/4 w-full bg-white shadow-lg shadow-gray-200 transition-all hover:bg-nft-primary-light hover:shadow-[0_10px_20px_rgba(120,82,243,0.5)] rounded-xl p-3 py-4 group hover:scale-105">
             <div className="card-stats"></div>
-            <div class=" flex justify-between items-center cursor-pointer">
+            <div className=" flex justify-between items-center cursor-pointer">
               <div className="flex gap-3 items-center">
                 <div>
                   <span className="bg-nft-primary-light text-nft-primary-dark block p-4 bg-opacity-30 rounded-xl group-hover:bg-white transition-all">
@@ -263,7 +263,7 @@ export const SellerHomePage = () => {
             </div>
           </div>
           <div className="w-full flex">
-            <div class="lg:w-1/3">
+            <div className="lg:w-1/3">
               <div className="flex gap-3 items-center mb-5">
                 <div>
                   <span className="rounded-full bg-green-200 block p-1">
@@ -381,7 +381,7 @@ export const SellerHomePage = () => {
                 </ul>
               </div>
             </div>
-            <div class="lg:w-2/3 mt-4 lg:mt-0 overflow-hidden">
+            <div className="lg:w-2/3 mt-4 lg:mt-0 overflow-hidden">
               <div>
                 <OrderChart />
               </div>
@@ -389,7 +389,7 @@ export const SellerHomePage = () => {
           </div>
         </div>
 
-        <div class="p-6 bg-white shadow-lg rounded-xl shadow-gray-200">
+        <div className="p-6 bg-white shadow-lg rounded-xl shadow-gray-200">
           <div className="mb-3">
             <span className="font-bold text-2xl text-gray-900 block">
               Earning Report
@@ -397,7 +397,7 @@ export const SellerHomePage = () => {
           </div>
 
           <div className="lg:flex rounded-xl">
-            <div class="lg:w-1/3">
+            <div className="lg:w-1/3">
               <div className="flex gap-3 items-center mb-5">
                 <div>
                   <span className="rounded-full bg-green-200 block p-1">
@@ -515,7 +515,7 @@ export const SellerHomePage = () => {
                 </ul>
               </div>
             </div>
-            <div class="lg:w-2/3 mt-4 lg:mt-0">
+            <div className="lg:w-2/3 mt-4 lg:mt-0">
               <div>
                 <EarningChart />
               </div>

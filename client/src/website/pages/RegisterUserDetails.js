@@ -12,7 +12,7 @@ function RegisterUserDetails() {
 
   let { verificationToken } = useParams();
   const [selectedImage, setSelectedImage] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [userDetails, setUserDetails] = useState(null);
   const navigate = useNavigate();
 
   const [name, setName] = useState("");
@@ -45,7 +45,7 @@ function RegisterUserDetails() {
           navigate("/signup");
           return;
         }
-        setUserId(data.userId);
+        setUserDetails(data.user);
       });
   }, [verificationToken, navigate]);
 
@@ -96,7 +96,7 @@ function RegisterUserDetails() {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
@@ -109,34 +109,63 @@ function RegisterUserDetails() {
       formData.append("location", location);
       formData.append("bio", bio);
       formData.append("avatar", avatar);
-      formData.append("userId", userId);
+      formData.append("userId", userDetails.userId);
+      formData.append("email", userDetails.email);
 
-      fetch(`${process.env.REACT_APP_API_URL}/api/user/userdetails`, {
-        method: "POST",
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.error && data.usernameExist) {
-            setErrors({ username: data.message });
-            return;
-          }
-          if (data.error) {
-            alert(data.message);
-            return;
-          }
+      const userDetailsRequest = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/user/userdetails`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
-          dispatch(setUser(data.user));
-          localStorage.setItem("user", JSON.stringify(data.user));
-          Cookies.set("authId", data.user.jwtToken);
-          navigate("/seller");
-        })
-        .catch((error) => {
-          console.error(error);
-        })
-        .finally(() => {
-          setIsSubmitting(false);
-        });
+      const data = await userDetailsRequest.json();
+      if (data.error && data.usernameExist) {
+        setErrors({ username: data.message });
+        setIsSubmitting(false);
+        return;
+      }
+      if (data.error) {
+        alert(data.message);
+        setIsSubmitting(false);
+        return;
+      }
+      if (data.user) {
+        setIsSubmitting(false);
+        dispatch(setUser(data.user));
+        localStorage.setItem("user", JSON.stringify(data.user));
+        Cookies.set("authId", data.user.jwtToken);
+        navigate("/seller");
+      }
+
+      // .then((response) => response.json())
+      // .then((data) => {
+
+      //   console.log(data);
+
+      //   if (data.error && data.usernameExist) {
+      //     setErrors({ username: data.message });
+      //     return;
+      //   }
+      //   if (data.error) {
+      //     alert(data.message);
+      //     return;
+      //   }
+
+      //   if (data.user) {
+      //     dispatch(setUser(data.user));
+      //     localStorage.setItem("user", JSON.stringify(data.user));
+      //     Cookies.set("authId", data.user.jwtToken);
+      //     navigate("/seller");
+      //   }
+      // })
+      // .catch((error) => {
+      //   console.error(error);
+      // })
+      // .finally(() => {
+      //   setIsSubmitting(false);
+      // });
     }
   };
 

@@ -20,8 +20,8 @@ const GalleryTab = () => {
         </p>
       </div>
 
-      <div class="flex justify-between">
-        <div class="text-gray-600 p-4 md:w-3/4 w-full">
+      <div className="flex justify-between">
+        <div className="text-gray-600 p-4 md:w-3/4 w-full">
           <div className="border-b border-gray-100 pb-8 mb-7">
             <div className="flex justify-between items-center">
               <div className="flex gap-3 items-center">
@@ -39,13 +39,13 @@ const GalleryTab = () => {
                   type="file"
                   id="image"
                   name="images"
-                  class="hidden"
+                  className="hidden"
                   accept="image/*"
                   required
                 />
                 <label
                   for="image"
-                  class="cursor-pointer bg-white border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
+                  className="cursor-pointer bg-white border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
                 >
                   <PhotoIcon className="w-16 h-16 text-gray-300" />
                   <p className="text-sm font-semibold">
@@ -61,13 +61,13 @@ const GalleryTab = () => {
                   type="file"
                   id="image"
                   name="images"
-                  class="hidden"
+                  className="hidden"
                   accept="image/*"
                   required
                 />
                 <label
                   for="image"
-                  class="cursor-pointer bg-gray-100 border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
+                  className="cursor-pointer bg-gray-100 border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
                 >
                   <PhotoIcon className="w-16 h-16 text-gray-300" />
                   <p className="text-sm font-semibold">
@@ -83,13 +83,13 @@ const GalleryTab = () => {
                   type="file"
                   id="image"
                   name="images"
-                  class="hidden"
+                  className="hidden"
                   accept="image/*"
                   required
                 />
                 <label
                   for="image"
-                  class="cursor-pointer bg-gray-100 border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
+                  className="cursor-pointer bg-gray-100 border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
                 >
                   <PhotoIcon className="w-16 h-16 text-gray-300" />
                   <p className="text-sm font-semibold">
@@ -118,13 +118,13 @@ const GalleryTab = () => {
                   type="file"
                   id="image"
                   name="images"
-                  class="hidden"
+                  className="hidden"
                   accept="image/*"
                   required
                 />
                 <label
                   for="image"
-                  class="cursor-pointer bg-white border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
+                  className="cursor-pointer bg-white border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
                 >
                   <VideoCameraIcon className="w-16 h-16 text-gray-300" />
                   <p className="text-sm font-semibold">
@@ -154,13 +154,13 @@ const GalleryTab = () => {
                   type="file"
                   id="image"
                   name="images"
-                  class="hidden"
+                  className="hidden"
                   accept="image/*"
                   required
                 />
                 <label
                   for="image"
-                  class="cursor-pointer bg-white border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
+                  className="cursor-pointer bg-white border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
                 >
                   <ClipboardDocumentListIcon className="w-16 h-16 text-gray-300" />
                   <p className="text-sm font-semibold">
@@ -176,13 +176,13 @@ const GalleryTab = () => {
                   type="file"
                   id="image"
                   name="images"
-                  class="hidden"
+                  className="hidden"
                   accept="image/*"
                   required
                 />
                 <label
                   for="image"
-                  class="cursor-pointer bg-white border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
+                  className="cursor-pointer bg-white border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
                 >
                   <ClipboardDocumentListIcon className="w-16 h-16 text-gray-300" />
                   <p className="text-sm font-semibold">
@@ -195,7 +195,7 @@ const GalleryTab = () => {
           </div>
         </div>
 
-        <div class="p-4 md:w-1/4 md:block hidden">
+        <div className="p-4 md:w-1/4 md:block hidden">
           <div className="flex justify-center items-center sticky top-0">
             <div className=" bg-purple-200 w-full p-3 rounded-xl">
               <div className="text-center -mt-8">

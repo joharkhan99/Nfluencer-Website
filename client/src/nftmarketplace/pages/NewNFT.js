@@ -8,14 +8,14 @@ function NewNFT() {
     <>
       <Header transparent={true} />
       <div className="container mx-auto my-10">
-        <div class="py-7">
-          <h1 class="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
+        <div className="py-7">
+          <h1 className="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
             Add new NFT
           </h1>
         </div>
 
-        <div class="flex flex-col md:flex-row justify-between">
-          <div class="order-2 md:order-1 w-full">
+        <div className="flex flex-col md:flex-row justify-between">
+          <div className="order-2 md:order-1 w-full">
             <div className="mb-14">
               <div className="font-extrabold text-lg">Choose blockchain</div>
               <p className="text-sm text-gray-500">
@@ -246,9 +246,13 @@ function NewNFT() {
                     </div>
                   </div>
                   <div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" value="" class="sr-only peer" />
-                      <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:bg-nft-primary-transparent rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        value=""
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:bg-nft-primary-transparent rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
                     </label>
                   </div>
                 </div>
@@ -262,9 +266,13 @@ function NewNFT() {
                     </div>
                   </div>
                   <div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" value="" class="sr-only peer" />
-                      <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:bg-nft-primary-transparent rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        value=""
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:bg-nft-primary-transparent rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
                     </label>
                   </div>
                 </div>
@@ -279,9 +287,13 @@ function NewNFT() {
                     </div>
                   </div>
                   <div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                      <input type="checkbox" value="" class="sr-only peer" />
-                      <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:bg-nft-primary-transparent rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        value=""
+                        className="sr-only peer"
+                      />
+                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:bg-nft-primary-transparent rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
                     </label>
                   </div>
                 </div>
@@ -290,12 +302,12 @@ function NewNFT() {
               <div className="mt-24">
                 <div className="flex justify-between items-center  flex-row">
                   <div className="text-center w-full">
-                    <button class="bg-nft-primary-light rounded-full px-6 py-4 font-semibold text-sm text-white w-4/5">
+                    <button className="bg-nft-primary-light rounded-full px-6 py-4 font-semibold text-sm text-white w-4/5">
                       <span>Publish</span>
                     </button>
                   </div>
                   <div className="text-center w-full">
-                    <button class="bg-nft-primary-transparent rounded-full px-6 py-4 font-semibold text-sm text-nft-primary-light w-4/5 hover:bg-nft-primary-light hover:text-white duration-300 transition-colors">
+                    <button className="bg-nft-primary-transparent rounded-full px-6 py-4 font-semibold text-sm text-nft-primary-light w-4/5 hover:bg-nft-primary-light hover:text-white duration-300 transition-colors">
                       <span>Discard all</span>
                     </button>
                   </div>
@@ -303,40 +315,40 @@ function NewNFT() {
               </div>
             </div>
           </div>
-          <div class="order-1 md:order-2 w-full">
-            <div class="flex flex-wrap justify-center gap-6">
+          <div className="order-1 md:order-2 w-full">
+            <div className="flex flex-wrap justify-center gap-6">
               <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                <div class="w-80">
+                <div className="w-80">
                   <div className="font-extrabold text-lg border-b pb-3 mb-5">
                     Preview your NFT
                   </div>
 
-                  <div class="flex justify-between items-center mb-5">
-                    <div class="flex -space-x-2">
+                  <div className="flex justify-between items-center mb-5">
+                    <div className="flex -space-x-2">
                       <img
-                        class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                        className="w-8 h-8 rounded-full border-2 object-cover border-white"
                         src={require("../assets/user1.jpeg")}
                         alt="User Imageas"
                       />
                       <img
-                        class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                        className="w-8 h-8 rounded-full border-2 object-cover border-white"
                         src={require("../assets/user2.jpeg")}
                         alt="User Imageas"
                       />
                       <img
-                        class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                        className="w-8 h-8 rounded-full border-2 object-cover border-white"
                         src={require("../assets/user3.webp")}
                         alt="User Imageas"
                       />
                     </div>
-                    <div class="flex items-center justify-center">
+                    <div className="flex items-center justify-center">
                       <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
                         <span>···</span>
                       </button>
                     </div>
                   </div>
                   <div
-                    class="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                    className="h-auto rounded-xl bg-gray-200 overflow-hidden"
                     style={{ height: "300px" }}
                   >
                     <img
@@ -345,11 +357,11 @@ function NewNFT() {
                       className="h-full w-full object-cover"
                     />
                   </div>
-                  <div class="py-2 pt-3">
-                    <h3 class="text-xl font-bold tracking-tight text-black">
+                  <div className="py-2 pt-3">
+                    <h3 className="text-xl font-bold tracking-tight text-black">
                       Capturing Memories
                     </h3>
-                    <div class="flex items-center text-gray-500 text-sm mt-2">
+                    <div className="flex items-center text-gray-500 text-sm mt-2">
                       <img
                         src={require("../assets/eth.png")}
                         alt="sd"
@@ -362,13 +374,13 @@ function NewNFT() {
                         </span>
                       </span>
                     </div>
-                    <div class="flex justify-between items-center mt-5">
+                    <div className="flex justify-between items-center mt-5">
                       <div>
                         <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
                           Buy Now
                         </button>
                       </div>
-                      <div class="flex items-center">
+                      <div className="flex items-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -383,7 +395,7 @@ function NewNFT() {
                             d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                           />
                         </svg>
-                        <span class="pl-1 font-bold text-sm">10</span>
+                        <span className="pl-1 font-bold text-sm">10</span>
                       </div>
                     </div>
                   </div>

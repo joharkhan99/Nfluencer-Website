@@ -187,7 +187,7 @@ function GigDetails() {
                 </div>
               </div>
 
-              <div class="block bg-transparent">
+              <div className="block bg-transparent">
                 <div className="flex justify-between my-10 bg-gray-100 p-4 rounded-xl">
                   <div>
                     <div className="font-semibold">Delivery Time</div>
@@ -205,7 +205,7 @@ function GigDetails() {
                   </div>
                 </div>
 
-                <div class="mb-6 w-full">
+                <div className="mb-6 w-full">
                   <Tabs
                     className="w-full"
                     selectedTabClassName="p-0 opacity-95 m-0 ring-nft-primary-light"
@@ -303,7 +303,7 @@ function GigDetails() {
                   <h3 className="font-semibold text-xl my-5 mt-10">
                     Service Description
                   </h3>
-                  <p class="text-gray-600 mb-6">
+                  <p className="text-gray-600 mb-6">
                     Sed ut perspiciatis unde omnis iste natus error sit
                     voluptatem accusantium doloremque laudantium, totam rem
                     aperiam, eaque ipsa quae ab illo inventore veritatis et
@@ -335,8 +335,8 @@ function GigDetails() {
                   Compare Packages
                 </h3>
 
-                <div class="flex justify-between">
-                  <div class="text-gray-600 w-full">
+                <div className="flex justify-between">
+                  <div className="text-gray-600 w-full">
                     <div className="w-full">
                       <div className="overflow-x-auto w-full">
                         <table
@@ -592,7 +592,7 @@ function GigDetails() {
                   </div>
                 </div>
 
-                <div class="mb-6 text-gray-800 border-b">
+                <div className="mb-6 text-gray-800 border-b">
                   <h3 className="font-semibold text-xl my-5 mt-10">Reviews</h3>
 
                   <div>
@@ -611,9 +611,9 @@ function GigDetails() {
                             <div className="whitespace-nowrap bg-nft-primary-light p-2 rounded-lg text-white text-sm font-semibold">
                               5 Stars
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div className="w-full bg-gray-200 rounded-full h-2.5">
                               <div
-                                class="bg-nft-primary-light h-2.5 rounded-full"
+                                className="bg-nft-primary-light h-2.5 rounded-full"
                                 style={{ width: "45%" }}
                               ></div>
                             </div>
@@ -626,9 +626,9 @@ function GigDetails() {
                             <div className="whitespace-nowrap p-2 rounded-lg text-gray-800 text-sm font-semibold">
                               4 Stars
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div className="w-full bg-gray-200 rounded-full h-2.5">
                               <div
-                                class="bg-nft-primary-light h-2.5 rounded-full"
+                                className="bg-nft-primary-light h-2.5 rounded-full"
                                 style={{ width: "20%" }}
                               ></div>
                             </div>
@@ -641,9 +641,9 @@ function GigDetails() {
                             <div className="whitespace-nowrap p-2 rounded-lg text-gray-800 text-sm font-semibold">
                               3 Stars
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div className="w-full bg-gray-200 rounded-full h-2.5">
                               <div
-                                class="bg-nft-primary-light h-2.5 rounded-full"
+                                className="bg-nft-primary-light h-2.5 rounded-full"
                                 style={{ width: "60%" }}
                               ></div>
                             </div>
@@ -656,9 +656,9 @@ function GigDetails() {
                             <div className="whitespace-nowrap p-2 rounded-lg text-gray-800 text-sm font-semibold">
                               2 Stars
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div className="w-full bg-gray-200 rounded-full h-2.5">
                               <div
-                                class="bg-nft-primary-light h-2.5 rounded-full"
+                                className="bg-nft-primary-light h-2.5 rounded-full"
                                 style={{ width: "10%" }}
                               ></div>
                             </div>
@@ -671,9 +671,9 @@ function GigDetails() {
                             <div className="whitespace-nowrap p-2 rounded-lg text-gray-800 text-sm font-semibold">
                               1 Stars
                             </div>
-                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div className="w-full bg-gray-200 rounded-full h-2.5">
                               <div
-                                class="bg-nft-primary-light h-2.5 rounded-full"
+                                className="bg-nft-primary-light h-2.5 rounded-full"
                                 style={{ width: "5%" }}
                               ></div>
                             </div>
@@ -685,13 +685,13 @@ function GigDetails() {
                       </div>
 
                       <div className="flex justify-between mt-10 w-full">
-                        <div class="relative max-w-xl">
-                          <div class="absolute inset-y-0 flex items-center pl-2 text-gray-100">
+                        <div className="relative max-w-xl">
+                          <div className="absolute inset-y-0 flex items-center pl-2 text-gray-100">
                             <MagnifyingGlassIcon className="w-4 h-4 text-gray-400" />
                           </div>
                           <input
                             type="text"
-                            class="text-sm rounded-lg pl-8 block w-full p-2.5 bg-gray-100 outline-none border ring-purple-700 focus:ring-2 focus:bg-transparent hover:bg-gray-200 hover:bg-opacity-70"
+                            className="text-sm rounded-lg pl-8 block w-full p-2.5 bg-gray-100 outline-none border ring-purple-700 focus:ring-2 focus:bg-transparent hover:bg-gray-200 hover:bg-opacity-70"
                             placeholder="Search Reviews..."
                             required
                           />
@@ -751,17 +751,17 @@ function GigDetails() {
                     </div>
                   </div>
 
-                  <div class="container mx-auto py-8">
-                    <div class="grid grid-cols-1 gap-4 mb-3">
-                      <div class="bg-white rounded-lg p-4 px-0">
-                        <div class="flex items-center mb-4">
+                  <div className="container mx-auto py-8">
+                    <div className="grid grid-cols-1 gap-4 mb-3">
+                      <div className="bg-white rounded-lg p-4 px-0">
+                        <div className="flex items-center mb-4">
                           <img
                             src={require("../assets/man.jpg")}
                             alt="User"
-                            class="rounded-full h-12 w-12 mr-4 object-cover"
+                            className="rounded-full h-12 w-12 mr-4 object-cover"
                           />
                           <div>
-                            <h3 class="font-medium text-sm">John Doe</h3>
+                            <h3 className="font-medium text-sm">John Doe</h3>
                             <div className="flex flex-row gap-3 items-center">
                               <div className="flex flex-row items-center gap-1">
                                 <svg
@@ -778,11 +778,13 @@ function GigDetails() {
                                 </svg>
                                 <span>4.0</span>
                               </div>
-                              <p class="text-gray-500 text-sm">May 15, 2023</p>
+                              <p className="text-gray-500 text-sm">
+                                May 15, 2023
+                              </p>
                             </div>
                           </div>
                         </div>
-                        <p class="text-gray-800">
+                        <p className="text-gray-800">
                           Aliquam hendrerit sollicitudin purus, quis rutrum mi
                           accumsan nec. Quisque bibendum orci ac nibh facilisis,
                           at malesuada orci congue. Nullam tempus sollicitudin
@@ -790,16 +792,16 @@ function GigDetails() {
                         </p>
                       </div>
                     </div>
-                    <div class="grid grid-cols-1 gap-4 mb-3">
-                      <div class="bg-white rounded-lg p-4 px-0">
-                        <div class="flex items-center mb-4">
+                    <div className="grid grid-cols-1 gap-4 mb-3">
+                      <div className="bg-white rounded-lg p-4 px-0">
+                        <div className="flex items-center mb-4">
                           <img
                             src={require("../assets/man.jpg")}
                             alt="User"
-                            class="rounded-full h-12 w-12 mr-4 object-cover"
+                            className="rounded-full h-12 w-12 mr-4 object-cover"
                           />
                           <div>
-                            <h3 class="font-medium text-sm">John Doe</h3>
+                            <h3 className="font-medium text-sm">John Doe</h3>
                             <div className="flex flex-row gap-3 items-center">
                               <div className="flex flex-row items-center gap-1">
                                 <svg
@@ -816,11 +818,13 @@ function GigDetails() {
                                 </svg>
                                 <span>4.0</span>
                               </div>
-                              <p class="text-gray-500 text-sm">May 15, 2023</p>
+                              <p className="text-gray-500 text-sm">
+                                May 15, 2023
+                              </p>
                             </div>
                           </div>
                         </div>
-                        <p class="text-gray-800">
+                        <p className="text-gray-800">
                           Aliquam hendrerit sollicitudin purus, quis rutrum mi
                           accumsan nec. Quisque bibendum orci ac nibh facilisis,
                           at malesuada orci congue. Nullam tempus sollicitudin
@@ -828,16 +832,16 @@ function GigDetails() {
                         </p>
                       </div>
                     </div>
-                    <div class="grid grid-cols-1 gap-4 mb-3">
-                      <div class="bg-white rounded-lg p-4 px-0">
-                        <div class="flex items-center mb-4">
+                    <div className="grid grid-cols-1 gap-4 mb-3">
+                      <div className="bg-white rounded-lg p-4 px-0">
+                        <div className="flex items-center mb-4">
                           <img
                             src={require("../assets/man.jpg")}
                             alt="User"
-                            class="rounded-full h-12 w-12 mr-4 object-cover"
+                            className="rounded-full h-12 w-12 mr-4 object-cover"
                           />
                           <div>
-                            <h3 class="font-medium text-sm">John Doe</h3>
+                            <h3 className="font-medium text-sm">John Doe</h3>
                             <div className="flex flex-row gap-3 items-center">
                               <div className="flex flex-row items-center gap-1">
                                 <svg
@@ -854,11 +858,13 @@ function GigDetails() {
                                 </svg>
                                 <span>4.0</span>
                               </div>
-                              <p class="text-gray-500 text-sm">May 15, 2023</p>
+                              <p className="text-gray-500 text-sm">
+                                May 15, 2023
+                              </p>
                             </div>
                           </div>
                         </div>
-                        <p class="text-gray-800">
+                        <p className="text-gray-800">
                           Aliquam hendrerit sollicitudin purus, quis rutrum mi
                           accumsan nec. Quisque bibendum orci ac nibh facilisis,
                           at malesuada orci congue. Nullam tempus sollicitudin
@@ -912,9 +918,9 @@ function GigDetails() {
             </div>
 
             <div className="md:w-1/3 w-full">
-              <div class="md:sticky relative top-0">
+              <div className="md:sticky relative top-0">
                 <div className="border shadow-lg rounded-xl shadow-gray-200 border-gray-100">
-                  <div class="w-full">
+                  <div className="w-full">
                     <Tabs
                       className="w-full"
                       selectedTabClassName="border-nft-primary-light text-nft-primary-light opacity-100 bg-purple-100"
@@ -1032,22 +1038,22 @@ function GigDetails() {
                     About The Seller
                   </div>
 
-                  <div class="grid grid-cols-1 gap-4 mb-3">
-                    <div class="bg-white rounded-lg">
-                      <div class="flex items-center mb-6 border-b border-gray-100 pb-7">
+                  <div className="grid grid-cols-1 gap-4 mb-3">
+                    <div className="bg-white rounded-lg">
+                      <div className="flex items-center mb-6 border-b border-gray-100 pb-7">
                         <img
                           src={require("../assets/man.jpg")}
                           alt="User"
-                          class="rounded-full h-24 w-24 mr-4 object-cover"
+                          className="rounded-full h-24 w-24 mr-4 object-cover"
                         />
                         <div>
-                          <h3 class="font-medium text-lg">John Doe</h3>
+                          <h3 className="font-medium text-lg">John Doe</h3>
                           <div className="flex flex-row gap-3 items-center">
                             <div className="flex flex-row items-center gap-1">
                               <StarIcon className="w-5 h-5 fill-yellow-500" />
                               <span>4.0</span>
                             </div>
-                            <p class="text-gray-500 text-sm">(4 reviews)</p>
+                            <p className="text-gray-500 text-sm">(4 reviews)</p>
                           </div>
                         </div>
                       </div>
@@ -1108,15 +1114,15 @@ function GigDetails() {
           <div className="container mx-auto mb-28">
             <h1 className="text-2xl py-4 pb-6 font-bold">Related Services</h1>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1">
               {/* cards */}
 
               <div className="decoration-transparent shadow-sm shadow-gray-50 rounded-xl transition-all duration-300 p-0 m-2 block hover:scale-105 transform bg-white">
                 <div className="relative shadow-lg rounded-md shadow-gray-200">
                   <div className="max-w-sm rounded-md overflow-hidden pb-2">
                     <div className="absolute top-2 right-2">
-                      <button class="p-2 bg-white hover:bg-nft-primary-light text-gray-500 rounded-full group">
-                        <HeartIcon class="w-5 h-5 group-hover:stroke-white group-hover:fill-white" />
+                      <button className="p-2 bg-white hover:bg-nft-primary-light text-gray-500 rounded-full group">
+                        <HeartIcon className="w-5 h-5 group-hover:stroke-white group-hover:fill-white" />
                       </button>
                     </div>
 
@@ -1199,8 +1205,8 @@ function GigDetails() {
                 <div className="relative shadow-lg rounded-md shadow-gray-200">
                   <div className="max-w-sm rounded-md overflow-hidden pb-2">
                     <div className="absolute top-2 right-2">
-                      <button class="p-2 bg-white hover:bg-nft-primary-light text-gray-500 rounded-full group">
-                        <HeartIcon class="w-5 h-5 group-hover:stroke-white group-hover:fill-white" />
+                      <button className="p-2 bg-white hover:bg-nft-primary-light text-gray-500 rounded-full group">
+                        <HeartIcon className="w-5 h-5 group-hover:stroke-white group-hover:fill-white" />
                       </button>
                     </div>
 
@@ -1283,8 +1289,8 @@ function GigDetails() {
                 <div className="relative shadow-lg rounded-md shadow-gray-200">
                   <div className="max-w-sm rounded-md overflow-hidden pb-2">
                     <div className="absolute top-2 right-2">
-                      <button class="p-2 bg-white hover:bg-nft-primary-light text-gray-500 rounded-full group">
-                        <HeartIcon class="w-5 h-5 group-hover:stroke-white group-hover:fill-white" />
+                      <button className="p-2 bg-white hover:bg-nft-primary-light text-gray-500 rounded-full group">
+                        <HeartIcon className="w-5 h-5 group-hover:stroke-white group-hover:fill-white" />
                       </button>
                     </div>
 
@@ -1367,8 +1373,8 @@ function GigDetails() {
                 <div className="relative shadow-lg rounded-md shadow-gray-200">
                   <div className="max-w-sm rounded-md overflow-hidden pb-2">
                     <div className="absolute top-2 right-2">
-                      <button class="p-2 bg-white hover:bg-nft-primary-light text-gray-500 rounded-full group">
-                        <HeartIcon class="w-5 h-5 group-hover:stroke-white group-hover:fill-white" />
+                      <button className="p-2 bg-white hover:bg-nft-primary-light text-gray-500 rounded-full group">
+                        <HeartIcon className="w-5 h-5 group-hover:stroke-white group-hover:fill-white" />
                       </button>
                     </div>
 

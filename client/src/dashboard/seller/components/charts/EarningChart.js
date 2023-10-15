@@ -39,9 +39,9 @@ const EarningChart = () => {
         const yValue = series[seriesIndex][dataPointIndex]; // Get the y-value
 
         return (
-          '<div class="py-1 px-4 bg-white shadow-md text-center border-none shadow-gray-300">' +
-          `<span class="text-xs font-bold block">$${yValue}</span>` +
-          `<span class="text-xs block">${xLabel}</span>` +
+          '<div className="py-1 px-4 bg-white shadow-md text-center border-none shadow-gray-300">' +
+          `<span className="text-xs font-bold block">$${yValue}</span>` +
+          `<span className="text-xs block">${xLabel}</span>` +
           "</div>"
         );
       },

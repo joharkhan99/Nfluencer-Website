@@ -63,39 +63,39 @@ function NFTDetail() {
     <>
       <Header transparent={true} />
       <div className="container mx-auto my-10">
-        <div class="flex flex-col md:flex-row gap-16">
-          <div class="md:w-1/2">
+        <div className="flex flex-col md:flex-row gap-16">
+          <div className="md:w-1/2">
             <img
               src={require("../assets/nft4.jpg")}
               alt="NFT Imasge"
-              class="rounded-lg h-auto w-full md:h-full object-cover"
+              className="rounded-lg h-auto w-full md:h-full object-cover"
             />
           </div>
 
-          <div class="md:w-1/2 ">
-            <div class="flex items-center justify-between mb-4">
+          <div className="md:w-1/2 ">
+            <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div class="p-3 px-5 bg-white text-black rounded-full border">
-                  <button class="flex items-center">
+                <div className="p-3 px-5 bg-white text-black rounded-full border">
+                  <button className="flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
-                      class="w-5 h-5"
+                      className="w-5 h-5"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                       ></path>
                     </svg>
-                    <span class="pl-2 font-bold text-sm">36</span>
+                    <span className="pl-2 font-bold text-sm">36</span>
                   </button>
                 </div>
-                <div class="p-3 px-5 bg-white text-black rounded-full">
-                  <button class="flex items-center">
+                <div className="p-3 px-5 bg-white text-black rounded-full">
+                  <button className="flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -116,62 +116,62 @@ function NFTDetail() {
                       />
                     </svg>
 
-                    <span class="pl-2 font-bold text-sm">124.6k</span>
+                    <span className="pl-2 font-bold text-sm">124.6k</span>
                   </button>
                 </div>
               </div>
-              <button class="font-bold text-xl hover:bg-gray-100 rounded-full w-9 h-9 border text-center">
+              <button className="font-bold text-xl hover:bg-gray-100 rounded-full w-9 h-9 border text-center">
                 <span>···</span>
               </button>
             </div>
 
-            <h1 class="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
+            <h1 className="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
               HypeFellaz #1428
             </h1>
-            <div class="flex items-center text-gray-500 text-sm my-3 mb-7">
+            <div className="flex items-center text-gray-500 text-sm my-3 mb-7">
               <img
                 src={require("../assets/bitcoin.png")}
                 alt="sd"
-                class="h-5 w-5 object-contain"
+                className="h-5 w-5 object-contain"
               />
-              <span class="pl-2">
+              <span className="pl-2">
                 on Sale for{" "}
-                <span class="font-bold text-sm text-black">2.68 BTC</span>
+                <span className="font-bold text-sm text-black">2.68 BTC</span>
               </span>
             </div>
 
-            <p class="text-sm">
+            <p className="text-sm">
               A collection of 10,000 undead NFTs minted on the Etereum
               blockchain. Each unique Deadfella is randomly generated from a
               combination of over 400 individually
             </p>
 
-            <div class="flex items-center mt-7 justify-between">
+            <div className="flex items-center mt-7 justify-between">
               <div>
                 <span className="text-sm mb-4 block">
                   <span className="text-black font-semibold">Creator</span>
                   <span className="text-gray-500 ml-1">0% royalities</span>
                 </span>
-                <a href="s" class="flex items-center">
+                <a href="s" className="flex items-center">
                   <img
                     src={require("../assets/user2.jpeg")}
                     alt="User Imasge"
-                    class="rounded-full h-10 w-10"
+                    className="rounded-full h-10 w-10"
                   />
-                  <span class="ml-2 font-bold">0x330cd8fec...8b7c</span>
+                  <span className="ml-2 font-bold">0x330cd8fec...8b7c</span>
                 </a>
               </div>
               <div>
                 <span className="text-sm mb-4 block">
                   <span className="text-black font-semibold">Collection</span>
                 </span>
-                <a href="s" class="flex items-center">
+                <a href="s" className="flex items-center">
                   <img
                     src={require("../assets/nft1.jpg")}
                     alt="User Imasge"
-                    class="rounded-full h-10 w-10"
+                    className="rounded-full h-10 w-10"
                   />
-                  <span class="ml-2 font-bold">Fellaz Collection</span>
+                  <span className="ml-2 font-bold">Fellaz Collection</span>
                 </a>
               </div>
             </div>
@@ -182,7 +182,7 @@ function NFTDetail() {
                 <img
                   src={require("../assets/bitcoin.png")}
                   alt="sd"
-                  class="h-5 w-5 object-contain"
+                  className="h-5 w-5 object-contain"
                 />
                 <span>Bitcoin</span>
               </div>
@@ -212,29 +212,29 @@ function NFTDetail() {
               <div className="text-black font-bold flex gap-2 mb-4">
                 Properties
               </div>
-              <div class="flex gap-3 flex-row justify-start flex-wrap">
-                <div class="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
+              <div className="flex gap-3 flex-row justify-start flex-wrap">
+                <div className="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
                   <label>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"
-                      stroke-width="1.5"
+                      strokeWidth="1.5"
                       stroke="currentColor"
-                      class="w-4 h-4"
+                      className="w-4 h-4"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0l4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0l-5.571 3-5.571-3"
                       ></path>
                     </svg>
                   </label>
-                  <div class=" outline-none cursor-pointer bg-transparent">
+                  <div className=" outline-none cursor-pointer bg-transparent">
                     Background: Blue
                   </div>
                 </div>
-                <div class="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
+                <div className="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
                   <label>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -251,11 +251,11 @@ function NFTDetail() {
                       />
                     </svg>
                   </label>
-                  <div class=" outline-none cursor-pointer bg-transparent">
+                  <div className=" outline-none cursor-pointer bg-transparent">
                     Mouth grade: Fresh
                   </div>
                 </div>
-                <div class="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
+                <div className="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
                   <label>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -272,11 +272,11 @@ function NFTDetail() {
                       />
                     </svg>
                   </label>
-                  <div class=" outline-none cursor-pointer bg-transparent">
+                  <div className=" outline-none cursor-pointer bg-transparent">
                     2400 x 2278 px (1.72MB)
                   </div>
                 </div>
-                <div class="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
+                <div className="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
                   <label>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -293,12 +293,12 @@ function NFTDetail() {
                       />
                     </svg>
                   </label>
-                  <div class=" outline-none cursor-pointer bg-transparent">
+                  <div className=" outline-none cursor-pointer bg-transparent">
                     Body: Red
                   </div>
                 </div>
-                <div class="flex flex-row border bg-gray-100 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-200 text-gray-500">
-                  <div class=" outline-none cursor-pointer bg-transparent">
+                <div className="flex flex-row border bg-gray-100 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-200 text-gray-500">
+                  <div className=" outline-none cursor-pointer bg-transparent">
                     See more
                   </div>
                 </div>
@@ -307,14 +307,14 @@ function NFTDetail() {
 
             <div className="mt-4 p-6 shadow-lg rounded-xl">
               <span className="text-gray-500 text-sm font-bold">Top bid</span>
-              <div class="flex items-center text-gray-500 text-sm my-3 mb-7">
+              <div className="flex items-center text-gray-500 text-sm my-3 mb-7">
                 <img
                   src={require("../assets/bitcoin.png")}
                   alt="sd"
-                  class="h-10 w-10 object-contain bg-orange-100 rounded-full p-2"
+                  className="h-10 w-10 object-contain bg-orange-100 rounded-full p-2"
                 />
-                <span class="pl-2">
-                  <span class="font-bold text-lg text-black">
+                <span className="pl-2">
+                  <span className="font-bold text-lg text-black">
                     2.68 BTC ($9118.1 USD)
                   </span>
                 </span>
@@ -324,7 +324,7 @@ function NFTDetail() {
                 <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm w-full font-semibold">
                   Place your bid
                 </button>
-                <button class="bg-nft-primary-transparent rounded-full px-6 py-3 font-semibold text-sm text-nft-primary-light w-full hover:bg-nft-primary-light hover:text-white duration-300 transition-colors">
+                <button className="bg-nft-primary-transparent rounded-full px-6 py-3 font-semibold text-sm text-nft-primary-light w-full hover:bg-nft-primary-light hover:text-white duration-300 transition-colors">
                   <span>Save for later</span>
                 </button>
               </div>
@@ -334,26 +334,41 @@ function NFTDetail() {
 
         <div className="flex flex-col md:flex-row md:gap-16 mt-12">
           <div className="md:w-1/2">
-            <div class="relative overflow-x-auto border-2 p-5 rounded-xl">
+            <div className="relative overflow-x-auto border-2 p-5 rounded-xl">
               <div className="text-lg font-extrabold border-b-2 pb-4 pt-2">
                 Offers
               </div>
-              <table class="w-full text-sm text-start">
-                <thead class="text-xs text-gray-500 ">
+              <table className="w-full text-sm text-start">
+                <thead className="text-xs text-gray-500 ">
                   <tr>
-                    <th scope="col" class="text-start font-semibold py-6 pb-3">
+                    <th
+                      scope="col"
+                      className="text-start font-semibold py-6 pb-3"
+                    >
                       Price
                     </th>
-                    <th scope="col" class="text-start font-semibold py-6 pb-3">
+                    <th
+                      scope="col"
+                      className="text-start font-semibold py-6 pb-3"
+                    >
                       USD Price
                     </th>
-                    <th scope="col" class="text-start font-semibold py-6 pb-3">
+                    <th
+                      scope="col"
+                      className="text-start font-semibold py-6 pb-3"
+                    >
                       Difference
                     </th>
-                    <th scope="col" class="text-start font-semibold py-6 pb-3">
+                    <th
+                      scope="col"
+                      className="text-start font-semibold py-6 pb-3"
+                    >
                       Expiration
                     </th>
-                    <th scope="col" class="text-start font-semibold py-6 pb-3">
+                    <th
+                      scope="col"
+                      className="text-start font-semibold py-6 pb-3"
+                    >
                       From
                     </th>
                   </tr>
@@ -361,14 +376,14 @@ function NFTDetail() {
                 <tbody>
                   <tr className="border-b-2">
                     <td className="pb-5 pt-5">
-                      <div class="flex items-center text-sm">
+                      <div className="flex items-center text-sm">
                         <img
                           src={require("../assets/bitcoin.png")}
                           alt="sd"
-                          class="h-5 w-5 object-contain"
+                          className="h-5 w-5 object-contain"
                         />
-                        <span class="pl-2">
-                          <span class="font-bold text-sm text-black">
+                        <span className="pl-2">
+                          <span className="font-bold text-sm text-black">
                             2.68 BTC
                           </span>
                         </span>
@@ -381,14 +396,14 @@ function NFTDetail() {
                   </tr>
                   <tr className="border-b-2">
                     <td className="pb-5 pt-5">
-                      <div class="flex items-center text-sm">
+                      <div className="flex items-center text-sm">
                         <img
                           src={require("../assets/bitcoin.png")}
                           alt="sd"
-                          class="h-5 w-5 object-contain"
+                          className="h-5 w-5 object-contain"
                         />
-                        <span class="pl-2">
-                          <span class="font-bold text-sm text-black">
+                        <span className="pl-2">
+                          <span className="font-bold text-sm text-black">
                             3.68 BTC
                           </span>
                         </span>
@@ -401,14 +416,14 @@ function NFTDetail() {
                   </tr>
                   <tr className="border-b-2">
                     <td className="pb-5 pt-5">
-                      <div class="flex items-center text-sm">
+                      <div className="flex items-center text-sm">
                         <img
                           src={require("../assets/bitcoin.png")}
                           alt="sd"
-                          class="h-5 w-5 object-contain"
+                          className="h-5 w-5 object-contain"
                         />
-                        <span class="pl-2">
-                          <span class="font-bold text-sm text-black">
+                        <span className="pl-2">
+                          <span className="font-bold text-sm text-black">
                             10 BTC
                           </span>
                         </span>
@@ -421,14 +436,14 @@ function NFTDetail() {
                   </tr>
                   <tr className="border-b-2">
                     <td className="pb-5 pt-5">
-                      <div class="flex items-center text-sm">
+                      <div className="flex items-center text-sm">
                         <img
                           src={require("../assets/bitcoin.png")}
                           alt="sd"
-                          class="h-5 w-5 object-contain"
+                          className="h-5 w-5 object-contain"
                         />
-                        <span class="pl-2">
-                          <span class="font-bold text-sm text-black">
+                        <span className="pl-2">
+                          <span className="font-bold text-sm text-black">
                             2.68 BTC
                           </span>
                         </span>
@@ -441,14 +456,14 @@ function NFTDetail() {
                   </tr>
                   <tr>
                     <td className="pb-5 pt-5">
-                      <div class="flex items-center text-sm">
+                      <div className="flex items-center text-sm">
                         <img
                           src={require("../assets/bitcoin.png")}
                           alt="sd"
-                          class="h-5 w-5 object-contain"
+                          className="h-5 w-5 object-contain"
                         />
-                        <span class="pl-2">
-                          <span class="font-bold text-sm text-black">
+                        <span className="pl-2">
+                          <span className="font-bold text-sm text-black">
                             3.68 BTC
                           </span>
                         </span>
@@ -464,7 +479,7 @@ function NFTDetail() {
             </div>
           </div>
           <div className="md:w-1/2 flex">
-            <div class="w-full border-2 p-5 rounded-xl">
+            <div className="w-full border-2 p-5 rounded-xl">
               <div className="text-lg font-extrabold border-b-2 pb-4 pt-2">
                 Price History
               </div>
@@ -520,42 +535,57 @@ function NFTDetail() {
 
         <div className="flex flex-col md:flex-row md:gap-16 mt-12">
           <div className="w-full">
-            <div class="relative overflow-x-auto border-2 p-5 rounded-xl">
+            <div className="relative overflow-x-auto border-2 p-5 rounded-xl">
               <div className="flex justify-between items-center border-b-2">
                 <div className="text-lg font-extrabold pb-4 pt-2">
                   Item Activity
                 </div>
                 <div className="flex gap-3 flex-row justify-start flex-wrap">
-                  <div class="border border-nft-primary-transparent bg-nft-primary-transparent text-nft-primary-light rounded-full p-2 px-3 text-sm font-semibold items-center cursor-pointer">
+                  <div className="border border-nft-primary-transparent bg-nft-primary-transparent text-nft-primary-light rounded-full p-2 px-3 text-sm font-semibold items-center cursor-pointer">
                     Listings
                   </div>
-                  <div class="border border-gray-200 rounded-full p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100 cursor-pointer">
+                  <div className="border border-gray-200 rounded-full p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100 cursor-pointer">
                     Sales
                   </div>
-                  <div class="border border-nft-primary-transparent bg-nft-primary-transparent text-nft-primary-light rounded-full p-2 px-3 text-sm font-semibold items-center cursor-pointer">
+                  <div className="border border-nft-primary-transparent bg-nft-primary-transparent text-nft-primary-light rounded-full p-2 px-3 text-sm font-semibold items-center cursor-pointer">
                     Bids
                   </div>
-                  <div class="border border-gray-200 rounded-full p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100 cursor-pointer">
+                  <div className="border border-gray-200 rounded-full p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100 cursor-pointer">
                     Transfers
                   </div>
                 </div>
               </div>
-              <table class="w-full text-sm text-start">
-                <thead class="text-xs text-gray-500 ">
+              <table className="w-full text-sm text-start">
+                <thead className="text-xs text-gray-500 ">
                   <tr>
-                    <th scope="col" class="text-start font-semibold py-6 pb-3">
+                    <th
+                      scope="col"
+                      className="text-start font-semibold py-6 pb-3"
+                    >
                       Event
                     </th>
-                    <th scope="col" class="text-start font-semibold py-6 pb-3">
+                    <th
+                      scope="col"
+                      className="text-start font-semibold py-6 pb-3"
+                    >
                       Price
                     </th>
-                    <th scope="col" class="text-start font-semibold py-6 pb-3">
+                    <th
+                      scope="col"
+                      className="text-start font-semibold py-6 pb-3"
+                    >
                       From
                     </th>
-                    <th scope="col" class="text-start font-semibold py-6 pb-3">
+                    <th
+                      scope="col"
+                      className="text-start font-semibold py-6 pb-3"
+                    >
                       To
                     </th>
-                    <th scope="col" class="text-start font-semibold py-6 pb-3">
+                    <th
+                      scope="col"
+                      className="text-start font-semibold py-6 pb-3"
+                    >
                       Date
                     </th>
                   </tr>
@@ -563,7 +593,7 @@ function NFTDetail() {
                 <tbody>
                   <tr className="border-b-2">
                     <td className="pb-5 pt-5">
-                      <div class="flex items-center text-sm">
+                      <div className="flex items-center text-sm">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -579,8 +609,8 @@ function NFTDetail() {
                           />
                         </svg>
 
-                        <span class="pl-2">
-                          <span class="font-bold text-sm text-black">
+                        <span className="pl-2">
+                          <span className="font-bold text-sm text-black">
                             Transfer
                           </span>
                         </span>
@@ -593,7 +623,7 @@ function NFTDetail() {
                   </tr>
                   <tr className="border-b-2">
                     <td className="pb-5 pt-5">
-                      <div class="flex items-center text-sm">
+                      <div className="flex items-center text-sm">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -609,20 +639,22 @@ function NFTDetail() {
                           />
                         </svg>
 
-                        <span class="pl-2">
-                          <span class="font-bold text-sm text-black">Sale</span>
+                        <span className="pl-2">
+                          <span className="font-bold text-sm text-black">
+                            Sale
+                          </span>
                         </span>
                       </div>
                     </td>
                     <td className="pb-5 pt-5">
-                      <div class="flex items-center text-sm">
+                      <div className="flex items-center text-sm">
                         <img
                           src={require("../assets/bitcoin.png")}
                           alt="sd"
-                          class="h-5 w-5 object-contain"
+                          className="h-5 w-5 object-contain"
                         />
-                        <span class="pl-2">
-                          <span class="font-bold text-sm text-black">
+                        <span className="pl-2">
+                          <span className="font-bold text-sm text-black">
                             2.52 BTC
                           </span>
                         </span>
@@ -634,7 +666,7 @@ function NFTDetail() {
                   </tr>
                   <tr className="border-b-2">
                     <td className="pb-5 pt-5">
-                      <div class="flex items-center text-sm">
+                      <div className="flex items-center text-sm">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -650,20 +682,22 @@ function NFTDetail() {
                           />
                         </svg>
 
-                        <span class="pl-2">
-                          <span class="font-bold text-sm text-black">Sale</span>
+                        <span className="pl-2">
+                          <span className="font-bold text-sm text-black">
+                            Sale
+                          </span>
                         </span>
                       </div>
                     </td>
                     <td className="pb-5 pt-5">
-                      <div class="flex items-center text-sm">
+                      <div className="flex items-center text-sm">
                         <img
                           src={require("../assets/bitcoin.png")}
                           alt="sd"
-                          class="h-5 w-5 object-contain"
+                          className="h-5 w-5 object-contain"
                         />
-                        <span class="pl-2">
-                          <span class="font-bold text-sm text-black">
+                        <span className="pl-2">
+                          <span className="font-bold text-sm text-black">
                             3.65 BTC
                           </span>
                         </span>
@@ -675,7 +709,7 @@ function NFTDetail() {
                   </tr>
                   <tr className="border-b-2">
                     <td className="pb-5 pt-5">
-                      <div class="flex items-center text-sm">
+                      <div className="flex items-center text-sm">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -691,8 +725,8 @@ function NFTDetail() {
                           />
                         </svg>
 
-                        <span class="pl-2">
-                          <span class="font-bold text-sm text-black">
+                        <span className="pl-2">
+                          <span className="font-bold text-sm text-black">
                             Transfer
                           </span>
                         </span>
@@ -705,7 +739,7 @@ function NFTDetail() {
                   </tr>
                   <tr>
                     <td className="pb-5 pt-5">
-                      <div class="flex items-center text-sm">
+                      <div className="flex items-center text-sm">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -721,20 +755,22 @@ function NFTDetail() {
                           />
                         </svg>
 
-                        <span class="pl-2">
-                          <span class="font-bold text-sm text-black">Sale</span>
+                        <span className="pl-2">
+                          <span className="font-bold text-sm text-black">
+                            Sale
+                          </span>
                         </span>
                       </div>
                     </td>
                     <td className="pb-5 pt-5">
-                      <div class="flex items-center text-sm">
+                      <div className="flex items-center text-sm">
                         <img
                           src={require("../assets/bitcoin.png")}
                           alt="sd"
-                          class="h-5 w-5 object-contain"
+                          className="h-5 w-5 object-contain"
                         />
-                        <span class="pl-2">
-                          <span class="font-bold text-sm text-black">
+                        <span className="pl-2">
+                          <span className="font-bold text-sm text-black">
                             4.32 BTC
                           </span>
                         </span>
@@ -750,40 +786,40 @@ function NFTDetail() {
           </div>
         </div>
 
-        <div class="py-11">
-          <h1 class="text-2xl font-extrabold tracking-tight text-black sm:text-2xl">
+        <div className="py-11">
+          <h1 className="text-2xl font-extrabold tracking-tight text-black sm:text-2xl">
             More from this collection
           </h1>
 
-          <div class="flex flex-wrap justify-center gap-6 mt-12">
+          <div className="flex flex-wrap justify-center gap-6 mt-12">
             <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-4 px-4 border transition-colors duration-300">
-              <div class="w-64 ">
-                <div class="flex justify-between items-center mb-5">
-                  <div class="flex -space-x-2">
+              <div className="w-64 ">
+                <div className="flex justify-between items-center mb-5">
+                  <div className="flex -space-x-2">
                     <img
-                      class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
                       src={require("../assets/user1.jpeg")}
                       alt="User Imageas"
                     />
                     <img
-                      class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
                       src={require("../assets/user2.jpeg")}
                       alt="User Imageas"
                     />
                     <img
-                      class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
                       src={require("../assets/user3.webp")}
                       alt="User Imageas"
                     />
                   </div>
-                  <div class="flex items-center justify-center">
+                  <div className="flex items-center justify-center">
                     <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
                       <span>···</span>
                     </button>
                   </div>
                 </div>
                 <div
-                  class="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                  className="h-auto rounded-xl bg-gray-200 overflow-hidden"
                   style={{ height: "300px" }}
                 >
                   <img
@@ -792,13 +828,13 @@ function NFTDetail() {
                     className="h-full w-full object-cover"
                   />
                 </div>
-                <div class="pt-3">
-                  <h3 class="text-xl font-bold tracking-tight text-black">
+                <div className="pt-3">
+                  <h3 className="text-xl font-bold tracking-tight text-black">
                     Diamond Ride
                   </h3>
 
-                  <div class="flex justify-between items-center mt-2">
-                    <div class="flex items-center text-gray-500 text-sm mt-2">
+                  <div className="flex justify-between items-center mt-2">
+                    <div className="flex items-center text-gray-500 text-sm mt-2">
                       <img
                         src={require("../assets/eth.png")}
                         alt="sd"
@@ -812,7 +848,7 @@ function NFTDetail() {
                       </span>
                     </div>
 
-                    <div class="flex items-center">
+                    <div className="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -827,7 +863,7 @@ function NFTDetail() {
                           d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                         />
                       </svg>
-                      <span class="pl-1 font-bold text-sm">10</span>
+                      <span className="pl-1 font-bold text-sm">10</span>
                     </div>
                   </div>
                 </div>
@@ -835,28 +871,28 @@ function NFTDetail() {
             </div>
 
             <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-4 px-4 border transition-colors duration-300">
-              <div class="w-64 ">
-                <div class="flex justify-between items-center mb-5">
-                  <div class="flex -space-x-2">
+              <div className="w-64 ">
+                <div className="flex justify-between items-center mb-5">
+                  <div className="flex -space-x-2">
                     <img
-                      class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
                       src={require("../assets/user2.jpeg")}
                       alt="User Imageas"
                     />
                     <img
-                      class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
                       src={require("../assets/user3.webp")}
                       alt="User Imageas"
                     />
                   </div>
-                  <div class="flex items-center justify-center">
+                  <div className="flex items-center justify-center">
                     <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
                       <span>···</span>
                     </button>
                   </div>
                 </div>
                 <div
-                  class="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                  className="h-auto rounded-xl bg-gray-200 overflow-hidden"
                   style={{ height: "300px" }}
                 >
                   <img
@@ -865,13 +901,13 @@ function NFTDetail() {
                     className="h-full w-full object-cover"
                   />
                 </div>
-                <div class="pt-3">
-                  <h3 class="text-xl font-bold tracking-tight text-black">
+                <div className="pt-3">
+                  <h3 className="text-xl font-bold tracking-tight text-black">
                     Silent Ghost
                   </h3>
 
-                  <div class="flex justify-between items-center mt-2">
-                    <div class="flex items-center text-gray-500 text-sm mt-2">
+                  <div className="flex justify-between items-center mt-2">
+                    <div className="flex items-center text-gray-500 text-sm mt-2">
                       <img
                         src={require("../assets/theta.png")}
                         alt="sd"
@@ -885,7 +921,7 @@ function NFTDetail() {
                       </span>
                     </div>
 
-                    <div class="flex items-center">
+                    <div className="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -900,7 +936,7 @@ function NFTDetail() {
                           d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                         />
                       </svg>
-                      <span class="pl-1 font-bold text-sm">29</span>
+                      <span className="pl-1 font-bold text-sm">29</span>
                     </div>
                   </div>
                 </div>
@@ -908,23 +944,23 @@ function NFTDetail() {
             </div>
 
             <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-4 px-4 border transition-colors duration-300">
-              <div class="w-64 ">
-                <div class="flex justify-between items-center mb-5">
-                  <div class="flex -space-x-2">
+              <div className="w-64 ">
+                <div className="flex justify-between items-center mb-5">
+                  <div className="flex -space-x-2">
                     <img
-                      class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
                       src={require("../assets/user1.jpeg")}
                       alt="User Imageas"
                     />
                   </div>
-                  <div class="flex items-center justify-center">
+                  <div className="flex items-center justify-center">
                     <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
                       <span>···</span>
                     </button>
                   </div>
                 </div>
                 <div
-                  class="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                  className="h-auto rounded-xl bg-gray-200 overflow-hidden"
                   style={{ height: "300px" }}
                 >
                   <img
@@ -933,13 +969,13 @@ function NFTDetail() {
                     className="h-full w-full object-cover"
                   />
                 </div>
-                <div class="pt-3">
-                  <h3 class="text-xl font-bold tracking-tight text-black">
+                <div className="pt-3">
+                  <h3 className="text-xl font-bold tracking-tight text-black">
                     Egg Galaxy
                   </h3>
 
-                  <div class="flex justify-between items-center mt-2">
-                    <div class="flex items-center text-gray-500 text-sm mt-2">
+                  <div className="flex justify-between items-center mt-2">
+                    <div className="flex items-center text-gray-500 text-sm mt-2">
                       <img
                         src={require("../assets/uniswap.png")}
                         alt="sd"
@@ -953,7 +989,7 @@ function NFTDetail() {
                       </span>
                     </div>
 
-                    <div class="flex items-center">
+                    <div className="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -968,7 +1004,7 @@ function NFTDetail() {
                           d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                         />
                       </svg>
-                      <span class="pl-1 font-bold text-sm">15</span>
+                      <span className="pl-1 font-bold text-sm">15</span>
                     </div>
                   </div>
                 </div>
@@ -976,33 +1012,33 @@ function NFTDetail() {
             </div>
 
             <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-4 px-4 border transition-colors duration-300">
-              <div class="w-64 ">
-                <div class="flex justify-between items-center mb-5">
-                  <div class="flex -space-x-2">
+              <div className="w-64 ">
+                <div className="flex justify-between items-center mb-5">
+                  <div className="flex -space-x-2">
                     <img
-                      class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
                       src={require("../assets/user3.webp")}
                       alt="User Imageas"
                     />
                     <img
-                      class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
                       src={require("../assets/user1.jpeg")}
                       alt="User Imageas"
                     />
                     <img
-                      class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
                       src={require("../assets/user2.jpeg")}
                       alt="User Imageas"
                     />
                   </div>
-                  <div class="flex items-center justify-center">
+                  <div className="flex items-center justify-center">
                     <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
                       <span>···</span>
                     </button>
                   </div>
                 </div>
                 <div
-                  class="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                  className="h-auto rounded-xl bg-gray-200 overflow-hidden"
                   style={{ height: "300px" }}
                 >
                   <img
@@ -1011,13 +1047,13 @@ function NFTDetail() {
                     className="h-full w-full object-cover"
                   />
                 </div>
-                <div class="pt-3">
-                  <h3 class="text-xl font-bold tracking-tight text-black">
+                <div className="pt-3">
+                  <h3 className="text-xl font-bold tracking-tight text-black">
                     Urban Life
                   </h3>
 
-                  <div class="flex justify-between items-center mt-2">
-                    <div class="flex items-center text-gray-500 text-sm mt-2">
+                  <div className="flex justify-between items-center mt-2">
+                    <div className="flex items-center text-gray-500 text-sm mt-2">
                       <img
                         src={require("../assets/bitcoin.png")}
                         alt="sd"
@@ -1031,7 +1067,7 @@ function NFTDetail() {
                       </span>
                     </div>
 
-                    <div class="flex items-center">
+                    <div className="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -1046,7 +1082,7 @@ function NFTDetail() {
                           d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                         />
                       </svg>
-                      <span class="pl-1 font-bold text-sm">35</span>
+                      <span className="pl-1 font-bold text-sm">35</span>
                     </div>
                   </div>
                 </div>

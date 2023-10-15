@@ -21,8 +21,8 @@ const Stats = () => {
       <Header transparent={true} />
       <div className="mt-14">
         <div className="container mx-auto">
-          <div class="mb-11">
-            <h1 class="text-4xl font-bold tracking-tight text-black sm:text-4xl">
+          <div className="mb-11">
+            <h1 className="text-4xl font-bold tracking-tight text-black sm:text-4xl">
               Collection stats
             </h1>
           </div>
@@ -158,19 +158,19 @@ const Stats = () => {
                                 fill="none"
                                 points="   18,40 40,5 62,40 40,53  "
                                 stroke="#000000"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                                 stroke-miterlimit="10"
-                                stroke-width="4"
+                                strokeWidth="4"
                               />
                               <polygon
                                 fill="none"
                                 points="   18,48 40,75 62,48 40,61  "
                                 stroke="#000000"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                                 stroke-miterlimit="10"
-                                stroke-width="4"
+                                strokeWidth="4"
                               />
                             </g>
                           </svg>
@@ -341,7 +341,7 @@ const Stats = () => {
           </div>
 
           {/* <div className="text-center mt-14">
-            <button class="bg-nft-primary-transparent rounded-full px-6 py-3 font-semibold text-sm text-nft-primary-light w-1/5 hover:bg-nft-primary-light hover:text-white duration-300 transition-colors">
+            <button className="bg-nft-primary-transparent rounded-full px-6 py-3 font-semibold text-sm text-nft-primary-light w-1/5 hover:bg-nft-primary-light hover:text-white duration-300 transition-colors">
               <span>Load More</span>
             </button>
           </div> */}

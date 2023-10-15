@@ -85,8 +85,8 @@ function Explore() {
     <>
       <Header transparent={true} />
       <div className="container mx-auto">
-        <div class="py-11 pt-0">
-          {/* <h1 class="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
+        <div className="py-11 pt-0">
+          {/* <h1 className="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
             Explore NFTs
           </h1> */}
 
@@ -345,7 +345,7 @@ function Explore() {
                         >
                           <path
                             d="M13,4 L13,11 L20,11 L20,4 L13,4 Z M11,4 L4,4 L4,11 L11,11 L11,4 Z M13,20 L20,20 L20,13 L13,13 L13,20 Z M11,20 L11,13 L4,13 L4,20 L11,20 Z M4,2 L20,2 C21.1045695,2 22,2.8954305 22,4 L22,20 C22,21.1045695 21.1045695,22 20,22 L4,22 C2.8954305,22 2,21.1045695 2,20 L2,4 C2,2.8954305 2.8954305,2 4,2 Z"
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                           />
                         </svg>
                       </button>
@@ -364,7 +364,7 @@ function Explore() {
                         >
                           <path
                             d="M10,14 L14,14 L14,10 L10,10 L10,14 Z M8,14 L8,10 L4,10 L4,14 L8,14 Z M10,4 L10,8 L14,8 L14,4 L10,4 Z M8,4 L4,4 L4,8 L8,8 L8,4 Z M10,20 L14,20 L14,16 L10,16 L10,20 Z M8,20 L8,16 L4,16 L4,20 L8,20 Z M16,14 L20,14 L20,10 L16,10 L16,14 Z M16,4 L16,8 L20,8 L20,4 L16,4 Z M16,20 L20,20 L20,16 L16,16 L16,20 Z M4,2 L20,2 C21.1045695,2 22,2.8954305 22,4 L22,20 C22,21.1045695 21.1045695,22 20,22 L4,22 C2.8954305,22 2,21.1045695 2,20 L2,4 C2,2.8954305 2.8954305,2 4,2 Z"
-                            fill-rule="evenodd"
+                            fillRule="evenodd"
                           />
                         </svg>
                       </button>
@@ -485,7 +485,7 @@ function Explore() {
                     <div className="lg:col-span-3">
                       <div className="container mx-auto">
                         <div className="mt-0">
-                          <div class="text-start mb-5">
+                          <div className="text-start mb-5">
                             <span>Collection results</span>
                           </div>
                           <Carousel
@@ -495,8 +495,8 @@ function Explore() {
                             responsive={responsive}
                             infinite={true}
                             // focusOnSelect={true}
-                            dotListClass="custom-dot-list-style"
-                            itemClass="carousel-item-padding-40-px pb-5"
+                            dotListclassName="custom-dot-list-style"
+                            itemclassName="carousel-item-padding-40-px pb-5"
                           >
                             <a
                               href="#sd"
@@ -626,35 +626,35 @@ function Explore() {
                             </button>
                           </div>
                         </div>
-                        <div class="flex flex-wrap justify-center gap-3">
+                        <div className="flex flex-wrap justify-center gap-3">
                           <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div class="w-64 ">
-                              <div class="flex justify-between items-center mb-5">
-                                <div class="flex -space-x-2">
+                            <div className="w-64 ">
+                              <div className="flex justify-between items-center mb-5">
+                                <div className="flex -space-x-2">
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
-                                <div class="flex items-center justify-center">
+                                <div className="flex items-center justify-center">
                                   <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
                                     <span>···</span>
                                   </button>
                                 </div>
                               </div>
                               <div
-                                class="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
                                 style={{ height: "300px" }}
                               >
                                 <img
@@ -663,11 +663,11 @@ function Explore() {
                                   className="h-full w-full object-cover"
                                 />
                               </div>
-                              <div class="py-2 pt-3">
-                                <h3 class="text-xl font-bold tracking-tight text-black">
+                              <div className="py-2 pt-3">
+                                <h3 className="text-xl font-bold tracking-tight text-black">
                                   Nyoling
                                 </h3>
-                                <div class="flex items-center text-gray-500 text-sm mt-2">
+                                <div className="flex items-center text-gray-500 text-sm mt-2">
                                   <img
                                     src={require("../assets/eth.png")}
                                     alt="sd"
@@ -680,13 +680,13 @@ function Explore() {
                                     </span>
                                   </span>
                                 </div>
-                                <div class="flex justify-between items-center mt-5">
+                                <div className="flex justify-between items-center mt-5">
                                   <div>
                                     <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
                                       Buy Now
                                     </button>
                                   </div>
-                                  <div class="flex items-center">
+                                  <div className="flex items-center">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       fill="none"
@@ -701,7 +701,7 @@ function Explore() {
                                         d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                                       />
                                     </svg>
-                                    <span class="pl-1 font-bold text-sm">
+                                    <span className="pl-1 font-bold text-sm">
                                       10
                                     </span>
                                   </div>
@@ -710,33 +710,33 @@ function Explore() {
                             </div>
                           </div>
                           <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div class="w-64 ">
-                              <div class="flex justify-between items-center mb-5">
-                                <div class="flex -space-x-2">
+                            <div className="w-64 ">
+                              <div className="flex justify-between items-center mb-5">
+                                <div className="flex -space-x-2">
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
-                                <div class="flex items-center justify-center">
+                                <div className="flex items-center justify-center">
                                   <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
                                     <span>···</span>
                                   </button>
                                 </div>
                               </div>
                               <div
-                                class="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
                                 style={{ height: "300px" }}
                               >
                                 <img
@@ -745,11 +745,11 @@ function Explore() {
                                   className="h-full w-full object-cover"
                                 />
                               </div>
-                              <div class="py-2 pt-3">
-                                <h3 class="text-xl font-bold tracking-tight text-black">
+                              <div className="py-2 pt-3">
+                                <h3 className="text-xl font-bold tracking-tight text-black">
                                   Nyoling
                                 </h3>
-                                <div class="flex items-center text-gray-500 text-sm mt-2">
+                                <div className="flex items-center text-gray-500 text-sm mt-2">
                                   <img
                                     src={require("../assets/eth.png")}
                                     alt="sd"
@@ -762,13 +762,13 @@ function Explore() {
                                     </span>
                                   </span>
                                 </div>
-                                <div class="flex justify-between items-center mt-5">
+                                <div className="flex justify-between items-center mt-5">
                                   <div>
                                     <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
                                       Buy Now
                                     </button>
                                   </div>
-                                  <div class="flex items-center">
+                                  <div className="flex items-center">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       fill="none"
@@ -783,7 +783,7 @@ function Explore() {
                                         d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                                       />
                                     </svg>
-                                    <span class="pl-1 font-bold text-sm">
+                                    <span className="pl-1 font-bold text-sm">
                                       10
                                     </span>
                                   </div>
@@ -792,33 +792,33 @@ function Explore() {
                             </div>
                           </div>
                           <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div class="w-64 ">
-                              <div class="flex justify-between items-center mb-5">
-                                <div class="flex -space-x-2">
+                            <div className="w-64 ">
+                              <div className="flex justify-between items-center mb-5">
+                                <div className="flex -space-x-2">
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
-                                <div class="flex items-center justify-center">
+                                <div className="flex items-center justify-center">
                                   <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
                                     <span>···</span>
                                   </button>
                                 </div>
                               </div>
                               <div
-                                class="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
                                 style={{ height: "300px" }}
                               >
                                 <img
@@ -827,11 +827,11 @@ function Explore() {
                                   className="h-full w-full object-cover"
                                 />
                               </div>
-                              <div class="py-2 pt-3">
-                                <h3 class="text-xl font-bold tracking-tight text-black">
+                              <div className="py-2 pt-3">
+                                <h3 className="text-xl font-bold tracking-tight text-black">
                                   Nyoling
                                 </h3>
-                                <div class="flex items-center text-gray-500 text-sm mt-2">
+                                <div className="flex items-center text-gray-500 text-sm mt-2">
                                   <img
                                     src={require("../assets/eth.png")}
                                     alt="sd"
@@ -844,13 +844,13 @@ function Explore() {
                                     </span>
                                   </span>
                                 </div>
-                                <div class="flex justify-between items-center mt-5">
+                                <div className="flex justify-between items-center mt-5">
                                   <div>
                                     <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
                                       Buy Now
                                     </button>
                                   </div>
-                                  <div class="flex items-center">
+                                  <div className="flex items-center">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       fill="none"
@@ -865,7 +865,7 @@ function Explore() {
                                         d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                                       />
                                     </svg>
-                                    <span class="pl-1 font-bold text-sm">
+                                    <span className="pl-1 font-bold text-sm">
                                       10
                                     </span>
                                   </div>
@@ -874,33 +874,33 @@ function Explore() {
                             </div>
                           </div>
                           <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div class="w-64 ">
-                              <div class="flex justify-between items-center mb-5">
-                                <div class="flex -space-x-2">
+                            <div className="w-64 ">
+                              <div className="flex justify-between items-center mb-5">
+                                <div className="flex -space-x-2">
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
-                                <div class="flex items-center justify-center">
+                                <div className="flex items-center justify-center">
                                   <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
                                     <span>···</span>
                                   </button>
                                 </div>
                               </div>
                               <div
-                                class="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
                                 style={{ height: "300px" }}
                               >
                                 <img
@@ -909,11 +909,11 @@ function Explore() {
                                   className="h-full w-full object-cover"
                                 />
                               </div>
-                              <div class="py-2 pt-3">
-                                <h3 class="text-xl font-bold tracking-tight text-black">
+                              <div className="py-2 pt-3">
+                                <h3 className="text-xl font-bold tracking-tight text-black">
                                   Nyoling
                                 </h3>
-                                <div class="flex items-center text-gray-500 text-sm mt-2">
+                                <div className="flex items-center text-gray-500 text-sm mt-2">
                                   <img
                                     src={require("../assets/eth.png")}
                                     alt="sd"
@@ -926,13 +926,13 @@ function Explore() {
                                     </span>
                                   </span>
                                 </div>
-                                <div class="flex justify-between items-center mt-5">
+                                <div className="flex justify-between items-center mt-5">
                                   <div>
                                     <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
                                       Buy Now
                                     </button>
                                   </div>
-                                  <div class="flex items-center">
+                                  <div className="flex items-center">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       fill="none"
@@ -947,7 +947,7 @@ function Explore() {
                                         d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                                       />
                                     </svg>
-                                    <span class="pl-1 font-bold text-sm">
+                                    <span className="pl-1 font-bold text-sm">
                                       10
                                     </span>
                                   </div>
@@ -956,33 +956,33 @@ function Explore() {
                             </div>
                           </div>
                           <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div class="w-64 ">
-                              <div class="flex justify-between items-center mb-5">
-                                <div class="flex -space-x-2">
+                            <div className="w-64 ">
+                              <div className="flex justify-between items-center mb-5">
+                                <div className="flex -space-x-2">
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
-                                <div class="flex items-center justify-center">
+                                <div className="flex items-center justify-center">
                                   <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
                                     <span>···</span>
                                   </button>
                                 </div>
                               </div>
                               <div
-                                class="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
                                 style={{ height: "300px" }}
                               >
                                 <img
@@ -991,11 +991,11 @@ function Explore() {
                                   className="h-full w-full object-cover"
                                 />
                               </div>
-                              <div class="py-2 pt-3">
-                                <h3 class="text-xl font-bold tracking-tight text-black">
+                              <div className="py-2 pt-3">
+                                <h3 className="text-xl font-bold tracking-tight text-black">
                                   Nyoling
                                 </h3>
-                                <div class="flex items-center text-gray-500 text-sm mt-2">
+                                <div className="flex items-center text-gray-500 text-sm mt-2">
                                   <img
                                     src={require("../assets/eth.png")}
                                     alt="sd"
@@ -1008,13 +1008,13 @@ function Explore() {
                                     </span>
                                   </span>
                                 </div>
-                                <div class="flex justify-between items-center mt-5">
+                                <div className="flex justify-between items-center mt-5">
                                   <div>
                                     <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
                                       Buy Now
                                     </button>
                                   </div>
-                                  <div class="flex items-center">
+                                  <div className="flex items-center">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       fill="none"
@@ -1029,7 +1029,7 @@ function Explore() {
                                         d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                                       />
                                     </svg>
-                                    <span class="pl-1 font-bold text-sm">
+                                    <span className="pl-1 font-bold text-sm">
                                       10
                                     </span>
                                   </div>
@@ -1038,33 +1038,33 @@ function Explore() {
                             </div>
                           </div>
                           <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div class="w-64 ">
-                              <div class="flex justify-between items-center mb-5">
-                                <div class="flex -space-x-2">
+                            <div className="w-64 ">
+                              <div className="flex justify-between items-center mb-5">
+                                <div className="flex -space-x-2">
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
-                                <div class="flex items-center justify-center">
+                                <div className="flex items-center justify-center">
                                   <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
                                     <span>···</span>
                                   </button>
                                 </div>
                               </div>
                               <div
-                                class="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
                                 style={{ height: "300px" }}
                               >
                                 <img
@@ -1073,11 +1073,11 @@ function Explore() {
                                   className="h-full w-full object-cover"
                                 />
                               </div>
-                              <div class="py-2 pt-3">
-                                <h3 class="text-xl font-bold tracking-tight text-black">
+                              <div className="py-2 pt-3">
+                                <h3 className="text-xl font-bold tracking-tight text-black">
                                   Nyoling
                                 </h3>
-                                <div class="flex items-center text-gray-500 text-sm mt-2">
+                                <div className="flex items-center text-gray-500 text-sm mt-2">
                                   <img
                                     src={require("../assets/eth.png")}
                                     alt="sd"
@@ -1090,13 +1090,13 @@ function Explore() {
                                     </span>
                                   </span>
                                 </div>
-                                <div class="flex justify-between items-center mt-5">
+                                <div className="flex justify-between items-center mt-5">
                                   <div>
                                     <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
                                       Buy Now
                                     </button>
                                   </div>
-                                  <div class="flex items-center">
+                                  <div className="flex items-center">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       fill="none"
@@ -1111,7 +1111,7 @@ function Explore() {
                                         d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                                       />
                                     </svg>
-                                    <span class="pl-1 font-bold text-sm">
+                                    <span className="pl-1 font-bold text-sm">
                                       10
                                     </span>
                                   </div>
@@ -1120,33 +1120,33 @@ function Explore() {
                             </div>
                           </div>
                           <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div class="w-64 ">
-                              <div class="flex justify-between items-center mb-5">
-                                <div class="flex -space-x-2">
+                            <div className="w-64 ">
+                              <div className="flex justify-between items-center mb-5">
+                                <div className="flex -space-x-2">
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
-                                <div class="flex items-center justify-center">
+                                <div className="flex items-center justify-center">
                                   <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
                                     <span>···</span>
                                   </button>
                                 </div>
                               </div>
                               <div
-                                class="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
                                 style={{ height: "300px" }}
                               >
                                 <img
@@ -1155,11 +1155,11 @@ function Explore() {
                                   className="h-full w-full object-cover"
                                 />
                               </div>
-                              <div class="py-2 pt-3">
-                                <h3 class="text-xl font-bold tracking-tight text-black">
+                              <div className="py-2 pt-3">
+                                <h3 className="text-xl font-bold tracking-tight text-black">
                                   Nyoling
                                 </h3>
-                                <div class="flex items-center text-gray-500 text-sm mt-2">
+                                <div className="flex items-center text-gray-500 text-sm mt-2">
                                   <img
                                     src={require("../assets/eth.png")}
                                     alt="sd"
@@ -1172,13 +1172,13 @@ function Explore() {
                                     </span>
                                   </span>
                                 </div>
-                                <div class="flex justify-between items-center mt-5">
+                                <div className="flex justify-between items-center mt-5">
                                   <div>
                                     <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
                                       Buy Now
                                     </button>
                                   </div>
-                                  <div class="flex items-center">
+                                  <div className="flex items-center">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       fill="none"
@@ -1193,7 +1193,7 @@ function Explore() {
                                         d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                                       />
                                     </svg>
-                                    <span class="pl-1 font-bold text-sm">
+                                    <span className="pl-1 font-bold text-sm">
                                       10
                                     </span>
                                   </div>
@@ -1202,33 +1202,33 @@ function Explore() {
                             </div>
                           </div>
                           <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div class="w-64 ">
-                              <div class="flex justify-between items-center mb-5">
-                                <div class="flex -space-x-2">
+                            <div className="w-64 ">
+                              <div className="flex justify-between items-center mb-5">
+                                <div className="flex -space-x-2">
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user1.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user2.jpeg")}
                                     alt="User Imageas"
                                   />
                                   <img
-                                    class="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
                                     src={require("../assets/user3.webp")}
                                     alt="User Imageas"
                                   />
                                 </div>
-                                <div class="flex items-center justify-center">
+                                <div className="flex items-center justify-center">
                                   <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
                                     <span>···</span>
                                   </button>
                                 </div>
                               </div>
                               <div
-                                class="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
                                 style={{ height: "300px" }}
                               >
                                 <img
@@ -1237,11 +1237,11 @@ function Explore() {
                                   className="h-full w-full object-cover"
                                 />
                               </div>
-                              <div class="py-2 pt-3">
-                                <h3 class="text-xl font-bold tracking-tight text-black">
+                              <div className="py-2 pt-3">
+                                <h3 className="text-xl font-bold tracking-tight text-black">
                                   Nyoling
                                 </h3>
-                                <div class="flex items-center text-gray-500 text-sm mt-2">
+                                <div className="flex items-center text-gray-500 text-sm mt-2">
                                   <img
                                     src={require("../assets/eth.png")}
                                     alt="sd"
@@ -1254,13 +1254,13 @@ function Explore() {
                                     </span>
                                   </span>
                                 </div>
-                                <div class="flex justify-between items-center mt-5">
+                                <div className="flex justify-between items-center mt-5">
                                   <div>
                                     <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
                                       Buy Now
                                     </button>
                                   </div>
-                                  <div class="flex items-center">
+                                  <div className="flex items-center">
                                     <svg
                                       xmlns="http://www.w3.org/2000/svg"
                                       fill="none"
@@ -1275,7 +1275,7 @@ function Explore() {
                                         d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                                       />
                                     </svg>
-                                    <span class="pl-1 font-bold text-sm">
+                                    <span className="pl-1 font-bold text-sm">
                                       10
                                     </span>
                                   </div>
@@ -1295,7 +1295,7 @@ function Explore() {
         </div>
 
         <div className="text-center mt-9">
-          <button class="bg-nft-primary-transparent rounded-full px-6 py-3 font-semibold text-sm text-nft-primary-light w-1/5 hover:bg-nft-primary-light hover:text-white duration-300 transition-colors">
+          <button className="bg-nft-primary-transparent rounded-full px-6 py-3 font-semibold text-sm text-nft-primary-light w-1/5 hover:bg-nft-primary-light hover:text-white duration-300 transition-colors">
             <span>Load More</span>
           </button>
         </div>

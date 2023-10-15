@@ -58,12 +58,12 @@ function LandingPage() {
       <div className="bg-transparent hombg lg:h-screen">
         <Header />
 
-        <div class="relative container mx-auto h-full">
-          <div class="flex flex-wrap items-center h-full w-full">
-            <div class="w-full md:w-1/2">
-              <div class="p-1 py-0">
-                <div class="text-left">
-                  <h1 class="text-4xl font-bold tracking-tight text-white sm:text-6xl">
+        <div className="relative container mx-auto h-full">
+          <div className="flex flex-wrap items-center h-full w-full">
+            <div className="w-full md:w-1/2">
+              <div className="p-1 py-0">
+                <div className="text-left">
+                  <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
                     Freelance Services For Your Business
                   </h1>
                 </div>
@@ -148,12 +148,12 @@ function LandingPage() {
                 </div>
               </div>
             </div>
-            {/* <div class="w-full sm:w-1/2 ">
-              <div class="p-4">
+            {/* <div className="w-full sm:w-1/2 ">
+              <div className="p-4">
                 <img
                   src={require("../assets/slider8.png")}
                   alt="Ismage"
-                  class="mb-[-50px] ml-[250px]"
+                  className="mb-[-50px] ml-[250px]"
                 />
               </div>
             </div> */}
@@ -187,67 +187,67 @@ function LandingPage() {
             </svg>
           </div>
         </div>
-        <div class="flex flex-wrap">
-          <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
+        <div className="flex flex-wrap">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
+              className="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
-              <div class="relative inline-block">
+              <div className="relative inline-block">
                 <ComputerDesktopIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
                 {/* <img
                   src={require("../assets/it.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
                 /> */}
-                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                <span className="text-sm mt-5 mb-2 block group-hover:text-gray-50">
                   8 Services
                 </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                <h3 className="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
                   Development & IT
                 </h3>
-                <p class="text-sm text-gray-600 group-hover:text-white">
+                <p className="text-sm text-gray-600 group-hover:text-white">
                   Software Engineer, Web / Mobile Developer & More
                 </p>
               </div>
             </a>
           </div>
-          <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
+              className="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
-              <div class="relative inline-block">
+              <div className="relative inline-block">
                 {/* <img
                   src={require("../assets/design.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
                 /> */}
                 <PaintBrushIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
-                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                <span className="text-sm mt-5 mb-2 block group-hover:text-gray-50">
                   8 Services
                 </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                <h3 className="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
                   Design & Creative
                 </h3>
-                <p class="text-sm text-gray-600 group-hover:text-white">
+                <p className="text-sm text-gray-600 group-hover:text-white">
                   Website Design Adobe XD, Figma, Adobe Photoshop
                 </p>
               </div>
             </a>
           </div>
-          <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
+              className="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
-              <div class="relative inline-block">
+              <div className="relative inline-block">
                 {/* <img
                   src={require("../assets/marketing.PNG")}
                   className="w-16 h-16 object-cover"
@@ -255,151 +255,151 @@ function LandingPage() {
                 /> */}
                 <BuildingStorefrontIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
 
-                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                <span className="text-sm mt-5 mb-2 block group-hover:text-gray-50">
                   3 Services
                 </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                <h3 className="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
                   Digital Marketing
                 </h3>
-                <p class="text-sm text-gray-600 group-hover:text-white">
+                <p className="text-sm text-gray-600 group-hover:text-white">
                   Service Digital and Social Media Management
                 </p>
               </div>
             </a>
           </div>
-          <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
+              className="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
-              <div class="relative inline-block">
+              <div className="relative inline-block">
                 {/* <img
                   src={require("../assets/writing.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
                 /> */}
                 <LanguageIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
-                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                <span className="text-sm mt-5 mb-2 block group-hover:text-gray-50">
                   1 Service
                 </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                <h3 className="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
                   Writing & Translation
                 </h3>
-                <p class="text-sm text-gray-600 group-hover:text-white">
+                <p className="text-sm text-gray-600 group-hover:text-white">
                   Writing , Translation Project, get It Quickly done
                 </p>
               </div>
             </a>
           </div>
-          <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
+              className="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
-              <div class="relative inline-block">
+              <div className="relative inline-block">
                 {/* <img
                   src={require("../assets/music.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
                 /> */}
                 <MicrophoneIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
-                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                <span className="text-sm mt-5 mb-2 block group-hover:text-gray-50">
                   4 Services
                 </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                <h3 className="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
                   Music & Audio
                 </h3>
-                <p class="text-sm text-gray-600 group-hover:text-white">
+                <p className="text-sm text-gray-600 group-hover:text-white">
                   Freelancer Music, Audio Services, Music Projects
                 </p>
               </div>
             </a>
           </div>
-          <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
+              className="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
-              <div class="relative inline-block">
+              <div className="relative inline-block">
                 {/* <img
                   src={require("../assets/video.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
                 /> */}
                 <FilmIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
-                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                <span className="text-sm mt-5 mb-2 block group-hover:text-gray-50">
                   8 Services
                 </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                <h3 className="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
                   Video & Animation
                 </h3>
-                <p class="text-sm text-gray-600 group-hover:text-white">
+                <p className="text-sm text-gray-600 group-hover:text-white">
                   Animation Video Maker that Brings Studio Quality
                 </p>
               </div>
             </a>
           </div>
-          <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
+              className="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
-              <div class="relative inline-block">
+              <div className="relative inline-block">
                 {/* <img
                   src={require("../assets/construct.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
                 /> */}
                 <CommandLineIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
-                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                <span className="text-sm mt-5 mb-2 block group-hover:text-gray-50">
                   12 Services
                 </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                <h3 className="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
                   Programming & Tech
                 </h3>
-                <p class="text-sm text-gray-600 group-hover:text-white">
+                <p className="text-sm text-gray-600 group-hover:text-white">
                   Programmers and coders Both for Your Project
                 </p>
               </div>
             </a>
           </div>
-          <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 p-4">
             <a
               href="s"
-              class="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
+              className="bg-white block rounded-xl hover:bg-nft-primary-light shadow-lg border-gray-100 group hover:border-nft-primary-light hover:shadow-purple-200 overflow-hidden border p-7 py-8 transition-colors"
             >
-              <div class="relative inline-block">
+              <div className="relative inline-block">
                 {/* <img
                   src={require("../assets/finance.PNG")}
                   className="w-16 h-16 object-cover"
                   alt=""
                 /> */}
                 <ChartBarSquareIcon className="w-10 h-10 text-gray-400 group-hover:text-gray-100" />
-                <span class="text-sm mt-5 mb-2 block group-hover:text-gray-50">
+                <span className="text-sm mt-5 mb-2 block group-hover:text-gray-50">
                   5 Services
                 </span>
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
+                <h3 className="text-lg font-bold mb-2 text-gray-800 group-hover:text-white">
                   Finance & Accounting
                 </h3>
-                <p class="text-sm text-gray-600 group-hover:text-white">
+                <p className="text-sm text-gray-600 group-hover:text-white">
                   Team Works , Collaboration Meet for Your Business
                 </p>
               </div>
@@ -410,17 +410,17 @@ function LandingPage() {
 
       <div className="py-20 bg-2">
         <div className="container mx-auto">
-          <div class="flex flex-wrap items-center">
-            <div class="w-1/2">
+          <div className="flex flex-wrap items-center">
+            <div className="w-1/2">
               <img src={require("../assets/h34.png")} alt="s" />
             </div>
-            <div class="w-1/2 md:p-8">
+            <div className="w-1/2 md:p-8">
               <div>
                 <h2 className="text-3xl mb-1 font-extrabold text-gray-800">
                   Trusted By Best
                   <br /> Freelancers
                 </h2>
-                <p class="text-md text-gray-800 my-5">
+                <p className="text-md text-gray-800 my-5">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                   do eiusmod tempor incididunt.
                 </p>
@@ -549,8 +549,8 @@ function LandingPage() {
             responsive={responsive}
             infinite={true}
             // focusOnSelect={true}
-            dotListClass="custom-dot-list-style"
-            itemClass="carousel-item-padding-40-px"
+            dotListclassName="custom-dot-list-style"
+            itemclassName="carousel-item-padding-40-px"
           >
             <div
               href="#sd"
@@ -559,18 +559,18 @@ function LandingPage() {
               <div className="relative shadow-md rounded-xl shadow-gray-200">
                 <div className="max-w-sm rounded-xl overflow-hidden pb-2">
                   <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-gray-800 rounded-full">
-                    <button class="flex items-center">
+                    <button className="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke-width="1.5"
+                        strokeWidth="1.5"
                         stroke="currentColor"
-                        class="w-5 h-5 hover:stroke-white hover:fill-white"
+                        className="w-5 h-5 hover:stroke-white hover:fill-white"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                           d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                         ></path>
                       </svg>
@@ -640,18 +640,18 @@ function LandingPage() {
               <div className="relative shadow-md rounded-xl shadow-gray-200">
                 <div className="max-w-sm rounded-xl overflow-hidden pb-2">
                   <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-gray-800 rounded-full">
-                    <button class="flex items-center">
+                    <button className="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke-width="1.5"
+                        strokeWidth="1.5"
                         stroke="currentColor"
-                        class="w-5 h-5 hover:stroke-white hover:fill-white"
+                        className="w-5 h-5 hover:stroke-white hover:fill-white"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                           d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                         ></path>
                       </svg>
@@ -721,18 +721,18 @@ function LandingPage() {
               <div className="relative shadow-md rounded-xl shadow-gray-200">
                 <div className="max-w-sm rounded-xl overflow-hidden pb-2">
                   <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-gray-800 rounded-full">
-                    <button class="flex items-center">
+                    <button className="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke-width="1.5"
+                        strokeWidth="1.5"
                         stroke="currentColor"
-                        class="w-5 h-5 hover:stroke-white hover:fill-white"
+                        className="w-5 h-5 hover:stroke-white hover:fill-white"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                           d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                         ></path>
                       </svg>
@@ -802,18 +802,18 @@ function LandingPage() {
               <div className="relative shadow-md rounded-xl shadow-gray-200">
                 <div className="max-w-sm rounded-xl overflow-hidden pb-2">
                   <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-gray-800 rounded-full">
-                    <button class="flex items-center">
+                    <button className="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke-width="1.5"
+                        strokeWidth="1.5"
                         stroke="currentColor"
-                        class="w-5 h-5 hover:stroke-white hover:fill-white"
+                        className="w-5 h-5 hover:stroke-white hover:fill-white"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                           d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                         ></path>
                       </svg>
@@ -883,18 +883,18 @@ function LandingPage() {
               <div className="relative shadow-md rounded-xl shadow-gray-200">
                 <div className="max-w-sm rounded-xl overflow-hidden pb-2">
                   <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-gray-800 rounded-full">
-                    <button class="flex items-center">
+                    <button className="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke-width="1.5"
+                        strokeWidth="1.5"
                         stroke="currentColor"
-                        class="w-5 h-5 hover:stroke-white hover:fill-white"
+                        className="w-5 h-5 hover:stroke-white hover:fill-white"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                           d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                         ></path>
                       </svg>
@@ -964,18 +964,18 @@ function LandingPage() {
               <div className="relative shadow-md rounded-xl shadow-gray-200">
                 <div className="max-w-sm rounded-xl overflow-hidden pb-2">
                   <div className="absolute top-2 right-2 p-2 bg-white hover:bg-nft-primary-light text-gray-800 rounded-full">
-                    <button class="flex items-center">
+                    <button className="flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
-                        stroke-width="1.5"
+                        strokeWidth="1.5"
                         stroke="currentColor"
-                        class="w-5 h-5 hover:stroke-white hover:fill-white"
+                        className="w-5 h-5 hover:stroke-white hover:fill-white"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                           d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
                         ></path>
                       </svg>
@@ -1044,11 +1044,11 @@ function LandingPage() {
 
       <div className="py-0 bg-web-secondary-transparent">
         <div className="container text-gray-800">
-          <div class="flex flex-wrap items-center">
-            <div class="w-1/2">
+          <div className="flex flex-wrap items-center">
+            <div className="w-1/2">
               <img src={require("../assets/h1.jpg")} alt="s" />
             </div>
-            <div class="w-1/2 md:p-8 md:pl-20">
+            <div className="w-1/2 md:p-8 md:pl-20">
               <div>
                 <h2 className="text-3xl mb-1 font-extrabold">
                   A whole world of freelance talent at your fingertips
@@ -1112,10 +1112,10 @@ function LandingPage() {
           Most viewed and all-time top-selling services
         </p>
 
-        <div class="flex flex-wrap mt-14">
-          <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
-            <div href="s" class="block overflow-hidden">
-              <div class="relative inline-block">
+        <div className="flex flex-wrap mt-14">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
+            <div href="s" className="block overflow-hidden">
+              <div className="relative inline-block">
                 <img
                   src={require("../assets/job.PNG")}
                   className="object-cover"
@@ -1124,17 +1124,17 @@ function LandingPage() {
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2 mt-4">Post a job</h3>
-                <p class="text-md">
+                <h3 className="text-lg font-bold mb-2 mt-4">Post a job</h3>
+                <p className="text-md">
                   It’s free and easy to post a job. Simply fill in a title,
                   description.
                 </p>
               </div>
             </div>
           </div>
-          <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
-            <div href="s" class="block overflow-hidden">
-              <div class="relative inline-block">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
+            <div href="s" className="block overflow-hidden">
+              <div className="relative inline-block">
                 <img
                   src={require("../assets/freelancer.PNG")}
                   className="object-cover"
@@ -1143,17 +1143,19 @@ function LandingPage() {
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2 mt-4">Choose freelancers</h3>
-                <p class="text-md">
+                <h3 className="text-lg font-bold mb-2 mt-4">
+                  Choose freelancers
+                </h3>
+                <p className="text-md">
                   It’s free and easy to post a job. Simply fill in a title,
                   description.
                 </p>
               </div>
             </div>
           </div>
-          <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
-            <div href="s" class="block overflow-hidden">
-              <div class="relative inline-block">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
+            <div href="s" className="block overflow-hidden">
+              <div className="relative inline-block">
                 <img
                   src={require("../assets/pay.PNG")}
                   className="object-cover"
@@ -1162,17 +1164,17 @@ function LandingPage() {
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2 mt-4">Pay safely</h3>
-                <p class="text-md">
+                <h3 className="text-lg font-bold mb-2 mt-4">Pay safely</h3>
+                <p className="text-md">
                   It’s free and easy to post a job. Simply fill in a title,
                   description.
                 </p>
               </div>
             </div>
           </div>
-          <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
-            <div href="s" class="block overflow-hidden">
-              <div class="relative inline-block">
+          <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
+            <div href="s" className="block overflow-hidden">
+              <div className="relative inline-block">
                 <img
                   src={require("../assets/help.PNG")}
                   className="object-cover"
@@ -1181,8 +1183,10 @@ function LandingPage() {
               </div>
 
               <div>
-                <h3 class="text-lg font-bold mb-2 mt-4">We’re here to help</h3>
-                <p class="text-md">
+                <h3 className="text-lg font-bold mb-2 mt-4">
+                  We’re here to help
+                </h3>
+                <p className="text-md">
                   It’s free and easy to post a job. Simply fill in a title,
                   description.
                 </p>
@@ -1194,8 +1198,8 @@ function LandingPage() {
 
       <div className="py-10 bg-nft-primary-dark">
         <div className="container mx-auto">
-          <div class="flex flex-wrap items-center">
-            <div class="w-1/2 md:p-8">
+          <div className="flex flex-wrap items-center">
+            <div className="w-1/2 md:p-8">
               <Carousel
                 swipeable={true}
                 draggable={true}
@@ -1206,8 +1210,8 @@ function LandingPage() {
                 autoPlay={true}
                 autoPlaySpeed={7000}
                 // focusOnSelect={true}
-                dotListClass="custom-dot-list-style"
-                itemClass="carousel-item-padding-40-px"
+                dotListclassName="custom-dot-list-style"
+                itemclassName="carousel-item-padding-40-px"
               >
                 <div className="text-white">
                   <h3 className="text-purple-300 text-3xl font-bold mb-5">
@@ -1262,7 +1266,7 @@ function LandingPage() {
                 </div>
               </Carousel>
             </div>
-            <div class="w-1/2">
+            <div className="w-1/2">
               <img src={require("../assets/h1.jpg")} alt="s" />
             </div>
           </div>
@@ -1271,27 +1275,27 @@ function LandingPage() {
 
       <div className="py-16 pt-0 text-gray-800">
         <div className="container mx-auto">
-          <div class="flex flex-wrap mt-10 border-b pb-7">
-            <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
-              <div href="s" class="block overflow-hidden text-center">
+          <div className="flex flex-wrap mt-10 border-b pb-7">
+            <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
+              <div href="s" className="block overflow-hidden text-center">
                 <h1 className="text-4xl mb-3 font-bold">890M</h1>
                 <p className="text-sm">Total Freelancer</p>
               </div>
             </div>
-            <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
-              <div href="s" class="block overflow-hidden text-center">
+            <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
+              <div href="s" className="block overflow-hidden text-center">
                 <h1 className="text-4xl mb-3 font-bold">750M</h1>
                 <p className="text-sm">Positive Review</p>
               </div>
             </div>
-            <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
-              <div href="s" class="block overflow-hidden text-center">
+            <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
+              <div href="s" className="block overflow-hidden text-center">
                 <h1 className="text-4xl mb-3 font-bold">98M</h1>
                 <p className="text-sm">Order recieved</p>
               </div>
             </div>
-            <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
-              <div href="s" class="block overflow-hidden text-center">
+            <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/4 text-left p-4">
+              <div href="s" className="block overflow-hidden text-center">
                 <h1 className="text-4xl mb-3 font-bold">336M</h1>
                 <p className="text-sm">Projects Completed</p>
               </div>
@@ -1303,43 +1307,43 @@ function LandingPage() {
       <div className="py-16 pt-0 mt-20">
         <div className="container mx-auto">
           <h6 className="text-center text-sm">Trusted by the world’s best</h6>
-          <div class="flex flex-wrap mt-10 pb-7">
-            <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
+          <div className="flex flex-wrap mt-10 pb-7">
+            <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
               <img
                 src={require("../assets/amazon.png")}
                 alt=""
                 className="opacity-80 hover:opacity-100"
               />
             </div>
-            <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
+            <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
               <img
                 src={require("../assets/amd.png")}
                 alt=""
                 className="opacity-80 hover:opacity-100"
               />
             </div>
-            <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
+            <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
               <img
                 src={require("../assets/cisco.png")}
                 alt=""
                 className="opacity-80 hover:opacity-100"
               />
             </div>
-            <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
+            <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
               <img
                 src={require("../assets/dropcam.png")}
                 alt=""
                 className="opacity-80 hover:opacity-100"
               />
             </div>
-            <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
+            <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
               <img
                 src={require("../assets/logitech.png")}
                 alt=""
                 className="opacity-80 hover:opacity-100"
               />
             </div>
-            <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
+            <div className="w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6 text-left p-4">
               <img
                 src={require("../assets/spotify.png")}
                 alt=""
@@ -1352,13 +1356,13 @@ function LandingPage() {
 
       <div className=" bg-web-secondary-light">
         <div className="container mx-auto">
-          <div class="flex flex-wrap items-center">
-            <div class="w-1/2 md:p-8">
+          <div className="flex flex-wrap items-center">
+            <div className="w-1/2 md:p-8">
               <div>
                 <h2 className="text-3xl mb-1 font-extrabold">
                   Find the talent needed to get your business growing.
                 </h2>
-                <p class="text-md text-gray-800 my-5">
+                <p className="text-md text-gray-800 my-5">
                   Advertise your jobs to millions of monthly users and search
                   15.8 million CVs
                 </p>
@@ -1384,7 +1388,7 @@ function LandingPage() {
                 </div>
               </div>
             </div>
-            <div class="w-1/2 text-right">
+            <div className="w-1/2 text-right">
               <img
                 src={require("../assets/h16.png")}
                 alt="s"

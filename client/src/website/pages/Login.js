@@ -143,10 +143,10 @@ function Login() {
                 </div>
               </form>
 
-              <div class="flex items-center space-x-4 my-8">
-                <hr class="flex-1 border-t border-gray-200" />
-                <div class="text-sm font-medium uppercase">or</div>
-                <hr class="flex-1 border-t border-gray-200" />
+              <div className="flex items-center space-x-4 my-8">
+                <hr className="flex-1 border-t border-gray-200" />
+                <div className="text-sm font-medium uppercase">or</div>
+                <hr className="flex-1 border-t border-gray-200" />
               </div>
 
               <button className="bg-gray-200 h-full py-4 px-10 rounded-xl font-semibold text-gray-700 hover:opacity-80 transition-colors text-sm w-full flex items-center justify-center gap-5">

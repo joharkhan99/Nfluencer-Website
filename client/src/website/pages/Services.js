@@ -11,80 +11,80 @@ function Services() {
         <Header transparent={true} />
       </div>
 
-      <div class="relative">
-        <div class="bg-cover bg-center h-64">
+      <div className="relative">
+        <div className="bg-cover bg-center h-64">
           <img
             src={require("../assets/fluid_background.jpg")}
             alt="Background Iamage"
-            class="w-full h-full object-cover"
+            className="w-full h-full object-cover"
           />
-          <div class="absolute inset-0 serv-hero"></div>
+          <div className="absolute inset-0 serv-hero"></div>
         </div>
-        <div class="absolute inset-0 flex flex-col items-start justify-center text-white p-5">
-          <h1 class="text-4xl font-bold mb-5">Design & Creative</h1>
-          <p class="mt-2">
+        <div className="absolute inset-0 flex flex-col items-start justify-center text-white p-5">
+          <h1 className="text-4xl font-bold mb-5">Design & Creative</h1>
+          <p className="mt-2">
             Give your visitor a smooth online experience with a solid UX design
           </p>
         </div>
       </div>
 
       <div className="container mx-auto my-10 mb-16">
-        <div class="container mx-auto">
-          <div class="flex flex-col lg:flex-row">
-            <div class="w-full lg:w-1/4 text-gray-800">
+        <div className="container mx-auto">
+          <div className="flex flex-col lg:flex-row">
+            <div className="w-full lg:w-1/4 text-gray-800">
               <div className="p-4 mb-5 bg-white shadow-md shadow-gray-100 rounded-xl border border-gray-100">
                 <div className="font-semibold text-md mb-3">Categories</div>
                 <ul className="list-none">
                   <li className="mb-4">
-                    <label class="flex gap-3 cursor-pointer items-center">
+                    <label className="flex gap-3 cursor-pointer items-center">
                       <input
                         type="checkbox"
-                        class="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
+                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
                       />
                       <span className="text-sm">Design & Creative</span>
                     </label>
                   </li>
                   <li className="mb-4">
-                    <label class="flex gap-3 cursor-pointer items-center">
+                    <label className="flex gap-3 cursor-pointer items-center">
                       <input
                         type="checkbox"
-                        class="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
+                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
                       />
                       <span className="text-sm">Development & IT</span>
                     </label>
                   </li>
                   <li className="mb-4">
-                    <label class="flex gap-3 cursor-pointer items-center">
+                    <label className="flex gap-3 cursor-pointer items-center">
                       <input
                         type="checkbox"
-                        class="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
+                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
                       />
                       <span className="text-sm">Digital Marketing</span>
                     </label>
                   </li>
                   <li className="mb-4">
-                    <label class="flex gap-3 cursor-pointer items-center">
+                    <label className="flex gap-3 cursor-pointer items-center">
                       <input
                         type="checkbox"
-                        class="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
+                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
                       />
                       <span className="text-sm">Finance & Accounting</span>
                     </label>
                   </li>
                   <li className="mb-4">
-                    <label class="flex gap-3 cursor-pointer items-center">
+                    <label className="flex gap-3 cursor-pointer items-center">
                       <input
                         type="checkbox"
-                        class="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
+                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
                       />
                       <span className="text-sm">Lifestyle</span>
                     </label>
                   </li>
                   <li>
-                    <label class="flex gap-3 cursor-pointer items-center">
+                    <label className="flex gap-3 cursor-pointer items-center">
                       <input
                         type="checkbox"
-                        class="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
+                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
                       />
                       <span className="text-sm">Video & Animation</span>
                     </label>
@@ -96,55 +96,55 @@ function Services() {
                 <div className="font-semibold text-md mb-3">Date Posted</div>
                 <ul className="list-none">
                   <li className="mb-4">
-                    <label class="flex gap-3 cursor-pointer items-center">
+                    <label className="flex gap-3 cursor-pointer items-center">
                       <input
                         type="checkbox"
-                        class="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
+                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
                       />
                       <span className="text-sm">Last Hour</span>
                     </label>
                   </li>
                   <li className="mb-4">
-                    <label class="flex gap-3 cursor-pointer items-center">
+                    <label className="flex gap-3 cursor-pointer items-center">
                       <input
                         type="checkbox"
-                        class="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
+                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
                       />
                       <span className="text-sm">Last 24 hours</span>
                     </label>
                   </li>
                   <li className="mb-4">
-                    <label class="flex gap-3 cursor-pointer items-center">
+                    <label className="flex gap-3 cursor-pointer items-center">
                       <input
                         type="checkbox"
-                        class="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
+                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
                       />
                       <span className="text-sm">Last 7 days</span>
                     </label>
                   </li>
                   <li className="mb-4">
-                    <label class="flex gap-3 cursor-pointer items-center">
+                    <label className="flex gap-3 cursor-pointer items-center">
                       <input
                         type="checkbox"
-                        class="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
+                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
                       />
                       <span className="text-sm">Last 14 days</span>
                     </label>
                   </li>
                   <li className="mb-4">
-                    <label class="flex gap-3 cursor-pointer items-center">
+                    <label className="flex gap-3 cursor-pointer items-center">
                       <input
                         type="checkbox"
-                        class="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
+                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
                       />
                       <span className="text-sm">Last 30 days</span>
                     </label>
                   </li>
                   <li>
-                    <label class="flex gap-3 cursor-pointer items-center">
+                    <label className="flex gap-3 cursor-pointer items-center">
                       <input
                         type="checkbox"
-                        class="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
+                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
                       />
                       <span className="text-sm">All</span>
                     </label>
@@ -227,11 +227,13 @@ function Services() {
             </div>
 
             {/* <!-- Right Column (Grid Layout) --> */}
-            <div class="w-full lg:w-3/4 p-4">
-              <div class="flex justify-between items-center mb-6">
+            <div className="w-full lg:w-3/4 p-4">
+              <div className="flex justify-between items-center mb-6">
                 {/* <!-- Total Result Text --> */}
                 <div>
-                  <div class="text-gray-700 text-sm mb-3">Your Selected</div>
+                  <div className="text-gray-700 text-sm mb-3">
+                    Your Selected
+                  </div>
                   <div className="flex gap-3">
                     <div className="flex gap-3">
                       <button className="bg-web-secondary-light p-1 px-2 rounded text-sm">
@@ -249,17 +251,19 @@ function Services() {
                 </div>
 
                 {/* <!-- Sort Select --> */}
-                <button class="px-4 rounded text-red-500 font-semibold text-sm">
+                <button className="px-4 rounded text-red-500 font-semibold text-sm">
                   Clear all
                 </button>
               </div>
 
-              <div class="flex justify-between items-center mb-4">
+              <div className="flex justify-between items-center mb-4">
                 {/* <!-- Total Result Text --> */}
-                <p class="text-gray-700 text-sm">Showing 1 – 8 of 12 results</p>
+                <p className="text-gray-700 text-sm">
+                  Showing 1 – 8 of 12 results
+                </p>
 
                 {/* <!-- Sort Select --> */}
-                <select class="px-4 rounded p-3 border border-gray-200 text-sm">
+                <select className="px-4 rounded p-3 border border-gray-200 text-sm">
                   <option value="sort1">Sort by (Default)</option>
                   <option value="sort2">Sort by Price low to high</option>
                   <option value="sort3">Sort by Date Added</option>
@@ -267,13 +271,13 @@ function Services() {
               </div>
 
               {/* <!-- Grid Layout (Cards) --> */}
-              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="decoration-transparent shadow-sm shadow-gray-50 rounded-xl transition-all duration-300 p-0 m-2 block hover:scale-105 transform">
                   <div className="relative shadow-lg rounded-md shadow-gray-200">
                     <div className="max-w-sm rounded-md overflow-hidden pb-2">
                       <div className="absolute top-2 right-2">
-                        <button class="p-2 bg-white hover:bg-nft-primary-light text-gray-500 rounded-full group">
-                          <HeartIcon class="w-5 h-5 group-hover:stroke-white group-hover:fill-white" />
+                        <button className="p-2 bg-white hover:bg-nft-primary-light text-gray-500 rounded-full group">
+                          <HeartIcon className="w-5 h-5 group-hover:stroke-white group-hover:fill-white" />
                         </button>
                       </div>
 
@@ -354,8 +358,8 @@ function Services() {
               </div>
 
               {/* <!-- Pagination --> */}
-              <div class="flex justify-center my-14">
-                <ul class="pagination flex justify-center items-center gap-4">
+              <div className="flex justify-center my-14">
+                <ul className="pagination flex justify-center items-center gap-4">
                   <li className="h-10 w-10 text-center text-white rounded-xl bg-nft-primary-light p-2">
                     <span>1</span>
                   </li>
@@ -363,7 +367,7 @@ function Services() {
                     <span>2</span>
                   </li>
                   <li className="h-12 w-12 text-center text-gray-800 rounded-xl border border-gray-300 p-3">
-                    <a class="next page-numbers" href="ds">
+                    <a className="next page-numbers" href="ds">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"

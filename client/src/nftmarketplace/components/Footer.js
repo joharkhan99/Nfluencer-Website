@@ -3,12 +3,12 @@ import React from "react";
 function Footer() {
   return (
     <footer
-      class="p-4 sm:py-16 py-10 sm:p-6 mt-28"
+      className="p-4 sm:py-16 py-10 sm:p-6 mt-28"
       style={{ background: "rgb(240, 244, 247)" }}
     >
       <div className="container mx-auto">
-        <div class="flex flex-wrap flex-row">
-          <div class="w-full sm:w-1/2 md:w-auto md:flex-[3]">
+        <div className="flex flex-wrap flex-row">
+          <div className="w-full sm:w-1/2 md:w-auto md:flex-[3]">
             <span className="text-md font-bold mb-4 block">
               Subscribe to Updates
             </span>
@@ -97,38 +97,38 @@ function Footer() {
             </div>
           </div>
 
-          <div class="w-full sm:w-1/2 md:w-auto md:flex-[2] md:pl-14 max-md:pl-14 max-sm:pl-0">
+          <div className="w-full sm:w-1/2 md:w-auto md:flex-[2] md:pl-14 max-md:pl-14 max-sm:pl-0">
             <div>
-              <h2 class="mb-5 text-md font-bold block">Marketplace</h2>
+              <h2 className="mb-5 text-md font-bold block">Marketplace</h2>
               <ul>
-                <li class="mb-2">
+                <li className="mb-2">
                   <a
                     href="we"
-                    class="font-bold text-sm text-gray-500 hover:text-black transition-colors"
+                    className="font-bold text-sm text-gray-500 hover:text-black transition-colors"
                   >
                     Explore
                   </a>
                 </li>
-                <li class="mb-2">
+                <li className="mb-2">
                   <a
                     href="we"
-                    class="font-bold text-sm text-gray-500 hover:text-black transition-colors"
+                    className="font-bold text-sm text-gray-500 hover:text-black transition-colors"
                   >
                     Help Center
                   </a>
                 </li>
-                <li class="mb-2">
+                <li className="mb-2">
                   <a
                     href="we"
-                    class="font-bold text-sm text-gray-500 hover:text-black transition-colors"
+                    className="font-bold text-sm text-gray-500 hover:text-black transition-colors"
                   >
                     About Us
                   </a>
                 </li>
-                <li class="mb-2">
+                <li className="mb-2">
                   <a
                     href="we"
-                    class="font-bold text-sm text-gray-500 hover:text-black transition-colors"
+                    className="font-bold text-sm text-gray-500 hover:text-black transition-colors"
                   >
                     Platform Status
                   </a>
@@ -137,54 +137,54 @@ function Footer() {
             </div>
           </div>
 
-          <div class="w-full sm:w-1/2 md:w-auto md:flex-[2] md:pl-14">
+          <div className="w-full sm:w-1/2 md:w-auto md:flex-[2] md:pl-14">
             <div>
-              <h2 class="mb-5 text-md font-bold block">Community</h2>
+              <h2 className="mb-5 text-md font-bold block">Community</h2>
               <ul>
-                <li class="mb-2">
+                <li className="mb-2">
                   <a
                     href="we"
-                    class="font-bold text-sm text-gray-500 hover:text-black transition-colors"
+                    className="font-bold text-sm text-gray-500 hover:text-black transition-colors"
                   >
                     Profile
                   </a>
                 </li>
-                <li class="mb-2">
+                <li className="mb-2">
                   <a
                     href="we"
-                    class="font-bold text-sm text-gray-500 hover:text-black transition-colors"
+                    className="font-bold text-sm text-gray-500 hover:text-black transition-colors"
                   >
                     Favorites
                   </a>
                 </li>
-                <li class="mb-2">
+                <li className="mb-2">
                   <a
                     href="we"
-                    class="font-bold text-sm text-gray-500 hover:text-black transition-colors"
+                    className="font-bold text-sm text-gray-500 hover:text-black transition-colors"
                   >
                     Watchlist
                   </a>
                 </li>
-                <li class="mb-2">
+                <li className="mb-2">
                   <a
                     href="we"
-                    class="font-bold text-sm text-gray-500 hover:text-black transition-colors"
+                    className="font-bold text-sm text-gray-500 hover:text-black transition-colors"
                   >
                     Collections
                   </a>
                 </li>
-                <li class="mb-2">
+                <li className="mb-2">
                   <a
                     href="we"
-                    class="font-bold text-sm text-gray-500 hover:text-black transition-colors"
+                    className="font-bold text-sm text-gray-500 hover:text-black transition-colors"
                   >
                     Rankings
                   </a>
                 </li>
-                <li class="mb-2">
+                <li className="mb-2">
                   <a
                     href="we"
-                    class="font-bold text-sm text-gray-500 hover:text-black transition-colors"
+                    className="font-bold text-sm text-gray-500 hover:text-black transition-colors"
                   >
                     Activity
                   </a>
@@ -193,15 +193,15 @@ function Footer() {
             </div>
           </div>
 
-          <div class="w-full sm:w-1/2 md:w-auto md:flex-[3]">
-            <h2 class="mb-5 text-md font-bold block">Region</h2>
+          <div className="w-full sm:w-1/2 md:w-auto md:flex-[3]">
+            <h2 className="mb-5 text-md font-bold block">Region</h2>
             <p className="text-sm text-gray-700">
               The world's first marketplace for collectibles and non-fungible
               tokens NFTs where anything is possible and all are welcome
             </p>
-            <div class="py-4 px-4 rounded-full text-gray-500 font-semibold border-2 inline-block mt-10">
+            <div className="py-4 px-4 rounded-full text-gray-500 font-semibold border-2 inline-block mt-10">
               <label className="text-sm pr-1">Currency -</label>
-              <select class="bg-transparent outline-none text-sm">
+              <select className="bg-transparent outline-none text-sm">
                 <option value="usd">USD</option>
                 <option value="eur">EUR</option>
                 <option value="gbp">GBP</option>
@@ -214,7 +214,7 @@ function Footer() {
       <div className="border-t mt-14 py-7 pt-14 pb-4">
         <div className="container mx-auto">
           <div className="flex flex-col justify-between md:flex-row gap-4">
-            <div class="flex items-center justify-center gap-7 text-sm">
+            <div className="flex items-center justify-center gap-7 text-sm">
               <a href="sd" className="font-bold">
                 Privacy Policy
               </a>
@@ -228,7 +228,7 @@ function Footer() {
 
             <div className="flex items-center justify-center gap-6">
               <div className="text-sm rounded-full text-gray-500 font-semibold bg-transparent flex gap-0">
-                <select class="bg-transparent outline-none appearance-none">
+                <select className="bg-transparent outline-none appearance-none">
                   <option value="en">English</option>
                   <option value="fr">French</option>
                   <option value="es">Spanish</option>
@@ -247,16 +247,16 @@ function Footer() {
                 </svg>
               </div>
 
-              <select class="py-4 px-8 text-sm rounded-full text-gray-500 font-semibold border-2 inline-block bg-transparent outline-none">
+              <select className="py-4 px-8 text-sm rounded-full text-gray-500 font-semibold border-2 inline-block bg-transparent outline-none">
                 <option value="dark">Dark</option>
                 <option value="light">Light</option>
               </select>
             </div>
 
-            <div class="flex mt-4 space-x-6 justify-center items-center sm:mt-0 text-center text-sm text-gray-700">
-              <span class="text-sm sm:text-center">
+            <div className="flex mt-4 space-x-6 justify-center items-center sm:mt-0 text-center text-sm text-gray-700">
+              <span className="text-sm sm:text-center">
                 © 2023{" "}
-                <a href="sa" class="hover:underline">
+                <a href="sa" className="hover:underline">
                   Nfluencer™
                 </a>
                 . All Rights Reserved.

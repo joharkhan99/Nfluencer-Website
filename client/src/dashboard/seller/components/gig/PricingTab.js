@@ -8,15 +8,15 @@ const PricingTab = () => {
         <h2>Scope & Pricing</h2>
       </div>
 
-      <div class="flex justify-between">
-        <div class="text-gray-600 p-4 md:w-3/4 w-full">
+      <div className="flex justify-between">
+        <div className="text-gray-600 p-4 md:w-3/4 w-full">
           <div className="flex justify-between items-center">
             <div className="font-bold text-sm mb-2 block">Packages</div>
             <div className="flex items-center gap-2">
               <span className="text-sm">3 packages</span>
-              <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" value="" class="sr-only peer" />
-                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" value="" className="sr-only peer" />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
               </label>
             </div>
           </div>
@@ -471,7 +471,7 @@ const PricingTab = () => {
           </div>
         </div>
 
-        <div class="p-4 md:w-1/4 md:block hidden">
+        <div className="p-4 md:w-1/4 md:block hidden">
           <div className="flex justify-center items-center sticky top-0">
             <div className=" bg-purple-200 w-full p-3 rounded-xl">
               <div className="text-center -mt-8">

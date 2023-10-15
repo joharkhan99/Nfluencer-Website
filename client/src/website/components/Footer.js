@@ -2,12 +2,12 @@ import React from "react";
 
 function Footer() {
   return (
-    <footer class="py-0" style={{ background: "rgb(34,34,34)" }}>
+    <footer className="py-0" style={{ background: "rgb(34,34,34)" }}>
       <div className="container mx-auto">
         <div className="border-b border-gray-700 mb-12">
           <div className="container mx-auto">
             <div className="flex flex-col justify-between md:flex-row gap-4 py-6">
-              <div class="flex items-center justify-center gap-7 text-sm">
+              <div className="flex items-center justify-center gap-7 text-sm">
                 <a href="sd" className="font-semibold text-white text-[16px]">
                   Terms of Service
                 </a>
@@ -88,47 +88,49 @@ function Footer() {
           </div>
         </div>
 
-        <div class="flex flex-wrap flex-row">
-          <div class="w-full sm:w-1/2 md:w-auto md:flex-[2]">
+        <div className="flex flex-wrap flex-row">
+          <div className="w-full sm:w-1/2 md:w-auto md:flex-[2]">
             <div>
-              <h2 class="mb-5 text-md font-semibold block text-white">About</h2>
+              <h2 className="mb-5 text-md font-semibold block text-white">
+                About
+              </h2>
               <ul>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     About Us
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Become Seller
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Jobs
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Services
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Terms of Service
                   </a>
@@ -137,80 +139,80 @@ function Footer() {
             </div>
           </div>
 
-          <div class="w-full sm:w-1/2 md:w-auto md:flex-[2]">
+          <div className="w-full sm:w-1/2 md:w-auto md:flex-[2]">
             <div>
-              <h2 class="mb-5 text-md font-semibold block text-white">
+              <h2 className="mb-5 text-md font-semibold block text-white">
                 Categories
               </h2>
               <ul>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Design & Creative
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Development & IT
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Music & Audio
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Programming & Tech
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Digital Marketing
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Finance & Accounting
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Writing & Translation
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Trending
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Lifestyle
                   </a>
@@ -219,48 +221,48 @@ function Footer() {
             </div>
           </div>
 
-          <div class="w-full sm:w-1/2 md:w-auto md:flex-[2]">
+          <div className="w-full sm:w-1/2 md:w-auto md:flex-[2]">
             <div>
-              <h2 class="mb-5 text-md font-semibold block text-white">
+              <h2 className="mb-5 text-md font-semibold block text-white">
                 Support
               </h2>
               <ul>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Help & Support
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     FAQ Freeio
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Contact Us
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Services
                   </a>
                 </li>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Terms of Service
                   </a>
@@ -269,7 +271,7 @@ function Footer() {
             </div>
           </div>
 
-          <div class="w-full sm:w-1/2 md:w-auto md:flex-[3]">
+          <div className="w-full sm:w-1/2 md:w-auto md:flex-[3]">
             <span className="mb-5 text-md font-semibold block text-white">
               Subscribe
             </span>
@@ -289,10 +291,10 @@ function Footer() {
                 Apps
               </span>
               <ul>
-                <li class="mb-3">
+                <li className="mb-3">
                   <a
                     href="we"
-                    class="font-normal text-sm text-gray-400 hover:text-white transition-colors"
+                    className="font-normal text-sm text-gray-400 hover:text-white transition-colors"
                   >
                     Android App
                   </a>
@@ -305,12 +307,12 @@ function Footer() {
         <div className="border-t border-gray-700 mt-16">
           <div className="container mx-auto">
             <div className="flex flex-col justify-between md:flex-row gap-4 py-6">
-              <div class="flex items-center justify-center gap-7 font-normal text-xs text-gray-400">
+              <div className="flex items-center justify-center gap-7 font-normal text-xs text-gray-400">
                 © 2022 All rights reserved.
               </div>
 
               <div>
-                <select class="bg-transparent outline-none appearance-none text-gray-400 bg-neutral-600 p-2 rounded text-sm text-center cursor-pointer">
+                <select className="bg-transparent outline-none appearance-none text-gray-400 bg-neutral-600 p-2 rounded text-sm text-center cursor-pointer">
                   <option value="en">English</option>
                   <option value="fr">French</option>
                   <option value="es">Spanish</option>

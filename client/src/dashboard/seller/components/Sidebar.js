@@ -46,7 +46,7 @@ const Sidebar = () => {
               <li
                 className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 bg-nft-primary-light shadow-lg mb-2`}
               >
-                <Squares2X2Icon class="w-6 h-6" />
+                <Squares2X2Icon className="w-6 h-6" />
                 <span
                   className={`${
                     !sideBarOpen && "hidden"
@@ -60,7 +60,7 @@ const Sidebar = () => {
                 className={`rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 hover:bg-gray-100 mb-2`}
               >
                 <Link to="/seller/gigs" className="flex items-center gap-x-4">
-                  <BriefcaseIcon class="w-6 h-6 text-gray-600" />
+                  <BriefcaseIcon className="w-6 h-6 text-gray-600" />
                   <span
                     className={`${
                       !sideBarOpen && "hidden"
@@ -74,7 +74,7 @@ const Sidebar = () => {
               <li
                 className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-2`}
               >
-                <ClipboardDocumentListIcon class="w-6 h-6 text-gray-600" />
+                <ClipboardDocumentListIcon className="w-6 h-6 text-gray-600" />
                 <span
                   className={`${
                     !sideBarOpen && "hidden"
@@ -87,7 +87,7 @@ const Sidebar = () => {
               <li
                 className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-2`}
               >
-                <CubeTransparentIcon class="w-6 h-6 text-gray-600" />
+                <CubeTransparentIcon className="w-6 h-6 text-gray-600" />
 
                 <span
                   className={`${
@@ -104,7 +104,7 @@ const Sidebar = () => {
                     <>
                       <Disclosure.Button className="flex gap-x-4 rounded-md cursor-pointer w-full items-center hover:bg-gray-100 p-2">
                         <span>
-                          <Cog8ToothIcon class="w-6 h-6 text-gray-600" />
+                          <Cog8ToothIcon className="w-6 h-6 text-gray-600" />
                         </span>
                         <div
                           className={`flex w-full justify-between origin-left duration-200 ${

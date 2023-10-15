@@ -36,12 +36,12 @@ const sendRegistrationEmail = async (email, token) => {
     <html lang="en">
     <head></head>
     <body style="background:#6B46C1;height:100%;width:100%">
-    <div style="margin-top:50px">
-      <div style="width:100%;max-width:500px;margin:auto;height:100%;width:100%;border-radius:10px;overflow:hidden">
+    <div style="margin-top:50px;background: #6b46c1;height:100%;width:100%">
+      <div style="width:100%;max-width:500px;margin:auto;height:100%;width:100%;border-radius:10px;overflow:hidden;padding: 20px;">
       <table style="text-align:center;background:#fff;width:100%;padding:20px;border-radius: 30px;font-family:sans-serif,Arial;margin-top: 30px;margin-bottom: 30px;box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);">
             <tbody>
               <tr style="width:100%;">
-                <td style="width:100%;font-size:25px; font-weight:900;padding-bottom:20px;">Thanks for signing up for Nfluencer!</td>
+                <td style="width:100%;font-size:25px; font-weight:900;padding:20px;">Thanks for signing up for Nfluencer!</td>
               </tr>
               <tr style="width:100%">
                 <td style="width:100%">
@@ -58,7 +58,7 @@ const sendRegistrationEmail = async (email, token) => {
                 </td>
               </tr>
               <tr style="width:100%">
-                <td style="width:100%;padding-top:20px">
+                <td style="width:100%;padding:20px">
                   <p style="font-size:12px">
                     If you’re having trouble clicking the "Verify Email Address" button, copy and paste the URL below into your web browser:
                   <a href="${emailLink}">${emailLink}</a>
@@ -128,7 +128,13 @@ const verifyEmail = async (req, res) => {
     return res.status(409).json({ error: false, emailValidated: true });
   }
 
-  return res.status(200).json({ error: false, userId: findUser._id });
+  return res.status(200).json({
+    error: false,
+    user: {
+      email: findUser.email,
+      userId: findUser._id,
+    },
+  });
 };
 
 const userDetails = async (req, res) => {
@@ -137,7 +143,8 @@ const userDetails = async (req, res) => {
     let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
     const cldRes = await handleUpload(dataURI);
 
-    const { name, username, languages, location, bio, userId } = req.body;
+    const { name, username, languages, location, bio, userId, email } =
+      req.body;
 
     // check if username exists
     const usernameExist = await User.findOne({ username });
@@ -181,11 +188,12 @@ const userDetails = async (req, res) => {
         bio,
         avatar: cldRes,
         jwtToken: jwttoken,
-        email: user.email,
+        email: email,
       },
     });
   } catch (error) {
-    res.json({
+    console.log(error);
+    return res.json({
       error: true,
       message: error,
     });
