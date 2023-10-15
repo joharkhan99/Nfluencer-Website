@@ -23,6 +23,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "./redux/slices/UserSlice";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import Loader from "./utils/Loader";
+import SellerManageNFT from "./dashboard/seller/pages/SellerManageNFT";
 
 function App() {
   const dispatch = useDispatch();
@@ -113,6 +114,7 @@ function App() {
           <Route path="gigs" Component={SellerGigs} />
           <Route path="newgig" Component={SellerCreateGig} />
           <Route path="newnft" Component={SellerNewNFT} />
+          <Route path="nfts" Component={SellerManageNFT} />
         </Route>
       </Routes>
     </BrowserRouter>
