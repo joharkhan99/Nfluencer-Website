@@ -9,7 +9,7 @@ function NewNFT() {
       <Header transparent={true} />
       <div className="container mx-auto my-10">
         <div className="py-7">
-          <h1 className="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
+          <h1 className="text-4xl font-extrabold tracking-tight text-gray-800 sm:text-4xl">
             Add new NFT
           </h1>
         </div>
