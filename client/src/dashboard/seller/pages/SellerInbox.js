@@ -16,7 +16,7 @@ import React, { Fragment } from "react";
 const SellerInbox = () => {
   return (
     <div className="h-full w-full">
-      <div className="flex justify-between items-center gap-4 h-full">
+      <div className="flex justify-between items-center gap-1.5 h-full">
         <div className="w-2/6 h-full">
           <div className="bg-white rounded-xl w-full h-full overflow-y-auto">
             {/* search box */}
@@ -255,7 +255,7 @@ const SellerInbox = () => {
                   <div className="flex justify-end w-full mb-1">
                     <div className="w-1/2 flex justify-end">
                       <div>
-                        <div className="flex gap-1">
+                        <div className="flex gap-1 items-start">
                           <div className="bg-gray-100 w-fit text-gray-800 p-2 rounded-xl">
                             Hi Nathan, Hi Nathan, Hi Nathan, Hi Nathan, Hi
                             Nathan, Hi Nathan,
@@ -273,15 +273,55 @@ const SellerInbox = () => {
                   <div className="flex justify-start w-full mb-1">
                     <div className="w-1/2 flex justify-start">
                       <div>
-                        <div className="flex gap-1">
+                        <div className="flex gap-1 group">
                           <img
                             src={require("../../../website/assets/man.jpg")}
                             alt=""
                             className="w-7 h-7 rounded-full object-cover"
                           />
-                          <div className="bg-nft-primary-light w-fit text-white p-2 rounded-xl">
-                            Hi Nathan, Hi Nathan, Hi Nathan, Hi Nathan, Hi
-                            Nathan, Hi Nathan,
+                          <div className="bg-nft-primary-light w-fit text-white p-2 rounded-xl relative">
+                            <div>
+                              Hi Nathan, Hi Nathan, Hi Nathan, Hi Nathan, Hi
+                              Nathan, Hi Nathan,
+                            </div>
+
+                            <Menu
+                              as="div"
+                              className="absolute right-0 top-0 text-left hidden group-hover:inline-block"
+                            >
+                              <div>
+                                <Menu.Button className="group bg-white  rounded-full p-0 text-sm text-gray-800 font-semibold">
+                                  <div>
+                                    <EllipsisHorizontalIcon className="w-6 h-6" />
+                                  </div>
+                                </Menu.Button>
+                              </div>
+
+                              <Transition
+                                as={Fragment}
+                                enter="transition ease-out duration-100"
+                                enterFrom="transform opacity-0 scale-95"
+                                enterTo="transform opacity-100 scale-100"
+                                leave="transition ease-in duration-75"
+                                leaveFrom="transform opacity-100 scale-100"
+                                leaveTo="transform opacity-0 scale-95"
+                              >
+                                <Menu.Items className="absolute right-0 z-50 -mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg focus:outline-none p-0 overflow-hidden text-sm">
+                                  <div>
+                                    <Menu.Item>
+                                      <button className="text-gray-800 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
+                                        Report
+                                      </button>
+                                    </Menu.Item>
+                                    <Menu.Item>
+                                      <button className="text-red-500 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
+                                        Mark as Spam
+                                      </button>
+                                    </Menu.Item>
+                                  </div>
+                                </Menu.Items>
+                              </Transition>
+                            </Menu>
                           </div>
                         </div>
                       </div>
@@ -333,15 +373,65 @@ const SellerInbox = () => {
                 </div>
               </div>
             </div>
-
             {/* chat box */}
           </div>
         </div>
 
         <div className="w-1/6 h-full">
-          lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-          quos. lorem ipsum dolor sit amet consectetur adipisicing elit.
-          Quisquam, quos.
+          {/* seller info */}
+          <div className="bg-white rounded-xl w-full h-full overflow-y-auto text-sm text-gray-800 p-3">
+            <div className="flex items-center w-full flex-col gap-1">
+              <img
+                src={require("../../../website/assets/man.jpg")}
+                alt=""
+                className="w-20 h-20 mx-auto rounded-full object-cover"
+              />
+              <span className="font-semibold">Syeda Afifa</span>
+            </div>
+
+            <div className="flex justify-between items-center border-b border-t border-gray-100 py-2 my-4">
+              <div className="font-semibold">Orders with you</div>
+              <a href="d" className="text-gray-500 underline">
+                (23)
+              </a>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <div className="font-semibold flex gap-1">
+                <span>About</span>
+                <a href="d" className="underline">
+                  carozIntel
+                </a>
+              </div>
+
+              <div className="justify-between flex">
+                <span className="text-gray-500">From</span>
+                <span className="font-semibold">United States</span>
+              </div>
+
+              <div className="justify-between flex">
+                <span className="text-gray-500">Joined On</span>
+                <span className="font-semibold">Jul 2022</span>
+              </div>
+
+              <div className="justify-between flex">
+                <span className="text-gray-500">English</span>
+                <span className="font-semibold">Basic</span>
+              </div>
+
+              <div className="justify-between flex">
+                <span className="text-gray-500">Rating</span>
+                <div className="flex gap-0.5 items-center">
+                  <StarIcon className="w-4 h-4 fill-gray-500 stroke-gray-500" />
+                  <span className="font-semibold">5</span>
+                  <a href="d" className="underline text-gray-500">
+                    (25)
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* seller info */}
         </div>
       </div>
     </div>
