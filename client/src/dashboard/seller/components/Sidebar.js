@@ -8,6 +8,7 @@ import {
   CubeTransparentIcon,
   ClipboardDocumentListIcon,
   Cog8ToothIcon,
+  ChatBubbleLeftEllipsisIcon,
 } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import "../assets/styles/style.css";
@@ -44,7 +45,7 @@ const Sidebar = () => {
           <div className="overflow-hidden h-screen border-t p-4 mt-1.5 border-gray-100 pt-6">
             <ul className="overflow-auto h-screen custom-scrollbar">
               <li
-                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 bg-nft-primary-light shadow-lg mb-2`}
+                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 bg-nft-primary-light shadow-lg shadow-gray-200 mb-2`}
               >
                 <Squares2X2Icon className="w-6 h-6" />
                 <span
@@ -82,6 +83,21 @@ const Sidebar = () => {
                 >
                   Manage Orders
                 </span>
+              </li>
+
+              <li
+                className={`rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 hover:bg-gray-100 mb-2`}
+              >
+                <Link to="/seller/inbox" className="flex items-center gap-x-4">
+                  <ChatBubbleLeftEllipsisIcon className="w-6 h-6 text-gray-600" />
+                  <span
+                    className={`${
+                      !sideBarOpen && "hidden"
+                    } origin-left duration-200 font-semibold`}
+                  >
+                    Inbox
+                  </span>
+                </Link>
               </li>
 
               <li

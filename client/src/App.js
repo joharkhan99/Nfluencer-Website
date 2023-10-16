@@ -24,6 +24,7 @@ import { setUser } from "./redux/slices/UserSlice";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import Loader from "./utils/Loader";
 import SellerManageNFT from "./dashboard/seller/pages/SellerManageNFT";
+import SellerInbox from "./dashboard/seller/pages/SellerInbox";
 
 function App() {
   const dispatch = useDispatch();
@@ -115,6 +116,7 @@ function App() {
           <Route path="newgig" Component={SellerCreateGig} />
           <Route path="newnft" Component={SellerNewNFT} />
           <Route path="nfts" Component={SellerManageNFT} />
+          <Route path="inbox" Component={SellerInbox} />
         </Route>
       </Routes>
     </BrowserRouter>
