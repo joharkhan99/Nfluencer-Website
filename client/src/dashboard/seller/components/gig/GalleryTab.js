@@ -1,16 +1,61 @@
 import React, { useState } from "react";
-import { Listbox, Transition } from "@headlessui/react";
-import { Fragment } from "react";
 import {
-  CheckIcon,
-  ChevronUpDownIcon,
   ClipboardDocumentListIcon,
   LightBulbIcon,
   PhotoIcon,
   VideoCameraIcon,
 } from "@heroicons/react/24/outline";
+import { useDispatch, useSelector } from "react-redux";
+import { setFormStep } from "../../../../redux/slices/NewGigSlice";
 
-const GalleryTab = () => {
+const GalleryTab = ({ images, setImages, imagePreviews, setImagePreviews }) => {
+  const [errors, setErrors] = useState({});
+
+  const handleImageChange = (e, index) => {
+    const file = e.target.files[0];
+    const updatedImages = [...images];
+    updatedImages[index] = file;
+
+    // Use the state updater function to correctly update the state
+    setImages((prevImages) => {
+      const newImages = [...prevImages];
+      newImages[index] = file;
+      return newImages;
+    });
+
+    // Generate and store a URL for the selected image to display
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const newImagePreviews = [...imagePreviews];
+      newImagePreviews[index] = e.target.result;
+      setImagePreviews(newImagePreviews);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const dispatch = useDispatch();
+  const formStep = useSelector((state) => state.gig.formStep);
+  const handlePrev = () => {
+    dispatch(setFormStep(formStep - 1));
+  };
+
+  const validateForm = () => {
+    let errors = {};
+
+    if (images && images.length === 0) {
+      errors.images = "Please upload at least one image";
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSubmit = () => {
+    if (validateForm()) {
+      dispatch(setFormStep(formStep + 1));
+    }
+  };
+
   return (
     <div id="gallery" className="text-sm">
       <div className="p-4 pb-5 text-3xl border-b mb-6 pt-2 text-gray-800 font-normal border-gray-100">
@@ -34,71 +79,53 @@ const GalleryTab = () => {
             </div>
 
             <div className="flex justify-evenly mt-10 gap-3">
-              <div className="flex items-center justify-center h-52 w-1/3 cursor-pointer text-center relative">
-                <input
-                  type="file"
-                  id="image"
-                  name="images"
-                  className="hidden"
-                  accept="image/*"
-                  required
-                />
-                <label
-                  for="image"
-                  className="cursor-pointer bg-white border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
+              {imagePreviews.map((preview, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-center h-52 w-1/3 cursor-pointer text-center relative"
                 >
-                  <PhotoIcon className="w-16 h-16 text-gray-300" />
-                  <p className="text-sm font-semibold">
-                    Browse a Photo <br />
-                    to Upload
-                  </p>
-                </label>
-              </div>
+                  <input
+                    type="file"
+                    id={`image${index + 1}`}
+                    name={`image${index + 1}`}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={(e) => {
+                      handleImageChange(e, index);
+                    }}
+                  />
+                  <label
+                    for={`image${index + 1}`}
+                    className={`cursor-pointer border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden py-0 px-0 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed gap-0 group`}
+                  >
+                    {preview ? (
+                      <img
+                        src={preview}
+                        alt="Selected"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <PhotoIcon className="w-16 h-16 text-gray-300" />
+                    )}
+                    <p className="text-sm font-semibold block">
+                      {!preview && "Browse a Photo to Upload"}
+                    </p>
 
-              <div className="flex items-center justify-center h-52 w-1/3 cursor-pointer text-center relative">
-                <div className="w-full h-full absolute bg-gray-100 rounded-lg border-2 border-dashed border-gray-300"></div>
-                <input
-                  type="file"
-                  id="image"
-                  name="images"
-                  className="hidden"
-                  accept="image/*"
-                  required
-                />
-                <label
-                  for="image"
-                  className="cursor-pointer bg-gray-100 border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
-                >
-                  <PhotoIcon className="w-16 h-16 text-gray-300" />
-                  <p className="text-sm font-semibold">
-                    Browse a Photo <br />
-                    to Upload
-                  </p>
-                </label>
-              </div>
-
-              <div className="flex items-center justify-center h-52 w-1/3 cursor-pointer text-center relative">
-                <div className="w-full h-full absolute bg-gray-100 rounded-lg border-2 border-dashed border-gray-300"></div>
-                <input
-                  type="file"
-                  id="image"
-                  name="images"
-                  className="hidden"
-                  accept="image/*"
-                  required
-                />
-                <label
-                  for="image"
-                  className="cursor-pointer bg-gray-100 border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
-                >
-                  <PhotoIcon className="w-16 h-16 text-gray-300" />
-                  <p className="text-sm font-semibold">
-                    Browse a Photo <br />
-                    to Upload
-                  </p>
-                </label>
-              </div>
+                    {preview && (
+                      <div className="absolute top-0 right-0 w-full h-full items-center justify-center bg-black rounded-xl bg-opacity-50 text-white text-sm hidden group-hover:flex">
+                        <span className="bg-gray-800 p-2 rounded-xl">
+                          Change Photo
+                        </span>
+                      </div>
+                    )}
+                  </label>
+                </div>
+              ))}
             </div>
+
+            {errors.images && (
+              <div className="text-red-500 text-sm mt-2">{errors.images}</div>
+            )}
           </div>
 
           <div className="border-b border-gray-100 pb-8 mb-7">
@@ -191,6 +218,28 @@ const GalleryTab = () => {
                   </p>
                 </label>
               </div>
+            </div>
+          </div>
+
+          <div className="flex w-full justify-between p-4 px-0 pb-0 mt-5 text-base">
+            <div>
+              <button className="rounded-xl px-6 py-3 bg-gray-200 text-gray-800 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors border border-gray-300">
+                Cancel
+              </button>
+            </div>
+            <div className="flex gap-4">
+              <button
+                className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
+                onClick={handlePrev}
+              >
+                Previous
+              </button>
+              <button
+                className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
+                onClick={handleSubmit}
+              >
+                Save and Continue
+              </button>
             </div>
           </div>
         </div>

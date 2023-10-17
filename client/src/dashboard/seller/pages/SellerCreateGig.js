@@ -86,6 +86,9 @@ const SellerCreateGig = () => {
     useState(null);
   const [extraPremiumRevision, setExtraPremiumRevision] = useState(null);
 
+  const [images, setImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState(["", "", ""]);
+
   const formSteps = [
     {
       icon: <DocumentMagnifyingGlassIcon className="h-6 w-6" />,
@@ -206,7 +209,12 @@ const SellerCreateGig = () => {
       extraPremiumRevision={extraPremiumRevision}
       setExtraPremiumRevision={setExtraPremiumRevision}
     />,
-    <GalleryTab />,
+    <GalleryTab
+      images={images}
+      setImages={setImages}
+      imagePreviews={imagePreviews}
+      setImagePreviews={setImagePreviews}
+    />,
     <NFTTab />,
     <RequirementsTab />,
     <FAQTab />,
