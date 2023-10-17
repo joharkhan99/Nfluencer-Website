@@ -2,9 +2,14 @@ import { LightBulbIcon } from "@heroicons/react/24/outline";
 import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { useDispatch, useSelector } from "react-redux";
+import { setFormStep } from "../../../../redux/slices/NewGigSlice";
 
-const DescriptionTab = () => {
-  const [description, setDescription] = useState("");
+const DescriptionTab = ({ description, setDescription }) => {
+  const dispatch = useDispatch();
+  const formStep = useSelector((state) => state.gig.formStep);
+  const [errors, setErrors] = useState({});
+
   const formats = [
     // "header",
     "bold",
@@ -33,6 +38,34 @@ const DescriptionTab = () => {
       // toggle to add extra line breaks when pasting HTML:
       matchVisual: false,
     },
+  };
+
+  const handlePrev = () => {
+    dispatch(setFormStep(formStep - 1));
+  };
+
+  const validateForm = () => {
+    let errors = {};
+
+    if (description === null) {
+      errors.description = "Description cannot be empty";
+    }
+    if (description && description.trim().length < 120) {
+      errors.description = "Description must be at least 120 characters long";
+    }
+    if (description && description.trim().length > 1200) {
+      errors.description = "Description cannot exceed 1200 characters";
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSubmit = () => {
+    console.log(description);
+    if (validateForm()) {
+      dispatch(setFormStep(formStep + 1));
+    }
   };
 
   return (
@@ -65,9 +98,15 @@ const DescriptionTab = () => {
                 min. 120
               </span>
               <span className="block text-right text-xs text-gray-400 italic">
-                10/1200 characters
+                {description && description.trim().length}/1200 characters
               </span>
             </div>
+
+            {errors.description && (
+              <span className="text-red-400 text-sm font-medium px-2">
+                {errors.description}
+              </span>
+            )}
           </div>
         </div>
 
@@ -101,6 +140,28 @@ const DescriptionTab = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="flex w-full justify-between md:w-2/3 p-4 pb-0 mt-5">
+        <div>
+          <button className="rounded-xl px-6 py-3 bg-gray-200 text-gray-800 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors border border-gray-300">
+            Cancel
+          </button>
+        </div>
+        <div className="flex gap-4">
+          <button
+            className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
+            onClick={handlePrev}
+          >
+            Previous
+          </button>
+          <button
+            className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
+            onClick={handleSubmit}
+          >
+            Save and Continue
+          </button>
         </div>
       </div>
     </div>

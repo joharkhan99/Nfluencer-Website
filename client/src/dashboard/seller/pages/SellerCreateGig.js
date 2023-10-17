@@ -1,3 +1,13 @@
+import OverviewTab from "../components/gig/OverviewTab";
+import DescriptionTab from "../components/gig/DescriptionTab";
+import PricingTab from "../components/gig/PricingTab";
+import GalleryTab from "../components/gig/GalleryTab";
+import RequirementsTab from "../components/gig/RequirementsTab";
+import FAQTab from "../components/gig/FAQTab";
+import PublishTab from "../components/gig/PublishTab";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import GigStepForm from "../components/partials/GigStepForm";
 import {
   CubeTransparentIcon,
   CurrencyDollarIcon,
@@ -8,174 +18,125 @@ import {
   QuestionMarkCircleIcon,
   CheckCircleIcon,
 } from "@heroicons/react/24/outline";
-import OverviewTab from "../components/gig/OverviewTab";
-import DescriptionTab from "../components/gig/DescriptionTab";
-import PricingTab from "../components/gig/PricingTab";
-import GalleryTab from "../components/gig/GalleryTab";
-import RequirementsTab from "../components/gig/RequirementsTab";
-import FAQTab from "../components/gig/FAQTab";
-import PublishTab from "../components/gig/PublishTab";
+import NFTTab from "../components/gig/NFTTab";
 
 const SellerCreateGig = () => {
+  const formStep = useSelector((state) => state.gig.formStep);
+
+  useEffect(() => {
+    const unloadCallback = (event) => {
+      event.preventDefault();
+      event.returnValue = "";
+      return "";
+    };
+
+    window.addEventListener("beforeunload", unloadCallback);
+    return () => window.removeEventListener("beforeunload", unloadCallback);
+  }, []);
+
+  const [title, setTitle] = useState("");
+  const [keywords, setKeywords] = useState([]);
+  const [keywordInput, setKeywordInput] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+  const [description, setDescription] = useState(null);
+
+  const formSteps = [
+    {
+      icon: <DocumentMagnifyingGlassIcon className="h-6 w-6" />,
+      title: "Overview",
+    },
+    {
+      icon: <DocumentTextIcon className="h-6 w-6" />,
+      title: "Description",
+    },
+    {
+      icon: <CurrencyDollarIcon className="h-6 w-6" />,
+      title: "Scope & Pricing",
+    },
+    {
+      icon: <PhotoIcon className="h-6 w-6" />,
+      title: "Gallery",
+    },
+    {
+      icon: <CubeTransparentIcon className="h-6 w-6" />,
+      title: "NFT",
+    },
+    {
+      icon: <DocumentCheckIcon className="h-6 w-6" />,
+      title: "Requirements",
+    },
+    {
+      icon: <QuestionMarkCircleIcon className="h-6 w-6" />,
+      title: "FAQs",
+    },
+    {
+      icon: <CheckCircleIcon className="h-6 w-6" />,
+      title: "Publish",
+    },
+  ];
+
+  const tabs = [
+    <OverviewTab
+      title={title}
+      keywords={keywords}
+      setTitle={setTitle}
+      setKeywords={setKeywords}
+      keywordInput={keywordInput}
+      setKeywordInput={setKeywordInput}
+      selectedCategory={selectedCategory}
+      setSelectedCategory={setSelectedCategory}
+      selectedSubcategory={selectedSubcategory}
+      setSelectedSubcategory={setSelectedSubcategory}
+    />,
+    <DescriptionTab
+      description={description}
+      setDescription={setDescription}
+    />,
+    <PricingTab />,
+    <GalleryTab />,
+    <NFTTab />,
+    <RequirementsTab />,
+    <FAQTab />,
+    <PublishTab />,
+  ];
+
   return (
     <div className="container mx-auto">
       <div className="flex items-center justify-center rounded-xl w-fit m-auto bg-white shadow-xl shadow-gray-200 p-3">
-        <div className="vert-line relative text-center px-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2.5 rounded-full bg-purple-100">
-              <DocumentMagnifyingGlassIcon className="h-6 w-6 text-nft-primary-light" />
-            </button>
-            <div className="hidden flex-col justify-start text-left">
-              <span className="text-xs text-nft-primary-light font-medium">
-                Step 1/6
-              </span>
-              <span className="text-sm font-semibold text-gray-800">
-                Overview
-              </span>
-            </div>
-          </div>
-        </div>
+        {formSteps.map((step, index) => {
+          const stepNumber = index + 1;
 
-        <div className="vert-line text-center px-4 relative">
-          <div className="flex items-center gap-3">
-            <button className="p-2.5 rounded-full bg-nft-primary-light shadow-md shadow-purple-300">
-              <DocumentTextIcon className="h-6 w-6 text-white" />
-            </button>
+          let disabled = false;
+          let currentStep = false;
+          let completedStep = false;
+          if (stepNumber > formStep) {
+            disabled = true;
+          }
+          if (stepNumber === formStep) {
+            currentStep = true;
+          }
+          if (stepNumber < formStep) {
+            completedStep = true;
+            disabled = true;
+          }
 
-            <div className="flex flex-col justify-start text-left">
-              <span className="text-xs text-nft-primary-light font-medium">
-                Step 2/6
-              </span>
-              <span className="text-sm font-semibold text-gray-800">
-                Description
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="vert-line relative text-center px-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2.5 rounded-full bg-nft-primary-light shadow-md shadow-purple-300">
-              <CurrencyDollarIcon className="h-6 w-6 text-white" />
-            </button>
-            <div className=" flex-col justify-start text-left flex">
-              <span className="text-xs text-nft-primary-light font-medium">
-                Step 3/6
-              </span>
-              <span className="text-sm font-semibold text-gray-800">
-                Scope & Pricing
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="vert-line relative text-center px-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2.5 rounded-full bg-purple-200 shadow-md">
-              <PhotoIcon className="h-6 w-6 text-nft-primary-light" />
-            </button>
-            <div className=" flex-col justify-start text-left hidden">
-              <span className="text-xs text-nft-primary-light font-medium">
-                Step 4/6
-              </span>
-              <span className="text-sm font-semibold text-gray-800">
-                Gallery
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="vert-line text-center px-4 relative">
-          <div className="flex items-center gap-3">
-            <button className="p-2.5 rounded-full bg-gray-50">
-              <CubeTransparentIcon className="h-6 w-6 text-gray-400" />
-            </button>
-          </div>
-        </div>
-
-        <div className="vert-line relative text-center px-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2.5 rounded-full bg-nft-primary-light shadow-md shadow-purple-300">
-              <DocumentCheckIcon className="h-6 w-6 text-white" />
-            </button>
-            <div className=" flex-col justify-start text-left flex">
-              <span className="text-xs text-nft-primary-light font-medium">
-                Step 5/7
-              </span>
-              <span className="text-sm font-semibold text-gray-800">
-                Requirements
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div className="vert-line relative text-center px-4">
-          <div className="flex items-center gap-3">
-            <button className="p-2.5 rounded-full bg-nft-primary-light shadow-md shadow-purple-300">
-              <QuestionMarkCircleIcon className="h-6 w-6 text-white" />
-            </button>
-            <div className=" flex-col justify-start text-left flex">
-              <span className="text-xs text-nft-primary-light font-medium">
-                Step 5/7
-              </span>
-              <span className="text-sm font-semibold text-gray-800">FAQs</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="vert-line text-center px-4 relative">
-          <div className="flex items-center gap-3">
-            <button className="p-2.5 rounded-full bg-gray-50">
-              <CheckCircleIcon className="h-6 w-6 text-gray-400" />
-            </button>
-          </div>
-        </div>
+          return (
+            <GigStepForm
+              key={index}
+              icon={step.icon}
+              title={step.title}
+              step={index + 1}
+              disabled={disabled}
+              currentStep={currentStep}
+              completedStep={completedStep}
+            />
+          );
+        })}
       </div>
 
       <div className="my-10 bg-white shadow-xl shadow-gray-200 p-5 rounded-xl">
-        {/* overview */}
-        {/* <OverviewTab /> */}
-        {/* overview */}
-
-        {/* description */}
-        {/* <DescriptionTab /> */}
-        {/* description */}
-
-        {/* pricing */}
-        {/* <PricingTab /> */}
-        {/* pricing */}
-
-        {/* Gallery */}
-        {/* <GalleryTab /> */}
-        {/* Gallery */}
-
-        {/* Requirements */}
-        {/* <RequirementsTab /> */}
-        {/* Requirements */}
-
-        {/* FAQ */}
-        {/* <FAQTab /> */}
-        {/* FAQ */}
-
-        {/* Publish */}
-        <PublishTab />
-        {/* Publish */}
-
-        <div className="flex w-full justify-between md:w-2/3 p-4 pb-0 mt-5">
-          <div>
-            <button className="rounded-xl px-6 py-3 bg-gray-200 text-gray-800 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors border border-gray-300">
-              Cancel
-            </button>
-          </div>
-          <div className="flex gap-4">
-            <button className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200">
-              Previous
-            </button>
-            <button className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200">
-              Save and Continue
-            </button>
-          </div>
-        </div>
+        {tabs[formStep - 1]}
       </div>
     </div>
   );

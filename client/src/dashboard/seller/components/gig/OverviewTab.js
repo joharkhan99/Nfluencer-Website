@@ -1,118 +1,178 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   CheckIcon,
   ChevronUpDownIcon,
   LightBulbIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { setFormStep } from "../../../../redux/slices/NewGigSlice";
 
-const OverviewTab = () => {
-  const categories = [
-    // Main Categories
-    {
-      name: "Influencer Services",
-      subcategories: [
-        {
-          name: "Social Media Promotion",
-        },
-        {
-          name: "Sponsored Posts",
-        },
-      ],
-    },
-    {
-      name: "Live Streaming",
-      subcategories: [
-        {
-          name: "Freelance Services",
-        },
-        {
-          name: "Writing and Editing",
-        },
-        {
-          name: "Graphic Design",
-        },
-        {
-          name: "Web Development",
-        },
-        {
-          name: "Video Editing",
-        },
-      ],
-    },
-    {
-      name: "Music Services",
-      subcategories: [
-        {
-          name: "Music Production",
-        },
-        {
-          name: "Songwriting",
-        },
-        {
-          name: "Instrumental Services",
-        },
-        {
-          name: "Music Lessons",
-        },
-      ],
-    },
-    {
-      name: "Art Services",
-      subcategories: [
-        {
-          name: "Digital Art",
-        },
-        {
-          name: "Traditional Art",
-        },
-        {
-          name: "Custom Art Commissions",
-        },
-        {
-          name: "Art Tutorials",
-        },
-      ],
-    },
-    {
-      name: "Consulting Services",
-      subcategories: [
-        {
-          name: "Business Consulting",
-        },
-        {
-          name: "Marketing Strategy",
-        },
-        {
-          name: "Career Counseling",
-        },
-        {
-          name: "Financial Advice",
-        },
-      ],
-    },
-    {
-      name: "Coaching Services",
-      subcategories: [
-        {
-          name: "Life Coaching",
-        },
-        {
-          name: "Fitness Coaching",
-        },
-        {
-          name: "Career Coaching",
-        },
-        {
-          name: "Personal Development",
-        },
-      ],
-    },
-  ];
+const categories = [
+  // Main Categories
+  {
+    name: "Influencer Services",
+    subcategories: [
+      {
+        name: "Social Media Promotion",
+      },
+      {
+        name: "Sponsored Posts",
+      },
+    ],
+  },
+  {
+    name: "Live Streaming",
+    subcategories: [
+      {
+        name: "Freelance Services",
+      },
+      {
+        name: "Writing and Editing",
+      },
+      {
+        name: "Graphic Design",
+      },
+      {
+        name: "Web Development",
+      },
+      {
+        name: "Video Editing",
+      },
+    ],
+  },
+  {
+    name: "Music Services",
+    subcategories: [
+      {
+        name: "Music Production",
+      },
+      {
+        name: "Songwriting",
+      },
+      {
+        name: "Instrumental Services",
+      },
+      {
+        name: "Music Lessons",
+      },
+    ],
+  },
+  {
+    name: "Art Services",
+    subcategories: [
+      {
+        name: "Digital Art",
+      },
+      {
+        name: "Traditional Art",
+      },
+      {
+        name: "Custom Art Commissions",
+      },
+      {
+        name: "Art Tutorials",
+      },
+    ],
+  },
+  {
+    name: "Consulting Services",
+    subcategories: [
+      {
+        name: "Business Consulting",
+      },
+      {
+        name: "Marketing Strategy",
+      },
+      {
+        name: "Career Counseling",
+      },
+      {
+        name: "Financial Advice",
+      },
+    ],
+  },
+  {
+    name: "Coaching Services",
+    subcategories: [
+      {
+        name: "Life Coaching",
+      },
+      {
+        name: "Fitness Coaching",
+      },
+      {
+        name: "Career Coaching",
+      },
+      {
+        name: "Personal Development",
+      },
+    ],
+  },
+];
 
-  const [selected, setSelected] = useState(categories[0]);
-  const [selected2, setSelected2] = useState(categories[0]);
+const OverviewTab = ({
+  title,
+  keywords,
+  setTitle,
+  setKeywords,
+  keywordInput,
+  setKeywordInput,
+  selectedCategory,
+  setSelectedCategory,
+  selectedSubcategory,
+  setSelectedSubcategory,
+}) => {
+  const dispatch = useDispatch();
+  const formStep = useSelector((state) => state.gig.formStep);
+  const [errors, setErrors] = useState({});
+
+  const handlekeywordInputKeyDown = (e) => {
+    if (e.key === "Enter" && keywordInput.trim() !== "") {
+      if (keywords.length < 5) {
+        setKeywords([...keywords, keywordInput.trim()]);
+        setKeywordInput("");
+      }
+    }
+  };
+
+  const handleRemoveTag = (index) => {
+    const newkeyword = [...keywords];
+    newkeyword.splice(index, 1);
+    setKeywords(newkeyword);
+  };
+
+  const subcategories = selectedCategory ? selectedCategory.subcategories : [];
+
+  const validateForm = () => {
+    const errors = {};
+    if (selectedCategory === null) {
+      errors.category = "Category is required";
+    }
+    if (selectedSubcategory === null) {
+      errors.subcategory = "Subcategory is required";
+    }
+    if (keywords.length === 0) {
+      errors.tags = "Tags are required";
+    }
+    if (title.trim() === "") {
+      errors.title = "Title is required";
+    }
+    if (title.trim().length > 80) {
+      errors.title = "Title must be less than 80 characters";
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSubmit = () => {
+    if (validateForm()) {
+      dispatch(setFormStep(formStep + 1));
+    }
+  };
 
   return (
     <div id="overview">
@@ -131,10 +191,21 @@ const OverviewTab = () => {
                 type="text"
                 placeholder="I will do something I'm really good at"
                 className="w-full text-5xl font-medium rounded-xl border-gray-200 border p-3 py-4 resize-none outline-none placeholder:text-gray-200 focus:ring-2 focus:ring-nft-primary-light"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
               />
-              <span className="block text-right text-xs text-gray-400">
-                10/80 max
-              </span>
+              <div className="flex items-center justify-between">
+                <span>
+                  {errors.title && (
+                    <span className="text-red-400 text-sm font-medium px-2">
+                      {errors.title}
+                    </span>
+                  )}
+                </span>
+                <span className="text-right text-xs text-gray-400">
+                  {title.length}/80 max
+                </span>
+              </div>
             </div>
 
             <div className="flex justify-between gap-8">
@@ -142,13 +213,20 @@ const OverviewTab = () => {
                 <label className="uppercase font-bold text-sm mb-2 block">
                   Category
                 </label>
-
                 <div>
-                  <Listbox value={selected} onChange={setSelected}>
+                  <Listbox
+                    value={selectedCategory}
+                    onChange={(newCategory) => {
+                      setSelectedCategory(newCategory);
+                      setSelectedSubcategory(null);
+                    }}
+                  >
                     <div className="relative">
                       <Listbox.Button className="relative w-full cursor-pointer rounded-xl text-left font-medium hover:bg-gray-200 bg-gray-100 py-3 px-6 focus:ring-2 focus:ring-nft-primary-light text-sm">
                         <span className="block truncate text-md">
-                          {selected.name}
+                          {selectedCategory
+                            ? selectedCategory.name
+                            : "Select a subcategory"}
                         </span>
                         <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
                           <ChevronUpDownIcon
@@ -157,26 +235,25 @@ const OverviewTab = () => {
                           />
                         </span>
                       </Listbox.Button>
-
                       <Transition
                         as={Fragment}
                         leave="transition ease-in duration-100"
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                       >
-                        <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm rounded-xl bg-white shadow-2xl p-2 text-sm">
-                          {categories.map((category, index) => (
+                        <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm rounded-xl bg-white shadow-2xl p-2 z-50">
+                          {categories.map((cat, index) => (
                             <Listbox.Option
                               key={index}
                               className={({ active }) =>
                                 `block py-4 rounded-lg relative cursor-default select-none pl-8 hover:bg-gray-100 text-gray-900`
                               }
-                              value={category}
+                              value={cat}
                             >
                               {({ selected }) => (
                                 <>
                                   <span className={`block truncate text-md`}>
-                                    {category.name}
+                                    {cat.name} {selected}
                                   </span>
                                   {selected ? (
                                     <span className="absolute inset-y-0 left-0 flex items-center pl-2 text-gray-400">
@@ -195,48 +272,60 @@ const OverviewTab = () => {
                     </div>
                   </Listbox>
                 </div>
-              </div>
-              <div className="w-full">
-                <label className="uppercase font-bold text-sm mb-2 block">
-                  Sub-Category
-                </label>
 
-                <div>
-                  <Listbox value={selected2} onChange={setSelected2}>
-                    <div className="relative">
-                      <Listbox.Button className="relative w-full cursor-pointer rounded-xl text-left font-medium hover:bg-gray-200 bg-gray-100 py-3 px-6 focus:ring-2 focus:ring-nft-primary-light text-sm">
-                        <span className="block truncate text-md">
-                          {selected2.name}
-                        </span>
-                        <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
-                          <ChevronUpDownIcon
-                            className="h-6 w-6"
-                            aria-hidden="true"
-                          />
-                        </span>
-                      </Listbox.Button>
-                      <Transition
-                        as={Fragment}
-                        leave="transition ease-in duration-100"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                      >
-                        <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm rounded-xl bg-white shadow-2xl p-2">
-                          {categories[1]["subcategories"].map(
-                            (category, index) => (
+                {errors.category && (
+                  <span className="text-red-400 text-sm font-medium px-2">
+                    {errors.category}
+                  </span>
+                )}
+              </div>
+
+              {subcategories.length > 0 && (
+                <div className="w-full">
+                  <label className="uppercase font-bold text-sm mb-2 block">
+                    Sub-Category
+                  </label>
+
+                  <div>
+                    <Listbox
+                      value={selectedSubcategory}
+                      onChange={setSelectedSubcategory}
+                    >
+                      <div className="relative">
+                        <Listbox.Button className="relative w-full cursor-pointer rounded-xl text-left font-medium hover:bg-gray-200 bg-gray-100 py-3 px-6 focus:ring-2 focus:ring-nft-primary-light text-sm">
+                          <span className="block truncate text-md">
+                            {selectedSubcategory
+                              ? selectedSubcategory.name
+                              : "Select a subcategory"}
+                          </span>
+                          <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center">
+                            <ChevronUpDownIcon
+                              className="h-6 w-6"
+                              aria-hidden="true"
+                            />
+                          </span>
+                        </Listbox.Button>
+                        <Transition
+                          as={Fragment}
+                          leave="transition ease-in duration-100"
+                          leaveFrom="opacity-100"
+                          leaveTo="opacity-0"
+                        >
+                          <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm rounded-xl bg-white shadow-2xl p-2 z-50">
+                            {subcategories.map((subcategory, index) => (
                               <Listbox.Option
                                 key={index}
                                 className={({ active }) =>
                                   `block py-4 rounded-lg relative cursor-default select-none pl-8 hover:bg-gray-100 text-gray-900`
                                 }
-                                value={category}
+                                value={subcategory}
                               >
-                                {({ selected2 }) => (
+                                {({ selected }) => (
                                   <>
                                     <span className={`block truncate text-md`}>
-                                      {category.name}
+                                      {subcategory.name}
                                     </span>
-                                    {selected2 ? (
+                                    {selected ? (
                                       <span className="absolute inset-y-0 left-0 flex items-center pl-2 text-gray-400">
                                         <CheckIcon
                                           className="h-4 w-4"
@@ -247,27 +336,63 @@ const OverviewTab = () => {
                                   </>
                                 )}
                               </Listbox.Option>
-                            )
-                          )}
-                        </Listbox.Options>
-                      </Transition>
-                    </div>
-                  </Listbox>
+                            ))}
+                          </Listbox.Options>
+                        </Transition>
+                      </div>
+                    </Listbox>
+                  </div>
+
+                  {errors.subcategory && (
+                    <span className="text-red-400 text-sm font-medium px-2">
+                      {errors.subcategory}
+                    </span>
+                  )}
                 </div>
-              </div>
+              )}
             </div>
 
             <div>
-              <label className="uppercase font-bold text-sm mb-2 block">
+              <label className="uppercase font-bold text-sm block">
                 Search Tags
               </label>
-              <textarea
+
+              {/*  */}
+              <div className="my-2">
+                <ul className="flex flex-wrap gap-2">
+                  {keywords.map((tag, index) => (
+                    <li
+                      key={index}
+                      className="bg-nft-primary-light text-white text-sm border border-nft-primary-light p-2 rounded-full flex items-center cursor-pointer gap-1 hover:opacity-80"
+                      onClick={() => handleRemoveTag(index)}
+                    >
+                      <span>{tag}</span>
+                      <XMarkIcon className="h-4 w-4" />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {/*  */}
+
+              <input
                 type="text"
-                className="w-full text-xl font-medium rounded-xl border-gray-200 border p-3 py-4 resize-none outline-none placeholder:text-gray-300 focus:ring-2 focus:ring-nft-primary-light"
+                value={keywordInput}
+                onChange={(e) => setKeywordInput(e.target.value)}
+                onKeyDown={handlekeywordInputKeyDown}
+                placeholder="Add tag..."
+                className="w-full text-base font-normal rounded-xl border-gray-200 border p-3 resize-none outline-none placeholder:text-gray-300 focus:ring-2 focus:ring-nft-primary-light"
+                disabled={keywords.length === 5}
               />
+
               <span className="block text-left text-xs text-gray-400 italic">
                 5 tags maximum. Use letters and numbers only.
               </span>
+
+              {errors.tags && (
+                <span className="text-red-400 text-sm font-medium px-2">
+                  {errors.tags}
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -302,6 +427,22 @@ const OverviewTab = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="flex w-full justify-between md:w-2/3 p-4 pb-0 mt-5">
+        <div>
+          <button className="rounded-xl px-6 py-3 bg-gray-200 text-gray-800 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors border border-gray-300">
+            Cancel
+          </button>
+        </div>
+        <div className="flex gap-4">
+          <button
+            className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
+            onClick={handleSubmit}
+          >
+            Save and Continue
+          </button>
         </div>
       </div>
     </div>
