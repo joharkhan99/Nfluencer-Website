@@ -62,7 +62,6 @@ const DescriptionTab = ({ description, setDescription }) => {
   };
 
   const handleSubmit = () => {
-    console.log(description);
     if (validateForm()) {
       dispatch(setFormStep(formStep + 1));
     }

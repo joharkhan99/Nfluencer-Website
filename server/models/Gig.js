@@ -16,6 +16,9 @@ const gigSchema = new mongoose.Schema(
       type: String,
     },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    description: {
+      type: String,
+    },
   },
   {
     timestamps: true,
