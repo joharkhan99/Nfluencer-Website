@@ -7,11 +7,15 @@ import messageRoutes from "./routers/MessageRoutes.js";
 import gigRoutes from "./routers/GigRoutes.js";
 import dotenv from "dotenv";
 import multer from "multer";
+import bodyParser from "body-parser";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 dotenv.config();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // file upload
 const storage = multer.memoryStorage();
@@ -20,7 +24,7 @@ const upload = multer({ storage });
 app.use("/api/user", upload.single("avatar"), userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
-app.use("/api/gig", gigRoutes);
+app.use("/api/gig", upload.single("images"), gigRoutes);
 
 // Start the server, Connect to MongoDB
 const port = process.env.PORT || 8080;

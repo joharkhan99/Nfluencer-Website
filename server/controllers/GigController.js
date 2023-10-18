@@ -3,108 +3,125 @@ import Package from "../models/Package.js";
 import User from "../models/User.js";
 import cloudinary from "../utils/cloudinaryConfig.js";
 
+async function handleUpload(file) {
+  const res = await cloudinary.uploader.upload(file, {
+    resource_type: "auto",
+    folder: "nfluencer-gigs",
+  });
+  return res.url;
+}
+
 const createGig = async (req, res) => {
-  const { gig, username } = req.body;
+  var {
+    title,
+    keywords,
+    category,
+    subcategory,
+    description,
+    packages,
+    requirements,
+    faqs,
+    username,
+  } = req.body;
+
+  faqs = JSON.parse(faqs);
+  requirements = JSON.parse(requirements);
+  keywords = JSON.parse(keywords);
+  packages = JSON.parse(packages);
 
   const user = await User.findOne({ username: username }).exec();
+
+  const b64 = Buffer.from(req.file.buffer).toString("base64");
+  let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+  const image = await handleUpload(dataURI);
+
+  // console.log(image);
+  // return;
 
   let basicPackage = null;
   let standardPackage = null;
   let premiumPackage = null;
 
-  if (req.files) {
-    let multiplePicturePromise = req.files.map((picture) =>
-      cloudinary.v2.uploader.upload(picture.path)
-    );
-    let imageResponses = await Promise.all(multiplePicturePromise);
-
-    console.log(imageResponses);
-  }
-
-  const images = req.files.map((file) => file.path);
-  console.log(images);
-
-  if (gig.packages.basic) {
+  if (packages.basic) {
     basicPackage = new Package({
-      name: gig.packages.basic.name,
-      description: gig.packages.basic.description,
-      price: gig.packages.basic.price,
-      deliveryTime: gig.packages.basic.deliveryTime,
-      revisions: gig.packages.basic.revisions,
-      support: gig.packages.basic.support,
-      extraDeliveryTime:
-        gig.packages.extras.extraFastDelivery.basic.deliveryTime,
-      extraDeliveryPrice: gig.packages.extras.extraFastDelivery.basic.price,
-      extraRevisions: gig.packages.extras.extraRevision.basic.revisions,
-      extraRevisionPrice: gig.packages.extras.extraRevision.basic.price,
+      name: packages.basic.name,
+      description: packages.basic.description,
+      price: packages.basic.price,
+      deliveryTime: packages.basic.deliveryTime,
+      revisions: packages.basic.revisions,
+      support: packages.basic.support,
+      extraDeliveryTime: packages.extras.extraFastDelivery.basic.deliveryTime,
+      extraDeliveryPrice: packages.extras.extraFastDelivery.basic.price,
+      extraRevisions: packages.extras.extraRevision.basic.revisions,
+      extraRevisionPrice: packages.extras.extraRevision.basic.price,
     });
 
     await basicPackage.save();
   }
 
-  if (gig.packages.standard) {
+  if (packages.standard) {
     standardPackage = new Package({
-      name: gig.packages.standard.name,
-      description: gig.packages.standard.description,
-      price: gig.packages.standard.price,
-      deliveryTime: gig.packages.standard.deliveryTime,
-      revisions: gig.packages.standard.revisions,
-      support: gig.packages.standard.support,
+      name: packages.standard.name,
+      description: packages.standard.description,
+      price: packages.standard.price,
+      deliveryTime: packages.standard.deliveryTime,
+      revisions: packages.standard.revisions,
+      support: packages.standard.support,
     });
 
-    if (gig.packages.extras.extraFastDelivery.offer) {
+    if (packages.extras.extraFastDelivery.offer) {
       (standardPackage.extraDeliveryTime =
-        gig.packages.extras.extraFastDelivery.standard.deliveryTime),
+        packages.extras.extraFastDelivery.standard.deliveryTime),
         (standardPackage.extraDeliveryPrice =
-          gig.packages.extras.extraFastDelivery.standard.price),
+          packages.extras.extraFastDelivery.standard.price),
         (standardPackage.extraRevisions =
-          gig.packages.extras.extraRevision.standard.revisions),
+          packages.extras.extraRevision.standard.revisions),
         (standardPackage.extraRevisionPrice =
-          gig.packages.extras.extraRevision.standard.price);
+          packages.extras.extraRevision.standard.price);
     }
 
     await standardPackage.save();
   }
 
-  if (gig.packages.premium) {
+  if (packages.premium) {
     premiumPackage = new Package({
-      name: gig.packages.premium.name,
-      description: gig.packages.premium.description,
-      price: gig.packages.premium.price,
-      deliveryTime: gig.packages.premium.deliveryTime,
-      revisions: gig.packages.premium.revisions,
-      support: gig.packages.premium.support,
+      name: packages.premium.name,
+      description: packages.premium.description,
+      price: packages.premium.price,
+      deliveryTime: packages.premium.deliveryTime,
+      revisions: packages.premium.revisions,
+      support: packages.premium.support,
     });
 
-    if (gig.packages.extras.extraFastDelivery.offer) {
+    if (packages.extras.extraFastDelivery.offer) {
       (premiumPackage.extraDeliveryTime =
-        gig.packages.extras.extraFastDelivery.premium.deliveryTime),
+        packages.extras.extraFastDelivery.premium.deliveryTime),
         (premiumPackage.extraDeliveryPrice =
-          gig.packages.extras.extraFastDelivery.premium.price),
+          packages.extras.extraFastDelivery.premium.price),
         (premiumPackage.extraRevisions =
-          gig.packages.extras.extraRevision.premium.revisions),
+          packages.extras.extraRevision.premium.revisions),
         (premiumPackage.extraRevisionPrice =
-          gig.packages.extras.extraRevision.premium.price);
+          packages.extras.extraRevision.premium.price);
     }
 
     await premiumPackage.save();
   }
 
   const newGig = new Gig({
-    title: gig.title,
-    category: gig.category.name,
-    subcategory: gig.subcategory.name,
-    keywords: gig.keywords.join(","),
+    title: title,
+    category: category.name,
+    subcategory: subcategory.name,
+    keywords: keywords,
     user: user._id,
-    description: gig.description,
+    description: description,
     packages: {
       basic: basicPackage,
       standard: standardPackage,
       premium: premiumPackage,
     },
-    images: gig.images,
-    requirements: gig.requirements,
-    faqs: gig.faqs,
+    requirements: requirements,
+    faqs: faqs,
+    images: [image],
   });
 
   await newGig.save();

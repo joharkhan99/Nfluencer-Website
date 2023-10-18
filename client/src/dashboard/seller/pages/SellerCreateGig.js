@@ -295,20 +295,30 @@ const SellerCreateGig = () => {
           },
         },
       },
-      images,
+      images: images[0],
       requirements,
       faqs,
     };
 
-    console.log(gig);
+    // console.log(gig);
+
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("keywords", JSON.stringify(keywords));
+    formData.append("category", selectedCategory);
+    formData.append("subcategory", selectedSubcategory);
+    formData.append("description", description);
+    formData.append("packages", JSON.stringify(gig.packages));
+    formData.append("images", images[0]);
+    formData.append("requirements", JSON.stringify(requirements));
+    formData.append("faqs", JSON.stringify(faqs));
+    formData.append("username", user.username);
+
+    console.log(keywords);
 
     const request = await fetch(`${process.env.REACT_APP_API_URL}/api/gig`, {
       method: "POST",
-
-      body: JSON.stringify({
-        gig,
-        username: user.username,
-      }),
+      body: formData,
     });
     const response = await request.json();
     console.log(response);

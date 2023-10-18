@@ -13,7 +13,7 @@ const gigSchema = new mongoose.Schema(
       type: String,
     },
     keywords: {
-      type: String,
+      type: Array,
     },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     description: {
