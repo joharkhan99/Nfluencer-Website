@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
@@ -6,9 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { setUser } from "../../../redux/slices/UserSlice";
 import {
+  ArrowRightOnRectangleIcon,
   BellIcon,
   ChatBubbleLeftEllipsisIcon,
+  CreditCardIcon,
 } from "@heroicons/react/24/outline";
+import { ethers } from "ethers";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -22,6 +25,18 @@ const Header = () => {
   };
 
   const user = useSelector((state) => state.user.user);
+  const walletAddress = useSelector((state) => state.user.walletAddress);
+  const [balance, setBalance] = useState(0);
+  const getBalance = async () => {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const balance = await signer.getBalance();
+    setBalance(balance.toString());
+  };
+
+  useEffect(() => {
+    getBalance();
+  });
 
   return (
     <>
@@ -43,25 +58,79 @@ const Header = () => {
         </div>
 
         <div className="space-x-4 items-center flex">
-          <Menu as="div" className="relative text-left">
-            <div>
-              <Menu.Button className="group">
-                <div className="flex justify-between items-center">
-                  <div className=""></div>
-                </div>
-              </Menu.Button>
-            </div>
+          {walletAddress && (
+            <Menu as="div" className="relative text-left">
+              <div>
+                <Menu.Button className="group hover:opacity-80">
+                  <div className="flex justify-between items-center gap-5 bg-gray-100 p-2.5 rounded-xl">
+                    <div className="flex gap-2 items-center text-gray-800">
+                      <CreditCardIcon className="w-6 h-6" />
+                      <span className="font-semibold">0 ETH</span>
+                    </div>
+                    <div className="flex gap-2 items-center">
+                      <img
+                        src={require("../../../nftmarketplace/assets/metamask.png")}
+                        alt=""
+                        className="w-6 h-6 object-contain"
+                      />
+                    </div>
+                  </div>
+                </Menu.Button>
+              </div>
 
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-100"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
-            ></Transition>
-          </Menu>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <Menu.Items className="absolute right-0 z-20 mt-2 w-72 origin-top-right rounded-xl bg-white shadow-xl focus:outline-none p-3 border border-gray-100">
+                  <div>
+                    <Menu.Item>
+                      <div className="w-full text-gray-800">
+                        <div className="flex items-center gap-4 p-1 py-3 hover:bg-gray-100 rounded-xl">
+                          <img
+                            src={require("../../../nftmarketplace/assets/metamask.png")}
+                            alt=""
+                            className="w-9 h-9 object-contain"
+                          />
+                          <div className="font-semibold">
+                            {walletAddress.substring(0, 6) +
+                              "..." +
+                              walletAddress.substring(
+                                walletAddress.length - 4,
+                                walletAddress.length
+                              )}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 p-1 py-3 hover:bg-gray-100 rounded-xl">
+                          <img
+                            src={require("../../../nftmarketplace/assets/eth.png")}
+                            alt=""
+                            className="w-9 h-9 object-contain"
+                          />
+                          <div className="font-semibold">Ethereum</div>
+                          <div className="bold">·</div>
+                          <div className="text-gray-500 font-semibold text-sm">
+                            ${balance} USD
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4 p-1 py-3 hover:bg-gray-100 rounded-xl">
+                          <ArrowRightOnRectangleIcon className="w-9 h-9 text-gray-600" />
+                          <div className="font-semibold">Logout Wallet</div>
+                        </div>
+                      </div>
+                    </Menu.Item>
+                  </div>
+                </Menu.Items>
+              </Transition>
+            </Menu>
+          )}
 
           <Menu as="div" className="relative inline-block text-left">
             <div>
