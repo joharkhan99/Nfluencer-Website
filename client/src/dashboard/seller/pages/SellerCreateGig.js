@@ -17,11 +17,13 @@ import {
   PhotoIcon,
   QuestionMarkCircleIcon,
   CheckCircleIcon,
+  LinkIcon,
 } from "@heroicons/react/24/outline";
 import NFTTab from "../components/gig/NFTTab";
 
 const SellerCreateGig = () => {
   const formStep = useSelector((state) => state.gig.formStep);
+  const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
     const unloadCallback = (event) => {
@@ -88,6 +90,10 @@ const SellerCreateGig = () => {
 
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState(["", "", ""]);
+
+  const [requirements, setRequirements] = useState([]);
+
+  const [faqs, setFAQs] = useState([]);
 
   const formSteps = [
     {
@@ -216,10 +222,97 @@ const SellerCreateGig = () => {
       setImagePreviews={setImagePreviews}
     />,
     <NFTTab />,
-    <RequirementsTab />,
-    <FAQTab />,
+    <RequirementsTab
+      requirements={requirements}
+      setRequirements={setRequirements}
+    />,
+    <FAQTab faqs={faqs} setFAQs={setFAQs} />,
     <PublishTab />,
   ];
+
+  const handleGigSubmit = async () => {
+    const gig = {
+      title,
+      keywords,
+      category: selectedCategory,
+      subcategory: selectedSubcategory,
+      description,
+      packages: {
+        basic: {
+          name: packag1Name,
+          description: packag1Desc,
+          price: packag1Price,
+          deliveryTime: packag1DeliveryTime,
+          revisions: packag1Revisions,
+          support: packag1Support,
+        },
+        standard: {
+          name: packag2Name,
+          description: packag2Desc,
+          price: packag2Price,
+          deliveryTime: packag2DeliveryTime,
+          revisions: packag2Revisions,
+          support: packag2Support,
+        },
+        premium: {
+          name: packag3Name,
+          description: packag3Desc,
+          price: packag3Price,
+          deliveryTime: packag3DeliveryTime,
+          revisions: packag3Revisions,
+          support: packag3Support,
+        },
+        extras: {
+          extraFastDelivery: {
+            offer: offerExtraFastDelivery,
+            basic: {
+              deliveryTime: extraBasicDeliveryTime,
+              price: extraBasicDeliveryPrice,
+            },
+            standard: {
+              deliveryTime: extraStandardDeliveryTime,
+              price: extraStandardDeliveryPrice,
+            },
+            premium: {
+              deliveryTime: extraPremiumDeliveryTime,
+              price: extraPremiumDeliveryPrice,
+            },
+          },
+          extraRevision: {
+            offer: offerExtraRevision,
+            basic: {
+              revisions: extraBasicRevision,
+              price: extraBasicRevisionPrice,
+            },
+            standard: {
+              revisions: extraStandardRevision,
+              price: extraStandardRevisionPrice,
+            },
+            premium: {
+              revisions: extraPremiumRevision,
+              price: extraPremiumRevisionPrice,
+            },
+          },
+        },
+      },
+      images,
+      requirements,
+      faqs,
+    };
+
+    console.log(gig);
+
+    const request = await fetch(`${process.env.REACT_APP_API_URL}/api/gig`, {
+      method: "POST",
+
+      body: JSON.stringify({
+        gig,
+        username: user.username,
+      }),
+    });
+    const response = await request.json();
+    console.log(response);
+  };
 
   return (
     <div className="container mx-auto">
@@ -257,6 +350,22 @@ const SellerCreateGig = () => {
 
       <div className="my-10 bg-white shadow-xl shadow-gray-200 p-5 rounded-xl">
         {tabs[formStep - 1]}
+
+        {formStep === 8 && (
+          <div className="justify-center flex items-center w-full">
+            {/* <div className="w-fit p-3 rounded-xl border-nft-primary-light border-2 mx-auto flex items-center gap-3 cursor-pointer text-nft-primary-light font-medium">
+            <LinkIcon className="h-6 w-6 inline-block" />
+            <div>https://www.nftify.network/gig/1</div>
+          </div> */}
+
+            <button
+              className="rounded-xl px-10 py-4 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200 text-base"
+              onClick={handleGigSubmit}
+            >
+              Publish Gig
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

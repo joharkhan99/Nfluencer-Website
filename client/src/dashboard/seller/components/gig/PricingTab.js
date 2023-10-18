@@ -529,9 +529,9 @@ const PricingTab = ({
                         <option value="" selected>
                           Delivery time
                         </option>
-                        <option value="1 Day">1 Day</option>
-                        <option value="4 Days">4 Day</option>
-                        <option value="7 Days">7 Day</option>
+                        <option value="1">1 Day</option>
+                        <option value="4">4 Day</option>
+                        <option value="7">7 Day</option>
                       </select>
 
                       {errors.packag1DeliveryTime && (
@@ -552,9 +552,9 @@ const PricingTab = ({
                           <option value="" selected>
                             Delivery time
                           </option>
-                          <option value="1 Day">1 Day</option>
-                          <option value="4 Days">4 Day</option>
-                          <option value="7 Days">7 Day</option>
+                          <option value="1">1 Day</option>
+                          <option value="4">4 Day</option>
+                          <option value="7">7 Day</option>
                         </select>
 
                         {errors.packag2DeliveryTime && (
@@ -576,9 +576,9 @@ const PricingTab = ({
                           <option value="" selected>
                             Delivery time
                           </option>
-                          <option value="1 Day">1 Day</option>
-                          <option value="4 Days">4 Day</option>
-                          <option value="7 Days">7 Day</option>
+                          <option value="1">1 Day</option>
+                          <option value="4">4 Day</option>
+                          <option value="7">7 Day</option>
                         </select>
 
                         {errors.packag3DeliveryTime && (
@@ -834,10 +834,10 @@ const PricingTab = ({
                             <option value="" selected>
                               SELECT
                             </option>
-                            <option value="1 Day">1 Day</option>
-                            <option value="2 Days">2 Days</option>
-                            <option value="3 Days">3 Days</option>
-                            <option value="4 Days">4 Days</option>
+                            <option value="1">1 Day</option>
+                            <option value="2">2 Days</option>
+                            <option value="3">3 Days</option>
+                            <option value="4">4 Days</option>
                           </select>
                         </div>
                         <div>for an extra</div>
@@ -881,10 +881,10 @@ const PricingTab = ({
                               <option value="" selected>
                                 SELECT
                               </option>
-                              <option value="1 Day">1 Day</option>
-                              <option value="2 Days">2 Days</option>
-                              <option value="3 Days">3 Days</option>
-                              <option value="4 Days">4 Days</option>
+                              <option value="1">1 Day</option>
+                              <option value="2">2 Days</option>
+                              <option value="3">3 Days</option>
+                              <option value="4">4 Days</option>
                             </select>
                           </div>
                           <div>for an extra</div>
@@ -929,10 +929,10 @@ const PricingTab = ({
                               <option value="" selected>
                                 SELECT
                               </option>
-                              <option value="1 Day">1 Day</option>
-                              <option value="2 Days">2 Days</option>
-                              <option value="3 Days">3 Days</option>
-                              <option value="4 Days">4 Days</option>
+                              <option value="1">1 Day</option>
+                              <option value="2">2 Days</option>
+                              <option value="3">3 Days</option>
+                              <option value="4">4 Days</option>
                             </select>
                           </div>
                           <div>for an extra</div>
@@ -998,10 +998,10 @@ const PricingTab = ({
                             <option value="" selected>
                               SELECT
                             </option>
-                            <option value="1 Day">1 Day</option>
-                            <option value="2 Days">2 Days</option>
-                            <option value="3 Days">3 Days</option>
-                            <option value="4 Days">4 Days</option>
+                            <option value="1">1 Day</option>
+                            <option value="2">2 Days</option>
+                            <option value="3">3 Days</option>
+                            <option value="4">4 Days</option>
                           </select>
                         </div>
                         <div>for an extra</div>
@@ -1045,10 +1045,10 @@ const PricingTab = ({
                               <option value="" selected>
                                 SELECT
                               </option>
-                              <option value="1 Day">1 Day</option>
-                              <option value="2 Days">2 Days</option>
-                              <option value="3 Days">3 Days</option>
-                              <option value="4 Days">4 Days</option>
+                              <option value="1">1 Day</option>
+                              <option value="2">2 Days</option>
+                              <option value="3">3 Days</option>
+                              <option value="4">4 Days</option>
                             </select>
                           </div>
                           <div>for an extra</div>
@@ -1093,10 +1093,10 @@ const PricingTab = ({
                               <option value="" selected>
                                 SELECT
                               </option>
-                              <option value="1 Day">1 Day</option>
-                              <option value="2 Days">2 Days</option>
-                              <option value="3 Days">3 Days</option>
-                              <option value="4 Days">4 Days</option>
+                              <option value="1">1 Day</option>
+                              <option value="2">2 Days</option>
+                              <option value="3">3 Days</option>
+                              <option value="4">4 Days</option>
                             </select>
                           </div>
                           <div>for an extra</div>

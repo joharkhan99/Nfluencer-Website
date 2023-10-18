@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import {
   ChevronUpIcon,
   EllipsisHorizontalIcon,
@@ -10,8 +10,68 @@ import {
 
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { setFormStep } from "../../../../redux/slices/NewGigSlice";
 
-const FAQTab = () => {
+const FAQTab = ({ faqs, setFAQs }) => {
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [errors, setErrors] = useState({});
+
+  const AddQuestion = () => {
+    const errors = {};
+
+    if (!question) {
+      errors.question = "Question cannot be empty";
+    }
+    if (!answer) {
+      errors.answer = "Answer cannot be empty";
+    }
+    if (answer.trim().length > 450 || answer.trim().length < 10) {
+      errors.answer = "Answer must be between 10 and 450 characters long";
+    }
+
+    setErrors(errors);
+    if (question && answer) {
+      setFAQs([...faqs, { question, answer }]);
+      setQuestion("");
+      setAnswer("");
+    }
+  };
+
+  const CancelQuestion = () => {
+    setQuestion("");
+    setAnswer("");
+  };
+
+  const DeleteFAQ = (index) => {
+    setFAQs(faqs.filter((faq, i) => i !== index));
+  };
+
+  const dispatch = useDispatch();
+  const formStep = useSelector((state) => state.gig.formStep);
+
+  const validateForm = () => {
+    let errors = {};
+
+    if (faqs.length === 0) {
+      errors.description = "Add at least one FAQ";
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSubmit = () => {
+    if (validateForm()) {
+      dispatch(setFormStep(formStep + 1));
+    }
+  };
+
+  const handlePrev = () => {
+    dispatch(setFormStep(formStep - 1));
+  };
+
   return (
     <div id="overview" className="mb-10">
       <div className="p-4 pb-5 text-3xl mb-0 pt-2 text-gray-800 font-normal">
@@ -41,22 +101,47 @@ const FAQTab = () => {
                   type="text"
                   placeholder="Add a Question. i.e. What is your refund policy?"
                   className="w-full outline-none border-2 border-gray-300 p-3 resize-none rounded-xl focus:border-nft-primary-light"
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
                 />
+                {errors.question && (
+                  <span className="text-red-400 text-sm font-medium px-2">
+                    {errors.question}
+                  </span>
+                )}
               </div>
               <div>
                 <textarea
                   className="w-full h-40 outline-none border-2 border-gray-300 p-3 resize-none rounded-xl focus:border-nft-primary-light"
                   placeholder="Add an Answer. i.e. If you're unhappy with your purchase for any reason"
+                  value={answer}
+                  onChange={(e) => setAnswer(e.target.value)}
                 ></textarea>
-                <span className="italic block text-right text-xs text-gray-500">
-                  0/450 Characters
-                </span>
+                <div className="flex justify-between items-center">
+                  <span>
+                    {errors.answer && (
+                      <span className="text-red-400 text-sm font-medium px-2">
+                        {errors.answer}
+                      </span>
+                    )}
+                  </span>
+
+                  <span className="italic block text-right text-xs text-gray-500">
+                    0/450 Characters
+                  </span>
+                </div>
               </div>
               <div className="flex justify-end gap-3 mt-4">
-                <button className="rounded-xl p-1.5 px-3 bg-gray-200 text-gray-500 font-semibold cursor-pointer hover:opacity-80 transition-colors border border-gray-300">
+                <button
+                  className="rounded-xl p-1.5 px-3 bg-gray-200 text-gray-500 font-semibold cursor-pointer hover:opacity-80 transition-colors border border-gray-300"
+                  onClick={CancelQuestion}
+                >
                   Cancel
                 </button>
-                <button className="rounded-xl p-1.5 px-5 bg-nft-primary-light text-white font-semibold cursor-pointer hover:opacity-80 transition-colors border border-nft-primary-light">
+                <button
+                  className="rounded-xl p-1.5 px-5 bg-nft-primary-light text-white font-semibold cursor-pointer hover:opacity-80 transition-colors border border-nft-primary-light"
+                  onClick={AddQuestion}
+                >
                   Add
                 </button>
               </div>
@@ -68,38 +153,45 @@ const FAQTab = () => {
               {/*  */}
               <div className="w-full">
                 <div className="flex flex-col gap-3">
-                  <Disclosure>
-                    {({ open }) => (
-                      <>
-                        <Disclosure.Button className="flex w-full justify-between border border-gray-200 items-center p-3 py-4 rounded-xl text-gray-700 ring-2 ring-gray-100 hover:bg-gray-50 text-sm">
-                          <span>What is your refund policy?</span>
-                          <ChevronUpIcon
-                            className={`${
-                              open ? "rotate-180 transform" : ""
-                            } h-5 w-5 text-purple-500`}
-                          />
-                        </Disclosure.Button>
-                        <Disclosure.Panel className="text-sm px-4 pt-4 pb-2 text-gray-700 bg-gray-100 rounded-xl">
-                          <p>
-                            If you're unhappy with your purchase for any reason,
-                            email us within 90 days and we'll refund you in
-                            full, no questions asked. We stand behind our
-                            products and want to make sure you're happy with
-                            them. If there's something we can fix, we'll do it.
-                          </p>
-                          <div className="text-right mt-2">
-                            <button className="bg-red-500 p-2 text-white rounded-xl px-4 hover:opacity-80">
-                              Remove
+                  {faqs.map((faq, index) => (
+                    <Disclosure>
+                      {({ open }) => (
+                        <div className="flex justify-between items-start gap-3">
+                          <div className="flex-1">
+                            <Disclosure.Button className="flex w-full justify-between border border-gray-200 items-center p-3 py-4 rounded-xl text-gray-700 ring-2 ring-gray-100 hover:bg-gray-50 text-sm">
+                              <span>{faq.question}</span>
+                              <ChevronUpIcon
+                                className={`${
+                                  open ? "rotate-180 transform" : ""
+                                } h-5 w-5 text-purple-500`}
+                              />
+                            </Disclosure.Button>
+                            <Disclosure.Panel className="text-sm px-4 mt-2 pt-4 pb-4 text-gray-700 bg-gray-100 rounded-xl flex justify-between gap-3 items-center w-full">
+                              <p>{faq.answer}</p>
+                            </Disclosure.Panel>
+                          </div>
+                          <div className="text-right">
+                            <button
+                              className="text-red-500 p-2 bg-red-200 border-red-500 rounded-full hover:opacity-80"
+                              onClick={(e) => DeleteFAQ(index)}
+                            >
+                              <TrashIcon className="h-5 w-5" />
                             </button>
                           </div>
-                        </Disclosure.Panel>
-                      </>
-                    )}
-                  </Disclosure>
+                        </div>
+                      )}
+                    </Disclosure>
+                  ))}
                 </div>
               </div>
               {/*  */}
             </div>
+
+            {errors.description && (
+              <span className="text-red-400 text-sm font-medium px-2">
+                {errors.description}
+              </span>
+            )}
           </div>
         </div>
 
@@ -133,6 +225,28 @@ const FAQTab = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="flex w-full justify-between md:w-2/3 p-4 pb-0 mt-5">
+        <div>
+          <button className="rounded-xl px-6 py-3 bg-gray-200 text-gray-800 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors border border-gray-300">
+            Cancel
+          </button>
+        </div>
+        <div className="flex gap-4">
+          <button
+            className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
+            onClick={handlePrev}
+          >
+            Previous
+          </button>
+          <button
+            className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
+            onClick={handleSubmit}
+          >
+            Save and Continue
+          </button>
         </div>
       </div>
     </div>

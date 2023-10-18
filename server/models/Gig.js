@@ -19,6 +19,29 @@ const gigSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    packages: {
+      basic: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Package",
+      },
+      standard: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Package",
+      },
+      premium: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Package",
+      },
+    },
+    images: {
+      type: Array,
+    },
+    requirements: {
+      type: Array,
+    },
+    faqs: {
+      type: Array,
+    },
   },
   {
     timestamps: true,
