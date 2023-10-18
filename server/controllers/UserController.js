@@ -269,8 +269,56 @@ const getUser = async (req, res) => {
       avatar: user.avatar,
       jwtToken: jwtToken,
       email: user.email,
+      walletAddress: user.walletAddress,
     },
   });
 };
 
-export { registerUser, loginUser, verifyEmail, userDetails, getUser };
+const storeWallet = async (req, res) => {
+  const { walletAddress, username } = req.body;
+
+  const user = await User.findOne({ username });
+  if (!user) {
+    return res.status(404).json({
+      error: true,
+      message: "User not found",
+    });
+  }
+
+  user.walletAddress = walletAddress;
+  await user.save();
+  res.status(200).json({
+    error: false,
+    message: "Wallet address saved",
+    walletAddress,
+  });
+};
+
+const removeWallet = async (req, res) => {
+  const { username } = req.body;
+
+  const user = await User.findOne({ username });
+  if (!user) {
+    return res.status(404).json({
+      error: true,
+      message: "User not found",
+    });
+  }
+
+  user.walletAddress = "";
+  await user.save();
+  res.status(200).json({
+    error: false,
+    message: "Wallet address removed",
+  });
+};
+
+export {
+  registerUser,
+  loginUser,
+  verifyEmail,
+  userDetails,
+  getUser,
+  storeWallet,
+  removeWallet,
+};

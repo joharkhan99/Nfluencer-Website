@@ -20,7 +20,7 @@ import RegisterUserDetails from "./website/pages/RegisterUserDetails";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setUser } from "./redux/slices/UserSlice";
+import { setUser, setWalletAddress } from "./redux/slices/UserSlice";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import Loader from "./utils/Loader";
 import SellerManageNFT from "./dashboard/seller/pages/SellerManageNFT";
@@ -66,10 +66,14 @@ function App() {
 
       localStorage.setItem("user", JSON.stringify(user));
       dispatch(setUser(user));
+      dispatch(setWalletAddress(user.walletAddress));
       setLoading(false);
       return;
     } else {
       dispatch(setUser(JSON.parse(localStorage.getItem("user"))));
+      dispatch(
+        setWalletAddress(JSON.parse(localStorage.getItem("user")).walletAddress)
+      );
       setLoading(false);
     }
   };

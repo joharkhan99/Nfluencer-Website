@@ -5,6 +5,8 @@ import {
   verifyEmail,
   userDetails,
   getUser,
+  storeWallet,
+  removeWallet,
 } from "../controllers/UserController.js";
 const router = Router();
 
@@ -14,5 +16,7 @@ router.post("/login", loginUser);
 router.post("/verifyemail", verifyEmail);
 router.post("/userdetails", userDetails);
 router.post("/getuser", getUser);
+router.post("/wallet", storeWallet);
+router.delete("/wallet", removeWallet);
 
 export default router;

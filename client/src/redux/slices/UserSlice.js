@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   user: null,
+  walletAddress: null,
 };
 
 const userSlice = createSlice({
@@ -11,8 +12,11 @@ const userSlice = createSlice({
     setUser(state, action) {
       state.user = action.payload;
     },
+    setWalletAddress(state, action) {
+      state.walletAddress = action.payload;
+    },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, setWalletAddress } = userSlice.actions;
 export default userSlice.reducer;
