@@ -42,6 +42,9 @@ const gigSchema = new mongoose.Schema(
     faqs: {
       type: Array,
     },
+    offer3Packages: {
+      type: Boolean,
+    },
   },
   {
     timestamps: true,

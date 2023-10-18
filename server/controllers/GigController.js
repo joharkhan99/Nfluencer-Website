@@ -22,110 +22,118 @@ const createGig = async (req, res) => {
     requirements,
     faqs,
     username,
+    offer3Packages,
   } = req.body;
 
-  faqs = JSON.parse(faqs);
-  requirements = JSON.parse(requirements);
-  keywords = JSON.parse(keywords);
-  packages = JSON.parse(packages);
+  try {
+    faqs = JSON.parse(faqs);
+    requirements = JSON.parse(requirements);
+    keywords = JSON.parse(keywords);
+    packages = JSON.parse(packages);
 
-  const user = await User.findOne({ username: username }).exec();
+    const user = await User.findOne({ username: username }).exec();
 
-  const b64 = Buffer.from(req.file.buffer).toString("base64");
-  let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
-  const image = await handleUpload(dataURI);
+    const b64 = Buffer.from(req.file.buffer).toString("base64");
+    let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+    const image = await handleUpload(dataURI);
 
-  // console.log(image);
-  // return;
+    let basicPackage = null;
+    let standardPackage = null;
+    let premiumPackage = null;
 
-  let basicPackage = null;
-  let standardPackage = null;
-  let premiumPackage = null;
+    if (packages.basic) {
+      basicPackage = new Package({
+        name: packages.basic.name,
+        description: packages.basic.description,
+        price: packages.basic.price,
+        deliveryTime: packages.basic.deliveryTime,
+        revisions: packages.basic.revisions,
+        support: packages.basic.support,
+        extraDeliveryTime: packages.extras.extraFastDelivery.basic.deliveryTime,
+        extraDeliveryPrice: packages.extras.extraFastDelivery.basic.price,
+        extraRevisions: packages.extras.extraRevision.basic.revisions,
+        extraRevisionPrice: packages.extras.extraRevision.basic.price,
+      });
 
-  if (packages.basic) {
-    basicPackage = new Package({
-      name: packages.basic.name,
-      description: packages.basic.description,
-      price: packages.basic.price,
-      deliveryTime: packages.basic.deliveryTime,
-      revisions: packages.basic.revisions,
-      support: packages.basic.support,
-      extraDeliveryTime: packages.extras.extraFastDelivery.basic.deliveryTime,
-      extraDeliveryPrice: packages.extras.extraFastDelivery.basic.price,
-      extraRevisions: packages.extras.extraRevision.basic.revisions,
-      extraRevisionPrice: packages.extras.extraRevision.basic.price,
-    });
-
-    await basicPackage.save();
-  }
-
-  if (packages.standard) {
-    standardPackage = new Package({
-      name: packages.standard.name,
-      description: packages.standard.description,
-      price: packages.standard.price,
-      deliveryTime: packages.standard.deliveryTime,
-      revisions: packages.standard.revisions,
-      support: packages.standard.support,
-    });
-
-    if (packages.extras.extraFastDelivery.offer) {
-      (standardPackage.extraDeliveryTime =
-        packages.extras.extraFastDelivery.standard.deliveryTime),
-        (standardPackage.extraDeliveryPrice =
-          packages.extras.extraFastDelivery.standard.price),
-        (standardPackage.extraRevisions =
-          packages.extras.extraRevision.standard.revisions),
-        (standardPackage.extraRevisionPrice =
-          packages.extras.extraRevision.standard.price);
+      await basicPackage.save();
     }
 
-    await standardPackage.save();
-  }
+    if (packages.standard) {
+      standardPackage = new Package({
+        name: packages.standard.name,
+        description: packages.standard.description,
+        price: packages.standard.price,
+        deliveryTime: packages.standard.deliveryTime,
+        revisions: packages.standard.revisions,
+        support: packages.standard.support,
+      });
 
-  if (packages.premium) {
-    premiumPackage = new Package({
-      name: packages.premium.name,
-      description: packages.premium.description,
-      price: packages.premium.price,
-      deliveryTime: packages.premium.deliveryTime,
-      revisions: packages.premium.revisions,
-      support: packages.premium.support,
-    });
+      if (packages.extras.extraFastDelivery.offer) {
+        (standardPackage.extraDeliveryTime =
+          packages.extras.extraFastDelivery.standard.deliveryTime),
+          (standardPackage.extraDeliveryPrice =
+            packages.extras.extraFastDelivery.standard.price),
+          (standardPackage.extraRevisions =
+            packages.extras.extraRevision.standard.revisions),
+          (standardPackage.extraRevisionPrice =
+            packages.extras.extraRevision.standard.price);
+      }
 
-    if (packages.extras.extraFastDelivery.offer) {
-      (premiumPackage.extraDeliveryTime =
-        packages.extras.extraFastDelivery.premium.deliveryTime),
-        (premiumPackage.extraDeliveryPrice =
-          packages.extras.extraFastDelivery.premium.price),
-        (premiumPackage.extraRevisions =
-          packages.extras.extraRevision.premium.revisions),
-        (premiumPackage.extraRevisionPrice =
-          packages.extras.extraRevision.premium.price);
+      await standardPackage.save();
     }
 
-    await premiumPackage.save();
+    if (packages.premium) {
+      premiumPackage = new Package({
+        name: packages.premium.name,
+        description: packages.premium.description,
+        price: packages.premium.price,
+        deliveryTime: packages.premium.deliveryTime,
+        revisions: packages.premium.revisions,
+        support: packages.premium.support,
+      });
+
+      if (packages.extras.extraFastDelivery.offer) {
+        (premiumPackage.extraDeliveryTime =
+          packages.extras.extraFastDelivery.premium.deliveryTime),
+          (premiumPackage.extraDeliveryPrice =
+            packages.extras.extraFastDelivery.premium.price),
+          (premiumPackage.extraRevisions =
+            packages.extras.extraRevision.premium.revisions),
+          (premiumPackage.extraRevisionPrice =
+            packages.extras.extraRevision.premium.price);
+      }
+
+      await premiumPackage.save();
+    }
+
+    const newGig = new Gig({
+      title: title,
+      category: category.name,
+      subcategory: subcategory.name,
+      keywords: keywords,
+      user: user._id,
+      description: description,
+      packages: {
+        basic: basicPackage,
+        standard: standardPackage,
+        premium: premiumPackage,
+      },
+      requirements: requirements,
+      faqs: faqs,
+      images: [image],
+      offer3Packages: offer3Packages,
+    });
+
+    await newGig.save();
+
+    if (newGig) {
+      res.status(201).json(newGig);
+    } else {
+      res.status(500).json({ error: true, message: "Error creating gig" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
   }
-
-  const newGig = new Gig({
-    title: title,
-    category: category.name,
-    subcategory: subcategory.name,
-    keywords: keywords,
-    user: user._id,
-    description: description,
-    packages: {
-      basic: basicPackage,
-      standard: standardPackage,
-      premium: premiumPackage,
-    },
-    requirements: requirements,
-    faqs: faqs,
-    images: [image],
-  });
-
-  await newGig.save();
-  res.status(201).json(newGig);
 };
 
 const fetchGig = async (req, res) => {

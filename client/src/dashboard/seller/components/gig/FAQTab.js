@@ -127,7 +127,7 @@ const FAQTab = ({ faqs, setFAQs }) => {
                   </span>
 
                   <span className="italic block text-right text-xs text-gray-500">
-                    0/450 Characters
+                    {answer.length}/450 Characters
                   </span>
                 </div>
               </div>

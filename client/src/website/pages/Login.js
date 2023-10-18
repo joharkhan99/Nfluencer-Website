@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Cookies from "js-cookie";
 import { ArrowSmallRightIcon } from "@heroicons/react/24/outline";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/slices/UserSlice";
 
@@ -161,9 +161,12 @@ function Login() {
               </button>
               <div className="flex gap-2 text-sm text-gray-400 justify-center mt-6">
                 <span>Don't have an account?</span>
-                <a href="s" className="text-nft-primary-light font-medium">
+                <Link
+                  to="/signup"
+                  className="text-nft-primary-light font-medium"
+                >
                   Sign Up
-                </a>
+                </Link>
               </div>
             </div>
           </div>

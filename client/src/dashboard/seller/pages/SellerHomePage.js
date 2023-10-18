@@ -10,8 +10,11 @@ import {
 } from "@heroicons/react/20/solid";
 import EarningChart from "../components/charts/EarningChart";
 import OrderChart from "../components/charts/OrdersChart";
+import { useSelector } from "react-redux";
 
 export const SellerHomePage = () => {
+  const user = useSelector((state) => state.user.user);
+
   return (
     <>
       <div className="w-full">
@@ -33,7 +36,7 @@ export const SellerHomePage = () => {
 
               <div className="w-1/2 lg:w-auto text-gray-900 z-20 px-16 relative">
                 <h2 className="text-xl mb-2 font-normal">
-                  Hi, <span className="font-semibold">Johar</span>
+                  Hi, <span className="font-semibold">{user.name}</span>
                 </h2>
                 <p className="text-sm">
                   You have 3 tasks to finish all tasks today. You already

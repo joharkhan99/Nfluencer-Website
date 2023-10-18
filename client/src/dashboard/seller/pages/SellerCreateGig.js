@@ -20,6 +20,8 @@ import {
   LinkIcon,
 } from "@heroicons/react/24/outline";
 import NFTTab from "../components/gig/NFTTab";
+import { useNavigate } from "react-router-dom";
+import { setFormStep } from "../../../redux/slices/NewGigSlice";
 
 const SellerCreateGig = () => {
   const formStep = useSelector((state) => state.gig.formStep);
@@ -230,13 +232,19 @@ const SellerCreateGig = () => {
     <PublishTab />,
   ];
 
+  const [error, setError] = useState(null);
+  const [gigCreationSuccess, setGigCreationSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleGigSubmit = async () => {
+    setIsSubmitting(true);
     const gig = {
       title,
       keywords,
       category: selectedCategory,
       subcategory: selectedSubcategory,
       description,
+      offer3Packages,
       packages: {
         basic: {
           name: packag1Name,
@@ -300,8 +308,6 @@ const SellerCreateGig = () => {
       faqs,
     };
 
-    // console.log(gig);
-
     const formData = new FormData();
     formData.append("title", title);
     formData.append("keywords", JSON.stringify(keywords));
@@ -313,15 +319,35 @@ const SellerCreateGig = () => {
     formData.append("requirements", JSON.stringify(requirements));
     formData.append("faqs", JSON.stringify(faqs));
     formData.append("username", user.username);
-
-    console.log(keywords);
+    formData.append("offer3Packages", offer3Packages);
 
     const request = await fetch(`${process.env.REACT_APP_API_URL}/api/gig`, {
       method: "POST",
       body: formData,
     });
     const response = await request.json();
-    console.log(response);
+
+    if (response.error) {
+      setIsSubmitting(false);
+      setError(response.message);
+      setGigCreationSuccess(false);
+      return;
+    }
+
+    setError(null);
+    setGigCreationSuccess(true);
+    setIsSubmitting(false);
+  };
+
+  const Navigate = useNavigate();
+  const Done = () => {
+    Navigate("/seller/gigs");
+  };
+
+  const dispatch = useDispatch();
+  const handlePrev = () => {
+    dispatch(setFormStep(formStep - 1));
+    setError(null);
   };
 
   return (
@@ -362,19 +388,61 @@ const SellerCreateGig = () => {
         {tabs[formStep - 1]}
 
         {formStep === 8 && (
-          <div className="justify-center flex items-center w-full">
-            {/* <div className="w-fit p-3 rounded-xl border-nft-primary-light border-2 mx-auto flex items-center gap-3 cursor-pointer text-nft-primary-light font-medium">
-            <LinkIcon className="h-6 w-6 inline-block" />
-            <div>https://www.nftify.network/gig/1</div>
-          </div> */}
+          <>
+            {error && (
+              <div className="mb-5 w-full text-center flex flex-col items-center">
+                <span className="rounded-xl p-3 bg-red-100 text-red-500 text-sm inline-block w-fit ">
+                  {error}
+                </span>
 
-            <button
-              className="rounded-xl px-10 py-4 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200 text-base"
-              onClick={handleGigSubmit}
-            >
-              Publish Gig
-            </button>
-          </div>
+                <button
+                  className="my-3 rounded-xl px-10 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200 w-fit"
+                  onClick={handlePrev}
+                >
+                  Previous
+                </button>
+              </div>
+            )}
+
+            <div className="justify-center flex items-center w-full">
+              {gigCreationSuccess && (
+                <div>
+                  <div className="w-fit p-3 rounded-xl border-nft-primary-light border-2 mx-auto flex items-center gap-3 cursor-pointer text-nft-primary-light font-medium">
+                    <LinkIcon className="h-6 w-6 inline-block" />
+                    <div>https://www.nftify.network/gig/1</div>
+                  </div>
+
+                  <div className="flex gap-4 mt-6 w-full justify-center">
+                    <button className="rounded-xl px-6 py-3 bg-gray-200 text-gray-800 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors border border-gray-300">
+                      Preview
+                    </button>
+                    <button
+                      className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
+                      onClick={Done}
+                    >
+                      Done
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {!gigCreationSuccess && (
+                <button
+                  className="rounded-xl px-10 py-4 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200 text-base"
+                  onClick={handleGigSubmit}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <div className="h-5 w-5 mx-auto rounded-full border-t border-r animate-spin border-white"></div>
+                  ) : (
+                    <>
+                      <span> Publish Gig</span>
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
+          </>
         )}
       </div>
     </div>
