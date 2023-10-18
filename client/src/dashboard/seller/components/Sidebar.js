@@ -10,16 +10,23 @@ import {
   Cog8ToothIcon,
   ChatBubbleLeftEllipsisIcon,
 } from "@heroicons/react/24/outline";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../assets/styles/style.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = () => {
   const [sideBarOpen, setSideBarOpen] = useState(true);
+  const [activeLink, setActiveLink] = useState("");
 
   const toggleSidebar = () => {
     setSideBarOpen(!sideBarOpen);
   };
+
+  const location = useLocation(); // Get the current location
+
+  useEffect(() => {
+    setActiveLink(location.pathname);
+  }, [location.pathname]);
 
   return (
     <aside className="flex-shrink-0 bg-white lg:block relative no-scrollbar">
@@ -39,35 +46,58 @@ const Sidebar = () => {
               alt="logo"
               className="w-10 h-10 rounded-full"
             />
-            <span className="font-semibold text-blue-600">Nfluencer</span>
+            {sideBarOpen && (
+              <span className="font-semibold text-blue-600">Nfluencer</span>
+            )}
           </div>
 
           <div className="overflow-hidden h-screen border-t p-4 mt-1.5 border-gray-100 pt-6">
             <ul className="overflow-auto h-screen custom-scrollbar">
               <li
-                className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-white text-sm items-center gap-x-4 bg-nft-primary-light shadow-lg shadow-gray-200 mb-2`}
+                className={`rounded-md p-2 cursor-pointer text-sm mb-2 ${
+                  activeLink === "/seller"
+                    ? "bg-nft-primary-light shadow-lg shadow-gray-200 text-white"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
               >
-                <Squares2X2Icon className="w-6 h-6" />
-                <span
-                  className={`${
-                    !sideBarOpen && "hidden"
-                  } origin-left duration-200 font-semibold`}
+                <Link
+                  to="/seller"
+                  className={`flex items-center gap-x-4 ${
+                    !sideBarOpen && "justify-center"
+                  }`}
                 >
-                  Dashboard
-                </span>
-              </li>
-
-              <li
-                className={`rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 hover:bg-gray-100 mb-2`}
-              >
-                <Link to="/seller/gigs" className="flex items-center gap-x-4">
-                  <BriefcaseIcon className="w-6 h-6 text-gray-600" />
+                  <Squares2X2Icon className="w-6 h-6" />
                   <span
                     className={`${
                       !sideBarOpen && "hidden"
                     } origin-left duration-200 font-semibold`}
                   >
-                    Manage Gigs
+                    {sideBarOpen && <span>Dashboard</span>}
+                  </span>
+                </Link>
+              </li>
+
+              <li
+                className={`rounded-md p-2 cursor-pointer text-sm mb-2 ${
+                  activeLink === "/seller/gigs" ||
+                  activeLink === "/seller/newgig"
+                    ? "bg-nft-primary-light shadow-lg shadow-gray-200 text-white"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
+              >
+                <Link
+                  to="/seller/gigs"
+                  className={`flex items-center gap-x-4 ${
+                    !sideBarOpen && "justify-center"
+                  }`}
+                >
+                  <BriefcaseIcon className="w-6 h-6" />
+                  <span
+                    className={`${
+                      !sideBarOpen && "hidden"
+                    } origin-left duration-200 font-semibold`}
+                  >
+                    {sideBarOpen && <span>Manage Gigs</span>}
                   </span>
                 </Link>
               </li>
@@ -75,42 +105,61 @@ const Sidebar = () => {
               <li
                 className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-2`}
               >
-                <ClipboardDocumentListIcon className="w-6 h-6 text-gray-600" />
+                <ClipboardDocumentListIcon className="w-6 h-6" />
                 <span
                   className={`${
                     !sideBarOpen && "hidden"
                   } origin-left duration-200 font-semibold`}
                 >
-                  Manage Orders
+                  {sideBarOpen && <span>Manage Orders</span>}
                 </span>
               </li>
 
               <li
-                className={`rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 hover:bg-gray-100 mb-2`}
+                className={`rounded-md p-2 cursor-pointer text-sm mb-2 ${
+                  activeLink === "/seller/inbox"
+                    ? "bg-nft-primary-light shadow-lg shadow-gray-200 text-white"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
               >
-                <Link to="/seller/inbox" className="flex items-center gap-x-4">
-                  <ChatBubbleLeftEllipsisIcon className="w-6 h-6 text-gray-600" />
+                <Link
+                  to="/seller/inbox"
+                  className={`flex items-center gap-x-4 ${
+                    !sideBarOpen && "justify-center"
+                  }`}
+                >
+                  <ChatBubbleLeftEllipsisIcon className="w-6 h-6" />
                   <span
                     className={`${
                       !sideBarOpen && "hidden"
                     } origin-left duration-200 font-semibold`}
                   >
-                    Inbox
+                    {sideBarOpen && <span>Inbox</span>}
                   </span>
                 </Link>
               </li>
 
               <li
-                className={`rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 hover:bg-gray-100 mb-2`}
+                className={`rounded-md p-2 cursor-pointer text-sm mb-2 ${
+                  activeLink === "/seller/nfts" ||
+                  activeLink === "/seller/newnft"
+                    ? "bg-nft-primary-light shadow-lg shadow-gray-200 text-white"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
               >
-                <Link to="/seller/nfts" className="flex items-center gap-x-4">
-                  <CubeTransparentIcon className="w-6 h-6 text-gray-600" />
+                <Link
+                  to="/seller/nfts"
+                  className={`flex items-center gap-x-4 ${
+                    !sideBarOpen && "justify-center"
+                  }`}
+                >
+                  <CubeTransparentIcon className="w-6 h-6" />
                   <span
                     className={`${
                       !sideBarOpen && "hidden"
                     } origin-left duration-200 font-semibold`}
                   >
-                    Manage NFTs
+                    {sideBarOpen && <span>Manage NFTs</span>}
                   </span>
                 </Link>
               </li>
@@ -121,14 +170,15 @@ const Sidebar = () => {
                     <>
                       <Disclosure.Button className="flex gap-x-4 rounded-md cursor-pointer w-full items-center hover:bg-gray-100 p-2">
                         <span>
-                          <Cog8ToothIcon className="w-6 h-6 text-gray-600" />
+                          <Cog8ToothIcon className="w-6 h-6" />
                         </span>
                         <div
-                          className={`flex w-full justify-between origin-left duration-200 ${
+                          className={`flex w-full justify-between origin-left duration-200 font-semibold ${
                             !sideBarOpen && "hidden"
                           }`}
                         >
-                          <span className="font-semibold">Settings</span>
+                          {sideBarOpen && <span>Settings</span>}
+
                           <span>
                             <ChevronDownIcon
                               className={`${
@@ -171,20 +221,6 @@ const Sidebar = () => {
                   )}
                 </Disclosure>
               </li>
-
-              {/* <li
-                  key={index}
-                  className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-900 text-sm items-center gap-x-4 ${
-                    Menu.gap ? "mt-9" : "mt-2"
-                  } ${index === 0 && "bg-nft-primary-dark"}`}
-                >
-                  <Squares2X2Icon />
-                  <span
-                    className={`${!sideBarOpen && "hidden"} origin-left duration-200`}
-                  >
-                    {Menu.title}
-                  </span>
-                </li> */}
             </ul>
           </div>
         </div>

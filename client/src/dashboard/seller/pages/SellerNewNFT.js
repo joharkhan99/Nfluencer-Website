@@ -670,11 +670,13 @@ const SellerNewNFT = () => {
                   className="h-auto rounded-xl bg-gray-100 overflow-hidden"
                   style={{ height: "300px" }}
                 >
-                  <img
-                    src={preview}
-                    alt="sd"
-                    className="h-full w-full object-cover"
-                  />
+                  {preview && (
+                    <img
+                      src={preview}
+                      alt="sd"
+                      className="h-full w-full object-cover"
+                    />
+                  )}
                 </div>
                 <div className="py-2 pt-3">
                   <h3 className="text-lg font-bold tracking-tight text-gray-800">

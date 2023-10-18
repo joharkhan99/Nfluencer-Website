@@ -77,10 +77,8 @@ const SellerManageNFT = () => {
 
         if (accounts) {
           if (accounts.length > 0) {
-            console.log(accounts[0]);
             dispatch(setWalletAddress(accounts[0]));
             setIsConnected(true);
-            console.log("Connected");
           } else {
             const request = await fetch(
               `${process.env.REACT_APP_API_URL}/api/user/wallet`,
@@ -99,7 +97,6 @@ const SellerManageNFT = () => {
               alert(response.message);
               return false;
             }
-            console.log("Not connected");
             setIsConnected(false);
             dispatch(setWalletAddress(null));
           }
