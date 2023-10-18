@@ -5,6 +5,7 @@ import userRoutes from "./routers/UserRoutes.js";
 import chatRoutes from "./routers/ChatRoutes.js";
 import messageRoutes from "./routers/MessageRoutes.js";
 import gigRoutes from "./routers/GigRoutes.js";
+import nftRoutes from "./routers/NftRoutes.js";
 import dotenv from "dotenv";
 import multer from "multer";
 import bodyParser from "body-parser";
@@ -25,6 +26,7 @@ app.use("/api/user", upload.single("avatar"), userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/gig", upload.single("images"), gigRoutes);
+app.use("/api/nft", upload.single("image"), nftRoutes);
 
 // Start the server, Connect to MongoDB
 const port = process.env.PORT || 8080;

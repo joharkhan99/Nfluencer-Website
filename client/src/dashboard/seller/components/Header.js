@@ -4,7 +4,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
-import { setUser } from "../../../redux/slices/UserSlice";
+import { setUser, setWalletAddress } from "../../../redux/slices/UserSlice";
 import {
   ArrowRightOnRectangleIcon,
   BellIcon,
@@ -28,10 +28,26 @@ const Header = () => {
   const walletAddress = useSelector((state) => state.user.walletAddress);
   const [balance, setBalance] = useState(0);
   const getBalance = async () => {
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
-    const balance = await signer.getBalance();
-    setBalance(balance.toString());
+    if (walletAddress) {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      // const signer = await provider.getSigner();
+      const balance = await provider.getBalance(walletAddress);
+      setBalance(balance.toString());
+    }
+  };
+
+  const disconnectMetamask = () => {
+    if (window.ethereum) {
+      window.ethereum
+        .send("eth_requestAccounts") // Disconnect by requesting accounts
+        .then(() => {
+          navigate("/seller/nfts");
+          // window.location.reload(); // Refresh the page to clear data/
+        })
+        .catch((error) => {
+          console.error("Error disconnecting Metamask:", error);
+        });
+    }
   };
 
   useEffect(() => {
@@ -65,7 +81,7 @@ const Header = () => {
                   <div className="flex justify-between items-center gap-5 bg-gray-100 p-2.5 rounded-xl">
                     <div className="flex gap-2 items-center text-gray-800">
                       <CreditCardIcon className="w-6 h-6" />
-                      <span className="font-semibold">0 ETH</span>
+                      <span className="font-semibold">{balance} ETH</span>
                     </div>
                     <div className="flex gap-2 items-center">
                       <img
@@ -120,10 +136,13 @@ const Header = () => {
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-4 p-1 py-3 hover:bg-gray-100 rounded-xl">
+                        <button
+                          className="flex items-center gap-4 p-1 py-3 hover:bg-gray-100 rounded-xl w-full"
+                          onClick={disconnectMetamask}
+                        >
                           <ArrowRightOnRectangleIcon className="w-9 h-9 text-gray-600" />
                           <div className="font-semibold">Logout Wallet</div>
-                        </div>
+                        </button>
                       </div>
                     </Menu.Item>
                   </div>
