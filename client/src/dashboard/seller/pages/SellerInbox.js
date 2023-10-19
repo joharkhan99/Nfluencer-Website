@@ -11,6 +11,7 @@ import {
   VideoCameraIcon,
 } from "@heroicons/react/24/outline";
 import React, { Fragment, useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
 const SellerInbox = () => {
   const [messages, setMessages] = useState([]);
@@ -19,17 +20,83 @@ const SellerInbox = () => {
   const [typing, setTyping] = useState(false);
   const [istyping, setIstyping] = useState(false);
 
-  const fetchMessages = async () => {};
+  const [socket, setSocket] = useState(null);
+  // var socket = io(process.env.REACT_APP_API_URL);
+  // socket.on("connect", () => {
+  //   console.log("Connected to the server");
+  // });
 
-  const SendMessage = async (e) => {};
+  useEffect(() => {
+    const socket = io(process.env.REACT_APP_API_URL); // Change to your server URL
+    setSocket(socket);
+
+    socket.on("message", (message) => {
+      // Handle incoming messages
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    socket.on("user-disconnected", (disconnectedUserId) => {
+      setMessages([]);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   const typingHandler = async (e) => {
     setNewMessage(e.target.value);
-
     // typign indicator login
   };
 
-  useEffect(() => {});
+  const sendMessage = (e) => {
+    e.preventDefault();
+
+    socket.emit("message", {
+      text: newMessage,
+      id: socket.id,
+      socketId: socket.id,
+    });
+
+    // if (newMessage.trim() === "") return;
+
+    // // Send the message to the server
+    // socket.emit("message", newMessage);
+
+    // // Add the message to the local state
+    // const newMessageData = {
+    //   sender: "you",
+    //   text: newMessage,
+    //   timestamp: new Date().toLocaleTimeString(),
+    // };
+    // setMessages((prevMessages) => [...prevMessages, newMessageData]);
+    // console.log(messages);
+    // const newMessageData = {
+    //   sender: "you",
+    //   text: newMessage,
+    //   timestamp: new Date().toLocaleTimeString(),
+    // };
+
+    setMessages((prevMessages) => [...prevMessages]);
+    setNewMessage("");
+  };
+
+  // useEffect(() => {
+  //   const socket = io(process.env.REACT_APP_API_URL); // Change to your server URL
+  //   socket.on("connect", () => {
+  //     console.log("Connected to the server");
+  //   });
+  //   setSocket(socket);
+
+  //   socket.on("message", (message) => {
+  //     // Handle incoming messages
+  //     setMessages((prevMessages) => [...prevMessages, message]);
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   return (
     <div className="h-full w-full">
@@ -100,7 +167,7 @@ const SellerInbox = () => {
 
             <ul className="pb-3">
               <li className="hover:bg-gray-100 p-3">
-                <button className="w-full block">
+                <div className="w-full block">
                   <div className="flex items-center gap-3 w-full justify-between text-start text-gray-800 text-sm">
                     <div className="flex gap-2 items-center">
                       <div className="relative">
@@ -130,10 +197,10 @@ const SellerInbox = () => {
                       </div>
                     </div>
                   </div>
-                </button>
+                </div>
               </li>
               <li className="hover:bg-gray-100 p-3">
-                <button className="w-full block">
+                <div className="w-full block">
                   <div className="flex items-center gap-3 w-full justify-between text-start text-gray-800 text-sm">
                     <div className="flex gap-2 items-center">
                       <div className="relative">
@@ -163,7 +230,7 @@ const SellerInbox = () => {
                       </div>
                     </div>
                   </div>
-                </button>
+                </div>
               </li>
             </ul>
           </div>
@@ -190,7 +257,7 @@ const SellerInbox = () => {
 
             {/* chat box */}
 
-            {!loading ? (
+            {loading ? (
               <span>Loading...</span>
             ) : (
               <div className="flex flex-col h-full">
@@ -276,110 +343,103 @@ const SellerInbox = () => {
 
                 <div className="bg-white flex-1 overflow-y-auto custom-scrollbar text-gray-800 p-3 text-sm">
                   <div className="w-full">
-                    <div className="flex justify-end w-full mb-1">
-                      <div className="w-1/2 flex justify-end">
-                        <div>
-                          <div className="flex gap-1 items-start">
-                            <div className="bg-gray-100 w-fit text-gray-800 p-2 rounded-xl">
-                              Hi Nathan, Hi Nathan, Hi Nathan, Hi Nathan, Hi
-                              Nathan, Hi Nathan,
-                            </div>
-                            <img
-                              src={require("../../../website/assets/man.jpg")}
-                              alt=""
-                              className="w-7 h-7 rounded-full object-cover"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-start w-full mb-1">
-                      <div className="w-1/2 flex justify-start">
-                        <div>
-                          <div className="flex gap-1 group">
-                            <img
-                              src={require("../../../website/assets/man.jpg")}
-                              alt=""
-                              className="w-7 h-7 rounded-full object-cover"
-                            />
-                            <div className="bg-nft-primary-light w-fit text-white p-2 rounded-xl relative">
+                    {messages.map((message, index) => {
+                      if (socket.id === message.id) {
+                        return (
+                          <div
+                            className="flex justify-end w-full mb-1"
+                            key={index}
+                          >
+                            <div className="w-1/2 flex justify-end">
                               <div>
-                                Hi Nathan, Hi Nathan, Hi Nathan, Hi Nathan, Hi
-                                Nathan, Hi Nathan,
-                              </div>
-
-                              <Menu
-                                as="div"
-                                className="absolute right-0 top-0 text-left hidden group-hover:inline-block focus:inline-block"
-                              >
-                                <div>
-                                  <Menu.Button className="group bg-white  rounded-full p-0 text-sm text-gray-800 font-semibold">
-                                    <div>
-                                      <EllipsisHorizontalIcon className="w-6 h-6" />
-                                    </div>
-                                  </Menu.Button>
+                                <div className="flex gap-1 items-start">
+                                  <div className="bg-gray-100 w-fit text-gray-800 p-2 rounded-xl">
+                                    {message.text}
+                                  </div>
+                                  <img
+                                    src={require("../../../website/assets/man.jpg")}
+                                    alt=""
+                                    className="w-7 h-7 rounded-full object-cover"
+                                  />
                                 </div>
-
-                                <Transition
-                                  as={Fragment}
-                                  enter="transition ease-out duration-100"
-                                  enterFrom="transform opacity-0 scale-95"
-                                  enterTo="transform opacity-100 scale-100"
-                                  leave="transition ease-in duration-75"
-                                  leaveFrom="transform opacity-100 scale-100"
-                                  leaveTo="transform opacity-0 scale-95"
-                                >
-                                  <Menu.Items className="absolute right-0 z-50 -mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg focus:outline-none p-0 overflow-hidden text-sm">
-                                    <div>
-                                      <Menu.Item>
-                                        <button className="text-gray-800 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
-                                          Report
-                                        </button>
-                                      </Menu.Item>
-                                      <Menu.Item>
-                                        <button className="text-red-500 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
-                                          Mark as Spam
-                                        </button>
-                                      </Menu.Item>
-                                    </div>
-                                  </Menu.Items>
-                                </Transition>
-                              </Menu>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                    </div>
+                        );
+                      } else {
+                        return (
+                          <div
+                            className="flex justify-start w-full mb-1"
+                            key={index}
+                          >
+                            <div className="w-1/2 flex justify-start">
+                              <div>
+                                <div className="flex gap-1 group">
+                                  <img
+                                    src={require("../../../website/assets/man.jpg")}
+                                    alt=""
+                                    className="w-7 h-7 rounded-full object-cover"
+                                  />
+                                  <div className="bg-nft-primary-light w-fit text-white p-2 rounded-xl relative">
+                                    <div>{message.text}</div>
 
-                    <div className="flex justify-end w-full mb-1">
-                      <div className="w-1/2 flex justify-end">
-                        <div>
-                          <div className="flex gap-1">
-                            <div className="bg-gray-100 w-fit text-gray-800 p-2 rounded-xl">
-                              Hi Nathan, Hi Nathan, Hi Nathan, Hi Nathan, Hi
-                              Nathan, Hi Nathan,
+                                    <Menu
+                                      as="div"
+                                      className="absolute right-0 top-0 text-left hidden group-hover:inline-block focus:inline-block"
+                                    >
+                                      <div>
+                                        <Menu.Button className="group bg-white  rounded-full p-0 text-sm text-gray-800 font-semibold">
+                                          <div>
+                                            <EllipsisHorizontalIcon className="w-6 h-6" />
+                                          </div>
+                                        </Menu.Button>
+                                      </div>
+
+                                      <Transition
+                                        as={Fragment}
+                                        enter="transition ease-out duration-100"
+                                        enterFrom="transform opacity-0 scale-95"
+                                        enterTo="transform opacity-100 scale-100"
+                                        leave="transition ease-in duration-75"
+                                        leaveFrom="transform opacity-100 scale-100"
+                                        leaveTo="transform opacity-0 scale-95"
+                                      >
+                                        <Menu.Items className="absolute right-0 z-50 -mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg focus:outline-none p-0 overflow-hidden text-sm">
+                                          <div>
+                                            <Menu.Item>
+                                              <button className="text-gray-800 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
+                                                Report
+                                              </button>
+                                            </Menu.Item>
+                                            <Menu.Item>
+                                              <button className="text-red-500 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
+                                                Mark as Spam
+                                              </button>
+                                            </Menu.Item>
+                                          </div>
+                                        </Menu.Items>
+                                      </Transition>
+                                    </Menu>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                            <img
-                              src={require("../../../website/assets/man.jpg")}
-                              alt=""
-                              className="w-7 h-7 rounded-full object-cover"
-                            />
                           </div>
-                        </div>
-                      </div>
-                    </div>
+                        );
+                      }
+                    })}
                   </div>
                 </div>
 
-                <form className="sticky bottom-0 left-0 w-full z-50 bg-white p-3 shadow-[0px_2px_10px_#e7e7e7]">
+                <form
+                  className="sticky bottom-0 left-0 w-full z-50 bg-white p-3 shadow-[0px_2px_10px_#e7e7e7]"
+                  onSubmit={sendMessage}
+                >
                   <div className="relative w-full">
                     <textarea
                       type="text"
                       className="text-sm rounded-xl block bg-gray-50 w-full p-3  outline-none border ring-purple-700 focus:ring-2 focus:bg-transparent hover:bg-gray-200 hover:bg-opacity-70 resize-none h-20"
                       placeholder="Send a message..."
-                      required
-                      onKeyDown={SendMessage}
                       value={newMessage}
                       onChange={typingHandler}
                     ></textarea>
