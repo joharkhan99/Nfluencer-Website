@@ -17,6 +17,39 @@ const SellerManageNFT = () => {
   const user = useSelector((state) => state.user.user);
   const walletAddress = useSelector((state) => state.user.walletAddress);
 
+  const [nfts, setNFTs] = useState([]);
+  const [firstNFT, setFirstNFT] = useState(null);
+
+  // fetch all the gigs for the user
+  const fetchNFTs = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/nft/user-nfts`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: user._id }),
+        }
+      );
+      const data = await response.json();
+      if (data.length >= 1) {
+        setFirstNFT(data[0]);
+      } else {
+        setFirstNFT(null);
+      }
+      console.log(data);
+      setNFTs(data.slice(1));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchNFTs();
+  }, []);
+
   const checkMetamaskAvailability = async () => {
     if (!ethereum) {
       sethaveMetamask(false);
@@ -113,6 +146,17 @@ const SellerManageNFT = () => {
   useEffect(() => {
     connectedAccounts();
   });
+
+  const formatDate = (dateString) => {
+    var date = new Date(dateString);
+    return (
+      date.getDate() +
+      " " +
+      date.toLocaleString("default", { month: "long" }) +
+      " " +
+      date.getFullYear()
+    );
+  };
 
   return (
     <div className="w-full">
@@ -734,155 +778,81 @@ const SellerManageNFT = () => {
             Your NFTs
           </h2>
 
-          <div className="w-full flex bg-white p-5 rounded-2xl gap-10">
-            <div className="w-1/3">
-              <div>
-                <img
-                  src={require("../../../nftmarketplace/assets/nft5.jpg")}
-                  alt=""
-                  className="w-full h-96 object-cover rounded-2xl"
-                />
-              </div>
-            </div>
-            <div className="w-2/3">
-              <div className="flex flex-col gap-3 text-gray-800">
-                <h3 className="font-bold text-3xl">3d Model of a VR Glasses</h3>
-                <p className="text-gray-500 text-sm">Published on 12/12/2021</p>
-
-                <div className="flex items-center justify-start gap-5">
+          {firstNFT && (
+            <div className="w-full flex bg-white p-5 rounded-2xl gap-10">
+              <div className="w-1/3">
+                <div>
                   <img
-                    src={user.avatar}
+                    src={firstNFT.image}
                     alt=""
-                    className="w-14 h-14 rounded-full"
+                    className="w-full h-96 object-cover rounded-2xl"
                   />
-                  <div className="flex flex-col">
-                    <span className="font-bold">{user.name}</span>
-                    <span className="text-gray-500 font-medium">
-                      @{user.username}
-                    </span>
-                  </div>
                 </div>
+              </div>
+              <div className="w-2/3">
+                <div className="flex flex-col gap-3 text-gray-800">
+                  <h3 className="font-bold text-3xl">{firstNFT.name}</h3>
+                  <p className="text-gray-500 text-sm">
+                    Published on {formatDate(firstNFT.createdAt)}
+                  </p>
 
-                <p className="py-4 block">
-                  lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-                  lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-                </p>
-
-                <div className="bg-gray-100 w-fit flex p-8 px-12 rounded-xl gap-14">
-                  <div className="flex flex-col gap-2">
-                    <span className="text-sm font-semibold text-gray-500">
-                      Price Starts From
-                    </span>
-                    <span className="flex gap-2">
-                      <img
-                        src={require("../../../nftmarketplace/assets/eth.png")}
-                        alt=""
-                        className="w-8 h-8 object-contain"
-                      />
-                      <span className="font-bold text-xl">2.55 ETH</span>
-                    </span>
+                  <div className="flex items-center justify-start gap-5">
+                    <img
+                      src={firstNFT.user.avatar}
+                      alt=""
+                      className="w-14 h-14 rounded-full"
+                    />
+                    <div className="flex flex-col">
+                      <span className="font-bold">{firstNFT.user.name}</span>
+                      <span className="text-gray-500 font-medium">
+                        @{firstNFT.user.username}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <span className="text-sm font-semibold text-gray-500">
-                      Creator Royalty
-                    </span>
-                    <span className="flex gap-2 items-center">
-                      <TrophyIcon className="w-8 h-8 object-contain text-yellow-500" />
-                      <span className="font-bold text-xl">2.55 %</span>
-                    </span>
+
+                  <p className="py-4 block">
+                    {firstNFT.description.substring(0, 200)}...
+                  </p>
+
+                  <div className="bg-gray-100 w-fit flex p-8 px-12 rounded-xl gap-14">
+                    <div className="flex flex-col gap-2">
+                      <span className="text-sm font-semibold text-gray-500">
+                        Price Starts From
+                      </span>
+                      <span className="flex gap-2">
+                        <img
+                          src={require("../../../nftmarketplace/assets/eth.png")}
+                          alt=""
+                          className="w-8 h-8 object-contain"
+                        />
+                        <span className="font-bold text-xl">
+                          {firstNFT.price} ETH
+                        </span>
+                      </span>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <span className="text-sm font-semibold text-gray-500">
+                        Creator Royalty
+                      </span>
+                      <span className="flex gap-2 items-center">
+                        <TrophyIcon className="w-8 h-8 object-contain text-yellow-500" />
+                        <span className="font-bold text-xl">
+                          {firstNFT.royalties} %
+                        </span>
+                      </span>
+                    </div>
                   </div>
-                </div>
 
-                <div className="flex items-center gap-10 mt-2">
-                  <button className="rounded-full text-nft-primary-light bg-purple-200 p-2">
-                    <HeartIcon className="h-6 w-6 fill-nft-primary-light" />
-                  </button>
-
-                  <div className="flex items-center gap-4">
-                    <button className="bg-gray-200 border border-gray-300 font-bold p-3 rounded-xl px-10 hover:opacity-80">
-                      Details
+                  <div className="flex items-center gap-10 mt-2">
+                    <button className="rounded-full text-nft-primary-light bg-purple-200 p-2">
+                      <HeartIcon className="h-6 w-6 fill-nft-primary-light" />
                     </button>
-                    <button className="bg-nft-primary-light border border-nft-primary-light text-white font-bold p-3 rounded-xl px-10 hover:opacity-80">
-                      Place a Bid
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 my-10">
-            <div className="decoration-transparent shadow-sm shadow-gray-100 rounded-xl transition-all duration-300 p-0 block hover:scale-105 transform bg-white">
-              <div className="relative shadow-lg rounded-2xl shadow-gray-200 text-gray-800">
-                <div className="rounded-2xl overflow-hidden">
-                  <div className="h-64 w-full relative">
-                    <img
-                      src={require("../../../nftmarketplace/assets/nft6.PNG")}
-                      alt="Card Imagea"
-                      className="h-full w-full object-cover"
-                    />
-
-                    <div className="absolute bottom-0 w-full p-4">
-                      <div className="bg-white rounded-2xl bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 text-white p-4 overflow-hidden">
-                        <div>
-                          <div className="flex rounded-2xl justify-between">
-                            <div className="flex flex-col gap-1">
-                              <span className="text-sm">Price</span>
-                              <span className="flex gap-1">
-                                <img
-                                  src={require("../../../nftmarketplace/assets/eth.png")}
-                                  alt=""
-                                  className="w-6 h-6 object-contain"
-                                />
-                                <span className="font-semibold text-sm">
-                                  2.55 ETH
-                                </span>
-                              </span>
-                            </div>
-                            <div className="flex flex-col gap-1">
-                              <span className="text-sm">Creator Royalty</span>
-                              <span className="flex gap-1 items-center">
-                                <TrophyIcon className="w-5 h-5 object-contain text-yellow-500" />
-                                <span className="font-semibold text-sm">
-                                  2.55 %
-                                </span>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-3">
-                    <div className="flex justify-between items-center">
-                      <div className="text-lg text-gray-800 font-semibold">
-                        Dream World #50
-                      </div>
-
-                      <button className="p-2 bg-purple-200 hover:bg-nft-primary-light text-nft-primary-light rounded-full group">
-                        <HeartIcon className="w-6 h-6 group-hover:stroke-white group-hover:fill-white" />
-                      </button>
-                    </div>
-
-                    <div className="flex items-center justify-start gap-2 mb-5">
-                      <img
-                        src={user.avatar}
-                        alt=""
-                        className="w-10 h-10 rounded-full"
-                      />
-                      <div className="flex flex-col">
-                        <span className="text-sm text-gray-500 font-semibold">
-                          {user.name}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div class="flex items-center justify-between gap-3 text-sm">
-                      <button class="bg-gray-200 font-medium p-3 rounded-xl hover:opacity-80 w-full text-gray-800">
+                    <div className="flex items-center gap-4">
+                      <button className="bg-gray-200 border border-gray-300 font-bold p-3 rounded-xl px-10 hover:opacity-80">
                         Details
                       </button>
-                      <button class="bg-nft-primary-light border border-nft-primary-light text-white font-medium p-3 rounded-xl hover:opacity-80 w-full">
+                      <button className="bg-nft-primary-light border border-nft-primary-light text-white font-bold p-3 rounded-xl px-10 hover:opacity-80">
                         Place a Bid
                       </button>
                     </div>
@@ -890,164 +860,89 @@ const SellerManageNFT = () => {
                 </div>
               </div>
             </div>
+          )}
 
-            <div className="decoration-transparent shadow-sm shadow-gray-100 rounded-xl transition-all duration-300 p-0 block hover:scale-105 transform bg-white">
-              <div className="relative shadow-lg rounded-2xl shadow-gray-200 text-gray-800">
-                <div className="rounded-2xl overflow-hidden">
-                  <div className="h-64 w-full relative">
-                    <img
-                      src={require("../../../nftmarketplace/assets/nft3.jpg")}
-                      alt="Card Imagea"
-                      className="h-full w-full object-cover"
-                    />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 my-10">
+            {nfts.map((nft) => (
+              <div className="decoration-transparent shadow-sm shadow-gray-100 rounded-xl transition-all duration-300 p-0 block hover:scale-105 transform bg-white">
+                <div className="relative shadow-lg rounded-2xl shadow-gray-200 text-gray-800">
+                  <div className="rounded-2xl overflow-hidden">
+                    <div className="h-64 w-full relative">
+                      <img
+                        src={nft.image}
+                        alt="Card Imagea"
+                        className="h-full w-full object-cover"
+                      />
 
-                    <div className="absolute bottom-0 w-full p-4">
-                      <div className="bg-white rounded-2xl bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 text-white p-4 overflow-hidden">
-                        <div>
-                          <div className="flex rounded-2xl justify-between">
-                            <div className="flex flex-col gap-1">
-                              <span className="text-sm">Price</span>
-                              <span className="flex gap-1">
-                                <img
-                                  src={require("../../../nftmarketplace/assets/eth.png")}
-                                  alt=""
-                                  className="w-6 h-6 object-contain"
-                                />
-                                <span className="font-semibold text-sm">
-                                  2.55 ETH
+                      <div className="absolute bottom-0 w-full p-4">
+                        <div className="bg-white rounded-2xl bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 text-white p-4 overflow-hidden">
+                          <div>
+                            <div className="flex rounded-2xl justify-between">
+                              <div className="flex flex-col gap-1">
+                                <span className="text-sm">Price</span>
+                                <span className="flex gap-1">
+                                  <img
+                                    src={require("../../../nftmarketplace/assets/eth.png")}
+                                    alt=""
+                                    className="w-6 h-6 object-contain"
+                                  />
+                                  <span className="font-semibold text-sm">
+                                    {nft.price} ETH
+                                  </span>
                                 </span>
-                              </span>
-                            </div>
-                            <div className="flex flex-col gap-1">
-                              <span className="text-sm">Creator Royalty</span>
-                              <span className="flex gap-1 items-center">
-                                <TrophyIcon className="w-5 h-5 object-contain text-yellow-500" />
-                                <span className="font-semibold text-sm">
-                                  2.55 %
+                              </div>
+                              <div className="flex flex-col gap-1">
+                                <span className="text-sm">Creator Royalty</span>
+                                <span className="flex gap-1 items-center">
+                                  <TrophyIcon className="w-5 h-5 object-contain text-gray-800 fill-gray-800" />
+                                  <span className="font-semibold text-sm">
+                                    {nft.royalties} %
+                                  </span>
                                 </span>
-                              </span>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="p-3">
-                    <div className="flex justify-between items-center">
-                      <div className="text-lg text-gray-800 font-semibold">
-                        Dream World #50
+                    <div className="p-3">
+                      <div className="flex justify-between items-center">
+                        <div className="text-lg text-gray-800 font-semibold">
+                          {nft.name}
+                        </div>
+
+                        <button className="p-2 bg-purple-200 hover:bg-nft-primary-light text-nft-primary-light rounded-full group">
+                          <HeartIcon className="w-6 h-6 group-hover:stroke-white group-hover:fill-white" />
+                        </button>
                       </div>
 
-                      <button className="p-2 bg-purple-200 hover:bg-nft-primary-light text-nft-primary-light rounded-full group">
-                        <HeartIcon className="w-6 h-6 group-hover:stroke-white group-hover:fill-white" />
-                      </button>
-                    </div>
-
-                    <div className="flex items-center justify-start gap-2 mb-5">
-                      <img
-                        src={user.avatar}
-                        alt=""
-                        className="w-10 h-10 rounded-full"
-                      />
-                      <div className="flex flex-col">
-                        <span className="text-sm text-gray-500 font-semibold">
-                          {user.name}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div class="flex items-center justify-between gap-3 text-sm">
-                      <button class="bg-gray-200 font-medium p-3 rounded-xl hover:opacity-80 w-full text-gray-800">
-                        Details
-                      </button>
-                      <button class="bg-nft-primary-light border border-nft-primary-light text-white font-medium p-3 rounded-xl hover:opacity-80 w-full">
-                        Place a Bid
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="decoration-transparent shadow-sm shadow-gray-100 rounded-xl transition-all duration-300 p-0 block hover:scale-105 transform bg-white">
-              <div className="relative shadow-lg rounded-2xl shadow-gray-200 text-gray-800">
-                <div className="rounded-2xl overflow-hidden">
-                  <div className="h-64 w-full relative">
-                    <img
-                      src={require("../../../nftmarketplace/assets/nft9.jpg")}
-                      alt="Card Imagea"
-                      className="h-full w-full object-cover"
-                    />
-
-                    <div className="absolute bottom-0 w-full p-4">
-                      <div className="bg-white rounded-2xl bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 text-white p-4 overflow-hidden">
-                        <div>
-                          <div className="flex rounded-2xl justify-between">
-                            <div className="flex flex-col gap-1">
-                              <span className="text-sm">Price</span>
-                              <span className="flex gap-1">
-                                <img
-                                  src={require("../../../nftmarketplace/assets/eth.png")}
-                                  alt=""
-                                  className="w-6 h-6 object-contain"
-                                />
-                                <span className="font-semibold text-sm">
-                                  2.55 ETH
-                                </span>
-                              </span>
-                            </div>
-                            <div className="flex flex-col gap-1">
-                              <span className="text-sm">Creator Royalty</span>
-                              <span className="flex gap-1 items-center">
-                                <TrophyIcon className="w-5 h-5 object-contain text-yellow-500" />
-                                <span className="font-semibold text-sm">
-                                  2.55 %
-                                </span>
-                              </span>
-                            </div>
-                          </div>
+                      <div className="flex items-center justify-start gap-2 mb-5">
+                        <img
+                          src={nft.user.avatar}
+                          alt=""
+                          className="w-10 h-10 rounded-full"
+                        />
+                        <div className="flex flex-col">
+                          <span className="text-sm text-gray-500 font-semibold">
+                            {nft.user.name}
+                          </span>
                         </div>
                       </div>
-                    </div>
-                  </div>
 
-                  <div className="p-3">
-                    <div className="flex justify-between items-center">
-                      <div className="text-lg text-gray-800 font-semibold">
-                        Dream World #50
+                      <div class="flex items-center justify-between gap-3 text-sm">
+                        <button class="bg-gray-200 font-medium p-3 rounded-xl hover:opacity-80 w-full text-gray-800">
+                          Details
+                        </button>
+                        <button class="bg-nft-primary-light border border-nft-primary-light text-white font-medium p-3 rounded-xl hover:opacity-80 w-full">
+                          Place a Bid
+                        </button>
                       </div>
-
-                      <button className="p-2 bg-purple-200 hover:bg-nft-primary-light text-nft-primary-light rounded-full group">
-                        <HeartIcon className="w-6 h-6 group-hover:stroke-white group-hover:fill-white" />
-                      </button>
-                    </div>
-
-                    <div className="flex items-center justify-start gap-2 mb-5">
-                      <img
-                        src={user.avatar}
-                        alt=""
-                        className="w-10 h-10 rounded-full"
-                      />
-                      <div className="flex flex-col">
-                        <span className="text-sm text-gray-500 font-semibold">
-                          {user.name}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div class="flex items-center justify-between gap-3 text-sm">
-                      <button class="bg-gray-200 font-medium p-3 rounded-xl hover:opacity-80 w-full text-gray-800">
-                        Details
-                      </button>
-                      <button class="bg-nft-primary-light border border-nft-primary-light text-white font-medium p-3 rounded-xl hover:opacity-80 w-full">
-                        Place a Bid
-                      </button>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

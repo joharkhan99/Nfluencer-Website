@@ -48,4 +48,12 @@ const createNft = async (req, res) => {
   }
 };
 
-export { createNft };
+const fetchUserNFTs = async (req, res) => {
+  const nfts = await NFT.find({ user: req.body.userId })
+    .populate("user", "-password")
+    .sort({ createdAt: -1 })
+    .exec();
+  res.status(200).json(nfts);
+};
+
+export { createNft, fetchUserNFTs };
