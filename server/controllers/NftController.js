@@ -56,4 +56,22 @@ const fetchUserNFTs = async (req, res) => {
   res.status(200).json(nfts);
 };
 
-export { createNft, fetchUserNFTs };
+const getAllNFTs = async (req, res) => {
+  const nfts = await NFT.find({})
+    .populate("user", "-password")
+    .sort({ createdAt: -1 })
+    .exec();
+  res.status(200).json(nfts);
+};
+
+const nftDetails = async (req, res) => {
+  const { nftId } = req.body;
+  const nft = await NFT.find({
+    _id: nftId,
+  })
+    .populate("user", "-password")
+    .exec();
+  res.status(200).json(nft);
+};
+
+export { createNft, fetchUserNFTs, getAllNFTs, nftDetails };

@@ -1,9 +1,10 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import "../styles/style.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import Carousel from "react-multi-carousel";
+import { Link } from "react-router-dom";
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -63,6 +64,30 @@ function classNames(...classes) {
 
 function Explore() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+  const [nfts, setNFTs] = useState([]);
+
+  const fetchNFTs = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/nft/getallnfts`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      setNFTs(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchNFTs();
+  }, []);
+
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -86,10 +111,6 @@ function Explore() {
       <Header transparent={true} />
       <div className="container mx-auto">
         <div className="py-11 pt-0">
-          {/* <h1 className="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
-            Explore NFTs
-          </h1> */}
-
           {/* LAYOUT */}
           <div className="bg-white">
             <div>
@@ -626,663 +647,98 @@ function Explore() {
                             </button>
                           </div>
                         </div>
+
                         <div className="flex flex-wrap justify-center gap-3">
-                          <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div className="w-64 ">
-                              <div className="flex justify-between items-center mb-5">
-                                <div className="flex -space-x-2">
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user1.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user2.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user3.webp")}
-                                    alt="User Imageas"
-                                  />
-                                </div>
-                                <div className="flex items-center justify-center">
-                                  <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
-                                    <span>···</span>
-                                  </button>
-                                </div>
-                              </div>
-                              <div
-                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
-                                style={{ height: "300px" }}
-                              >
-                                <img
-                                  src={require("../assets/nft20.jpg")}
-                                  alt="sd"
-                                  className="h-full w-full object-cover"
-                                />
-                              </div>
-                              <div className="py-2 pt-3">
-                                <h3 className="text-xl font-bold tracking-tight text-black">
-                                  Nyoling
-                                </h3>
-                                <div className="flex items-center text-gray-500 text-sm mt-2">
-                                  <img
-                                    src={require("../assets/eth.png")}
-                                    alt="sd"
-                                    className="h-5 w-5 object-contain"
-                                  />
-                                  <span className="pl-2">
-                                    from{" "}
-                                    <span className="font-bold text-sm text-black">
-                                      0.45 ETH
-                                    </span>
-                                  </span>
-                                </div>
-                                <div className="flex justify-between items-center mt-5">
-                                  <div>
-                                    <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
-                                      Buy Now
+                          {nfts.map((nft) => (
+                            <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
+                              <div className="w-64 ">
+                                <div className="flex justify-between items-center mb-5">
+                                  <div className="flex -space-x-2">
+                                    <img
+                                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                      src={require("../assets/user1.jpeg")}
+                                      alt="User Imageas"
+                                    />
+                                    <img
+                                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                      src={require("../assets/user2.jpeg")}
+                                      alt="User Imageas"
+                                    />
+                                    <img
+                                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
+                                      src={require("../assets/user3.webp")}
+                                      alt="User Imageas"
+                                    />
+                                  </div>
+                                  <div className="flex items-center justify-center">
+                                    <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
+                                      <span>···</span>
                                     </button>
                                   </div>
-                                  <div className="flex items-center">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      strokeWidth={1.5}
-                                      stroke="currentColor"
-                                      className="w-4 h-4"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                                      />
-                                    </svg>
-                                    <span className="pl-1 font-bold text-sm">
-                                      10
+                                </div>
+                                <div
+                                  className="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                                  style={{ height: "300px" }}
+                                >
+                                  <img
+                                    src={nft.image}
+                                    alt={nft.name}
+                                    className="h-full w-full object-cover"
+                                  />
+                                </div>
+                                <div className="py-2 pt-3">
+                                  <h3 className="text-xl font-bold tracking-tight text-black">
+                                    {nft.name}
+                                  </h3>
+                                  <div className="flex items-center text-gray-500 text-sm mt-2">
+                                    <img
+                                      src={require("../assets/eth.png")}
+                                      alt="sd"
+                                      className="h-5 w-5 object-contain"
+                                    />
+                                    <span className="pl-2">
+                                      from{" "}
+                                      <span className="font-bold text-sm text-black">
+                                        {nft.price} ETH
+                                      </span>
                                     </span>
+                                  </div>
+                                  <div className="flex justify-between items-center mt-5">
+                                    <div>
+                                      <Link
+                                        to={`/nftdetails/${nft.name
+                                          .replace(/[^a-zA-Z0-9-]+/g, "-")
+                                          .replace(/-+/g, "-")
+                                          .toLowerCase()}/${nft._id}`}
+                                        className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm"
+                                      >
+                                        Buy Now
+                                      </Link>
+                                    </div>
+                                    <div className="flex items-center">
+                                      <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={1.5}
+                                        stroke="currentColor"
+                                        className="w-4 h-4"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                                        />
+                                      </svg>
+                                      <span className="pl-1 font-bold text-sm">
+                                        10
+                                      </span>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div className="w-64 ">
-                              <div className="flex justify-between items-center mb-5">
-                                <div className="flex -space-x-2">
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user1.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user2.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user3.webp")}
-                                    alt="User Imageas"
-                                  />
-                                </div>
-                                <div className="flex items-center justify-center">
-                                  <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
-                                    <span>···</span>
-                                  </button>
-                                </div>
-                              </div>
-                              <div
-                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
-                                style={{ height: "300px" }}
-                              >
-                                <img
-                                  src={require("../assets/nft36.jpg")}
-                                  alt="sd"
-                                  className="h-full w-full object-cover"
-                                />
-                              </div>
-                              <div className="py-2 pt-3">
-                                <h3 className="text-xl font-bold tracking-tight text-black">
-                                  Nyoling
-                                </h3>
-                                <div className="flex items-center text-gray-500 text-sm mt-2">
-                                  <img
-                                    src={require("../assets/eth.png")}
-                                    alt="sd"
-                                    className="h-5 w-5 object-contain"
-                                  />
-                                  <span className="pl-2">
-                                    from{" "}
-                                    <span className="font-bold text-sm text-black">
-                                      0.45 ETH
-                                    </span>
-                                  </span>
-                                </div>
-                                <div className="flex justify-between items-center mt-5">
-                                  <div>
-                                    <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
-                                      Buy Now
-                                    </button>
-                                  </div>
-                                  <div className="flex items-center">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      strokeWidth={1.5}
-                                      stroke="currentColor"
-                                      className="w-4 h-4"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                                      />
-                                    </svg>
-                                    <span className="pl-1 font-bold text-sm">
-                                      10
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div className="w-64 ">
-                              <div className="flex justify-between items-center mb-5">
-                                <div className="flex -space-x-2">
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user1.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user2.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user3.webp")}
-                                    alt="User Imageas"
-                                  />
-                                </div>
-                                <div className="flex items-center justify-center">
-                                  <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
-                                    <span>···</span>
-                                  </button>
-                                </div>
-                              </div>
-                              <div
-                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
-                                style={{ height: "300px" }}
-                              >
-                                <img
-                                  src={require("../assets/nft33.PNG")}
-                                  alt="sd"
-                                  className="h-full w-full object-cover"
-                                />
-                              </div>
-                              <div className="py-2 pt-3">
-                                <h3 className="text-xl font-bold tracking-tight text-black">
-                                  Nyoling
-                                </h3>
-                                <div className="flex items-center text-gray-500 text-sm mt-2">
-                                  <img
-                                    src={require("../assets/eth.png")}
-                                    alt="sd"
-                                    className="h-5 w-5 object-contain"
-                                  />
-                                  <span className="pl-2">
-                                    from{" "}
-                                    <span className="font-bold text-sm text-black">
-                                      0.45 ETH
-                                    </span>
-                                  </span>
-                                </div>
-                                <div className="flex justify-between items-center mt-5">
-                                  <div>
-                                    <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
-                                      Buy Now
-                                    </button>
-                                  </div>
-                                  <div className="flex items-center">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      strokeWidth={1.5}
-                                      stroke="currentColor"
-                                      className="w-4 h-4"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                                      />
-                                    </svg>
-                                    <span className="pl-1 font-bold text-sm">
-                                      10
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div className="w-64 ">
-                              <div className="flex justify-between items-center mb-5">
-                                <div className="flex -space-x-2">
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user1.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user2.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user3.webp")}
-                                    alt="User Imageas"
-                                  />
-                                </div>
-                                <div className="flex items-center justify-center">
-                                  <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
-                                    <span>···</span>
-                                  </button>
-                                </div>
-                              </div>
-                              <div
-                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
-                                style={{ height: "300px" }}
-                              >
-                                <img
-                                  src={require("../assets/nft8.png")}
-                                  alt="sd"
-                                  className="h-full w-full object-cover"
-                                />
-                              </div>
-                              <div className="py-2 pt-3">
-                                <h3 className="text-xl font-bold tracking-tight text-black">
-                                  Nyoling
-                                </h3>
-                                <div className="flex items-center text-gray-500 text-sm mt-2">
-                                  <img
-                                    src={require("../assets/eth.png")}
-                                    alt="sd"
-                                    className="h-5 w-5 object-contain"
-                                  />
-                                  <span className="pl-2">
-                                    from{" "}
-                                    <span className="font-bold text-sm text-black">
-                                      0.45 ETH
-                                    </span>
-                                  </span>
-                                </div>
-                                <div className="flex justify-between items-center mt-5">
-                                  <div>
-                                    <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
-                                      Buy Now
-                                    </button>
-                                  </div>
-                                  <div className="flex items-center">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      strokeWidth={1.5}
-                                      stroke="currentColor"
-                                      className="w-4 h-4"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                                      />
-                                    </svg>
-                                    <span className="pl-1 font-bold text-sm">
-                                      10
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div className="w-64 ">
-                              <div className="flex justify-between items-center mb-5">
-                                <div className="flex -space-x-2">
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user1.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user2.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user3.webp")}
-                                    alt="User Imageas"
-                                  />
-                                </div>
-                                <div className="flex items-center justify-center">
-                                  <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
-                                    <span>···</span>
-                                  </button>
-                                </div>
-                              </div>
-                              <div
-                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
-                                style={{ height: "300px" }}
-                              >
-                                <img
-                                  src={require("../assets/nft34.PNG")}
-                                  alt="sd"
-                                  className="h-full w-full object-cover"
-                                />
-                              </div>
-                              <div className="py-2 pt-3">
-                                <h3 className="text-xl font-bold tracking-tight text-black">
-                                  Nyoling
-                                </h3>
-                                <div className="flex items-center text-gray-500 text-sm mt-2">
-                                  <img
-                                    src={require("../assets/eth.png")}
-                                    alt="sd"
-                                    className="h-5 w-5 object-contain"
-                                  />
-                                  <span className="pl-2">
-                                    from{" "}
-                                    <span className="font-bold text-sm text-black">
-                                      0.45 ETH
-                                    </span>
-                                  </span>
-                                </div>
-                                <div className="flex justify-between items-center mt-5">
-                                  <div>
-                                    <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
-                                      Buy Now
-                                    </button>
-                                  </div>
-                                  <div className="flex items-center">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      strokeWidth={1.5}
-                                      stroke="currentColor"
-                                      className="w-4 h-4"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                                      />
-                                    </svg>
-                                    <span className="pl-1 font-bold text-sm">
-                                      10
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div className="w-64 ">
-                              <div className="flex justify-between items-center mb-5">
-                                <div className="flex -space-x-2">
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user1.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user2.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user3.webp")}
-                                    alt="User Imageas"
-                                  />
-                                </div>
-                                <div className="flex items-center justify-center">
-                                  <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
-                                    <span>···</span>
-                                  </button>
-                                </div>
-                              </div>
-                              <div
-                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
-                                style={{ height: "300px" }}
-                              >
-                                <img
-                                  src={require("../assets/nft35.PNG")}
-                                  alt="sd"
-                                  className="h-full w-full object-cover"
-                                />
-                              </div>
-                              <div className="py-2 pt-3">
-                                <h3 className="text-xl font-bold tracking-tight text-black">
-                                  Nyoling
-                                </h3>
-                                <div className="flex items-center text-gray-500 text-sm mt-2">
-                                  <img
-                                    src={require("../assets/eth.png")}
-                                    alt="sd"
-                                    className="h-5 w-5 object-contain"
-                                  />
-                                  <span className="pl-2">
-                                    from{" "}
-                                    <span className="font-bold text-sm text-black">
-                                      0.45 ETH
-                                    </span>
-                                  </span>
-                                </div>
-                                <div className="flex justify-between items-center mt-5">
-                                  <div>
-                                    <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
-                                      Buy Now
-                                    </button>
-                                  </div>
-                                  <div className="flex items-center">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      strokeWidth={1.5}
-                                      stroke="currentColor"
-                                      className="w-4 h-4"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                                      />
-                                    </svg>
-                                    <span className="pl-1 font-bold text-sm">
-                                      10
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div className="w-64 ">
-                              <div className="flex justify-between items-center mb-5">
-                                <div className="flex -space-x-2">
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user1.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user2.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user3.webp")}
-                                    alt="User Imageas"
-                                  />
-                                </div>
-                                <div className="flex items-center justify-center">
-                                  <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
-                                    <span>···</span>
-                                  </button>
-                                </div>
-                              </div>
-                              <div
-                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
-                                style={{ height: "300px" }}
-                              >
-                                <img
-                                  src={require("../assets/nft10.jpg")}
-                                  alt="sd"
-                                  className="h-full w-full object-cover"
-                                />
-                              </div>
-                              <div className="py-2 pt-3">
-                                <h3 className="text-xl font-bold tracking-tight text-black">
-                                  Nyoling
-                                </h3>
-                                <div className="flex items-center text-gray-500 text-sm mt-2">
-                                  <img
-                                    src={require("../assets/eth.png")}
-                                    alt="sd"
-                                    className="h-5 w-5 object-contain"
-                                  />
-                                  <span className="pl-2">
-                                    from{" "}
-                                    <span className="font-bold text-sm text-black">
-                                      0.45 ETH
-                                    </span>
-                                  </span>
-                                </div>
-                                <div className="flex justify-between items-center mt-5">
-                                  <div>
-                                    <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
-                                      Buy Now
-                                    </button>
-                                  </div>
-                                  <div className="flex items-center">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      strokeWidth={1.5}
-                                      stroke="currentColor"
-                                      className="w-4 h-4"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                                      />
-                                    </svg>
-                                    <span className="pl-1 font-bold text-sm">
-                                      10
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-                            <div className="w-64 ">
-                              <div className="flex justify-between items-center mb-5">
-                                <div className="flex -space-x-2">
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user1.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user2.jpeg")}
-                                    alt="User Imageas"
-                                  />
-                                  <img
-                                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                    src={require("../assets/user3.webp")}
-                                    alt="User Imageas"
-                                  />
-                                </div>
-                                <div className="flex items-center justify-center">
-                                  <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
-                                    <span>···</span>
-                                  </button>
-                                </div>
-                              </div>
-                              <div
-                                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
-                                style={{ height: "300px" }}
-                              >
-                                <img
-                                  src={require("../assets/nft38.PNG")}
-                                  alt="sd"
-                                  className="h-full w-full object-cover"
-                                />
-                              </div>
-                              <div className="py-2 pt-3">
-                                <h3 className="text-xl font-bold tracking-tight text-black">
-                                  Nyoling
-                                </h3>
-                                <div className="flex items-center text-gray-500 text-sm mt-2">
-                                  <img
-                                    src={require("../assets/eth.png")}
-                                    alt="sd"
-                                    className="h-5 w-5 object-contain"
-                                  />
-                                  <span className="pl-2">
-                                    from{" "}
-                                    <span className="font-bold text-sm text-black">
-                                      0.45 ETH
-                                    </span>
-                                  </span>
-                                </div>
-                                <div className="flex justify-between items-center mt-5">
-                                  <div>
-                                    <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm">
-                                      Buy Now
-                                    </button>
-                                  </div>
-                                  <div className="flex items-center">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      fill="none"
-                                      viewBox="0 0 24 24"
-                                      strokeWidth={1.5}
-                                      stroke="currentColor"
-                                      className="w-4 h-4"
-                                    >
-                                      <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                                      />
-                                    </svg>
-                                    <span className="pl-1 font-bold text-sm">
-                                      10
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                          ))}
                         </div>
                       </div>
                     </div>
