@@ -4,6 +4,8 @@ import {
   fetchGig,
   fetchUserGigs,
   deleteUserGigs,
+  getAllGigs,
+  gigDetails,
 } from "../controllers/GigController.js";
 import multer from "multer";
 const router = Router();
@@ -13,5 +15,8 @@ router.post("/", createGig);
 router.get("/:gigId", fetchGig);
 router.post("/user-gigs", fetchUserGigs);
 router.delete("/delete-gig", deleteUserGigs);
+
+router.post("/getallgigs", getAllGigs);
+router.post("/details", gigDetails);
 
 export default router;

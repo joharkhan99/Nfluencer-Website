@@ -98,4 +98,4 @@ mongoose
 
     // app.listen(port, () => console.log(`Server running on port ${port}`))
   )
-  .catch((error) => console.error("MongoDB connection error:", error));
+  .catch((error) => console.error("MongoDB connection error:", error.message));

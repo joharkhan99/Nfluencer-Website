@@ -108,8 +108,8 @@ const createGig = async (req, res) => {
 
     const newGig = new Gig({
       title: title,
-      category: category.name,
-      subcategory: subcategory.name,
+      category: category,
+      subcategory: subcategory,
       keywords: keywords,
       user: user._id,
       description: description,
@@ -141,8 +141,31 @@ const fetchUserGigs = async (req, res) => {
   res.status(200).json(gigs);
 };
 
+const getAllGigs = async (req, res) => {
+  const gigs = await Gig.find({})
+    .populate("user", "-password")
+    .populate("packages.basic packages.standard packages.premium")
+    .exec();
+  res.status(200).json(gigs);
+};
+
+// getAllGigs();
+
+const gigDetails = async (req, res) => {
+  const { gigId } = req.body;
+  const gig = await Gig.find({
+    _id: gigId,
+  })
+    .populate("user", "-password")
+    .populate("packages.basic packages.standard packages.premium")
+    .exec();
+  res.status(200).json(gig);
+};
+
 const fetchGig = async (req, res) => {
-  const gig = await Gig.findById(req.params.gigId).exec();
+  const gig = await Gig.findById(req.params.gigId)
+    .populate("user", "-password")
+    .exec();
   res.status(200).json(gig);
 };
 
@@ -161,4 +184,11 @@ const deleteUserGigs = async (req, res) => {
   }
 };
 
-export { createGig, fetchGig, fetchUserGigs, deleteUserGigs };
+export {
+  createGig,
+  fetchGig,
+  fetchUserGigs,
+  deleteUserGigs,
+  getAllGigs,
+  gigDetails,
+};

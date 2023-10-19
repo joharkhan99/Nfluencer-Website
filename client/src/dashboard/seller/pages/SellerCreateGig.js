@@ -311,8 +311,8 @@ const SellerCreateGig = () => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("keywords", JSON.stringify(keywords));
-    formData.append("category", selectedCategory);
-    formData.append("subcategory", selectedSubcategory);
+    formData.append("category", selectedCategory.name);
+    formData.append("subcategory", selectedSubcategory.name);
     formData.append("description", description);
     formData.append("packages", JSON.stringify(gig.packages));
     formData.append("images", images[0]);

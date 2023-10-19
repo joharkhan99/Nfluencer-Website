@@ -1,10 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import { CubeIcon } from "@heroicons/react/24/solid";
 import { HeartIcon, StarIcon } from "@heroicons/react/24/outline";
-function Services() {
+
+const Services = () => {
+  const [gigs, setGigs] = useState([]);
+
+  const fetchGigs = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/gig/getallgigs`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      setGigs(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchGigs();
+  }, []);
+
   return (
     <>
       <div className="bg-transparent hombg">
@@ -272,89 +296,94 @@ function Services() {
 
               {/* <!-- Grid Layout (Cards) --> */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <div className="decoration-transparent shadow-sm shadow-gray-50 rounded-xl transition-all duration-300 p-0 m-2 block hover:scale-105 transform">
-                  <div className="relative shadow-lg rounded-md shadow-gray-200">
-                    <div className="max-w-sm rounded-md overflow-hidden pb-2">
-                      <div className="absolute top-2 right-2">
-                        <button className="p-2 bg-white hover:bg-nft-primary-light text-gray-500 rounded-full group">
-                          <HeartIcon className="w-5 h-5 group-hover:stroke-white group-hover:fill-white" />
-                        </button>
-                      </div>
-
-                      <img
-                        src={require("../assets/trend1.jpg")}
-                        alt="Card Imagea"
-                        className="h-60 w-full object-cover rounded-t-xl"
-                      />
-
-                      <div className="p-3 py-2 mt-2 rounded-b-xl">
-                        <div className="flex justify-between items-center border-b pb-3 mb-3">
-                          <div className="flex gap-2 items-center">
-                            <img
-                              src={require("../assets/slider8.png")}
-                              alt="s"
-                              className="w-8 h-8 rounded-full"
-                            />
-                            <span className="text-sm font-semibold text-gray-800">
-                              Agent Pakulla
-                            </span>
-                          </div>
-                          <div>
-                            <span className="text-sm text-gray-800 font-semibold">
-                              Level 2
-                            </span>
-                          </div>
+                {gigs.map((gig) => (
+                  <div className="decoration-transparent shadow-sm shadow-gray-50 rounded-xl transition-all duration-300 p-0 m-2 block hover:scale-105 transform">
+                    <div className="relative shadow-lg rounded-md shadow-gray-200">
+                      <div className="max-w-sm rounded-md overflow-hidden pb-2">
+                        <div className="absolute top-2 right-2">
+                          <button className="p-2 bg-white hover:bg-nft-primary-light text-gray-500 rounded-full group">
+                            <HeartIcon className="w-5 h-5 group-hover:stroke-white group-hover:fill-white" />
+                          </button>
                         </div>
 
-                        <Link
-                          to="/gigdetails"
-                          className="block text-sm text-gray-500 mb-3 hover:text-gray-800"
-                        >
-                          Development & IT
-                        </Link>
-                        <Link
-                          to="/gigdetails"
-                          className="mb-4 font-semibold text-lg text-gray-800 block hover:text-nft-primary-light hover:underline"
-                        >
-                          Management software to help you manage your mobile
-                          workers
-                        </Link>
+                        <img
+                          src={gig.images[0]}
+                          alt={gig.title}
+                          className="h-60 w-full object-cover rounded-t-xl"
+                        />
 
-                        <div className="flex justify-between items-center border-b pb-3 mb-3">
-                          <div className="flex items-center gap-2">
+                        <div className="p-3 py-2 mt-2 rounded-b-xl">
+                          <div className="flex justify-between items-center border-b pb-3 mb-3">
+                            <div className="flex gap-2 items-center">
+                              <img
+                                src={gig.user.avatar}
+                                alt="s"
+                                className="w-8 h-8 rounded-full"
+                              />
+                              <span className="text-sm font-semibold text-gray-800">
+                                {gig.user.name}
+                              </span>
+                            </div>
                             <div>
-                              <StarIcon className="w-5 h-5 fill-yellow-400 stroke-yellow-400" />
-                            </div>
-                            <div className="text-md font-semibold text-sm">
-                              4.7
-                            </div>
-                            <div className="text-gray-500 text-sm">
-                              (3 Reviews)
+                              <span className="text-sm text-gray-800 font-semibold">
+                                Level 2
+                              </span>
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-2">
-                            <div>
-                              <CubeIcon className="w-4 h-4 text-nft-primary-dark" />
+                          <Link
+                            to={`/gigdetails/${gig.title.replace(/ /g, "-")}/${
+                              gig._id
+                            }`}
+                            className="block text-sm text-gray-500 mb-3 hover:text-gray-800"
+                          >
+                            {gig.category}
+                          </Link>
+                          <Link
+                            to={`/gigdetails/${gig.title.replace(/ /g, "-")}/${
+                              gig._id
+                            }`}
+                            className="mb-4 font-semibold text-lg text-gray-800 block hover:text-nft-primary-light hover:underline"
+                          >
+                            {gig.title}
+                          </Link>
+
+                          <div className="flex justify-between items-center border-b pb-3 mb-3">
+                            <div className="flex items-center gap-2">
+                              <div>
+                                <StarIcon className="w-5 h-5 fill-yellow-400 stroke-yellow-400" />
+                              </div>
+                              <div className="text-md font-semibold text-sm">
+                                4.7
+                              </div>
+                              <div className="text-gray-500 text-sm">
+                                (3 Reviews)
+                              </div>
                             </div>
-                            <div className="text-md font-semibold text-sm text-gray-700">
-                              NFT
+
+                            <div className="flex items-center gap-2">
+                              <div>
+                                <CubeIcon className="w-4 h-4 text-nft-primary-dark" />
+                              </div>
+                              <div className="text-md font-semibold text-sm text-gray-700">
+                                NFT
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div className="flex items-center justify-between">
-                          <div className="flex gap-2 items-center text-sm text-gray-500">
-                            Starting at:
-                            <span className="text-lg text-gray-800 font-bold">
-                              $29
-                            </span>
+                          <div className="flex items-center justify-between">
+                            <div className="flex gap-2 items-center text-sm text-gray-500">
+                              Starting at:
+                              <span className="text-lg text-gray-800 font-bold">
+                                ${gig.packages.basic.price}
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
 
               {/* <!-- Pagination --> */}
@@ -394,5 +423,5 @@ function Services() {
       <Footer />
     </>
   );
-}
+};
 export default Services;

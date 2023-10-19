@@ -98,7 +98,7 @@ function App() {
         <Route path="/signup" Component={Register} />
         <Route path="/login" Component={Login} />
         <Route path="/services" Component={Services} />
-        <Route path="/gigdetails" Component={GigDetails} />
+        <Route path="/gigdetails/:gigtitle/:gigId" Component={GigDetails} />
 
         <Route
           path="/user-details/:verificationToken"
