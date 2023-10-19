@@ -7,6 +7,7 @@ import {
   getUser,
   storeWallet,
   removeWallet,
+  getUsers,
 } from "../controllers/UserController.js";
 const router = Router();
 
@@ -18,5 +19,6 @@ router.post("/userdetails", userDetails);
 router.post("/getuser", getUser);
 router.post("/wallet", storeWallet);
 router.delete("/wallet", removeWallet);
+router.post("/users", getUsers);
 
 export default router;

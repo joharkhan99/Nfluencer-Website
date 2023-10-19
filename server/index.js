@@ -11,6 +11,8 @@ import multer from "multer";
 import bodyParser from "body-parser";
 import { Server } from "socket.io";
 import http from "http";
+import Message from "./models/Message.js";
+import Chat from "./models/Chat.js";
 
 const app = express();
 app.use(cors());
@@ -38,13 +40,44 @@ const io = new Server(server, {
   },
 });
 
+const SaveMessage = async (data) => {
+  const message = new Message({
+    sender: data.sender,
+    receiver: data.receiver,
+    text: data.text,
+    chat: data.chatId,
+  });
+
+  await message.save();
+  if (message) return message;
+};
+
 io.on("connection", (socket) => {
   console.log(`⚡: ${socket.id} user just connected!`);
 
-  // Listen for incoming messages
-  socket.on("message", (data) => {
-    console.log(data);
-    io.emit("message", data);
+  socket.on("message", async (data) => {
+    try {
+      // io.emit("message", data);
+      // SaveMessage(data);
+
+      const message = await SaveMessage(data);
+      const chat = await Chat.findByIdAndUpdate(message.chat, {
+        latestMessage: message._id,
+      });
+
+      // console.log("message", message);
+      // console.log("chat", chat);
+
+      if (message && chat) {
+        io.emit("message", message);
+
+        // socket.broadcast.emit("message", message);
+        // io.to(data.sender).emit("message", message);
+        // io.to(data.receiver).emit("message", message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   socket.on("disconnect", () => {

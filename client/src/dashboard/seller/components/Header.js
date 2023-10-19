@@ -231,7 +231,7 @@ const Header = () => {
                 <img
                   src={user.avatar}
                   alt={user.name}
-                  className="w-full h-full rounded-full"
+                  className="w-full h-full rounded-full object-cover"
                 />
               </Menu.Button>
             </div>

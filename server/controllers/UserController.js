@@ -189,6 +189,7 @@ const userDetails = async (req, res) => {
         avatar: cldRes,
         jwtToken: jwttoken,
         email: email,
+        _id: userId,
       },
     });
   } catch (error) {
@@ -237,6 +238,7 @@ const loginUser = async (req, res) => {
         avatar: user.avatar,
         jwtToken: token,
         email: user.email,
+        _id: user._id,
       },
     });
   } catch (error) {
@@ -270,6 +272,7 @@ const getUser = async (req, res) => {
       jwtToken: jwtToken,
       email: user.email,
       walletAddress: user.walletAddress,
+      _id: user._id,
     },
   });
 };
@@ -313,6 +316,30 @@ const removeWallet = async (req, res) => {
   });
 };
 
+const getUsers = async (req, res) => {
+  const { username } = req.body;
+
+  // excluse user with above username
+  // const users = await User.find({ username: { $ne: username } }, { password: 0 });
+  const users = await User.find(
+    { username: { $ne: username } },
+    { password: 0 }
+  );
+
+  if (!users) {
+    return res.status(404).json({
+      error: true,
+      message: "Users not found",
+    });
+  }
+
+  return res.status(200).json({
+    error: false,
+    message: "Users found",
+    users,
+  });
+};
+
 export {
   registerUser,
   loginUser,
@@ -321,4 +348,5 @@ export {
   getUser,
   storeWallet,
   removeWallet,
+  getUsers,
 };

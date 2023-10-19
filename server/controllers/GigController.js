@@ -136,9 +136,29 @@ const createGig = async (req, res) => {
   }
 };
 
+const fetchUserGigs = async (req, res) => {
+  const gigs = await Gig.find({ user: req.body.userId }).exec();
+  res.status(200).json(gigs);
+};
+
 const fetchGig = async (req, res) => {
   const gig = await Gig.findById(req.params.gigId).exec();
   res.status(200).json(gig);
 };
 
-export { createGig, fetchGig };
+const deleteUserGigs = async (req, res) => {
+  const { gigId, userId } = req.body;
+  try {
+    const gig = await Gig.findById(gigId).exec();
+    if (gig.user.toString() === userId.toString()) {
+      await Gig.findByIdAndDelete(gigId).exec();
+      res.status(200).json({ error: false, message: "Gig has been deleted" });
+    } else {
+      res.status(403).json({ error: true, message: "Unauthorized" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
+};
+
+export { createGig, fetchGig, fetchUserGigs, deleteUserGigs };
