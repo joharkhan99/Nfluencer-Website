@@ -20,7 +20,7 @@ import {
   LinkIcon,
 } from "@heroicons/react/24/outline";
 import NFTTab from "../components/gig/NFTTab";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setFormStep } from "../../../redux/slices/NewGigSlice";
 
 const SellerCreateGig = () => {
@@ -235,6 +235,7 @@ const SellerCreateGig = () => {
   const [error, setError] = useState(null);
   const [gigCreationSuccess, setGigCreationSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [newGig, setNewGig] = useState(null);
 
   const handleGigSubmit = async () => {
     setIsSubmitting(true);
@@ -337,6 +338,7 @@ const SellerCreateGig = () => {
     setError(null);
     setGigCreationSuccess(true);
     setIsSubmitting(false);
+    setNewGig(response);
   };
 
   const Navigate = useNavigate();
@@ -407,15 +409,30 @@ const SellerCreateGig = () => {
             <div className="justify-center flex items-center w-full">
               {gigCreationSuccess && (
                 <div>
-                  <div className="w-fit p-3 rounded-xl border-nft-primary-light border-2 mx-auto flex items-center gap-3 cursor-pointer text-nft-primary-light font-medium">
+                  <Link
+                    to={`/gigdetails/${newGig.title.replace(/ /g, "-")}/${
+                      newGig._id
+                    }`}
+                    className="w-fit p-3 rounded-xl border-nft-primary-light border-2 mx-auto flex items-center gap-3 cursor-pointer text-nft-primary-light font-medium"
+                  >
                     <LinkIcon className="h-6 w-6 inline-block" />
-                    <div>https://www.nftify.network/gig/1</div>
-                  </div>
+                    <div>{`${
+                      process.env.REACT_APP_API_URL
+                    }/gigdetails/${newGig.title.replace(/ /g, "-")}/${
+                      newGig._id
+                    }`}</div>
+                  </Link>
 
                   <div className="flex gap-4 mt-6 w-full justify-center">
-                    <button className="rounded-xl px-6 py-3 bg-gray-200 text-gray-800 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors border border-gray-300">
+                    <Link
+                      to={`/gigdetails/${newGig.title
+                        .replace(/[^a-zA-Z0-9-]+/g, "-")
+                        .replace(/-+/g, "-")
+                        .toLowerCase()}/${newGig._id}`}
+                      className="rounded-xl px-6 py-3 bg-gray-200 text-gray-800 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors border border-gray-300"
+                    >
                       Preview
-                    </button>
+                    </Link>
                     <button
                       className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
                       onClick={Done}

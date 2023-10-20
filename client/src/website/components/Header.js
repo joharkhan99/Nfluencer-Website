@@ -5,6 +5,7 @@ import React, { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setUser } from "../../redux/slices/UserSlice";
+import Loader from "../../utils/Loader";
 
 function Header({ transparent = false }) {
   const navigate = useNavigate();
@@ -18,6 +19,10 @@ function Header({ transparent = false }) {
 
   const user = useSelector((state) => state.user.user);
 
+  // console.log(user);
+
+  // if (!user) return <Loader />;
+  // else
   return (
     <>
       <header

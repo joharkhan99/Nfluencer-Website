@@ -541,7 +541,9 @@ function Explore() {
                                         className="w-full h-full object-cover"
                                       />
                                     </div>
-                                    <span className="font-bold">Mark</span>
+                                    <span className="font-bold">
+                                      Julie Bell
+                                    </span>
                                   </div>
                                 </div>
                               </div>
@@ -553,7 +555,7 @@ function Explore() {
                               <div className="relative shadow-sm rounded-xl shadow-gray-100">
                                 <div className="max-w-sm rounded-xl overflow-hidden pb-2">
                                   <img
-                                    src={require("../assets/nft7.jpeg")}
+                                    src={require("../assets/nft1.jpg")}
                                     alt="Card Imagea"
                                     className="h-40 w-full object-cover"
                                   />
@@ -563,7 +565,7 @@ function Explore() {
                                       style={{ width: "70px", height: "70px" }}
                                     >
                                       <img
-                                        src={require("../assets/user1.jpeg")}
+                                        src={require("../assets/user2.jpeg")}
                                         alt="User Idmage"
                                         className="w-full h-full object-cover"
                                       />
@@ -580,7 +582,7 @@ function Explore() {
                               <div className="relative shadow-sm rounded-xl shadow-gray-100">
                                 <div className="max-w-sm rounded-xl overflow-hidden pb-2">
                                   <img
-                                    src={require("../assets/nft7.jpeg")}
+                                    src={require("../assets/nft17.jpg")}
                                     alt="Card Imagea"
                                     className="h-40 w-full object-cover"
                                   />
@@ -590,12 +592,14 @@ function Explore() {
                                       style={{ width: "70px", height: "70px" }}
                                     >
                                       <img
-                                        src={require("../assets/user1.jpeg")}
+                                        src={require("../assets/user3.webp")}
                                         alt="User Idmage"
                                         className="w-full h-full object-cover"
                                       />
                                     </div>
-                                    <span className="font-bold">Mark</span>
+                                    <span className="font-bold">
+                                      Will Smith
+                                    </span>
                                   </div>
                                 </div>
                               </div>

@@ -66,7 +66,7 @@ function NFTDetail() {
   const navigate = useNavigate();
   const [nft, setNft] = useState(null);
 
-  const fetchGigDetails = async () => {
+  const fetchNFTDetails = async () => {
     const req = await fetch(
       `${process.env.REACT_APP_API_URL}/api/nft/details`,
       {
@@ -93,7 +93,7 @@ function NFTDetail() {
       navigate("/");
       return;
     }
-    fetchGigDetails();
+    fetchNFTDetails();
   }, [nftId, navigate]);
 
   if (!nft) {

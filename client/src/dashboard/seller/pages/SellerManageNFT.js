@@ -473,7 +473,7 @@ const SellerManageNFT = () => {
                       </div>
 
                       <img
-                        src={require("../../../website/assets/trend1.jpg")}
+                        src={require("../../../website/assets/trend2.jpg")}
                         alt="Card Imagea"
                         className="h-44 w-full object-cover rounded-xl"
                       />
@@ -580,7 +580,7 @@ const SellerManageNFT = () => {
                       </div>
 
                       <img
-                        src={require("../../../website/assets/trend1.jpg")}
+                        src={require("../../../website/assets/trend3.webp")}
                         alt="Card Imagea"
                         className="h-44 w-full object-cover rounded-xl"
                       />
@@ -705,15 +705,15 @@ const SellerManageNFT = () => {
                         />
                       </div>
                       <div className="flex flex-col justify-between h-fulls">
-                        <span className="font-semibold">Golbert Andi</span>
+                        <span className="font-semibold">Shahida Masood</span>
                         <span className="text-gray-500 text-xs">
-                          10,300 Items
+                          6400 Items
                         </span>
                       </div>
                     </div>
                     <div className="h-full">
                       <div className="flex flex-col justify-between h-full gap-1">
-                        <span className="font-semibold">$500K</span>
+                        <span className="font-semibold">$5.5K</span>
                         <span className="text-gray-500 text-xs">Total USD</span>
                       </div>
                     </div>
@@ -723,7 +723,7 @@ const SellerManageNFT = () => {
                     <div className="flex h-full gap-2">
                       <div>
                         <img
-                          src={require("../../../website/assets/man.jpg")}
+                          src={require("../../../website/assets/herobg.jpg")}
                           alt=""
                           className="w-10 h-10 rounded-full object-cover"
                         />
@@ -747,7 +747,55 @@ const SellerManageNFT = () => {
                     <div className="flex h-full gap-2">
                       <div>
                         <img
+                          src="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=740&t=st=1697794574~exp=1697795174~hmac=2095b5658ae44162bce7f2cf5b0742e3a7dedae48fddc40d5ed39256a08686e1"
+                          alt=""
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                      </div>
+                      <div className="flex flex-col justify-between h-fulls">
+                        <span className="font-semibold">Ali Iqbal</span>
+                        <span className="text-gray-500 text-xs">
+                          2300 Items
+                        </span>
+                      </div>
+                    </div>
+                    <div className="h-full">
+                      <div className="flex flex-col justify-between h-full gap-1">
+                        <span className="font-semibold">$40K</span>
+                        <span className="text-gray-500 text-xs">Total USD</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center text-sm p-2 text-gray-800 hover:bg-gray-100 cursor-pointer py-3">
+                    <div className="flex h-full gap-2">
+                      <div>
+                        <img
                           src={require("../../../website/assets/man.jpg")}
+                          alt=""
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                      </div>
+                      <div className="flex flex-col justify-between h-fulls">
+                        <span className="font-semibold">Shahida Masood</span>
+                        <span className="text-gray-500 text-xs">
+                          6400 Items
+                        </span>
+                      </div>
+                    </div>
+                    <div className="h-full">
+                      <div className="flex flex-col justify-between h-full gap-1">
+                        <span className="font-semibold">$5.5K</span>
+                        <span className="text-gray-500 text-xs">Total USD</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center text-sm p-2 text-gray-800 hover:bg-gray-100 cursor-pointer py-3">
+                    <div className="flex h-full gap-2">
+                      <div>
+                        <img
+                          src={require("../../../website/assets/herobg.jpg")}
                           alt=""
                           className="w-10 h-10 rounded-full object-cover"
                         />
@@ -762,6 +810,30 @@ const SellerManageNFT = () => {
                     <div className="h-full">
                       <div className="flex flex-col justify-between h-full gap-1">
                         <span className="font-semibold">$500K</span>
+                        <span className="text-gray-500 text-xs">Total USD</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center text-sm p-2 text-gray-800 hover:bg-gray-100 cursor-pointer py-3">
+                    <div className="flex h-full gap-2">
+                      <div>
+                        <img
+                          src="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?w=740&t=st=1697794574~exp=1697795174~hmac=2095b5658ae44162bce7f2cf5b0742e3a7dedae48fddc40d5ed39256a08686e1"
+                          alt=""
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                      </div>
+                      <div className="flex flex-col justify-between h-fulls">
+                        <span className="font-semibold">Ali Iqbal</span>
+                        <span className="text-gray-500 text-xs">
+                          2300 Items
+                        </span>
+                      </div>
+                    </div>
+                    <div className="h-full">
+                      <div className="flex flex-col justify-between h-full gap-1">
+                        <span className="font-semibold">$40K</span>
                         <span className="text-gray-500 text-xs">Total USD</span>
                       </div>
                     </div>

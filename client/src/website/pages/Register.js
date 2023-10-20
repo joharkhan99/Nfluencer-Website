@@ -37,6 +37,10 @@ function Register() {
       errors.password = "Password must be at least 8 characters long";
     }
 
+    if (password.length > 50) {
+      errors.password = "Password must be at most 50 characters long";
+    }
+
     if (password !== confirmPassword) {
       errors.confirmPassword = "Passwords do not match";
     }

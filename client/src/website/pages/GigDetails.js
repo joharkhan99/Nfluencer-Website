@@ -218,7 +218,7 @@ function GigDetails() {
                   <div className="flex items-center gap-10 justify-between">
                     <div className="flex items-center gap-2 text-md font-semibold">
                       <img
-                        src={require("../assets/man.jpg")}
+                        src={gig.user.avatar}
                         className="rounded-full h-16 w-16 object-cover"
                         alt=""
                       />
@@ -303,7 +303,7 @@ function GigDetails() {
                       Service Description
                     </h3>
                     <p
-                      className="text-gray-600 mb-6"
+                      className="text-gray-600 mb-6 break-all"
                       dangerouslySetInnerHTML={{ __html: gig.description }}
                     ></p>
                   </div>

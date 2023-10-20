@@ -157,10 +157,10 @@ const ChatWindow = () => {
                     <div className="flex gap-2 items-center">
                       <span className="w-3 h-3 rounded-full  bg-green-500"></span>
                       <a href="s" className="underline font-semibold">
-                        Nathan
+                        {selectedUser.name}
                       </a>
                       <span className="font-semibold text-gray-500">
-                        @lex104
+                        @{selectedUser.username}
                       </span>
                     </div>
                     <div>
@@ -241,7 +241,7 @@ const ChatWindow = () => {
                             <div>
                               <div className="flex gap-1 group">
                                 <img
-                                  src={require("../../../../website/assets/man.jpg")}
+                                  src={message.sender.avatar}
                                   alt=""
                                   className="w-7 h-7 rounded-full object-cover"
                                 />
@@ -305,7 +305,7 @@ const ChatWindow = () => {
                                   {message.text}
                                 </div>
                                 <img
-                                  src={require("../../../../website/assets/man.jpg")}
+                                  src={user.avatar}
                                   alt=""
                                   className="w-7 h-7 rounded-full object-cover"
                                 />

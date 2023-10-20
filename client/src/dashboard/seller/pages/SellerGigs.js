@@ -324,15 +324,18 @@ export const SellerGigs = () => {
                                   <Menu.Items className="absolute right-0 z-10 -mt-3 w-32 origin-top-right rounded-md bg-white shadow-lg focus:outline-none p-0 overflow-hidden">
                                     <div>
                                       <Menu.Item>
-                                        <a
-                                          href="{option.href}"
+                                        <Link
+                                          to={`/gigdetails/${gig.title.replace(
+                                            / /g,
+                                            "-"
+                                          )}/${gig._id}`}
                                           className="text-gray-500 p-2 hover:bg-gray-100 flex gap-2 items-center"
                                         >
                                           <span>
                                             <EyeIcon className="h-5 w-5 text-gray-400" />
                                           </span>
                                           <span>Preview</span>
-                                        </a>
+                                        </Link>
                                       </Menu.Item>
                                       <Menu.Item>
                                         <a

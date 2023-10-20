@@ -42,7 +42,7 @@ const ChatUsersList = () => {
   };
 
   return (
-    <div className="bg-white rounded-xl w-full h-full overflow-y-auto">
+    <div className="bg-white rounded-xl w-full h-full overflow-y-auto custom-scrollbar">
       {/* search box */}
       <div className="relative w-full p-3">
         <div className="absolute inset-y-0 flex items-center pl-2 text-gray-100">
@@ -148,74 +148,6 @@ const ChatUsersList = () => {
               </div>
             </li>
           ))}
-
-          <li className="hover:bg-gray-100 p-3">
-            <div className="w-full block">
-              <div className="flex items-center gap-3 w-full justify-between text-start text-gray-800 text-sm">
-                <div className="flex gap-2 items-center">
-                  <div className="relative">
-                    <span className="absolute w-3 h-3 rounded-full bottom-1 right-0 bg-green-500 z-40 ring-2 ring-white"></span>
-                    <img
-                      src={require("../../../../website/assets/man.jpg")}
-                      alt=""
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <span className="font-semibold">Syeda Afifa</span>
-                    <span className="text-gray-500">
-                      Ok, I will send details.
-                    </span>
-                  </div>
-                </div>
-                <div className="flex flex-col text-gray-500 gap-2">
-                  <span className="text-xs">1 week</span>
-                  <div className="flex gap-1 items-center justify-end">
-                    <button className="hover:text-gray-800">
-                      <EnvelopeOpenIcon className="w-5 h-5" />
-                    </button>
-                    <button className="hover:text-gray-800">
-                      <StarIcon className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
-
-          <li className="hover:bg-gray-100 p-3">
-            <div className="w-full block">
-              <div className="flex items-center gap-3 w-full justify-between text-start text-gray-800 text-sm">
-                <div className="flex gap-2 items-center">
-                  <div className="relative">
-                    <span className="absolute w-3 h-3 rounded-full bottom-1 right-0 bg-gray-400 z-40 ring-2 ring-white"></span>
-                    <img
-                      src={require("../../../../website/assets/man.jpg")}
-                      alt=""
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <span className="font-semibold">Syeda Afifa</span>
-                    <span className="text-gray-800 font-medium">
-                      Ok, I will send details.
-                    </span>
-                  </div>
-                </div>
-                <div className="flex flex-col text-gray-500 gap-2">
-                  <span className="text-xs">1 week</span>
-                  <div className="flex gap-1 items-center justify-end">
-                    <button className="hover:text-gray-800">
-                      <EnvelopeOpenIcon className="w-5 h-5" />
-                    </button>
-                    <button className="hover:text-gray-800">
-                      <StarIcon className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </li>
         </ul>
       ) : null}
     </div>
