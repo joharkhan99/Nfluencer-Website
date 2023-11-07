@@ -7,7 +7,6 @@ import {
   getAllGigs,
   gigDetails,
 } from "../controllers/GigController.js";
-import multer from "multer";
 const router = Router();
 
 // Define your routes and middleware
