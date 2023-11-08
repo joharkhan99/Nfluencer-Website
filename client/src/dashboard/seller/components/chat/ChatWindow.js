@@ -10,7 +10,7 @@ import {
   StarIcon,
   VideoCameraIcon,
 } from "@heroicons/react/24/outline";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
 
@@ -20,8 +20,8 @@ const ChatWindow = () => {
   const [newMessage, setNewMessage] = useState("");
   const [typing, setTyping] = useState(false);
   const [istyping, setIstyping] = useState(false);
-
   const [socket, setSocket] = useState(null);
+  const chatContainerRef = useRef(null);
 
   useEffect(() => {
     const socket = io(process.env.REACT_APP_API_URL);
@@ -30,7 +30,8 @@ const ChatWindow = () => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
     socket.on("user-disconnected", (disconnectedUserId) => {
-      setMessages([]);
+      // setMessages([]);
+      fetchChatHistory();
     });
     // return () => {
     //   socket.disconnect();
@@ -140,6 +141,14 @@ const ChatWindow = () => {
     return formattedDate;
   }
 
+  useEffect(() => {
+    // Scroll to the bottom of the chat container when messages change
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
     <div className="bg-white rounded-xl w-full h-full overflow-y-auto">
       {selectedUser === null ? (
@@ -163,7 +172,7 @@ const ChatWindow = () => {
           ) : (
             <div className="flex flex-col h-full">
               {/* head */}
-              <div className="sticky top-0 left-0 w-full z-50 bg-white p-3 shadow-md shadow-gray-100">
+              <div className="sticky top-0 left-0 w-full z-50 bg-white p-3 shadow-md ">
                 <div className="flex justify-between items-center">
                   <div className="flex flex-col">
                     <div className="flex gap-2 items-center">
@@ -240,7 +249,10 @@ const ChatWindow = () => {
               </div>
 
               <div className="bg-white text-gray-800 text-sm h-full w-full overflow-hidden">
-                <div className="flex flex-col justify-end p-3 h-full w-full overflow-auto">
+                <div
+                  className="flex flex-col justify-end p-3 h-full w-full overflow-auto"
+                  ref={chatContainerRef}
+                >
                   <div className="flex-1 h-full">
                     {messages.map((message, index) => {
                       if (user._id === message.receiver) {
