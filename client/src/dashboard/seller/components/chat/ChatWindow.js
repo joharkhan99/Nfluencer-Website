@@ -228,7 +228,7 @@ const ChatWindow = () => {
               </div>
 
               <div className="bg-white flex-1 overflow-y-auto custom-scrollbar text-gray-800 p-3 text-sm">
-                <div className="w-full">
+                <div className="w-full h-full flex flex-col justify-end">
                   {messages.map((message, index) => {
                     if (user._id === message.receiver) {
                       // Messages sent by the user

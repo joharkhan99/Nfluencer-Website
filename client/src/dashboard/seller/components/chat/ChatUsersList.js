@@ -29,11 +29,12 @@ const ChatUsersList = () => {
       return;
     }
     setUsers(data.users);
+    console.log(data.users);
   };
 
   useEffect(() => {
     fetchUsers();
-  });
+  }, []);
 
   const dispatch = useDispatch();
   const handleUserSelect = (user) => {
@@ -109,7 +110,7 @@ const ChatUsersList = () => {
         <ul className="pb-3">
           {users.map((user, index) => (
             <li
-              className={`hover:bg-gray-100 p-3 cursor-pointer ${
+              className={`hover:bg-gray-100 p-3 cursor-pointer rounded-md ${
                 chatUser && chatUser._id === user._id && "bg-gray-200"
               }`}
               key={index}
