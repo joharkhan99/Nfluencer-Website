@@ -60,7 +60,7 @@ const ChatUserInfo = () => {
 
             <div className="justify-between flex">
               <span className="text-gray-500">Rating</span>
-              <div className="flex gap-0.5 items-center">
+              <div className="flex gap-1 items-center">
                 <StarIcon className="w-4 h-4 fill-gray-500 stroke-gray-500" />
                 <span className="font-semibold">5</span>
                 <a href="d" className="underline text-gray-500">

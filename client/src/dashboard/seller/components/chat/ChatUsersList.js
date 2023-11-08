@@ -44,66 +44,65 @@ const ChatUsersList = () => {
 
   return (
     <div className="bg-white rounded-xl w-full h-full overflow-y-auto custom-scrollbar">
-      {/* search box */}
-      <div className="relative w-full p-3">
-        <div className="absolute inset-y-0 flex items-center pl-2 text-gray-100">
-          <MagnifyingGlassIcon className="w-4 h-4 text-gray-400" />
-        </div>
-        <input
-          type="text"
-          className="text-sm rounded-xl pl-8 block w-full p-2.5 bg-gray-100 outline-none border ring-purple-700 focus:ring-2 focus:bg-transparent hover:bg-gray-200 hover:bg-opacity-70"
-          placeholder="Search Chat..."
-          required
-        />
-      </div>
-      {/* options */}
-
-      <div className="mt-1 mb-4 p-3">
-        <Menu as="div" className="relative inline-block text-left">
-          <div>
-            <Menu.Button className="group bg-gray-100 hover:bg-gray-200 rounded-xl p-2 text-sm text-gray-800 font-semibold flex items-center gap-2">
-              <div>All Messages</div>
-              <div>
-                <ChevronDownIcon className="w-4 h-4" />
-              </div>
-            </Menu.Button>
+      <div className="sticky top-0 left-0 w-full z-50 bg-white p-3">
+        <div className="relative w-full">
+          <div className="absolute inset-y-0 flex items-center pl-2 text-gray-100">
+            <MagnifyingGlassIcon className="w-4 h-4 text-gray-400" />
           </div>
+          <input
+            type="text"
+            className="text-sm rounded-xl pl-8 block w-full p-2.5 bg-gray-100 outline-none border ring-purple-700 focus:ring-2 focus:bg-transparent hover:bg-gray-200 hover:bg-opacity-70"
+            placeholder="Search Chat..."
+            required
+          />
+        </div>
+        <div className="mt-3">
+          <Menu as="div" className="relative inline-block text-left">
+            <div>
+              <Menu.Button className="group bg-gray-100 hover:bg-gray-200 rounded-xl p-2 text-sm text-gray-800 font-semibold flex items-center gap-2">
+                <div>All Messages</div>
+                <div>
+                  <ChevronDownIcon className="w-4 h-4" />
+                </div>
+              </Menu.Button>
+            </div>
 
-          <Transition
-            as={Fragment}
-            enter="transition ease-out duration-100"
-            enterFrom="transform opacity-0 scale-95"
-            enterTo="transform opacity-100 scale-100"
-            leave="transition ease-in duration-75"
-            leaveFrom="transform opacity-100 scale-100"
-            leaveTo="transform opacity-0 scale-95"
-          >
-            <Menu.Items className="absolute right-0 z-50 -mt-0 w-32 origin-top-right rounded-md bg-white shadow-lg focus:outline-none p-0 overflow-hidden text-base">
-              <div>
-                <Menu.Item>
-                  <button className="text-gray-500 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
-                    All Messages
-                  </button>
-                </Menu.Item>
-                <Menu.Item>
-                  <button className="text-gray-500 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
-                    Unread
-                  </button>
-                </Menu.Item>
-                <Menu.Item>
-                  <button className="text-gray-500 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
-                    Starred
-                  </button>
-                </Menu.Item>
-                <Menu.Item>
-                  <button className="text-gray-500 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
-                    Spam
-                  </button>
-                </Menu.Item>
-              </div>
-            </Menu.Items>
-          </Transition>
-        </Menu>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items className="absolute right-0 z-50 -mt-0 w-32 origin-top-right rounded-md bg-white shadow-lg focus:outline-none p-0 overflow-hidden text-sm">
+                <div>
+                  <Menu.Item>
+                    <button className="text-gray-500 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
+                      All Messages
+                    </button>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <button className="text-gray-500 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
+                      Unread
+                    </button>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <button className="text-gray-500 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
+                      Starred
+                    </button>
+                  </Menu.Item>
+                  <Menu.Item>
+                    <button className="text-gray-500 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
+                      Spam
+                    </button>
+                  </Menu.Item>
+                </div>
+              </Menu.Items>
+            </Transition>
+          </Menu>
+        </div>
       </div>
 
       {users.length > 0 ? (

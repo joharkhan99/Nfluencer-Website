@@ -128,6 +128,18 @@ const ChatWindow = () => {
     setNewMessage("");
   };
 
+  function formatDate(dateStr) {
+    const dateObj = new Date(dateStr);
+    const formattedDate = dateObj.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    });
+    return formattedDate;
+  }
+
   return (
     <div className="bg-white rounded-xl w-full h-full overflow-y-auto">
       {selectedUser === null ? (
@@ -227,82 +239,58 @@ const ChatWindow = () => {
                 </div>
               </div>
 
-              <div className="bg-white flex-1 overflow-y-auto custom-scrollbar text-gray-800 p-3 text-sm">
-                <div className="w-full h-full flex flex-col justify-end">
-                  {messages.map((message, index) => {
-                    if (user._id === message.receiver) {
-                      // Messages sent by the user
-                      return (
-                        <div
-                          className="flex justify-start w-full mb-1"
-                          key={index}
-                        >
-                          <div className="w-1/2 flex justify-start">
-                            <div>
-                              <div className="flex gap-1 group">
-                                <img
-                                  src={message.sender.avatar}
-                                  alt=""
-                                  className="w-7 h-7 rounded-full object-cover"
-                                />
-                                <div className="bg-nft-primary-light w-fit text-white p-2 rounded-xl relative">
-                                  <div>{message.text}</div>
-
-                                  <Menu
-                                    as="div"
-                                    className="absolute right-0 top-0 text-left hidden group-hover:inline-block focus:inline-block"
-                                  >
-                                    <div>
-                                      <Menu.Button className="group bg-white rounded-full p-0 text-sm text-gray-800 font-semibold">
-                                        <div>
-                                          <EllipsisHorizontalIcon className="w-6 h-6" />
-                                        </div>
-                                      </Menu.Button>
+              <div className="bg-white text-gray-800 text-sm h-full w-full overflow-hidden">
+                <div className="flex flex-col justify-end p-3 h-full w-full overflow-auto">
+                  <div className="flex-1 h-full">
+                    {messages.map((message, index) => {
+                      if (user._id === message.receiver) {
+                        // Messages sent by another user
+                        return (
+                          <div
+                            className="flex justify-start w-full mb-1"
+                            key={index}
+                          >
+                            <div className="w-1/2 flex justify-start">
+                              <div>
+                                <div className="flex gap-3">
+                                  <img
+                                    src={message.sender.avatar}
+                                    alt=""
+                                    className="w-7 h-7 rounded-full object-cover"
+                                  />
+                                  <div className="flex flex-col items-start">
+                                    <span className="font-semibold">
+                                      {message.sender.name}
+                                    </span>
+                                    <div className="bg-nft-primary-light w-fit text-white p-2 rounded-lg">
+                                      {message.text}
                                     </div>
-
-                                    <Transition
-                                      as={Fragment}
-                                      enter="transition ease-out duration-100"
-                                      enterFrom="transform opacity-0 scale-95"
-                                      enterTo="transform opacity-100 scale-100"
-                                      leave="transition ease-in duration-75"
-                                      leaveFrom="transform opacity-100 scale-100"
-                                      leaveTo="transform opacity-0 scale-95"
-                                    >
-                                      <Menu.Items className="absolute right-0 z-50 -mt-2 w-32 origin-top-right rounded-md bg-white shadow-lg focus:outline-none p-0 overflow-hidden text-sm">
-                                        <div>
-                                          <Menu.Item>
-                                            <button className="text-gray-800 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
-                                              Report
-                                            </button>
-                                          </Menu.Item>
-                                          <Menu.Item>
-                                            <button className="text-red-500 p-2 hover:bg-gray-100 flex gap-2 items-center w-full">
-                                              Mark as Spam
-                                            </button>
-                                          </Menu.Item>
-                                        </div>
-                                      </Menu.Items>
-                                    </Transition>
-                                  </Menu>
+                                    <span className="text-xs text-gray-500">
+                                      {formatDate(message.createdAt)}
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    } else {
-                      // Messages received by the user
-                      return (
-                        <div
-                          className="flex justify-end w-full mb-1"
-                          key={index}
-                        >
-                          <div className="w-1/2 flex justify-end">
-                            <div>
-                              <div className="flex gap-1 items-start">
-                                <div className="bg-gray-100 w-fit text-gray-800 p-2 rounded-xl">
-                                  {message.text}
+                        );
+                      } else {
+                        // Messages received by you
+                        return (
+                          <div
+                            className="flex justify-end w-full mb-3"
+                            key={index}
+                          >
+                            <div className="w-1/2 flex justify-end">
+                              <div className="flex gap-3">
+                                <div className="flex flex-col items-end">
+                                  <span className="font-semibold">Me</span>
+                                  <div className="bg-gray-100 w-fit text-gray-800 p-2 rounded-lg">
+                                    {message.text}
+                                  </div>
+                                  <span className="text-xs text-gray-500">
+                                    {formatDate(message.createdAt)}
+                                  </span>
                                 </div>
                                 <img
                                   src={user.avatar}
@@ -312,10 +300,10 @@ const ChatWindow = () => {
                               </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    }
-                  })}
+                        );
+                      }
+                    })}
+                  </div>
                 </div>
               </div>
 
