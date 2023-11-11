@@ -7,6 +7,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import NFTPreview from "../components/nft/NFTPreview";
 
 const SellerNewNFT = () => {
   const walletAddress = useSelector((state) => state.user.walletAddress);
@@ -634,108 +635,13 @@ const SellerNewNFT = () => {
           </div>
         </div>
         <div className="order-1 md:order-2 w-full">
-          <div className="flex flex-wrap justify-center gap-6 sticky top-0">
-            <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
-              <div className="w-80">
-                <div className="font-extrabold text-lg pb-3 mb-0">
-                  NFT Preview
-                </div>
-
-                <div className="flex justify-between items-center mb-5">
-                  <div className="flex -space-x-2">
-                    <img
-                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("../../../nftmarketplace/assets/user1.jpeg")}
-                      alt="User Imageas"
-                    />
-                    <img
-                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("../../../nftmarketplace/assets/user2.jpeg")}
-                      alt="User Imageas"
-                    />
-                    <img
-                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                      src={require("../../../nftmarketplace/assets/user3.webp")}
-                      alt="User Imageas"
-                    />
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
-                      <span>···</span>
-                    </button>
-                  </div>
-                </div>
-
-                <div
-                  className="h-auto rounded-xl bg-gray-100 overflow-hidden"
-                  style={{ height: "300px" }}
-                >
-                  {preview && (
-                    <img
-                      src={preview}
-                      alt="sd"
-                      className="h-full w-full object-cover"
-                    />
-                  )}
-                </div>
-                <div className="py-2 pt-3">
-                  <h3 className="text-lg font-bold tracking-tight text-gray-800">
-                    {name}
-                  </h3>
-
-                  <div className="flex items-center justify-between my-2">
-                    <div>
-                      <div className="flex items-center text-gray-500 text-sm gap-2">
-                        <img
-                          src={require("../../../nftmarketplace/assets/eth.png")}
-                          alt="sd"
-                          className="h-5 w-5 object-contain"
-                        />
-                        <span>
-                          from
-                          <span className="font-bold text-sm text-gray-800 ml-2">
-                            {price} ETH
-                          </span>
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <span>
-                        <TrophyIcon className="w-5 h-5 text-yellow-500" />
-                      </span>
-                      <span className="textsm font-semibold">{royalties}%</span>
-                    </div>
-                  </div>
-
-                  {traits.map((t) => (
-                    <div className="p-1 px-2 border-gray-200 border inline-block rounded-full mr-1 mb-1 text-xs font-medium">
-                      <div className="flex gap-1">
-                        <span>{t.traitType}</span>
-                        <span>:</span>
-                        <span>{t.traitName}</span>
-                      </div>
-                    </div>
-                  ))}
-
-                  <div className="flex justify-between items-center mt-5">
-                    <div>
-                      <button
-                        className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm"
-                        disabled
-                      >
-                        Buy Now
-                      </button>
-                    </div>
-                    <button className="flex items-center gap-1">
-                      <HeartIcon className="w-4 h-4" />
-                      <span className="font-bold text-sm">00</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <NFTPreview
+            name={name}
+            price={price}
+            royalties={royalties}
+            preview={preview}
+            traits={traits}
+          />
         </div>
       </div>
     </div>
