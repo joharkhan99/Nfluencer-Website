@@ -10,7 +10,9 @@ import { useNavigate } from "react-router-dom";
 import NFTPreview from "../components/nft/NFTPreview";
 
 const SellerNewNFT = () => {
-  const walletAddress = useSelector((state) => state.user.walletAddress);
+  const isWalletConnected = useSelector(
+    (state) => state.user.isWalletConnected
+  );
   const [preview, setPreview] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -49,11 +51,11 @@ const SellerNewNFT = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!walletAddress) {
+    if (!isWalletConnected) {
       navigate("/seller");
       return;
     }
-  });
+  }, []);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -108,7 +110,7 @@ const SellerNewNFT = () => {
       formData.append("royalties", royalties);
       formData.append("image", image);
       formData.append("traits", JSON.stringify(traits));
-      formData.append("walletAddress", walletAddress);
+      formData.append("walletAddress", user.walletAddress);
       formData.append("username", user.username);
 
       const res = await fetch(`${process.env.REACT_APP_API_URL}/api/nft/`, {
