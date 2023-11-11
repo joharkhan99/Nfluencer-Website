@@ -239,6 +239,7 @@ const loginUser = async (req, res) => {
         jwtToken: token,
         email: user.email,
         _id: user._id,
+        walletAddress: user.walletAddress,
       },
     });
   } catch (error) {
@@ -280,21 +281,30 @@ const getUser = async (req, res) => {
 const storeWallet = async (req, res) => {
   const { walletAddress, username } = req.body;
 
-  const user = await User.findOne({ username });
-  if (!user) {
-    return res.status(404).json({
+  try {
+    const user = await User.findOne({ username }).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        error: true,
+        message: "User not found",
+      });
+    }
+
+    user.walletAddress = walletAddress;
+    await user.save();
+    console.log(user);
+    res.status(200).json({
+      message: "Wallet address saved",
+      user,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
       error: true,
-      message: "User not found",
+      message: "Internal Server Error",
     });
   }
-
-  user.walletAddress = walletAddress;
-  await user.save();
-  res.status(200).json({
-    error: false,
-    message: "Wallet address saved",
-    walletAddress,
-  });
 };
 
 const removeWallet = async (req, res) => {

@@ -4,7 +4,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
-import { setUser, setWalletAddress } from "../../../redux/slices/UserSlice";
+import { setIsWalletConnected, setUser } from "../../../redux/slices/UserSlice";
 import {
   ArrowRightOnRectangleIcon,
   BellIcon,
@@ -21,17 +21,21 @@ const Header = () => {
     Cookies.remove("authId");
     localStorage.removeItem("user");
     dispatch(setUser(null));
+    dispatch(setIsWalletConnected(false));
     navigate("/");
   };
 
   const user = useSelector((state) => state.user.user);
-  const walletAddress = useSelector((state) => state.user.walletAddress);
+  const isWalletConnected = useSelector(
+    (state) => state.user.isWalletConnected
+  );
+  console.log(isWalletConnected);
   const [balance, setBalance] = useState(0);
+
   const getBalance = async () => {
-    if (walletAddress) {
+    if (isWalletConnected) {
       const provider = new ethers.BrowserProvider(window.ethereum);
-      // const signer = await provider.getSigner();
-      const balance = await provider.getBalance(walletAddress);
+      const balance = await provider.getBalance(user.walletAddress);
       setBalance(balance.toString());
     }
   };
@@ -52,7 +56,7 @@ const Header = () => {
 
   useEffect(() => {
     getBalance();
-  });
+  }, []);
 
   return (
     <>
@@ -74,7 +78,7 @@ const Header = () => {
         </div>
 
         <div className="space-x-4 items-center flex">
-          {walletAddress && (
+          {isWalletConnected && (
             <Menu as="div" className="relative text-left">
               <div>
                 <Menu.Button className="group hover:opacity-80">
@@ -114,11 +118,11 @@ const Header = () => {
                             className="w-9 h-9 object-contain"
                           />
                           <div className="font-semibold">
-                            {walletAddress.substring(0, 6) +
+                            {user.walletAddress.substring(0, 6) +
                               "..." +
-                              walletAddress.substring(
-                                walletAddress.length - 4,
-                                walletAddress.length
+                              user.walletAddress.substring(
+                                user.walletAddress.length - 4,
+                                user.walletAddress.length
                               )}
                           </div>
                         </div>
