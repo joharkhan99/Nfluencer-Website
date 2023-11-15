@@ -115,6 +115,9 @@ const SellerNewNFT = () => {
 
       const res = await fetch(`${process.env.REACT_APP_API_URL}/api/nft/`, {
         method: "POST",
+        headers: {
+          "x-auth-token": user.jwtToken,
+        },
         body: formData,
       });
 

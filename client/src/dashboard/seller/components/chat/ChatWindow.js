@@ -53,6 +53,7 @@ const ChatWindow = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "x-auth-token": user.jwtToken,
           },
           body: JSON.stringify({
             sender: user._id,
@@ -83,6 +84,7 @@ const ChatWindow = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "x-auth-token": user.jwtToken,
           },
           body: JSON.stringify({
             senderId,

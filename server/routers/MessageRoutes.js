@@ -5,9 +5,10 @@ import {
   sendMessage,
   fetchChatId,
 } from "../controllers/MessageController.js";
+import authenticate from "../middleware/authenticate.js";
 const router = Router();
 
-// Define your routes and middleware
+router.use(authenticate);
 router.route("/:chatId").get(allMessages);
 router.route("/").post(sendMessage);
 router.post("/chat-history", chatHistory);

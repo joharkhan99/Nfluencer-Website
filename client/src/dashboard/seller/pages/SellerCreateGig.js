@@ -324,6 +324,9 @@ const SellerCreateGig = () => {
 
     const request = await fetch(`${process.env.REACT_APP_API_URL}/api/gig`, {
       method: "POST",
+      headers: {
+        "x-auth-token": user.jwtToken,
+      },
       body: formData,
     });
     const response = await request.json();

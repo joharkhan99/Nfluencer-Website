@@ -36,6 +36,7 @@ const CryptoWalletsConnect = ({ user }) => {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "x-auth-token": user.jwtToken,
             },
             body: JSON.stringify({
               walletAddress,

@@ -37,6 +37,7 @@ function App() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "x-auth-token": jwtAuthId,
         },
         body: JSON.stringify({
           jwtToken: jwtAuthId,

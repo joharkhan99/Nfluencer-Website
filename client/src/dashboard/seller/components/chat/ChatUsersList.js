@@ -16,13 +16,17 @@ const ChatUsersList = () => {
   const chatUser = useSelector((state) => state.chat.selectedChatUser);
 
   const fetchUsers = async () => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/user/users`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username: user.username }),
-    });
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/user/chatUsers`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": user.jwtToken,
+        },
+        body: JSON.stringify({ username: user.username }),
+      }
+    );
     const data = await res.json();
     if (data.error) {
       setUsers([]);
@@ -34,7 +38,7 @@ const ChatUsersList = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [user]);
 
   const dispatch = useDispatch();
   const handleUserSelect = (user) => {

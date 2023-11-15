@@ -23,6 +23,7 @@ export const SellerGigs = () => {
 
   // fetch all the gigs for the user
   const user = useSelector((state) => state.user.user);
+  // console.log(user);
 
   // fetch all the gigs for the user
   const fetchGigs = async () => {
@@ -33,6 +34,7 @@ export const SellerGigs = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "x-auth-token": user.jwtToken,
           },
           body: JSON.stringify({ userId: user._id }),
         }
@@ -53,6 +55,7 @@ export const SellerGigs = () => {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
+            "x-auth-token": user.jwtToken,
           },
           body: JSON.stringify({ gigId: id, userId: user._id }),
         }
@@ -69,7 +72,7 @@ export const SellerGigs = () => {
 
   useEffect(() => {
     fetchGigs();
-  }, []);
+  }, [user]);
 
   return (
     <>
