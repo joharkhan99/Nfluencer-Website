@@ -3,7 +3,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./nftmarketplace/pages/Home";
 import Explore from "./nftmarketplace/pages/Explore";
 import NFTDetail from "./nftmarketplace/pages/NFTDetail";
-import NewNFT from "./nftmarketplace/pages/NewNFT";
 import LandingPage from "./website/pages/LandingPage";
 import Register from "./website/pages/Register";
 import Services from "./website/pages/Services";
