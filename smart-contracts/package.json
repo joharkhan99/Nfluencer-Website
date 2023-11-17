@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "this package is responsible for handling nft smart contracts",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
