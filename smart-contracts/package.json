@@ -1,0 +1,15 @@
+{
+  "name": "smart-contracts",
+  "version": "1.0.0",
+  "description": "this package is responsible for handling nft smart contracts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Johar Khan",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.19.1"
+  }
+}
