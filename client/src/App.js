@@ -89,7 +89,6 @@ function App() {
         <Route path="/stats" Component={Stats} />
         <Route path="/explore" Component={Explore} />
         <Route path="/nftdetails/:nfttitle/:nftId" Component={NFTDetail} />
-        <Route path="/create" Component={NewNFT} />
         <Route path="/signup" Component={Register} />
         <Route path="/login" Component={Login} />
         <Route path="/services" Component={Services} />
