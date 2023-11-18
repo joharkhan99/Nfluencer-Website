@@ -24,6 +24,7 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import Loader from "./utils/Loader";
 import SellerManageNFT from "./dashboard/seller/pages/SellerManageNFT";
 import SellerInbox from "./dashboard/seller/pages/SellerInbox";
+import { NFTMarketplaceProvider } from "./nftmarketplace/pages/NFTMarketplace";
 
 function App() {
   const dispatch = useDispatch();
@@ -84,6 +85,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/testing" Component={NFTMarketplaceProvider} />
         <Route path="/" Component={LandingPage} />
         <Route path="/marketplace" Component={Home} />
         <Route path="/stats" Component={Stats} />

@@ -12,6 +12,7 @@
     "apexcharts": "^3.42.0",
     "autoprefixer": "^10.4.14",
     "ethers": "^6.8.0",
+    "ipfs-http-client": "^60.0.1",
     "js-cookie": "^3.0.5",
     "postcss": "^8.4.23",
     "react": "^18.2.0",
