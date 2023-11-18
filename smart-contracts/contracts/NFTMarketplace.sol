@@ -125,7 +125,6 @@ contract NFTMarketplace is ERC721URIStorage {
     // buy nft
     function createMarketSale(uint256 tokenId) public payable {
         uint256 price = idMarketItem[tokenId].price;
-        uint256 tokenId = idMarketItem[tokenId].tokenId;
 
         require(
             msg.value == price,
