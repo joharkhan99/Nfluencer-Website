@@ -6,6 +6,7 @@ import {
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import React, { useEffect } from "react";
 import { ethers } from "ethers";
+import axios from "axios";
 
 const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
@@ -78,6 +79,92 @@ export const NFTMarketplaceProvider = () => {
       return url;
     } catch (error) {
       console.log(`Error uploading to IPFS: ${error}`);
+    }
+  };
+
+  // Create NFT
+  const createNFT = async (formInput, fileUrl, router) => {
+    try {
+      const { name, description, price } = formInput;
+      if (!name || !description || !price || !fileUrl) {
+        return console.log("Please make sure all fields are completed");
+      }
+
+      const data = JSON.stringify({
+        name,
+        description,
+        image: fileUrl,
+      });
+
+      const added = await client.add(data);
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+
+      await createSale(url, price);
+    } catch (error) {
+      console.log(`Error creating NFT: ${error}`);
+    }
+  };
+
+  // Create Sale
+  const createSale = async (url, formInputPrice, isReselling, id) => {
+    try {
+      const price = ethers.parseUnits(formInputPrice, "ether");
+      const contract = await connectingWithSmartContract();
+
+      const listingPrice = await contract.getListingPrice();
+
+      const transaction = !isReselling
+        ? await contract.createToken(url, price, {
+            value: listingPrice.toString(),
+          })
+        : await contract.reSellToken(url, price, {
+            value: listingPrice.toString(),
+          });
+
+      await transaction.wait();
+    } catch (error) {
+      console.log(`Error creating sale: ${error}`);
+    }
+  };
+
+  // Fetch NFTs
+  const fetchNFTs = async () => {
+    try {
+      const provider = new ethers.providers.JsonRpcProvider();
+      const contract = fetchContract(provider);
+
+      const data = await contract.fetchMarketItem();
+
+      const items = await Promise.all(
+        data.map(
+          async ({ tokenId, seller, owner, price: unformattedPrice }) => {
+            const tokenURI = await contract.tokenURI(tokenId);
+
+            const {
+              data: { image, name, description },
+            } = await axios.get(tokenURI);
+            const price = ethers.formatUnits(
+              unformattedPrice.toString(),
+              "ether"
+            );
+
+            return {
+              price,
+              tokenId: tokenId.toNumber(),
+              seller,
+              owner,
+              image,
+              name,
+              description,
+              tokenURI,
+            };
+          }
+        )
+      );
+
+      return items;
+    } catch (error) {
+      console.log(`Error fetching NFTs: ${error}`);
     }
   };
 
