@@ -37,18 +37,19 @@ export const NFTMarketplaceProvider = () => {
     try {
       if (!window.ethereum)
         throw new Error("Make sure you have metamask installed!");
+
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
       });
+
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
+        console.log(currentAccount, accounts[0]);
         // return true;
       } else {
         console.log("No authorized account found");
         // return false;
       }
-
-      console.log(currentAccount);
     } catch (error) {
       console.log(`Error connecting with smart contract: ${error}`);
     }
@@ -132,7 +133,7 @@ export const NFTMarketplaceProvider = () => {
   // Fetch NFTs
   const fetchNFTs = async () => {
     try {
-      const provider = new ethers.providers.JsonRpcProvider();
+      const provider = new ethers.JsonRpcProvider();
       const contract = fetchContract(provider);
 
       const data = await contract.fetchMarketItem();
