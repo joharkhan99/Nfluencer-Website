@@ -42,11 +42,13 @@ export const NFTMarketplaceProvider = () => {
       });
       if (accounts.length) {
         setCurrentAccount(accounts[0]);
-        return true;
+        // return true;
       } else {
         console.log("No authorized account found");
-        return false;
+        // return false;
       }
+
+      console.log(currentAccount);
     } catch (error) {
       console.log(`Error connecting with smart contract: ${error}`);
     }
@@ -208,6 +210,22 @@ export const NFTMarketplaceProvider = () => {
       return items;
     } catch (error) {
       console.log(`Error fetching my NFTs: ${error}`);
+    }
+  };
+
+  // Buy NFT
+  const buyNFT = async (nft) => {
+    try {
+      const contract = await connectingWithSmartContract();
+      const price = ethers.parseUnits(nft.price.toString(), "ether");
+
+      const transaction = await contract.createMarketSale(nft.tokenId, {
+        value: price,
+      });
+
+      await transaction.wait();
+    } catch (error) {
+      console.log(`Error buying NFT: ${error}`);
     }
   };
 
