@@ -97,9 +97,43 @@ const SellerNewNFT = () => {
 
   const user = useSelector((state) => state.user.user);
 
+  const uploadToIPFS = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("https://api.nft.storage/upload", {
+        method: "POST",
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGY2Mjk2Y0Q0YzU5N2JiNEM3MjMxNjI5ZkJmOUIzNjA5ZDcyREE1YTgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTcwMDM4NDU0Nzg3MiwibmFtZSI6Ik5GTFVFTkNFUiJ9.Xj_D-NFNNnF6Klq_N1ejiq3vSnjHqT7ytKv1vRQhyc0", // Replace with your API key
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to upload file to nft.storage: ${response.statusText}`
+        );
+      }
+
+      const data = await response.json();
+      const imageUrl = `https://ipfs.io/ipfs/${data.value.cid}`;
+
+      console.log(data);
+      console.log(imageUrl);
+      return imageUrl;
+    } catch (error) {
+      console.error(`Error uploading to nft.storage: ${error}`);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    uploadToIPFS(image);
+
+    /*
     if (validateForm()) {
       setIsSubmitting(true);
 
@@ -131,6 +165,7 @@ const SellerNewNFT = () => {
 
       navigate("/seller/nfts");
     }
+    */
   };
 
   return (

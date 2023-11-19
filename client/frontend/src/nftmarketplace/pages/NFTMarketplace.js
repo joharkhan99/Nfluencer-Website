@@ -8,7 +8,21 @@ import React, { useEffect } from "react";
 import { ethers } from "ethers";
 import axios from "axios";
 
-const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
+// const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
+
+const projectId = "";
+const projectSecretKey = "";
+const auth = `Basic `;
+const subdomain = "";
+
+const client = ipfsHttpClient({
+  host: "infura-ipfs.io",
+  port: 5001,
+  protocol: "https",
+  headers: {
+    authorization: auth,
+  },
+});
 
 const fetchContract = (signerOrProvider) =>
   new ethers.Contract(
@@ -78,7 +92,7 @@ export const NFTMarketplaceProvider = () => {
   const uploadToIPFS = async (file) => {
     try {
       const added = await client.add({ content: file });
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      const url = `${subdomain}/ipfs/${added.path}`;
       return url;
     } catch (error) {
       console.log(`Error uploading to IPFS: ${error}`);
@@ -100,7 +114,7 @@ export const NFTMarketplaceProvider = () => {
       });
 
       const added = await client.add(data);
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      const url = `https://infura-ipfs.io/ipfs/${added.path}`;
 
       await createSale(url, price);
     } catch (error) {
