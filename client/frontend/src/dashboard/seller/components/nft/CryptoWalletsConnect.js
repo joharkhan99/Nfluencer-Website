@@ -11,18 +11,7 @@ const CryptoWalletsConnect = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [metaMaskSelected, setMetaMaskSelected] = useState(false);
   const [currentAccount, setCurrentAccount] = useState(null);
-  const { ethereum } = window;
   const dispatch = useDispatch();
-
-  const checkMetamaskAvailability = async () => {
-    if (!ethereum) {
-      setIsOpen(true);
-      dispatch(setIsWalletConnected(false));
-      return false;
-    }
-    setIsOpen(false);
-    return true;
-  };
 
   /*
   const ConnectMetaMask = async () => {
@@ -114,18 +103,18 @@ const CryptoWalletsConnect = ({ user }) => {
   return (
     <div>
       <div class="flex items-center justify-center h-full w-full">
-        <div className="">
-          <div className="bg-white rounded-xl text-gray-800 shadow-lg shadow-gray-200 p-7">
+        <div>
+          <div className="bg-white rounded-xl text-gray-800 shadow-lg shadow-gray-200 p-7 max-w-xl">
             <h2 className="text-2xl font-extrabold tracking-tight text-gray-800">
               Connect your Crypto Wallet
             </h2>
             <p className="text-gray-500 text-sm">
-              Please Connect with one of our available wallet providers to
-              continue with NFTs.
+              Please Install one of our available wallet providers to continue
+              with NFTs.
             </p>
 
             <div className="text-lg font-extrabold tracking-tight text-gray-800 my-5 flex justify-between items-center">
-              <span>Choose Wallet</span>
+              <span>Available Wallets</span>
               <a
                 href="https://opensea.io/learn/what-is-crypto-wallet"
                 className="text-nft-primary-light font-semibold text-sm hover:underline"
@@ -134,86 +123,87 @@ const CryptoWalletsConnect = ({ user }) => {
               </a>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-              <button
-                className={`border-2 border-gray-100 p-4 rounded-xl flex flex-col items-center gap-2 px-14 hover:bg-purple-100 cursor-pointer hover:border-nft-primary-light ${
-                  metaMaskSelected
-                    ? "bg-purple-100 border-nft-primary-light"
-                    : ""
-                }`}
-                onClick={connectWallet}
-              >
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-gray-700 text-sm">
+              <div className="text-center w-full flex-1">
                 <img
-                  src={require("../../../../nftmarketplace/assets/metamask.png")}
-                  alt="s"
-                  className="w-10 h-10"
+                  src="https://lh3.googleusercontent.com/QW0gZ3yugzXDvTANa5-cc1EpabQ2MGnl6enW11O6kIerEaBQGOhgyUOvhRedndD9io8RJMmJZfIXq1rMxUsFHS2Ttw=s60"
+                  className="mx-auto"
+                  alt="MetaMask"
                 />
-                <span className="text-sm font-bold">MetaMask</span>
-              </button>
-
-              <div className="border-2 border-gray-100 p-4 rounded-xl flex flex-col items-center gap-2 px-14 hover:bg-purple-100 cursor-pointer hover:border-nft-primary-light">
-                <img
-                  src={require("../../../../nftmarketplace/assets/coinbase.png")}
-                  alt="s"
-                  className="w-10 h-10"
-                />
-                <span className="text-sm font-bold">Coinbase Wallet</span>
+                <p>MetaMask</p>
               </div>
-
-              <div className="border-2 border-gray-100 p-4 rounded-xl flex flex-col items-center gap-2 px-14 hover:bg-purple-100 cursor-pointer hover:border-nft-primary-light">
+              <div className="text-center w-full flex-1">
                 <img
-                  src={require("../../../../nftmarketplace/assets/walletconnect.png")}
-                  alt="s"
-                  className="w-10 h-10"
+                  src="https://lh3.googleusercontent.com/dXvdD2VjLS-imsW8WG2oB3y7sBHhL9gFlv7KZnqZSA9_MU1VROSHRpJidav8-a77uQT1-8X_zK5ibsAC39IFn5tn=s60"
+                  className="mx-auto"
+                  alt="Phantom"
                 />
-                <span className="text-sm font-bold">WalletConnect</span>
+                <p>Phantom</p>
               </div>
-
-              <div className="border-2 border-gray-100 p-4 rounded-xl flex flex-col items-center gap-2 px-14 hover:bg-purple-100 cursor-pointer hover:border-nft-primary-light">
+              <div className="text-center w-full flex-1">
                 <img
-                  src={require("../../../../nftmarketplace/assets/ledgerconnect.webp")}
-                  alt="s"
-                  className="w-10 h-10"
+                  src="https://lh3.googleusercontent.com/BmQtjccsO615vh8Dnc_SIATj9lQAFzBltJbW15pxEce8c3yHC_iXTn-Pa8_5jXL130l1hEIqiTn5_jUIjR6iNyif=s60"
+                  className="mx-auto"
+                  alt="Crypto.com"
                 />
-                <span className="text-sm font-bold">Ledger</span>
+                <p>Crypto.com</p>
               </div>
-
-              <div className="border-2 border-gray-100 p-4 rounded-xl flex flex-col items-center gap-2 px-14 hover:bg-purple-100 cursor-pointer hover:border-nft-primary-light">
+              <div className="text-center w-full flex-1">
                 <img
-                  src={require("../../../../nftmarketplace/assets/phantom.png")}
-                  alt="s"
-                  className="w-10 h-10"
+                  src="https://lh3.googleusercontent.com/HE43gZIKp76W3bCaCbPwiTf8uB__YpY8byc4dkb300gNQGDcAraTM4l1uiwfsjhre9rtsHGiok8d3TY11dirxvLq=s60"
+                  className="mx-auto"
+                  alt="Coinbase"
                 />
-                <span className="text-sm font-bold">Phantom</span>
+                <p>Coinbase</p>
               </div>
-
-              <div className="border-2 border-gray-100 p-4 rounded-xl flex flex-col items-center gap-2 px-14 hover:bg-purple-100 cursor-pointer hover:border-nft-primary-light">
+              <div className="text-center w-full flex-1">
                 <img
-                  src={require("../../../../nftmarketplace/assets/bitkeep.png")}
-                  alt="s"
-                  className="w-10 h-10"
+                  src="https://lh3.googleusercontent.com/np4HOumdAD8htlHsTMiuJz_CyjcWhaG8BUG7WW_GJx7g3nb370MuBYEE8fZbG8bdsBiQZxiX_uJqutp2fn99C7X1uQI=s60"
+                  className="mx-auto"
+                  alt="Trust Wallet"
                 />
-                <span className="text-sm font-bold">BitKeep</span>
+                <p>Trust Wallet</p>
               </div>
-
-              <div className="border-2 border-gray-100 p-4 rounded-xl flex flex-col items-center gap-2 px-14 hover:bg-purple-100 cursor-pointer hover:border-nft-primary-light">
+              <div className="text-center w-full flex-1">
                 <img
-                  src={require("../../../../nftmarketplace/assets/fort.png")}
-                  alt="s"
-                  className="w-10 h-10"
+                  src="https://lh3.googleusercontent.com/uSYrwIYFZ-7kwg0-P_0YKubeNhFUN_jGg9J8bPbCOYjwW94jbFCEMqHUaV35sn0bvqujkuy6M72gjIRD4NTCirsQpXc=s60"
+                  className="mx-auto"
+                  alt="Core"
                 />
-                <span className="text-sm font-bold">Fortmatic</span>
+                <p>Core</p>
               </div>
-
-              <div className="border-2 border-gray-100 p-4 rounded-xl flex flex-col items-center gap-2 px-14 hover:bg-purple-100 cursor-pointer hover:border-nft-primary-light">
+              <div className="text-center w-full flex-1">
                 <img
-                  src={require("../../../../nftmarketplace/assets/bitski.png")}
-                  alt="s"
-                  className="w-10 h-10"
+                  src="https://lh3.googleusercontent.com/swyt6mPcoM0CR2sGlvFfIEQp3KcpxFNR3L6yukbNuSHQe9aBNyQwOQ4axVF3nFazaQ4Pr98BI5ZiZNjehwy5PeZR=s60"
+                  className="mx-auto"
+                  alt="Rainbow"
                 />
-                <span className="text-sm font-bold">Bikski</span>
+                <p>Rainbow</p>
+              </div>
+              <div className="text-center w-full flex-1">
+                <img
+                  src="https://lh3.googleusercontent.com/3IPcfAuQRJip3MVL7DxvkkXPBYmCHpieDbKngiUGN-XQwwDh-jViXidDv9wXXE5FWhvUARmSdh-gBKedfd71Wx9qevo=s60"
+                  className="mx-auto"
+                  alt="Zerion"
+                />
+                <p>Zerion</p>
+              </div>
+              <div className="text-center w-full flex-1">
+                <img
+                  src="https://lh3.googleusercontent.com/FX5p3lkSFGhNy888EmvEzuegJFhTnhB6ZdIAp9UyE_IuOWWVRigyEJeL0hi7cSu-4nApqY-MU3OqdEqROs070c_n=s60"
+                  className="mx-auto"
+                  alt="Exodus"
+                />
+                <p>Exodus</p>
               </div>
             </div>
+
+            <button
+              className="rounded-xl px-6 py-4 bg-nft-primary-light text-white font-semibold relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200 max-w-sm block w-full mx-auto mt-10"
+              onClick={connectWallet}
+            >
+              <span>Connect</span>
+            </button>
           </div>
         </div>
       </div>
@@ -223,7 +213,9 @@ const CryptoWalletsConnect = ({ user }) => {
         }`}
       >
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Metamask Not Installed</h2>
+          <h2 className="text-lg font-semibold">
+            No Crypto Wallet Extension Found
+          </h2>
           <button
             className="text-gray-500 hover:text-gray-700"
             onClick={closeModal}
@@ -232,8 +224,8 @@ const CryptoWalletsConnect = ({ user }) => {
           </button>
         </div>
         <p className="text-gray-600 mb-4">
-          Metamask extension is required to use this application. Please install
-          Metamask to proceed.
+          Please install any of the mentioned crypto wallet extensions to use
+          our NFT Marketplace.
         </p>
         <a
           className="bg-[rgb(245,133,27)] text-white p-4 block rounded-xl hover:opacity-80 transition duration-300 text-center"
