@@ -10,6 +10,7 @@ import { ethers } from "ethers";
 const CryptoWalletsConnect = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [metaMaskSelected, setMetaMaskSelected] = useState(false);
+  const [currentAccount, setCurrentAccount] = useState(null);
   const { ethereum } = window;
   const dispatch = useDispatch();
 
@@ -72,26 +73,6 @@ const CryptoWalletsConnect = ({ user }) => {
           dispatch(setIsWalletConnected(true));
           console.log("YES");
         }
-        // else {
-        //   const request = await fetch(
-        //     `${process.env.REACT_APP_API_URL}/api/user/wallet`,
-        //     {
-        //       method: "DELETE",
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //       },
-        //       body: JSON.stringify({
-        //         username: user.username,
-        //       }),
-        //     }
-        //   );
-        //   const response = await request.json();
-        //   if (response.error) {
-        //     alert(response.message);
-        //     return false;
-        //   }
-        //   dispatch(setIsWalletConnected(false));
-        // }
       } catch (error) {
         console.error("Error fetching connected accounts:", error);
         console.log(0);
@@ -101,8 +82,51 @@ const CryptoWalletsConnect = ({ user }) => {
     }
   };
 
+  const connectWallet = async () => {
+    try {
+      if (!window.ethereum) {
+        setIsOpen(true);
+        return;
+      }
+
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+
+      if (accounts.length) {
+        setCurrentAccount(accounts[0]);
+        dispatch(setIsWalletConnected(true));
+      }
+    } catch (error) {
+      console.log(`Error connecting with smart contract: ${error}`);
+    }
+  };
+
+  const checkIfWalletIsConnected = async () => {
+    try {
+      if (!window.ethereum) {
+        setIsOpen(true);
+        return;
+      }
+
+      const accounts = await window.ethereum.request({
+        method: "eth_accounts",
+      });
+
+      if (accounts.length) {
+        setCurrentAccount(accounts[0]);
+        dispatch(setIsWalletConnected(true));
+      } else {
+        console.log("No authorized account found");
+        dispatch(setIsWalletConnected(false));
+      }
+    } catch (error) {
+      console.log(`Error connecting with smart contract: ${error}`);
+    }
+  };
+
   useEffect(() => {
-    connectedAccounts();
+    checkIfWalletIsConnected();
   }, []);
 
   return (
@@ -135,7 +159,7 @@ const CryptoWalletsConnect = ({ user }) => {
                     ? "bg-purple-100 border-nft-primary-light"
                     : ""
                 }`}
-                onClick={ConnectMetaMask}
+                onClick={connectWallet}
               >
                 <img
                   src={require("../../../../nftmarketplace/assets/metamask.png")}
