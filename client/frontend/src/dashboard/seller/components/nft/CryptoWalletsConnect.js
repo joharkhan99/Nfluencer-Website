@@ -24,6 +24,7 @@ const CryptoWalletsConnect = ({ user }) => {
     return true;
   };
 
+  /*
   const ConnectMetaMask = async () => {
     if (checkMetamaskAvailability()) {
       setMetaMaskSelected(true);
@@ -57,29 +58,10 @@ const CryptoWalletsConnect = ({ user }) => {
       }
     }
   };
+  */
 
   const closeModal = () => {
     setIsOpen(false);
-  };
-
-  const connectedAccounts = async () => {
-    if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({
-          method: "eth_accounts",
-        });
-
-        if (accounts.length > 0) {
-          dispatch(setIsWalletConnected(true));
-          console.log("YES");
-        }
-      } catch (error) {
-        console.error("Error fetching connected accounts:", error);
-        console.log(0);
-      }
-    } else {
-      dispatch(setIsWalletConnected(false));
-    }
   };
 
   const connectWallet = async () => {
@@ -94,6 +76,7 @@ const CryptoWalletsConnect = ({ user }) => {
       });
 
       if (accounts.length) {
+        setIsOpen(false);
         setCurrentAccount(accounts[0]);
         dispatch(setIsWalletConnected(true));
       }
@@ -105,7 +88,6 @@ const CryptoWalletsConnect = ({ user }) => {
   const checkIfWalletIsConnected = async () => {
     try {
       if (!window.ethereum) {
-        setIsOpen(true);
         return;
       }
 
