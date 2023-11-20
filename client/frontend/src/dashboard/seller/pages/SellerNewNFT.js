@@ -177,6 +177,10 @@ const SellerNewNFT = () => {
         name,
         description,
         image,
+        price,
+        traits,
+        selectedCollection,
+        supply,
       });
 
       const added = await client.add(data);
@@ -234,14 +238,31 @@ const SellerNewNFT = () => {
       // Wait for transaction to be mined
       await transaction.wait();
       const transactionHash = transaction.hash;
-      console.log(`Transaction hash: ${transactionHash}`);
 
-      web3.eth.getTransactionReceipt(transactionHash).then(function (data) {
-        let logs = data.logs;
-        console.log(logs);
+      const transactionReceipt = await web3.eth.getTransactionReceipt(
+        transactionHash
+      );
+      if (transactionReceipt) {
+        const logs = transactionReceipt.logs;
+        const tokenId = web3.utils.hexToNumber(logs[0].topics[3]);
+        const from = transaction.from;
+        const to = transaction.to;
 
-        console.log(web3.utils.hexToNumber(logs[0].topics[3]));
-      });
+        const data = JSON.stringify({
+          name,
+          description,
+          image,
+          price,
+          traits,
+          selectedCollection,
+          supply,
+          from,
+          to,
+        });
+        console.log(data);
+      } else {
+        console.log("Transaction receipt not found");
+      }
     } catch (error) {
       setErrors({ message: "Error creating sale" });
       console.log(`Error creating sale: ${error}`);
@@ -314,7 +335,7 @@ const SellerNewNFT = () => {
 
               console.log({
                 price,
-                tokenId: tokenId,
+                tokenId,
                 seller,
                 owner,
                 image,
