@@ -65,11 +65,31 @@ const SellerNewNFT = () => {
     }
   }, [isWalletConnected]);
 
+  const [isVideoFile, setIsVideoFile] = useState(false);
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    setImage(file);
     if (file) {
-      setPreview(URL.createObjectURL(file));
+      console.log(file);
+      const maxSize = 50 * 1024 * 1024;
+      if (file.size > maxSize) {
+        setErrors({ image: "File size exceeds 50MB." });
+        e.target.value = null;
+        return;
+      }
+
+      if (file.type === "video/mp4") {
+        const videoUrl = URL.createObjectURL(file);
+        setIsVideoFile(true);
+        setPreview(videoUrl);
+      } else {
+        setIsVideoFile(false);
+        setPreview(URL.createObjectURL(file));
+      }
+
+      console.log(preview);
+
+      setImage(file);
     }
   };
 
@@ -329,7 +349,7 @@ const SellerNewNFT = () => {
               <input
                 type="file"
                 className="hidden"
-                accept="image/*"
+                accept=".jpg, .jpeg, .png, .gif, .svg, .mp4"
                 name="image"
                 id="image"
                 onChange={handleImageChange}
@@ -341,11 +361,25 @@ const SellerNewNFT = () => {
                 }`}
               >
                 {preview && (
-                  <img
-                    src={preview}
-                    alt="Selected"
-                    className="w-full h-full object-cover rounded-xl"
-                  />
+                  <div className="w-full h-full">
+                    {isVideoFile ? (
+                      <video
+                        controls
+                        width="100%"
+                        height="100%"
+                        className="rounded-xl"
+                      >
+                        <source src={preview} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                    ) : (
+                      <img
+                        src={preview}
+                        alt="Selected"
+                        className="w-full h-full object-cover rounded-xl"
+                      />
+                    )}
+                  </div>
                 )}
 
                 {!preview && (
@@ -659,6 +693,7 @@ const SellerNewNFT = () => {
             royalties={royalties}
             preview={preview}
             traits={traits}
+            isVideoFile={isVideoFile}
           />
         </div>
       </div>

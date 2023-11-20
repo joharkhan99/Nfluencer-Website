@@ -1,7 +1,14 @@
 import React from "react";
 import { HeartIcon, TrophyIcon } from "@heroicons/react/24/outline";
 
-const NFTPreview = ({ name, price, royalties, preview, traits }) => {
+const NFTPreview = ({
+  name,
+  price,
+  royalties,
+  preview,
+  traits,
+  isVideoFile,
+}) => {
   return (
     <div className="flex flex-wrap justify-center gap-6 sticky top-0">
       <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
@@ -38,12 +45,29 @@ const NFTPreview = ({ name, price, royalties, preview, traits }) => {
             style={{ height: "300px" }}
           >
             {preview && (
+              <div className="w-full h-full flex justify-center items-center">
+                {isVideoFile ? (
+                  <video controls width="100%" height="100%">
+                    <source src={preview} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                ) : (
+                  <img
+                    src={preview}
+                    alt="Selected"
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+            )}
+
+            {/* {preview && (
               <img
                 src={preview}
                 alt="sd"
                 className="h-full w-full object-cover"
               />
-            )}
+            )} */}
           </div>
           <div className="py-2 pt-3">
             <h3 className="text-lg font-bold tracking-tight text-gray-800">
