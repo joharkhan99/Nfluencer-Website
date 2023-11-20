@@ -113,7 +113,7 @@ const SellerNewNFT = () => {
   const subdomain = "https://nfluencer.infura-ipfs.io";
 
   const client = ipfsHttpClient({
-    host: "infura-ipfs.io",
+    host: "nfluencer.infura-ipfs.io",
     port: 5001,
     protocol: "https",
     headers: {
@@ -147,7 +147,7 @@ const SellerNewNFT = () => {
 
       const added = await client.add(data);
       console.log(added);
-      const url = `https://infura-ipfs.io/ipfs/${added.path}`;
+      const url = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;
       console.log(url);
 
       await createSale(url, price);
@@ -280,9 +280,21 @@ const SellerNewNFT = () => {
               "ether"
             );
 
+            console.log("NFT DATA");
+            console.log({
+              price,
+              tokenId: tokenId,
+              seller,
+              owner,
+              image,
+              name,
+              description,
+              tokenURI,
+            });
+
             return {
               price,
-              tokenId: tokenId.toNumber(),
+              tokenId: tokenId,
               seller,
               owner,
               image,
