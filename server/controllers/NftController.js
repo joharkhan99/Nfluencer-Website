@@ -1,3 +1,4 @@
+import Collection from "../models/Collection.js";
 import Gig from "../models/Gig.js";
 import NFT from "../models/Nft.js";
 import Package from "../models/Package.js";
@@ -74,4 +75,61 @@ const nftDetails = async (req, res) => {
   res.status(200).json(nft);
 };
 
-export { createNft, fetchUserNFTs, getAllNFTs, nftDetails };
+const addCollection = async (req, res) => {
+  const { name, image, userId } = req.body;
+
+  if (!name || !image) {
+    return res
+      .status(400)
+      .json({ error: true, message: "Name and image are required." });
+  }
+
+  try {
+    const newCollection = new Collection({ name, image, user: userId });
+    await newCollection.save();
+
+    const collections = await Collection.find({
+      user: userId,
+    }).exec();
+    return res.status(200).json({
+      error: false,
+      message: "Collection added successfully.",
+      collections,
+    });
+  } catch (error) {
+    console.error("Error adding collection:", error);
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+};
+
+const getCollections = async (req, res) => {
+  const { userId } = req.body;
+  // console.log(userId);
+
+  try {
+    const collections = await Collection.find({
+      user: userId,
+    }).exec();
+
+    return res.status(200).json({
+      error: false,
+      message: "Collections fetched successfully.",
+      collections,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+};
+
+export {
+  createNft,
+  fetchUserNFTs,
+  getAllNFTs,
+  nftDetails,
+  addCollection,
+  getCollections,
+};

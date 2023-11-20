@@ -5,6 +5,9 @@ import {
   TrophyIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+
+import { PlusCircleIcon } from "@heroicons/react/24/solid";
+
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import NFTPreview from "../components/nft/NFTPreview";
@@ -35,6 +38,36 @@ const SellerNewNFT = () => {
   const [traitModalOpen, setTraitModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
+  const user = useSelector((state) => state.user.user);
+  const navigate = useNavigate();
+  const [isVideoFile, setIsVideoFile] = useState(false);
+
+  const [isNewCollection, setIsNewCollection] = useState(false);
+  const [selectedCollection, setSelectedCollection] = useState(null);
+  const [collectionName, setCollectionName] = useState("");
+  const [collectionImage, setCollectionImage] = useState(null);
+  const [collectionErrors, setCollectionErrors] = useState({});
+  const [collections, setCollections] = useState([]);
+
+  const projectId = process.env.REACT_APP_INFURA_API_KEY;
+  const projectSecretKey = process.env.REACT_APP_INFURA_API_KEY_SECRET;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(`${projectId}:${projectSecretKey}`);
+  const auth = `Basic ${btoa(String.fromCharCode.apply(null, data))}`;
+  const subdomain = "https://nfluencer.infura-ipfs.io";
+
+  const client = ipfsHttpClient({
+    host: "nfluencer.infura-ipfs.io",
+    port: 5001,
+    protocol: "https",
+    headers: {
+      authorization: auth,
+    },
+  });
+
+  const handleCollectionSelect = (name) => {
+    setSelectedCollection(name === selectedCollection ? null : name);
+  };
 
   const AddTrait = () => {
     const errors = {};
@@ -56,16 +89,12 @@ const SellerNewNFT = () => {
     }
   };
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     if (!isWalletConnected) {
       navigate("/seller");
       return;
     }
   }, [isWalletConnected]);
-
-  const [isVideoFile, setIsVideoFile] = useState(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -122,24 +151,6 @@ const SellerNewNFT = () => {
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
-
-  const user = useSelector((state) => state.user.user);
-
-  const projectId = process.env.REACT_APP_INFURA_API_KEY;
-  const projectSecretKey = process.env.REACT_APP_INFURA_API_KEY_SECRET;
-  const encoder = new TextEncoder();
-  const data = encoder.encode(`${projectId}:${projectSecretKey}`);
-  const auth = `Basic ${btoa(String.fromCharCode.apply(null, data))}`;
-  const subdomain = "https://nfluencer.infura-ipfs.io";
-
-  const client = ipfsHttpClient({
-    host: "nfluencer.infura-ipfs.io",
-    port: 5001,
-    protocol: "https",
-    headers: {
-      authorization: auth,
-    },
-  });
 
   const uploadToIPFS = async (file) => {
     try {
@@ -330,6 +341,81 @@ const SellerNewNFT = () => {
   //   console.log(nfts);
   // }, []);
 
+  const AddNewCollection = async () => {
+    setCollectionErrors({ isloading: true });
+    if (!collectionName) {
+      setCollectionErrors({ message: "Collection name cannot be empty" });
+      return;
+    }
+    if (!collectionImage) {
+      setCollectionErrors({ message: "Collection image cannot be empty" });
+      return;
+    }
+    if (collectionName.length > 20) {
+      setCollectionErrors({
+        message: "Collection name cannot be more than 20 characters",
+      });
+      return;
+    }
+
+    if (collectionName && collectionImage) {
+      const fileUrl = await uploadToIPFS(collectionImage);
+
+      const formData = new FormData();
+      formData.append("name", collectionName);
+      formData.append("image", fileUrl);
+      formData.append("userId", user._id);
+
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/nft/addCollection`,
+        {
+          method: "POST",
+          headers: {
+            "x-auth-token": user.jwtToken,
+          },
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.error) {
+        setCollectionErrors({ message: data.message });
+        return;
+      }
+
+      setCollectionImage(null);
+      setCollectionName("");
+      setCollectionErrors({ message: "" });
+      setIsNewCollection(false);
+      setCollections(data.collections);
+    }
+    setCollectionErrors({ isloading: false });
+  };
+
+  const fetchCollections = async () => {
+    const formData = new FormData();
+    formData.append("userId", user._id);
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/nft/getCollections`,
+      {
+        method: "POST",
+        headers: {
+          "x-auth-token": user.jwtToken,
+        },
+        body: formData,
+      }
+    );
+
+    const data = await res.json();
+    // console.log(data);
+    setCollections(data.collections);
+  };
+
+  useEffect(() => {
+    fetchCollections();
+  }, []);
+
   return (
     <div className="container mx-auto my-10 mt-0 rounded-xl p-4 bg-white shadow-lg shadow-gray-200">
       <div className="py-7 pt-0">
@@ -423,7 +509,7 @@ const SellerNewNFT = () => {
             )}
           </div>
 
-          <div className="mb-14">
+          <div className="mb-6">
             <div className="font-bold text-md">Item Details</div>
             <p className="text-sm text-gray-500">
               They all serve the same purpose, but each one takes.
@@ -445,6 +531,7 @@ const SellerNewNFT = () => {
                   <div className="text-red-500 text-sm mt-2">{errors.name}</div>
                 )}
               </div>
+
               <div className="mb-6">
                 <label className="block font-semibold text-sm text-gray-800 mb-2">
                   Enter short description
@@ -463,6 +550,56 @@ const SellerNewNFT = () => {
                   </div>
                 )}
               </div>
+
+              <div className="mb-6 flex gap-6">
+                <div className="w-full">
+                  <label className="block font-semibold text-sm text-gray-800 mb-2">
+                    Set item price or starting bid
+                  </label>
+
+                  <div className="relative">
+                    <span className="absolute top-2 left-2">
+                      <img
+                        src={require("../../../nftmarketplace/assets/eth.png")}
+                        alt=""
+                        className="w-5"
+                      />
+                    </span>
+                    <input
+                      type="number"
+                      className="w-full outline-none text-sm placeholder:text-gray-400 placeholder:font-medium font-semibold px-2 pl-10 p-4 focus:ring-2 focus:ring-nft-primary-light focus:bg-white border-gray-200 border rounded-xl bg-gray-100"
+                      placeholder="e.g. 230"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                    />
+                  </div>
+
+                  {errors.price && (
+                    <div className="text-red-500 text-sm mt-2">
+                      {errors.price}
+                    </div>
+                  )}
+                </div>
+                <div className="w-full">
+                  <label className="block font-semibold text-sm text-gray-800 mb-2">
+                    Supply
+                  </label>
+                  <input
+                    type="number"
+                    className="w-full rounded-xl border-gray-200 border p-4 outline-none text-sm placeholder:text-gray-400 placeholder:font-medium font-semibold px-5 focus:ring-2 focus:ring-nft-primary-light bg-gray-100 hover:opacity-80 focus:bg-white"
+                    placeholder="e.g. 12"
+                    value={royalties || 1}
+                    onChange={(e) => setRoyalties(e.target.value)}
+                  />
+
+                  {errors.royalties && (
+                    <div className="text-red-500 text-sm mt-2">
+                      {errors.royalties}
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <div className="mb-6">
                 <label className="block font-bold text-md mb-2">Traits</label>
                 <p className="text-sm text-gray-500">
@@ -472,7 +609,7 @@ const SellerNewNFT = () => {
                 </p>
 
                 <button
-                  className="flex justify-between items-center mt-4 font-semibold gap-3 text-gray-800 text-base mb-10 hover:opacity-80"
+                  className="flex justify-between items-center mt-4 font-semibold gap-3 text-gray-800 text-base mb-3 hover:opacity-80"
                   onClick={() => setTraitModalOpen(true)}
                 >
                   <span>
@@ -487,21 +624,23 @@ const SellerNewNFT = () => {
                   </div>
                 )}
 
-                {traits.map((trait, index) => (
-                  <div className="justify-between flex items-center bg-gray-50 mb-2 rounded-xl p-4 py-3">
-                    <div className="flex gap-1 font-semibold">
-                      <span>{trait.traitType}</span>
-                      <span>:</span>
-                      <span>{trait.traitName}</span>
+                <div className="flex  gap-2">
+                  {traits.map((trait, index) => (
+                    <div className="justify-between flex items-center bg-gray-50 rounded-xl p-3 gap-3 text-sm">
+                      <div className="flex gap-1 font-semibold">
+                        <span>{trait.traitType}</span>
+                        <span>:</span>
+                        <span>{trait.traitName}</span>
+                      </div>
+                      <button
+                        className="text-gray-500 hover:text-gray-800"
+                        onClick={() => DeleteTrait(index)}
+                      >
+                        <XMarkIcon className="w-5 h-5" />
+                      </button>
                     </div>
-                    <button
-                      className="text-gray-500 hover:text-gray-800"
-                      onClick={() => DeleteTrait(index)}
-                    >
-                      <XMarkIcon className="w-5 h-5" />
-                    </button>
-                  </div>
-                ))}
+                  ))}
+                </div>
 
                 <div
                   className={`fixed top-0 right-0 justify-center z-50 w-full h-full bg-black bg-opacity-70 ${
@@ -567,45 +706,6 @@ const SellerNewNFT = () => {
                 </div>
                 {/*  */}
               </div>
-
-              <div className="mb-6 flex gap-6">
-                <div className="w-full">
-                  <label className="block font-semibold text-sm text-gray-800 mb-2">
-                    Set item price or starting bid
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full rounded-xl border-gray-200 border p-4 outline-none text-sm placeholder:text-gray-400 placeholder:font-medium font-semibold px-5 focus:ring-2 focus:ring-nft-primary-light bg-gray-100 hover:opacity-80 focus:bg-white"
-                    placeholder="e.g. 230"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                  />
-
-                  {errors.price && (
-                    <div className="text-red-500 text-sm mt-2">
-                      {errors.price}
-                    </div>
-                  )}
-                </div>
-                <div className="w-full">
-                  <label className="block font-semibold text-sm text-gray-800 mb-2">
-                    Set royalities amount, %
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full rounded-xl border-gray-200 border p-4 outline-none text-sm placeholder:text-gray-400 placeholder:font-medium font-semibold px-5 focus:ring-2 focus:ring-nft-primary-light bg-gray-100 hover:opacity-80 focus:bg-white"
-                    placeholder="e.g. 12"
-                    value={royalties}
-                    onChange={(e) => setRoyalties(e.target.value)}
-                  />
-
-                  {errors.royalties && (
-                    <div className="text-red-500 text-sm mt-2">
-                      {errors.royalties}
-                    </div>
-                  )}
-                </div>
-              </div>
             </div>
           </div>
 
@@ -614,42 +714,102 @@ const SellerNewNFT = () => {
             <p className="text-sm text-gray-500">
               They all serve the same purpose.
             </p>
-            <div className="flex gap-3 mt-6 flex-row">
-              <div className="flex gap-2 w-full flex-row py-4 border text-gray-800 rounded-xl p-1 px-4 text-md font-bold items-center hover:bg-gray-100">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="w-14 h-14 bg-gray-200 p-3 rounded-xl fill-gray-500"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-
-                <button className="text-left text-sm">
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2 w-full">
+              <button
+                className="flex gap-2 flex-row py-4 border text-gray-800 rounded-xl p-1 px-4 text-md font-bold items-center hover:bg-gray-100 w-full"
+                onClick={() => setIsNewCollection(true)}
+                disabled={isNewCollection}
+              >
+                <PlusCircleIcon className="w-14 h-10 bg-gray-200 p-2 rounded-xl fill-gray-500" />
+                <span className="text-left text-sm">
                   Create new collection
                   <span className="block text-xs text-gray-600 font-semibold">
                     Type to create
                   </span>
-                </button>
-              </div>
-              <div className="flex gap-2 w-full flex-row py-4 border text-gray-800 rounded-xl p-1 px-4 text-md font-bold items-center hover:bg-gray-100">
-                <img
-                  src={require("../../../nftmarketplace/assets/nft32.PNG")}
-                  alt=""
-                  className="w-14 h-14 rounded-xl"
-                />
+                </span>
+              </button>
 
-                <button className="text-left text-sm">
-                  Battle for Digital
-                  <span className="block text-xs text-gray-600 font-semibold">
-                    17 items
-                  </span>
-                </button>
+              <div
+                className={`fixed top-0 right-0 justify-center z-50 w-full h-full bg-black bg-opacity-70 ${
+                  isNewCollection ? "flex" : "hidden"
+                }`}
+              >
+                <div className="w-1/3 bg-white p-4 rounded-xl shadow-xl h-fit mt-16 relative">
+                  <h2 className="block font-bold text-xl text-gray-800 mb-5">
+                    Create a Collection for your NFTs
+                  </h2>
+                  <button
+                    className="text-gray-500 hover:text-gray-700 absolute right-2 top-2"
+                    onClick={() => setIsNewCollection(false)}
+                  >
+                    <XMarkIcon className="w-6 h-6" />
+                  </button>
+
+                  <div className="w-full mb-4">
+                    <label className="block font-semibold text-sm text-gray-800 mb-2">
+                      Logo Image
+                    </label>
+                    <input
+                      type="file"
+                      className="w-full rounded-xl border-gray-200 border p-3 outline-none focus:ring-2 focus:ring-nft-primary-light font-normal block"
+                      // value={collectionImage}
+                      onChange={(e) => setCollectionImage(e.target.files[0])}
+                    />
+                  </div>
+
+                  <div className="w-full">
+                    <label className="block font-semibold text-sm text-gray-800 mb-2">
+                      Collection Name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="My Collection Name"
+                      className="w-full rounded-xl border-gray-200 border p-3 outline-none focus:ring-2 focus:ring-nft-primary-light font-normal block"
+                      value={collectionName}
+                      onChange={(e) => setCollectionName(e.target.value)}
+                    />
+                  </div>
+
+                  {collectionErrors.message && (
+                    <div className="text-red-500 text-sm mt-2">
+                      {collectionErrors.message}
+                    </div>
+                  )}
+
+                  <button
+                    className="w-full bg-nft-primary-light text-white p-3 mt-7 rounded-xl hover:opacity-80"
+                    onClick={AddNewCollection}
+                    disabled={collectionErrors.isloading}
+                  >
+                    {collectionErrors.isloading ? (
+                      <div className="h-5 w-5 mx-auto rounded-full border-t-white border-nft-primary-dark border-2 animate-spin"></div>
+                    ) : (
+                      <span>Create Collection</span>
+                    )}
+                  </button>
+                </div>
               </div>
+
+              {collections.map((collection) => (
+                <button
+                  className={`flex gap-2 w-full flex-row py-4 border text-gray-800 rounded-xl p-1 px-4 text-md font-bold items-center hover:bg-gray-100 ${
+                    selectedCollection === collection._id ? "bg-gray-100" : ""
+                  }`}
+                  onClick={() => handleCollectionSelect(collection._id)}
+                >
+                  <img
+                    src={collection.image}
+                    alt={collection.name}
+                    className="w-14 h-14 object-cover rounded-xl"
+                  />
+                  <div className="text-left text-sm">
+                    {collection.name}
+                    <span className="block text-xs text-gray-600 font-semibold">
+                      {collection.totalItems} items
+                    </span>
+                  </div>
+                </button>
+              ))}
             </div>
 
             <span className="text-xs text-gray-600">
