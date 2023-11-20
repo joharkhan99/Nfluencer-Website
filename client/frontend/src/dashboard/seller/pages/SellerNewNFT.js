@@ -15,6 +15,7 @@ import {
   NFTMarketplaceAddress,
 } from "../../../constants/constants";
 import { create as ipfsHttpClient } from "ipfs-http-client";
+import axios from "axios";
 
 const SellerNewNFT = () => {
   const isWalletConnected = useSelector(
@@ -254,6 +255,60 @@ const SellerNewNFT = () => {
     }
     */
   };
+
+  const fetchNFTs = async () => {
+    try {
+      const provider = new ethers.JsonRpcProvider();
+      const contract = fetchContract(provider);
+
+      const data = await contract.fetchMarketItems();
+
+      console.log(data);
+
+      const items = await Promise.all(
+        data.map(
+          async ({ tokenId, seller, owner, price: unformattedPrice }) => {
+            console.log("tokenURI");
+            const tokenURI = await contract.tokenURI(tokenId);
+            console.log(tokenURI);
+
+            const {
+              data: { image, name, description },
+            } = await axios.get(tokenURI);
+            const price = ethers.formatUnits(
+              unformattedPrice.toString(),
+              "ether"
+            );
+
+            return {
+              price,
+              tokenId: tokenId.toNumber(),
+              seller,
+              owner,
+              image,
+              name,
+              description,
+              tokenURI,
+            };
+          }
+        )
+      );
+
+      return items;
+    } catch (error) {
+      console.log(`Error fetching NFTs: ${error}`);
+    }
+  };
+
+  const [nfts, setNfts] = useState([]);
+
+  useEffect(() => {
+    fetchNFTs().then((nfts) => {
+      setNfts(nfts);
+    });
+
+    console.log(nfts);
+  }, []);
 
   return (
     <div className="container mx-auto my-10 mt-0 rounded-xl p-4 bg-white shadow-lg shadow-gray-200">
