@@ -289,38 +289,40 @@ const SellerNewNFT = () => {
           async ({ tokenId, seller, owner, price: unformattedPrice }) => {
             console.log("tokenURI");
             const tokenURI = await contract.tokenURI(tokenId);
-            console.log(tokenURI);
+            console.log(tokenURI, tokenURI.includes("https://infura-ipfs.io"));
+            if (!tokenURI.includes("https://infura-ipfs.io")) {
+              const {
+                data: { image, name, description },
+              } = await axios.get(tokenURI);
+              const price = ethers.formatUnits(
+                unformattedPrice.toString(),
+                "ether"
+              );
 
-            const {
-              data: { image, name, description },
-            } = await axios.get(tokenURI);
-            const price = ethers.formatUnits(
-              unformattedPrice.toString(),
-              "ether"
-            );
+              console.log("NFT DATA");
 
-            console.log("NFT DATA");
-            console.log({
-              price,
-              tokenId: tokenId,
-              seller,
-              owner,
-              image,
-              name,
-              description,
-              tokenURI,
-            });
+              console.log({
+                price,
+                tokenId: tokenId,
+                seller,
+                owner,
+                image,
+                name,
+                description,
+                tokenURI,
+              });
 
-            return {
-              price,
-              tokenId: tokenId,
-              seller,
-              owner,
-              image,
-              name,
-              description,
-              tokenURI,
-            };
+              return {
+                price,
+                tokenId: tokenId,
+                seller,
+                owner,
+                image,
+                name,
+                description,
+                tokenURI,
+              };
+            }
           }
         )
       );
@@ -331,15 +333,15 @@ const SellerNewNFT = () => {
     }
   };
 
-  // const [nfts, setNfts] = useState([]);
+  const [nfts, setNfts] = useState([]);
 
-  // useEffect(() => {
-  //   fetchNFTs().then((nfts) => {
-  //     setNfts(nfts);
-  //   });
+  useEffect(() => {
+    fetchNFTs().then((nfts) => {
+      setNfts(nfts);
+    });
 
-  //   console.log(nfts);
-  // }, []);
+    console.log(nfts);
+  }, []);
 
   const AddNewCollection = async () => {
     setCollectionErrors({ isloading: true });
