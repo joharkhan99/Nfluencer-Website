@@ -136,7 +136,8 @@ const SellerNewNFT = () => {
   const createNFT = async (name, price, image, description, router) => {
     try {
       if (!name || !description || !price || !image) {
-        return console.log("Please make sure all fields are completed");
+        setErrors({ message: "Please make sure all fields are completed" });
+        return;
       }
 
       const data = JSON.stringify({
@@ -201,6 +202,7 @@ const SellerNewNFT = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const fileUrl = await uploadToIPFS(image);
     await createNFT(name, price, fileUrl, description, navigate);
@@ -238,6 +240,8 @@ const SellerNewNFT = () => {
       navigate("/seller/nfts");
     }
     */
+
+    setIsSubmitting(false);
   };
 
   const fetchNFTs = async () => {
@@ -296,15 +300,15 @@ const SellerNewNFT = () => {
     }
   };
 
-  const [nfts, setNfts] = useState([]);
+  // const [nfts, setNfts] = useState([]);
 
-  useEffect(() => {
-    fetchNFTs().then((nfts) => {
-      setNfts(nfts);
-    });
+  // useEffect(() => {
+  //   fetchNFTs().then((nfts) => {
+  //     setNfts(nfts);
+  //   });
 
-    console.log(nfts);
-  }, []);
+  //   console.log(nfts);
+  // }, []);
 
   return (
     <div className="container mx-auto my-10 mt-0 rounded-xl p-4 bg-white shadow-lg shadow-gray-200">
@@ -621,9 +625,11 @@ const SellerNewNFT = () => {
           </div>
 
           <div className="mb-0">
-            <div className="mt-10">
+            <div>
               {errors.message && (
-                <div className="text-red-500 text-sm">{errors.message}</div>
+                <div className="text-red-500 text-sm mb-2">
+                  {errors.message}
+                </div>
               )}
 
               <div className="flex justify-between items-center flex-row">
