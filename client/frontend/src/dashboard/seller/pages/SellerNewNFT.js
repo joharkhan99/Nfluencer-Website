@@ -714,17 +714,17 @@ const SellerNewNFT = () => {
             <p className="text-sm text-gray-500">
               They all serve the same purpose.
             </p>
-            <div className="mt-6 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2 w-full">
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-2 w-full">
               <button
                 className="flex gap-2 flex-row py-4 border text-gray-800 rounded-xl p-1 px-4 text-md font-bold items-center hover:bg-gray-100 w-full"
                 onClick={() => setIsNewCollection(true)}
                 disabled={isNewCollection}
               >
-                <PlusCircleIcon className="w-14 h-10 bg-gray-200 p-2 rounded-xl fill-gray-500" />
+                <PlusCircleIcon className="w-14 h-14 bg-gray-200 p-3 rounded-xl fill-gray-500" />
                 <span className="text-left text-sm">
                   Create new collection
                   <span className="block text-xs text-gray-600 font-semibold">
-                    Type to create
+                    Click to create
                   </span>
                 </span>
               </button>
@@ -793,7 +793,9 @@ const SellerNewNFT = () => {
               {collections.map((collection) => (
                 <button
                   className={`flex gap-2 w-full flex-row py-4 border text-gray-800 rounded-xl p-1 px-4 text-md font-bold items-center hover:bg-gray-100 ${
-                    selectedCollection === collection._id ? "bg-gray-100" : ""
+                    selectedCollection === collection._id
+                      ? "bg-nft-primary-transparent ring-2 ring-nft-primary-light"
+                      : ""
                   }`}
                   onClick={() => handleCollectionSelect(collection._id)}
                 >
