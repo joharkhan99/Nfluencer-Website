@@ -10,8 +10,11 @@ import axios from "axios";
 
 // const client = ipfsHttpClient("https://ipfs.infura.io:5001/api/v0");
 
-const projectId = "";
-const projectSecretKey = "";
+const projectId = process.env.REACT_APP_INFURA_API_KEY;
+const projectSecretKey = process.env.REACT_APP_INFURA_API_KEY_SECRET;
+// const auth = `Basic ${Buffer.from(`${projectId}:${projectSecretKey}`).toString(
+//   "base64"
+// )}`;
 const auth = `Basic `;
 const subdomain = "";
 

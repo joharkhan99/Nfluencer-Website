@@ -104,64 +104,52 @@ const SellerNewNFT = () => {
 
   const user = useSelector((state) => state.user.user);
 
-  const uploadToIPFS = async (file) => {
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
+  const projectId = process.env.REACT_APP_INFURA_API_KEY;
+  const projectSecretKey = process.env.REACT_APP_INFURA_API_KEY_SECRET;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(`${projectId}:${projectSecretKey}`);
+  const auth = `Basic ${btoa(String.fromCharCode.apply(null, data))}`;
+  const subdomain = "https://nfluencer.infura-ipfs.io";
 
-      const response = await fetch("https://api.nft.storage/upload", {
-        method: "POST",
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGY2Mjk2Y0Q0YzU5N2JiNEM3MjMxNjI5ZkJmOUIzNjA5ZDcyREE1YTgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTcwMDM4NDU0Nzg3MiwibmFtZSI6Ik5GTFVFTkNFUiJ9.Xj_D-NFNNnF6Klq_N1ejiq3vSnjHqT7ytKv1vRQhyc0", // Replace with your API key
-        },
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          `Failed to upload file to nft.storage: ${response.statusText}`
-        );
-      }
-
-      const data = await response.json();
-      const imageUrl = `https://ipfs.io/ipfs/${data.value.cid}`;
-      const imageUrl2 = `https://${data.value.cid}.ipfs.nftstorage.link/${data.value.files[0].name}`;
-
-      console.log(data);
-      console.log(imageUrl, imageUrl2);
-      return imageUrl;
-    } catch (error) {
-      console.error(`Error uploading to nft.storage: ${error}`);
-    }
-  };
-
-  const client = ipfsHttpClient("https://api.nft.storage", {
+  const client = ipfsHttpClient({
+    host: "infura-ipfs.io",
+    port: 5001,
+    protocol: "https",
     headers: {
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGY2Mjk2Y0Q0YzU5N2JiNEM3MjMxNjI5ZkJmOUIzNjA5ZDcyREE1YTgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTcwMDM4NDU0Nzg3MiwibmFtZSI6Ik5GTFVFTkNFUiJ9.Xj_D-NFNNnF6Klq_N1ejiq3vSnjHqT7ytKv1vRQhyc0",
+      authorization: auth,
     },
   });
 
-  // Create NFT
-  const createNFT = async (formInput, fileUrl, router) => {
+  const uploadToIPFS = async (file) => {
     try {
-      const { name, description, price } = formInput;
-      if (!name || !description || !price || !fileUrl) {
+      const added = await client.add({ content: file });
+      const url = `${subdomain}/ipfs/${added.path}`;
+      console.log(added, url);
+      return url;
+    } catch (error) {
+      console.log(`Error uploading to IPFS: ${error}`);
+    }
+  };
+
+  // Create NFT
+  const createNFT = async (name, price, image, description, router) => {
+    try {
+      if (!name || !description || !price || !image) {
         return console.log("Please make sure all fields are completed");
       }
 
       const data = JSON.stringify({
         name,
         description,
-        image: fileUrl,
+        image,
       });
 
-      // const added = await client.add(data);
-      // const url = `https://${added.cid}.ipfs.nft.storage`;
-      // console.log(url);
+      const added = await client.add(data);
+      console.log(added);
+      const url = `https://infura-ipfs.io/ipfs/${added.path}`;
+      console.log(url);
 
-      await createSale(fileUrl, price);
+      await createSale(url, price);
     } catch (error) {
       console.log(`Error creating NFT: ${error}`);
     }
@@ -178,7 +166,7 @@ const SellerNewNFT = () => {
       const w3modal = new Web3Modal();
       const connection = await w3modal.connect();
 
-      console.log(connection);
+      // console.log(connection);
 
       const provider = new ethers.BrowserProvider(connection);
       const signer = await provider.getSigner();
@@ -191,39 +179,28 @@ const SellerNewNFT = () => {
     }
   };
 
-  useEffect(() => {
-    connectingWithSmartContract();
-  }, []);
-
   // Create Sale
-  const createSale = async (
-    url,
-    formInputPrice,
-    isReselling = false,
-    id = null
-  ) => {
+  const createSale = async (url, formInputPrice, isReselling, id) => {
     try {
       const price = ethers.parseUnits(formInputPrice, "ether");
       console.log(price);
       const contract = await connectingWithSmartContract();
 
-      if (contract) {
-        console.log(contract);
-        console.log("listingPrice");
-        const listingPrice = await contract.getListingPrice();
-        console.log(listingPrice);
+      console.log(contract);
+      console.log("listingPrice");
+      const listingPrice = await contract.getListingPrice();
+      console.log(listingPrice);
 
-        const transaction = !isReselling
-          ? await contract.createToken(url, price, {
-              value: listingPrice.toString(),
-            })
-          : await contract.reSellToken(url, price, {
-              value: listingPrice.toString(),
-            });
+      const transaction = !isReselling
+        ? await contract.createToken(url, price, {
+            value: listingPrice.toString(),
+          })
+        : await contract.reSellToken(url, price, {
+            value: listingPrice.toString(),
+          });
 
-        await transaction.wait();
-        console.log(transaction);
-      }
+      await transaction.wait();
+      console.log(transaction);
     } catch (error) {
       console.log(`Error creating sale: ${error}`);
     }
@@ -241,7 +218,7 @@ const SellerNewNFT = () => {
       // Add other form input fields as needed
     };
 
-    await createNFT(formInput, fileUrl, navigate);
+    await createNFT(name, price, fileUrl, description, navigate);
 
     /*
     if (validateForm()) {
