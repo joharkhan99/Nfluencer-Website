@@ -19,6 +19,7 @@ import {
 } from "../../../constants/constants";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import axios from "axios";
+import { Web3 } from "web3";
 
 const SellerNewNFT = () => {
   const isWalletConnected = useSelector(
@@ -28,7 +29,7 @@ const SellerNewNFT = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(null);
-  const [royalties, setRoyalties] = useState(null);
+  const [supply, setsupply] = useState(null);
   const [image, setImage] = useState(null);
 
   const [traitName, settraitName] = useState("");
@@ -55,6 +56,7 @@ const SellerNewNFT = () => {
   const data = encoder.encode(`${projectId}:${projectSecretKey}`);
   const auth = `Basic ${btoa(String.fromCharCode.apply(null, data))}`;
   const subdomain = "https://nfluencer.infura-ipfs.io";
+  const web3 = new Web3(process.env.REACT_APP_BLOCKCHAIN_NETWORK_LINK);
 
   const client = ipfsHttpClient({
     host: "nfluencer.infura-ipfs.io",
@@ -138,11 +140,11 @@ const SellerNewNFT = () => {
     if (!price) {
       errors.price = "Price cannot be empty";
     }
-    if (!royalties) {
-      errors.royalties = "Royalties cannot be empty";
+    if (!supply) {
+      errors.supply = "Supply cannot be empty";
     }
     if (!image) {
-      errors.image = "Image cannot be empty";
+      errors.image = "Please add a File.";
     }
     if (traits.length === 0) {
       errors.traits = "Add at least one trait";
@@ -180,12 +182,15 @@ const SellerNewNFT = () => {
       const added = await client.add(data);
       const url = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;
 
+      console.log(added);
+
       await createSale(url, price);
     } catch (error) {
       setErrors({ message: "Error creating NFT" });
       console.log(`Error creating NFT: ${error}`);
     }
   };
+
   const fetchContract = (signerOrProvider) =>
     new ethers.Contract(
       NFTMarketplaceAddress,
@@ -216,6 +221,8 @@ const SellerNewNFT = () => {
       const contract = await connectingWithSmartContract();
       const listingPrice = await contract.getListingPrice();
 
+      console.log("TOKENURI", url);
+      console.log("TOKENPRICE", price);
       const transaction = !isReselling
         ? await contract.createToken(url, price, {
             value: listingPrice.toString(),
@@ -224,7 +231,17 @@ const SellerNewNFT = () => {
             value: listingPrice.toString(),
           });
 
+      // Wait for transaction to be mined
       await transaction.wait();
+      const transactionHash = transaction.hash;
+      console.log(`Transaction hash: ${transactionHash}`);
+
+      web3.eth.getTransactionReceipt(transactionHash).then(function (data) {
+        let logs = data.logs;
+        console.log(logs);
+
+        console.log(web3.utils.hexToNumber(logs[0].topics[3]));
+      });
     } catch (error) {
       setErrors({ message: "Error creating sale" });
       console.log(`Error creating sale: ${error}`);
@@ -238,39 +255,37 @@ const SellerNewNFT = () => {
     const fileUrl = await uploadToIPFS(image);
     await createNFT(name, price, fileUrl, description, navigate);
 
-    /*
-    if (validateForm()) {
-      setIsSubmitting(true);
+    // if (validateForm()) {
+    //   setIsSubmitting(true);
 
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("description", description);
-      formData.append("price", price);
-      formData.append("royalties", royalties);
-      formData.append("image", image);
-      formData.append("traits", JSON.stringify(traits));
-      formData.append("walletAddress", user.walletAddress);
-      formData.append("username", user.username);
+    //   const formData = new FormData();
+    //   formData.append("name", name);
+    //   formData.append("description", description);
+    //   formData.append("price", price);
+    //   formData.append("supply", supply);
+    //   formData.append("image", image);
+    //   formData.append("traits", JSON.stringify(traits));
+    //   formData.append("walletAddress", user.walletAddress);
+    //   formData.append("username", user.username);
 
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/nft/`, {
-        method: "POST",
-        headers: {
-          "x-auth-token": user.jwtToken,
-        },
-        body: formData,
-      });
+    //   const res = await fetch(`${process.env.REACT_APP_API_URL}/api/nft/`, {
+    //     method: "POST",
+    //     headers: {
+    //       "x-auth-token": user.jwtToken,
+    //     },
+    //     body: formData,
+    //   });
 
-      const data = await res.json();
-      setIsSubmitting(false);
+    //   const data = await res.json();
+    //   setIsSubmitting(false);
 
-      if (data.error) {
-        setErrors({ message: data.message });
-        return;
-      }
+    //   if (data.error) {
+    //     setErrors({ message: data.message });
+    //     return;
+    //   }
 
-      navigate("/seller/nfts");
-    }
-    */
+    //   navigate("/seller/nfts");
+    // }
 
     setIsSubmitting(false);
   };
@@ -287,9 +302,7 @@ const SellerNewNFT = () => {
       const items = await Promise.all(
         data.map(
           async ({ tokenId, seller, owner, price: unformattedPrice }) => {
-            console.log("tokenURI");
             const tokenURI = await contract.tokenURI(tokenId);
-            console.log(tokenURI, tokenURI.includes("https://infura-ipfs.io"));
             if (!tokenURI.includes("https://infura-ipfs.io")) {
               const {
                 data: { image, name, description },
@@ -298,8 +311,6 @@ const SellerNewNFT = () => {
                 unformattedPrice.toString(),
                 "ether"
               );
-
-              console.log("NFT DATA");
 
               console.log({
                 price,
@@ -590,13 +601,13 @@ const SellerNewNFT = () => {
                     type="number"
                     className="w-full rounded-xl border-gray-200 border p-4 outline-none text-sm placeholder:text-gray-400 placeholder:font-medium font-semibold px-5 focus:ring-2 focus:ring-nft-primary-light bg-gray-100 hover:opacity-80 focus:bg-white"
                     placeholder="e.g. 12"
-                    value={royalties || 1}
-                    onChange={(e) => setRoyalties(e.target.value)}
+                    value={supply || 1}
+                    onChange={(e) => setsupply(e.target.value)}
                   />
 
-                  {errors.royalties && (
+                  {errors.supply && (
                     <div className="text-red-500 text-sm mt-2">
-                      {errors.royalties}
+                      {errors.supply}
                     </div>
                   )}
                 </div>
@@ -854,7 +865,7 @@ const SellerNewNFT = () => {
           <NFTPreview
             name={name}
             price={price}
-            royalties={royalties}
+            supply={supply}
             preview={preview}
             traits={traits}
             isVideoFile={isVideoFile}
