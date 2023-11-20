@@ -63,7 +63,7 @@ const SellerNewNFT = () => {
       navigate("/seller");
       return;
     }
-  }, []);
+  }, [isWalletConnected]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -125,9 +125,9 @@ const SellerNewNFT = () => {
     try {
       const added = await client.add({ content: file });
       const url = `${subdomain}/ipfs/${added.path}`;
-      console.log(added, url);
       return url;
     } catch (error) {
+      setErrors({ message: "Error uploading to IPFS" });
       console.log(`Error uploading to IPFS: ${error}`);
     }
   };
@@ -146,12 +146,11 @@ const SellerNewNFT = () => {
       });
 
       const added = await client.add(data);
-      console.log(added);
       const url = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;
-      console.log(url);
 
       await createSale(url, price);
     } catch (error) {
+      setErrors({ message: "Error creating NFT" });
       console.log(`Error creating NFT: ${error}`);
     }
   };
@@ -167,15 +166,13 @@ const SellerNewNFT = () => {
       const w3modal = new Web3Modal();
       const connection = await w3modal.connect();
 
-      // console.log(connection);
-
       const provider = new ethers.BrowserProvider(connection);
       const signer = await provider.getSigner();
 
       const contract = fetchContract(signer);
-      console.log(contract);
       return contract;
     } catch (error) {
+      setErrors({ message: "Error connecting with smart contract" });
       console.log(`Error connecting with smart contract: ${error}`);
     }
   };
@@ -184,13 +181,8 @@ const SellerNewNFT = () => {
   const createSale = async (url, formInputPrice, isReselling, id) => {
     try {
       const price = ethers.parseUnits(formInputPrice, "ether");
-      console.log(price);
       const contract = await connectingWithSmartContract();
-
-      console.log(contract);
-      console.log("listingPrice");
       const listingPrice = await contract.getListingPrice();
-      console.log(listingPrice);
 
       const transaction = !isReselling
         ? await contract.createToken(url, price, {
@@ -201,8 +193,8 @@ const SellerNewNFT = () => {
           });
 
       await transaction.wait();
-      console.log(transaction);
     } catch (error) {
+      setErrors({ message: "Error creating sale" });
       console.log(`Error creating sale: ${error}`);
     }
   };
@@ -211,14 +203,6 @@ const SellerNewNFT = () => {
     e.preventDefault();
 
     const fileUrl = await uploadToIPFS(image);
-
-    const formInput = {
-      name,
-      description,
-      price,
-      // Add other form input fields as needed
-    };
-
     await createNFT(name, price, fileUrl, description, navigate);
 
     /*
@@ -333,116 +317,9 @@ const SellerNewNFT = () => {
       <div className="flex flex-col md:flex-row justify-between">
         <div className="order-2 md:order-1 w-full">
           <div className="mb-14">
-            <div className="font-bold text-md">Choose blockchain</div>
-            <p className="text-sm text-gray-500">
-              Connect with one of our available wallet providers or create a new
-              one.
-            </p>
-            <div className="flex gap-3 flex-wrap mt-6">
-              <div>
-                <input
-                  type="radio"
-                  name="option"
-                  id="1"
-                  value="1"
-                  className="peer hidden"
-                  checked
-                />
-                <label
-                  for="1"
-                  className="cursor-pointer select-none rounded-full text-center peer-checked:bg-purple-100 peer-checked:text-nft-primary-light peer-checked:border-nft-primary-light border font-semibold text-sm border-gray-200 text-gray-600 flex gap-2 items-center p-3 px-6 transition-colors duration-300"
-                >
-                  <span>
-                    <img
-                      src={require("../../../nftmarketplace/assets/metamask.png")}
-                      alt="s"
-                      className="w-5 h-5"
-                    />
-                  </span>
-                  <span>MetaMask</span>
-                </label>
-              </div>
-              {/* 
-              <div>
-                <input
-                  type="radio"
-                  name="option"
-                  id="2"
-                  value="2"
-                  className="peer hidden"
-                />
-                <label
-                  for="2"
-                  className="cursor-pointer select-none rounded-full text-center peer-checked:bg-purple-100 peer-checked:text-nft-primary-light peer-checked:border-nft-primary-light border font-semibold text-sm border-gray-200 text-gray-600 flex gap-2 items-center p-3 px-6 transition-colors duration-300"
-                >
-                  <span>
-                    <img
-                      src={require("../../../nftmarketplace/assets/coinbase.png")}
-                      alt="s"
-                      className="w-5 h-5"
-                    />
-                  </span>
-                  <span>Coinbase</span>
-                </label>
-              </div>
-
-              <div>
-                <input
-                  type="radio"
-                  name="option"
-                  id="3"
-                  value="3"
-                  className="peer hidden"
-                />
-                <label
-                  for="3"
-                  className="cursor-pointer select-none rounded-full text-center peer-checked:bg-purple-100 peer-checked:text-nft-primary-light peer-checked:border-nft-primary-light border font-semibold text-sm border-gray-200 text-gray-600 flex gap-2 items-center p-3 px-6 transition-colors duration-300"
-                >
-                  <span>
-                    <img
-                      src={require("../../../nftmarketplace/assets/torus.png")}
-                      alt="s"
-                      className="w-5 h-5"
-                    />
-                  </span>
-                  <span>Torus</span>
-                </label>
-              </div>
-
-              <div>
-                <input
-                  type="radio"
-                  name="option"
-                  id="4"
-                  value="4"
-                  className="peer hidden"
-                />
-                <label
-                  for="4"
-                  className="cursor-pointer select-none rounded-full text-center peer-checked:bg-purple-100 peer-checked:text-nft-primary-light peer-checked:border-nft-primary-light border font-semibold text-sm border-gray-200 text-gray-600 flex gap-2 items-center p-3 px-6 transition-colors duration-300"
-                >
-                  <span>
-                    <img
-                      src={require("../../../nftmarketplace/assets/fort.png")}
-                      alt="s"
-                      className="w-5 h-5"
-                    />
-                  </span>
-                  <span>Fortmatic</span>
-                </label>
-              </div>
-
-              <div className="flex gap-2 flex-row border border-gray-200 text-gray-600 rounded-full p-3 px-12 text-sm font-semibold items-center hover:bg-gray-100">
-                <button>Show more options</button>
-              </div> */}
-            </div>
-          </div>
-
-          <div className="mb-14">
             <div className="font-bold text-md">Upload an item</div>
             <p className="text-sm text-gray-500">
-              But each one takes a different approach and makes different
-              tradeoffs.
+              They all serve the same purpose, but each one takes.
             </p>
             <div className="w-full mt-6 border-2 rounded-xl border-dashed border-gray-300">
               <input
@@ -484,10 +361,11 @@ const SellerNewNFT = () => {
                       />
                     </svg>
                     <div className="font-extrabold text-md mt-4">
-                      Drag your item to upload
+                      Choose an item to upload
                     </div>
+                    <p className="text-sm text-gray-500">Max size: 50MB</p>
                     <p className="text-sm text-gray-500">
-                      PNG, GIF, WebP, MP4 or MP3. Maximum file size 100mb.
+                      JPG, PNG, GIF, SVG, MP4
                     </p>
                   </div>
                 )}
@@ -548,9 +426,7 @@ const SellerNewNFT = () => {
                 )}
               </div>
               <div className="mb-6">
-                <label className="block font-semibold text-sm text-gray-800 mb-2">
-                  Traits
-                </label>
+                <label className="block font-bold text-md mb-2">Traits</label>
                 <p className="text-sm text-gray-500">
                   Traits describe attributes of your item. They appear as
                   filters inside your collection page and are also listed out
@@ -737,91 +613,33 @@ const SellerNewNFT = () => {
                 </button>
               </div>
             </div>
+
+            <span className="text-xs text-gray-600">
+              * Once your item is minted you will not be able to change any of
+              its information.
+            </span>
           </div>
 
           <div className="mb-0">
-            <div className="font-bold text-md">Notifications</div>
-            <p className="text-sm text-gray-500">
-              They all serve the same purpose.
-            </p>
-            <div className="mt-6">
-              <div className="border-b flex flex-row justify-between items-center py-3 pb-5 gap-4">
-                <div>
-                  <div className="text-sm font-semibold text-gray-600">
-                    Product updates
-                  </div>
-                  <div className="font-bold mt-1">
-                    Receive messages from our platform
-                  </div>
-                </div>
-                <div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" value="" className="sr-only peer" />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
-                  </label>
-                </div>
-              </div>
-              <div className="border-b flex flex-row justify-between items-center py-5 gap-4">
-                <div>
-                  <div className="text-sm font-semibold text-gray-600">
-                    Reminders
-                  </div>
-                  <div className="font-bold mt-1">
-                    Receive booking reminders, pricing notices
-                  </div>
-                </div>
-                <div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" value="" className="sr-only peer" />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
-                  </label>
-                </div>
-              </div>
-              <div className="border-b flex flex-row justify-between items-center py-5 gap-4">
-                <div>
-                  <div className="text-sm font-semibold text-gray-600">
-                    Account support
-                  </div>
-                  <div className="font-bold mt-1">
-                    Receive messages about your account, your trips, your legal
-                    alerts
-                  </div>
-                </div>
-                <div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" value="" className="sr-only peer" />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-24">
+            <div className="mt-10">
               {errors.message && (
-                <div className="text-red-500 text-sm mt-2">
-                  {errors.message}
-                </div>
+                <div className="text-red-500 text-sm">{errors.message}</div>
               )}
 
-              <div className="flex justify-between items-center  flex-row">
+              <div className="flex justify-between items-center flex-row">
                 <div className="text-center w-full">
                   <button
-                    className="bg-nft-primary-light rounded-full px-6 py-4 font-semibold text-sm text-white w-4/5 hover:shadow-lg hover:shadow-purple-100"
+                    className="rounded-xl px-6 py-4 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200 max-w-sm w-full"
                     disabled={isSubmitting}
                     onClick={handleSubmit}
                   >
                     {isSubmitting ? (
-                      <div className="h-5 w-5 mx-auto rounded-full border-t border-r animate-spin border-white"></div>
+                      <div className="h-5 w-5 mx-auto rounded-full border-t-white border-nft-primary-dark border-2 animate-spin"></div>
                     ) : (
                       <>
-                        <span>Publish NFT</span>
+                        <span>Create NFT</span>
                       </>
                     )}
-                  </button>
-                </div>
-                <div className="text-center w-full">
-                  <button className="bg-nft-primary-transparent rounded-full px-6 py-4 font-semibold text-sm text-nft-primary-light w-4/5 hover:bg-nft-primary-light hover:text-white duration-300 transition-colors hover:shadow-lg hover:shadow-purple-100">
-                    <span>Discard all</span>
                   </button>
                 </div>
               </div>
