@@ -8,6 +8,13 @@ import {
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import NFTPreview from "../components/nft/NFTPreview";
+import { ethers } from "ethers";
+import Web3Modal from "web3modal";
+import {
+  NFTMarketplaceABI,
+  NFTMarketplaceAddress,
+} from "../../../constants/constants";
+import { create as ipfsHttpClient } from "ipfs-http-client";
 
 const SellerNewNFT = () => {
   const isWalletConnected = useSelector(
@@ -119,19 +126,122 @@ const SellerNewNFT = () => {
 
       const data = await response.json();
       const imageUrl = `https://ipfs.io/ipfs/${data.value.cid}`;
+      const imageUrl2 = `https://${data.value.cid}.ipfs.nftstorage.link/${data.value.files[0].name}`;
 
       console.log(data);
-      console.log(imageUrl);
+      console.log(imageUrl, imageUrl2);
       return imageUrl;
     } catch (error) {
       console.error(`Error uploading to nft.storage: ${error}`);
     }
   };
 
+  const client = ipfsHttpClient("https://api.nft.storage", {
+    headers: {
+      Authorization:
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGY2Mjk2Y0Q0YzU5N2JiNEM3MjMxNjI5ZkJmOUIzNjA5ZDcyREE1YTgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTcwMDM4NDU0Nzg3MiwibmFtZSI6Ik5GTFVFTkNFUiJ9.Xj_D-NFNNnF6Klq_N1ejiq3vSnjHqT7ytKv1vRQhyc0",
+    },
+  });
+
+  // Create NFT
+  const createNFT = async (formInput, fileUrl, router) => {
+    try {
+      const { name, description, price } = formInput;
+      if (!name || !description || !price || !fileUrl) {
+        return console.log("Please make sure all fields are completed");
+      }
+
+      const data = JSON.stringify({
+        name,
+        description,
+        image: fileUrl,
+      });
+
+      // const added = await client.add(data);
+      // const url = `https://${added.cid}.ipfs.nft.storage`;
+      // console.log(url);
+
+      await createSale(fileUrl, price);
+    } catch (error) {
+      console.log(`Error creating NFT: ${error}`);
+    }
+  };
+  const fetchContract = (signerOrProvider) =>
+    new ethers.Contract(
+      NFTMarketplaceAddress,
+      NFTMarketplaceABI,
+      signerOrProvider
+    );
+
+  const connectingWithSmartContract = async () => {
+    try {
+      const w3modal = new Web3Modal();
+      const connection = await w3modal.connect();
+
+      console.log(connection);
+
+      const provider = new ethers.BrowserProvider(connection);
+      const signer = await provider.getSigner();
+
+      const contract = fetchContract(signer);
+      console.log(contract);
+      return contract;
+    } catch (error) {
+      console.log(`Error connecting with smart contract: ${error}`);
+    }
+  };
+
+  useEffect(() => {
+    connectingWithSmartContract();
+  }, []);
+
+  // Create Sale
+  const createSale = async (
+    url,
+    formInputPrice,
+    isReselling = false,
+    id = null
+  ) => {
+    try {
+      const price = ethers.parseUnits(formInputPrice, "ether");
+      console.log(price);
+      const contract = await connectingWithSmartContract();
+
+      if (contract) {
+        console.log(contract);
+        console.log("listingPrice");
+        const listingPrice = await contract.getListingPrice();
+        console.log(listingPrice);
+
+        const transaction = !isReselling
+          ? await contract.createToken(url, price, {
+              value: listingPrice.toString(),
+            })
+          : await contract.reSellToken(url, price, {
+              value: listingPrice.toString(),
+            });
+
+        await transaction.wait();
+        console.log(transaction);
+      }
+    } catch (error) {
+      console.log(`Error creating sale: ${error}`);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    uploadToIPFS(image);
+    const fileUrl = await uploadToIPFS(image);
+
+    const formInput = {
+      name,
+      description,
+      price,
+      // Add other form input fields as needed
+    };
+
+    await createNFT(formInput, fileUrl, navigate);
 
     /*
     if (validateForm()) {
