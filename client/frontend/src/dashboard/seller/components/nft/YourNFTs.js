@@ -20,10 +20,12 @@ const YourNFTs = ({ user }) => {
           body: JSON.stringify({ userId: user._id }),
         }
       );
+
       const data = await response.json();
       if (data.length >= 1) {
         setFirstNFT(data[0]);
       }
+      console.log(data);
       setNFTs(data.slice(1));
     } catch (error) {
       console.error(error);
@@ -49,31 +51,41 @@ const YourNFTs = ({ user }) => {
               <div className="relative shadow-lg rounded-2xl shadow-gray-200 text-gray-800">
                 <div className="rounded-2xl overflow-hidden">
                   <div className="h-64 w-full relative">
-                    <img
-                      src={nft.image}
-                      alt="Card Imagea"
-                      className="h-full w-full object-cover"
-                    />
+                    {nft.fileType === "image" ? (
+                      <img
+                        src={nft.file}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <video
+                        src={nft.file}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      ></video>
+                    )}
 
                     <div className="absolute bottom-0 w-full p-4">
-                      <div className="bg-white rounded-2xl bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-30 text-white p-4 overflow-hidden">
+                      <div className="bg-white rounded-2xl bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-60 text-black p-4 overflow-hidden">
                         <div>
-                          <div className="flex rounded-2xl justify-between">
-                            <div className="flex flex-col gap-1">
-                              <span className="text-sm">Price</span>
+                          <div className="flex rounded-2xl justify-evenly items-center">
+                            <div className="flex flex-col gap-1 items-center">
+                              <span className="text-sm font-medium">Price</span>
                               <span className="flex gap-1">
                                 <img
                                   src={require("../../../../nftmarketplace/assets/eth.png")}
                                   alt=""
-                                  className="w-6 h-6 object-contain"
+                                  className="w-5 h-5 object-contain"
                                 />
                                 <span className="font-semibold text-sm">
-                                  {nft.price} ETH
+                                  {nft.etherPrice} ETH
                                 </span>
                               </span>
                             </div>
-                            <div className="flex flex-col gap-1">
-                              <span className="text-sm">Creator Royalty</span>
+                            <div className="flex flex-col gap-1 items-center">
+                              <span className="text-sm font-medium">
+                                Creator Royalty
+                              </span>
                               <span className="flex gap-1 items-center">
                                 <TrophyIcon className="w-5 h-5 object-contain text-gray-800 fill-gray-800" />
                                 <span className="font-semibold text-sm">
@@ -93,21 +105,37 @@ const YourNFTs = ({ user }) => {
                         {nft.name}
                       </div>
 
-                      <button className="p-2 bg-purple-200 hover:bg-nft-primary-light text-nft-primary-light rounded-full group">
-                        <HeartIcon className="w-6 h-6 group-hover:stroke-white group-hover:fill-white" />
+                      <button class="rounded-xl text-nft-primary-light bg-white p-2 flex gap-1 items-center absolute top-2 right-2 text-sm">
+                        <HeartIcon class="h-5 w-5 fill-nft-primary-light" />
+                        <span class="font-semibold">12</span>
                       </button>
                     </div>
 
-                    <div className="flex items-center justify-start gap-2 mb-5">
-                      <img
-                        src={nft.user.avatar}
-                        alt=""
-                        className="w-10 h-10 rounded-full"
-                      />
-                      <div className="flex flex-col">
-                        <span className="text-sm text-gray-500 font-semibold">
-                          {nft.user.name}
-                        </span>
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center justify-start gap-2 mb-5">
+                        <img
+                          src={nft.creator.avatar}
+                          alt=""
+                          className="w-10 h-10 rounded-full"
+                        />
+                        <div className="flex flex-col">
+                          <span className="text-sm text-gray-500 font-semibold">
+                            {nft.creator.name}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-start gap-2 mb-5">
+                        <img
+                          src={nft.collectionData.image}
+                          alt=""
+                          className="w-10 h-10 rounded-full"
+                        />
+                        <div className="flex flex-col">
+                          <span className="text-sm text-gray-500 font-semibold">
+                            {nft.collectionData.name.substring(0, 13)}...
+                          </span>
+                        </div>
                       </div>
                     </div>
 

@@ -5,7 +5,9 @@ const nftSchema = new mongoose.Schema(
     name: { type: String, required: true },
     description: { type: String, required: true },
     file: { type: String, required: true },
+    fileType: { type: String, required: true },
     price: { type: String, required: true },
+    etherPrice: { type: String, required: true },
     currency: { type: String, required: true }, // Add currency field
     royalties: { type: Number, required: true },
     traits: { type: Array, required: true },
@@ -22,7 +24,6 @@ const nftSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-
     transactionHash: { type: String, required: true },
     gasUsed: { type: String, required: true },
     effectiveGasPrice: { type: String, required: true },

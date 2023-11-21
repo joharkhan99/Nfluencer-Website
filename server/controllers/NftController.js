@@ -19,7 +19,9 @@ const createNft = async (req, res) => {
       name,
       description,
       file,
+      fileType,
       price,
+      etherPrice,
       currency,
       royalties,
       traits,
@@ -41,7 +43,9 @@ const createNft = async (req, res) => {
       name,
       description,
       file,
+      fileType,
       price,
+      etherPrice,
       currency,
       royalties,
       traits,
@@ -59,7 +63,10 @@ const createNft = async (req, res) => {
     });
 
     const savedNFT = await newNFT.save();
-    await Collection.findByIdAndUpdate(collection, { $inc: { totalItems: 1 } });
+    await Collection.updateOne(
+      { _id: collection },
+      { $inc: { totalItems: 1 } }
+    );
 
     res.status(201).json(savedNFT);
   } catch (error) {
@@ -69,10 +76,13 @@ const createNft = async (req, res) => {
 };
 
 const fetchUserNFTs = async (req, res) => {
-  const nfts = await NFT.find({ user: req.body.userId })
-    .populate("user", "-password")
+  const nfts = await NFT.find({ creator: req.body.userId })
+    .populate("creator", "-password")
+    .populate("collectionData")
     .sort({ createdAt: -1 })
+    .limit(7)
     .exec();
+  console.log(nfts);
   res.status(200).json(nfts);
 };
 

@@ -31,6 +31,7 @@ const SellerNewNFT = () => {
   const [price, setPrice] = useState(null);
   const [royalties, setroyalties] = useState(null);
   const [image, setImage] = useState(null);
+  const [fileType, setFileType] = useState("");
 
   const [traitName, settraitName] = useState("");
   const [traitType, settraitType] = useState("");
@@ -101,7 +102,6 @@ const SellerNewNFT = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      console.log(file);
       const maxSize = 50 * 1024 * 1024;
       if (file.size > maxSize) {
         setErrors({ image: "File size exceeds 50MB." });
@@ -113,13 +113,12 @@ const SellerNewNFT = () => {
         const videoUrl = URL.createObjectURL(file);
         setIsVideoFile(true);
         setPreview(videoUrl);
+        setFileType("video");
       } else {
         setIsVideoFile(false);
         setPreview(URL.createObjectURL(file));
+        setFileType("image");
       }
-
-      console.log(preview);
-
       setImage(file);
     }
   };
@@ -180,6 +179,7 @@ const SellerNewNFT = () => {
         name,
         description,
         fileUrl,
+        fileType,
         price,
         currency: "ETH",
         traits,
@@ -253,6 +253,7 @@ const SellerNewNFT = () => {
           name,
           description,
           file: fileUrl,
+          fileType,
           price,
           currency: "ETH",
           traits,
@@ -301,7 +302,9 @@ const SellerNewNFT = () => {
         name: data.name,
         description: data.description,
         file: data.file,
+        fileType: data.fileType,
         price: data.price.toString(),
+        etherPrice: web3.utils.fromWei(data.price, "ether"),
         currency: data.currency,
         traits: data.traits,
         collection: data.selectedCollection,
