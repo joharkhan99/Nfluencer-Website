@@ -39,9 +39,14 @@ const YourNFTs = ({ user }) => {
   return (
     <>
       <div className="mt-10">
-        <h2 className="text-2xl font-extrabold tracking-tight text-gray-800 mb-7">
-          Your NFTs
-        </h2>
+        <div class="flex items-center justify-between">
+          <h2 className="text-2xl font-extrabold tracking-tight text-gray-800 mb-7">
+            Your NFTs
+          </h2>
+          <button class="text-nft-primary-light font-bold hover:opacity-80 block">
+            View All
+          </button>
+        </div>
 
         {firstNFT && <FirstNFT NFT={firstNFT} />}
 
@@ -141,10 +146,10 @@ const YourNFTs = ({ user }) => {
 
                     <div class="flex items-center justify-between gap-3 text-sm">
                       <button class="bg-gray-200 font-medium p-3 rounded-xl hover:opacity-80 w-full text-gray-800">
-                        Details
+                        Manage
                       </button>
                       <button class="bg-nft-primary-light border border-nft-primary-light text-white font-medium p-3 rounded-xl hover:opacity-80 w-full">
-                        Place a Bid
+                        View Details
                       </button>
                     </div>
                   </div>
@@ -152,6 +157,12 @@ const YourNFTs = ({ user }) => {
               </div>
             </div>
           ))}
+        </div>
+
+        <div class="flex items-center gap-4 justify-center">
+          <button class="bg-nft-primary-light border border-nft-primary-light text-white font-bold p-3 rounded-xl px-10 hover:opacity-80">
+            View All
+          </button>
         </div>
       </div>
     </>
