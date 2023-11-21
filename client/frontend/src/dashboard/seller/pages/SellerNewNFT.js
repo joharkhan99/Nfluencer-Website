@@ -339,30 +339,30 @@ const SellerNewNFT = () => {
       const contract = fetchContract(provider);
 
       const data = await contract.fetchMarketItems();
+      console.log(data);
 
       const items = await Promise.all(
         data.map(
           async ({ tokenId, seller, owner, price: unformattedPrice }) => {
             const tokenURI = await contract.tokenURI(tokenId);
             if (!tokenURI.includes("https://infura-ipfs.io")) {
-              const {
-                data: { image, name, description },
-              } = await axios.get(tokenURI);
+              const data = await axios.get(tokenURI);
+              console.log(data);
               const price = ethers.formatUnits(
                 unformattedPrice.toString(),
                 "ether"
               );
 
-              console.log({
-                price,
-                tokenId,
-                seller,
-                owner,
-                image,
-                name,
-                description,
-                tokenURI,
-              });
+              // console.log({
+              //   price,
+              //   tokenId,
+              //   seller,
+              //   owner,
+              //   image,
+              //   name,
+              //   description,
+              //   tokenURI,
+              // });
 
               return {
                 price,
@@ -387,13 +387,13 @@ const SellerNewNFT = () => {
 
   const [nfts, setNfts] = useState([]);
 
-  // useEffect(() => {
-  //   fetchNFTs().then((nfts) => {
-  //     setNfts(nfts);
-  //   });
+  useEffect(() => {
+    fetchNFTs().then((nfts) => {
+      setNfts(nfts);
+    });
 
-  //   console.log(nfts);
-  // }, []);
+    console.log(nfts);
+  }, []);
 
   const AddNewCollection = async () => {
     setCollectionErrors({ isloading: true });

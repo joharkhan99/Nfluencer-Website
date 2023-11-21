@@ -43,7 +43,7 @@ const YourNFTs = ({ user }) => {
           <h2 className="text-2xl font-extrabold tracking-tight text-gray-800 mb-7">
             Your NFTs
           </h2>
-          <button class="text-nft-primary-light font-bold hover:opacity-80 block">
+          <button class="text-nft-primary-light font-medium text-sm block">
             View All
           </button>
         </div>
