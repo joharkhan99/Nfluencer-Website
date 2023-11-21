@@ -141,13 +141,16 @@ const SellerNewNFT = () => {
       errors.price = "Price cannot be empty";
     }
     if (!royalties) {
-      errors.royalties = "royalties cannot be empty";
+      errors.royalties = "Royalties cannot be empty";
     }
     if (!image) {
       errors.image = "Please add a File.";
     }
     if (traits.length === 0) {
       errors.traits = "Add at least one trait";
+    }
+    if (!selectedCollection) {
+      errors.selectedCollection = "Please select a collection";
     }
 
     setErrors(errors);
@@ -265,7 +268,8 @@ const SellerNewNFT = () => {
           blockHash: transactionReceipt.blockHash,
           nftUrl: url,
         };
-        console.log(data);
+
+        saveNFTData(data);
       } else {
         setErrors({ message: "Transaction receipt not found" });
       }
@@ -278,43 +282,51 @@ const SellerNewNFT = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    const fileUrl = await uploadToIPFS(image);
-    await createNFT(name, price, fileUrl, description, navigate);
-
-    // if (validateForm()) {
-    //   setIsSubmitting(true);
-
-    //   const formData = new FormData();
-    //   formData.append("name", name);
-    //   formData.append("description", description);
-    //   formData.append("price", price);
-    //   formData.append("royalties", royalties);
-    //   formData.append("image", image);
-    //   formData.append("traits", JSON.stringify(traits));
-    //   formData.append("walletAddress", user.walletAddress);
-    //   formData.append("username", user.username);
-
-    //   const res = await fetch(`${process.env.REACT_APP_API_URL}/api/nft/`, {
-    //     method: "POST",
-    //     headers: {
-    //       "x-auth-token": user.jwtToken,
-    //     },
-    //     body: formData,
-    //   });
-
-    //   const data = await res.json();
-    //   setIsSubmitting(false);
-
-    //   if (data.error) {
-    //     setErrors({ message: data.message });
-    //     return;
-    //   }
-
-    //   navigate("/seller/nfts");
-    // }
-
+    if (validateForm()) {
+      const fileUrl = await uploadToIPFS(image);
+      await createNFT(name, price, fileUrl, description, navigate);
+    }
     setIsSubmitting(false);
+  };
+
+  const saveNFTData = async (data) => {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/nft/`, {
+      method: "POST",
+      headers: {
+        "x-auth-token": user.jwtToken,
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        name: data.name,
+        description: data.description,
+        file: data.file,
+        price: data.price.toString(),
+        currency: data.currency,
+        traits: data.traits,
+        collection: data.selectedCollection,
+        royalties: data.royalties,
+        from: data.from,
+        to: data.to,
+        tokenId: data.tokenId,
+        creator: data.creator,
+        transactionHash: data.transactionHash,
+        gasUsed: data.gasUsed.toString(),
+        effectiveGasPrice: data.effectiveGasPrice.toString(),
+        blockHash: data.blockHash,
+        nftUrl: data.nftUrl,
+        walletAddress: user.walletAddress,
+      }),
+    });
+
+    const responseData = await res.json();
+    console.log(responseData);
+    if (responseData.error) {
+      setErrors({ message: responseData.message });
+      return;
+    }
+
+    navigate("/seller/nfts");
   };
 
   const fetchNFTs = async () => {
@@ -324,8 +336,6 @@ const SellerNewNFT = () => {
       const contract = fetchContract(provider);
 
       const data = await contract.fetchMarketItems();
-
-      console.log(data);
 
       const items = await Promise.all(
         data.map(
@@ -374,13 +384,13 @@ const SellerNewNFT = () => {
 
   const [nfts, setNfts] = useState([]);
 
-  useEffect(() => {
-    fetchNFTs().then((nfts) => {
-      setNfts(nfts);
-    });
+  // useEffect(() => {
+  //   fetchNFTs().then((nfts) => {
+  //     setNfts(nfts);
+  //   });
 
-    console.log(nfts);
-  }, []);
+  //   console.log(nfts);
+  // }, []);
 
   const AddNewCollection = async () => {
     setCollectionErrors({ isloading: true });
@@ -435,27 +445,28 @@ const SellerNewNFT = () => {
   };
 
   const fetchCollections = async () => {
-    const formData = new FormData();
-    formData.append("userId", user._id);
     const res = await fetch(
       `${process.env.REACT_APP_API_URL}/api/nft/getCollections`,
       {
         method: "POST",
         headers: {
           "x-auth-token": user.jwtToken,
+          "Content-Type": "application/json",
         },
-        body: formData,
+        body: JSON.stringify({
+          userId: user._id,
+        }),
       }
     );
 
     const data = await res.json();
-    // console.log(data);
+    console.log(data);
     setCollections(data.collections);
   };
 
   useEffect(() => {
     fetchCollections();
-  }, []);
+  }, [user]);
 
   return (
     <div className="container mx-auto my-10 mt-0 rounded-xl p-4 bg-white shadow-lg shadow-gray-200">
@@ -854,6 +865,12 @@ const SellerNewNFT = () => {
                 </button>
               ))}
             </div>
+
+            {errors.selectedCollection && (
+              <div className="text-red-500 text-sm mt-2">
+                {errors.selectedCollection}
+              </div>
+            )}
 
             <span className="text-xs text-gray-600">
               * Once your item is minted you will not be able to change any of
