@@ -108,21 +108,6 @@ const NFTPreview = ({
                 </div>
               </div>
             ))}
-
-            {/* <div className="flex justify-between items-center mt-5">
-              <div>
-                <button
-                  className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm"
-                  disabled
-                >
-                  Buy Now
-                </button>
-              </div>
-              <button className="flex items-center gap-1">
-                <HeartIcon className="w-4 h-4" />
-                <span className="font-bold text-sm">00</span>
-              </button>
-            </div> */}
           </div>
         </div>
       </div>
