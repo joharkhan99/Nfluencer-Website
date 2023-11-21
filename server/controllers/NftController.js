@@ -36,8 +36,6 @@ const createNft = async (req, res) => {
       walletAddress,
     } = req.body;
 
-    // const user = req.user; // Assuming user information is available in req.user
-
     // Create a new NFT instance
     const newNFT = new NFT({
       name,
@@ -61,6 +59,8 @@ const createNft = async (req, res) => {
     });
 
     const savedNFT = await newNFT.save();
+    await Collection.findByIdAndUpdate(collection, { $inc: { totalItems: 1 } });
+
     res.status(201).json(savedNFT);
   } catch (error) {
     console.error(error);

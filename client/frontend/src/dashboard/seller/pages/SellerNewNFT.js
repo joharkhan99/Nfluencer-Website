@@ -620,7 +620,7 @@ const SellerNewNFT = () => {
                     <input
                       type="number"
                       className="w-full outline-none text-sm placeholder:text-gray-400 placeholder:font-medium font-semibold px-2 pl-10 p-4 focus:ring-2 focus:ring-nft-primary-light focus:bg-white border-gray-200 border rounded-xl bg-gray-100"
-                      placeholder="e.g. 230"
+                      placeholder="e.g. 17"
                       value={price}
                       onChange={(e) => setPrice(e.target.value)}
                     />
@@ -640,7 +640,7 @@ const SellerNewNFT = () => {
                     type="number"
                     className="w-full rounded-xl border-gray-200 border p-4 outline-none text-sm placeholder:text-gray-400 placeholder:font-medium font-semibold px-5 focus:ring-2 focus:ring-nft-primary-light bg-gray-100 hover:opacity-80 focus:bg-white"
                     placeholder="e.g. 12"
-                    value={royalties || 1}
+                    value={royalties}
                     onChange={(e) => setroyalties(e.target.value)}
                   />
 
