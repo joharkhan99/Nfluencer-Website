@@ -14,9 +14,11 @@ import NFTPreview from "../components/nft/NFTPreview";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import {
-  NFTMarketplaceABI,
-  NFTMarketplaceAddress,
-} from "../../../constants/constants";
+  NFTMarketplaceContractABI,
+  NFTMarketplaceContractAddress,
+  NFTContractABI,
+  NFTContractAddress,
+} from "../../../constants/ContractDetails";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import axios from "axios";
 import { Web3 } from "web3";
@@ -197,23 +199,32 @@ const SellerNewNFT = () => {
     }
   };
 
-  const fetchContract = (signerOrProvider) =>
-    new ethers.Contract(
-      NFTMarketplaceAddress,
-      NFTMarketplaceABI,
+  const fetchContract = (signerOrProvider) => {
+    const marketplaceContract = new ethers.Contract(
+      NFTMarketplaceContractAddress,
+      NFTMarketplaceContractABI,
       signerOrProvider
     );
+
+    const nftContract = new ethers.Contract(
+      NFTContractAddress,
+      NFTContractABI,
+      signerOrProvider
+    );
+
+    return { marketplaceContract, nftContract };
+  };
 
   const connectingWithSmartContract = async () => {
     try {
       const w3modal = new Web3Modal();
       const connection = await w3modal.connect();
 
-      const provider = new ethers.BrowserProvider(connection);
+      const provider = new ethers.providers.Web3Provider(connection);
       const signer = await provider.getSigner();
 
-      const contract = fetchContract(signer);
-      return contract;
+      const { marketplaceContract, nftContract } = fetchContract(signer);
+      return { marketplaceContract, nftContract };
     } catch (error) {
       setErrors({ message: "Error connecting with smart contract" });
       console.log(`Error connecting with smart contract: ${error}`);
@@ -223,57 +234,68 @@ const SellerNewNFT = () => {
   // Create Sale
   const createSale = async (url, formInputPrice, fileUrl, isReselling, id) => {
     try {
-      const price = ethers.parseUnits(formInputPrice, "ether");
-      const contract = await connectingWithSmartContract();
-      const listingPrice = await contract.getListingPrice();
+      const price = ethers.utils.parseUnits(formInputPrice.toString(), "ether");
+      const { marketplaceContract, nftContract } =
+        await connectingWithSmartContract();
 
-      const transaction = !isReselling
-        ? await contract.createToken(url, price, {
-            value: listingPrice.toString(),
-          })
-        : await contract.reSellToken(url, price, {
-            value: listingPrice.toString(),
-          });
+      let transaction = await nftContract.createToken(url);
+      let tx = await transaction.wait();
 
-      // Wait for transaction to be mined
-      await transaction.wait();
-      const transactionHash = transaction.hash;
+      console.log("nft Transaction: ", tx);
+      console.log("Transaction events: ", tx.events[0]);
+      let event = tx.events[0];
+      let value = event.args[2];
+      let tokenId = value.toNumber(); //we need to convert it a number
 
-      const transactionReceipt = await web3.eth.getTransactionReceipt(
-        transactionHash
+      console.log("Token ID: ", tokenId);
+
+      const _price = ethers.utils.parseUnits(price.toString(), "ether");
+
+      let listingPrice = await marketplaceContract.getListingPrice();
+      listingPrice = listingPrice.toString();
+
+      transaction = await marketplaceContract.createMarketItem(
+        nftContract.address,
+        tokenId,
+        _price,
+        { value: listingPrice }
       );
 
-      if (transactionReceipt) {
-        const logs = transactionReceipt.logs;
-        const tokenId = web3.utils.hexToNumber(logs[0].topics[3]);
-        const from = transaction.from;
-        const to = transaction.to;
+      await transaction.wait();
 
-        const data = {
-          name,
-          description,
-          file: fileUrl,
-          fileType,
-          price,
-          currency: "ETH",
-          traits,
-          selectedCollection,
-          royalties,
-          from,
-          to,
-          tokenId,
-          creator: user._id,
-          transactionHash,
-          gasUsed: transactionReceipt.gasUsed,
-          effectiveGasPrice: transactionReceipt.effectiveGasPrice,
-          blockHash: transactionReceipt.blockHash,
-          nftUrl: url,
-        };
+      console.log("Market Transaction: ", transaction);
 
-        saveNFTData(data);
-      } else {
-        setErrors({ message: "Transaction receipt not found" });
-      }
+      // if (transactionReceipt) {
+      //   const logs = transactionReceipt.logs;
+      //   const tokenId = web3.utils.hexToNumber(logs[0].topics[3]);
+      //   const from = transaction.from;
+      //   const to = transaction.to;
+
+      //   const data = {
+      //     name,
+      //     description,
+      //     file: fileUrl,
+      //     fileType,
+      //     price,
+      //     currency: "ETH",
+      //     traits,
+      //     selectedCollection,
+      //     royalties,
+      //     from,
+      //     to,
+      //     tokenId,
+      //     creator: user._id,
+      //     transactionHash,
+      //     gasUsed: transactionReceipt.gasUsed,
+      //     effectiveGasPrice: transactionReceipt.effectiveGasPrice,
+      //     blockHash: transactionReceipt.blockHash,
+      //     nftUrl: url,
+      //   };
+
+      //   saveNFTData(data);
+      // } else {
+      //   setErrors({ message: "Transaction receipt not found" });
+      // }
     } catch (error) {
       setErrors({ message: "Error creating sale" });
       console.log(`Error creating sale: ${error}`);
@@ -334,52 +356,15 @@ const SellerNewNFT = () => {
 
   const fetchNFTs = async () => {
     try {
-      const provider = new ethers.JsonRpcProvider();
-      console.log(provider);
-      const contract = fetchContract(provider);
-
-      const data = await contract.fetchMarketItems();
-      console.log(data);
-
-      const items = await Promise.all(
-        data.map(
-          async ({ tokenId, seller, owner, price: unformattedPrice }) => {
-            const tokenURI = await contract.tokenURI(tokenId);
-            if (!tokenURI.includes("https://infura-ipfs.io")) {
-              const data = await axios.get(tokenURI);
-              console.log(data);
-              const price = ethers.formatUnits(
-                unformattedPrice.toString(),
-                "ether"
-              );
-
-              // console.log({
-              //   price,
-              //   tokenId,
-              //   seller,
-              //   owner,
-              //   image,
-              //   name,
-              //   description,
-              //   tokenURI,
-              // });
-
-              return {
-                price,
-                tokenId: tokenId,
-                seller,
-                owner,
-                image,
-                name,
-                description,
-                tokenURI,
-              };
-            }
-          }
-        )
+      const provider = new ethers.providers.JsonRpcProvider(
+        "https://eth-sepolia.g.alchemy.com/v2/afK5DQtH4pQHAXdTA8bzZnNwcbWNzCTG"
       );
+      console.log(provider);
+      const { marketplaceContract } = fetchContract(provider);
+      console.log(marketplaceContract);
 
-      return items;
+      const data = await marketplaceContract.fetchMarketItems();
+      console.log(data);
     } catch (error) {
       console.log(`Error fetching NFTs: ${error}`);
     }
@@ -389,10 +374,11 @@ const SellerNewNFT = () => {
 
   useEffect(() => {
     fetchNFTs().then((nfts) => {
+      console.log(nfts);
       setNfts(nfts);
     });
 
-    console.log(nfts);
+    // console.log(nfts);
   }, []);
 
   const AddNewCollection = async () => {
@@ -845,13 +831,14 @@ const SellerNewNFT = () => {
                 </div>
               </div>
 
-              {collections.map((collection) => (
+              {collections.map((collection, index) => (
                 <button
                   className={`flex gap-2 w-full flex-row py-4 border text-gray-800 rounded-xl p-1 px-4 text-md font-bold items-center hover:bg-gray-100 ${
                     selectedCollection === collection._id
                       ? "bg-nft-primary-transparent ring-2 ring-nft-primary-light"
                       : ""
                   }`}
+                  key={index}
                   onClick={() => handleCollectionSelect(collection._id)}
                 >
                   <img

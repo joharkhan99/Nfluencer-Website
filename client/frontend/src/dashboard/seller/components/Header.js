@@ -34,7 +34,7 @@ const Header = () => {
 
   const getBalance = async () => {
     if (isWalletConnected) {
-      const provider = new ethers.BrowserProvider(window.ethereum);
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
       const balance = await provider.getBalance(user.walletAddress);
       setBalance(balance.toString());
     }
