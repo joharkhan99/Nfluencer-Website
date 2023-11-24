@@ -87,6 +87,7 @@ const YourNFTs = ({ user }) => {
 
       // console.log(data);
       console.log(items);
+      items.reverse();
 
       if (items.length >= 1) {
         setFirstNFT(items[0]);
