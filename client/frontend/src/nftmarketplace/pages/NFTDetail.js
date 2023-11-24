@@ -261,7 +261,10 @@ function NFTDetail() {
                 </div>
                 <div className="flex gap-3 flex-row justify-start flex-wrap">
                   {nft.traits.map((trait, index) => (
-                    <div className="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
+                    <div
+                      className="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100"
+                      key={index}
+                    >
                       <div className=" outline-none cursor-pointer bg-transparent">
                         {trait.traitType}: {trait.traitName}
                       </div>

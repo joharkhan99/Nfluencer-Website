@@ -40,8 +40,11 @@ const TopCreators = () => {
 
       <div className="rounded-xl p-0 bg-white">
         <div className="shadow-lg rounded-xl shadow-gray-200">
-          {topCreators.map((creator) => (
-            <div className="flex justify-between items-center text-sm p-2 text-gray-800 hover:bg-gray-100 cursor-pointer py-3">
+          {topCreators.map((creator, index) => (
+            <div
+              className="flex justify-between items-center text-sm p-2 text-gray-800 hover:bg-gray-100 cursor-pointer py-3"
+              key={index}
+            >
               <div className="flex h-full gap-2">
                 <div>
                   <img

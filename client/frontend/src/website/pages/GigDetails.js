@@ -270,8 +270,8 @@ function GigDetails() {
                       className="w-full"
                       selectedTabClassName="p-0 opacity-95 m-0 ring-nft-primary-light"
                     >
-                      {gig.images.map((img) => (
-                        <TabPanel>
+                      {gig.images.map((img, index) => (
+                        <TabPanel key={index}>
                           <div className="rounded-xl overflow-hidden">
                             <img
                               src={img}
@@ -284,8 +284,11 @@ function GigDetails() {
 
                       <div className="flex justify-between items-center">
                         <TabList className="border-b border-gray-100 p-4 flex justify-center items-center w-full gap-4">
-                          {gig.images.map((img) => (
-                            <Tab className="cursor-pointer rounded-xl opacity-40 ring-2">
+                          {gig.images.map((img, index) => (
+                            <Tab
+                              className="cursor-pointer rounded-xl opacity-40 ring-2"
+                              key={index}
+                            >
                               <img
                                 src={img}
                                 alt=""
@@ -539,8 +542,11 @@ function GigDetails() {
                       {/*  */}
                       <div className="w-full">
                         <div className="flex flex-col">
-                          {gig.faqs.map((faq) => (
-                            <div className="border-b p-5 px-1 hover:bg-gray-50">
+                          {gig.faqs.map((faq, index) => (
+                            <div
+                              className="border-b p-5 px-1 hover:bg-gray-50"
+                              key={index}
+                            >
                               <Disclosure>
                                 {({ open }) => (
                                   <>
@@ -865,9 +871,10 @@ function GigDetails() {
                       </h3>
 
                       <div className="flex gap-5">
-                        {gig.keywords.map((keyword) => (
+                        {gig.keywords.map((keyword, index) => (
                           <a
                             href="sd"
+                            key={index}
                             className="bg-gray-100 p-1 text-sm px-3 rounded-lg border border-gray-300 hover:text-nft-primary-light hover:underline"
                           >
                             {keyword}

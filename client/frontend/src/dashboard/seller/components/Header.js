@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+import { MagnifyingGlassIcon, ClipboardIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
@@ -12,10 +12,19 @@ import {
   CreditCardIcon,
 } from "@heroicons/react/24/outline";
 import { ethers } from "ethers";
+import Web3Modal from "web3modal";
+import Web3 from "web3";
 
 const Header = () => {
+  const [balance, setBalance] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
+  const isWalletConnected = useSelector(
+    (state) => state.user.isWalletConnected
+  );
+  const [walletAddress, setWalletAddress] = useState("");
+  const [walletLogo, setWalletLogo] = useState(null);
 
   const logout = () => {
     Cookies.remove("authId");
@@ -25,38 +34,40 @@ const Header = () => {
     navigate("/");
   };
 
-  const user = useSelector((state) => state.user.user);
-  const isWalletConnected = useSelector(
-    (state) => state.user.isWalletConnected
-  );
-  console.log(isWalletConnected);
-  const [balance, setBalance] = useState(0);
-
-  const getBalance = async () => {
-    if (isWalletConnected) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const balance = await provider.getBalance(user.walletAddress);
-      setBalance(balance.toString());
+  const handleCopyToClipboard = async (textToCopy) => {
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+    } catch (err) {
+      console.error("Failed to copy to clipboard:", err);
     }
   };
 
-  const disconnectMetamask = () => {
-    if (window.ethereum) {
-      window.ethereum
-        .send("eth_requestAccounts") // Disconnect by requesting accounts
-        .then(() => {
-          navigate("/seller/nfts");
-          // window.location.reload(); // Refresh the page to clear data/
-        })
-        .catch((error) => {
-          console.error("Error disconnecting Metamask:", error);
-        });
+  const fetchWalletInfo = async () => {
+    try {
+      const w3modal = new Web3Modal();
+      const connection = await w3modal.connect();
+
+      const provider = new ethers.providers.Web3Provider(connection);
+      const signer = provider.getSigner();
+
+      const account = await signer.getAddress();
+
+      // Fetch balance using 'getBalance' method
+      const balance = await provider.getBalance(account);
+      const balanceInEther = ethers.utils.formatEther(balance);
+
+      setWalletAddress(account);
+      setBalance(balanceInEther.substring(0, 6));
+    } catch (error) {
+      console.error("Error fetching wallet information:", error);
     }
   };
 
   useEffect(() => {
-    getBalance();
-  }, []);
+    if (isWalletConnected) {
+      fetchWalletInfo();
+    }
+  }, [isWalletConnected]);
 
   return (
     <>
@@ -118,13 +129,20 @@ const Header = () => {
                             className="w-9 h-9 object-contain"
                           />
                           <div className="font-semibold">
-                            {user.walletAddress.substring(0, 6) +
+                            {walletAddress.substring(0, 6) +
                               "..." +
-                              user.walletAddress.substring(
-                                user.walletAddress.length - 4,
-                                user.walletAddress.length
+                              walletAddress.substring(
+                                walletAddress.length - 4,
+                                walletAddress.length
                               )}
                           </div>
+                          <button
+                            onClick={() => handleCopyToClipboard(walletAddress)}
+                            className="flex gap-1 items-center text-sm bg-nft-primary-transparent p-1 rounded-md text-nft-primary-light font-medium"
+                          >
+                            <ClipboardIcon className="w-3 h-3" />
+                            <span>copy</span>
+                          </button>
                         </div>
 
                         <div className="flex items-center gap-4 p-1 py-3 hover:bg-gray-100 rounded-xl">
@@ -136,17 +154,17 @@ const Header = () => {
                           <div className="font-semibold">Ethereum</div>
                           <div className="bold">·</div>
                           <div className="text-gray-500 font-semibold text-sm">
-                            ${balance} USD
+                            {balance} ETH
                           </div>
                         </div>
 
-                        <button
+                        {/* <button
                           className="flex items-center gap-4 p-1 py-3 hover:bg-gray-100 rounded-xl w-full"
                           onClick={disconnectMetamask}
                         >
                           <ArrowRightOnRectangleIcon className="w-9 h-9 text-gray-600" />
                           <div className="font-semibold">Logout Wallet</div>
-                        </button>
+                        </button> */}
                       </div>
                     </Menu.Item>
                   </div>

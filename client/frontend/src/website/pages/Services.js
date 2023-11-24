@@ -296,8 +296,11 @@ const Services = () => {
 
               {/* <!-- Grid Layout (Cards) --> */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {gigs.map((gig) => (
-                  <div className="decoration-transparent shadow-sm shadow-gray-50 rounded-xl transition-all duration-300 p-0 m-2 block hover:scale-105 transform">
+                {gigs.map((gig, index) => (
+                  <div
+                    className="decoration-transparent shadow-sm shadow-gray-50 rounded-xl transition-all duration-300 p-0 m-2 block hover:scale-105 transform"
+                    key={index}
+                  >
                     <div className="relative shadow-lg rounded-md shadow-gray-200">
                       <div className="max-w-sm rounded-md overflow-hidden pb-2">
                         <div className="absolute top-2 right-2">

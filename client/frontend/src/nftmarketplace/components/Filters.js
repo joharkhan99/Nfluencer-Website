@@ -137,8 +137,8 @@ export default function Filters() {
                       role="list"
                       className="px-2 py-3 font-medium text-gray-900"
                     >
-                      {subCategories.map((category) => (
-                        <li key={category.name}>
+                      {subCategories.map((category, index) => (
+                        <li key={index}>
                           <a href={category.href} className="block px-2 py-3">
                             {category.name}
                           </a>

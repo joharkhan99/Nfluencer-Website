@@ -128,8 +128,11 @@ const YourNFTs = ({ user }) => {
           {firstNFT && <FirstNFT NFT={firstNFT} />}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 my-10">
-            {nfts.map((nft) => (
-              <div className="decoration-transparent shadow-sm shadow-gray-100 rounded-xl transition-all duration-300 p-0 block hover:scale-105 transform bg-white">
+            {nfts.map((nft, index) => (
+              <div
+                className="decoration-transparent shadow-sm shadow-gray-100 rounded-xl transition-all duration-300 p-0 block hover:scale-105 transform bg-white"
+                key={index}
+              >
                 <div className="relative shadow-lg rounded-2xl shadow-gray-200 text-gray-800">
                   <div className="rounded-2xl overflow-hidden">
                     <div className="h-64 w-full relative">

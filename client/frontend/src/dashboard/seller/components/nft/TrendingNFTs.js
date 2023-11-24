@@ -73,8 +73,11 @@ const TrendingNFTs = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
-        {trendingNFTs.map((nft) => (
-          <div className="decoration-transparent shadow-sm shadow-gray-100 rounded-xl transition-all duration-300 p-0 block hover:scale-105 transform bg-white">
+        {trendingNFTs.map((nft, index) => (
+          <div
+            className="decoration-transparent shadow-sm shadow-gray-100 rounded-xl transition-all duration-300 p-0 block hover:scale-105 transform bg-white"
+            key={index}
+          >
             <div className="relative shadow-lg rounded-xl shadow-gray-200 text-gray-800">
               <div className="max-w-sm rounded-xl overflow-hidden p-2">
                 <div className="absolute top-3 right-3">

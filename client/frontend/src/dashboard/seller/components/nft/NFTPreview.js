@@ -99,8 +99,11 @@ const NFTPreview = ({
               </div>
             </div>
 
-            {traits.map((t) => (
-              <div className="p-1 px-2 border-gray-200 border inline-block rounded-full mr-1 mb-1 text-xs font-medium">
+            {traits.map((t, index) => (
+              <div
+                className="p-1 px-2 border-gray-200 border inline-block rounded-full mr-1 mb-1 text-xs font-medium"
+                key={index}
+              >
                 <div className="flex gap-1">
                   <span>{t.traitType}</span>
                   <span>:</span>

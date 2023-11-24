@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   user: null,
   walletAddress: null,
+  isWalletConnected: false,
 };
 
 const userSlice = createSlice({

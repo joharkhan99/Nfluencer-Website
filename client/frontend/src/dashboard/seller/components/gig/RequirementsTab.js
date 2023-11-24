@@ -97,7 +97,10 @@ const RequirementsTab = ({ requirements, setRequirements }) => {
 
           <div className="flex flex-col gap-5">
             {requirements.map((requirement, index) => (
-              <div className="flex justify-between border border-gray-200 items-center p-3 py-4 rounded-xl text-gray-700 ring-2 ring-gray-100 hover:bg-gray-50">
+              <div
+                className="flex justify-between border border-gray-200 items-center p-3 py-4 rounded-xl text-gray-700 ring-2 ring-gray-100 hover:bg-gray-50"
+                key={index}
+              >
                 <div className="font-semibold text-sm">{requirement}</div>
                 <div>
                   <Menu as="div" className="relative inline-block text-left">

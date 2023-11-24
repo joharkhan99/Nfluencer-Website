@@ -154,7 +154,7 @@ const FAQTab = ({ faqs, setFAQs }) => {
               <div className="w-full">
                 <div className="flex flex-col gap-3">
                   {faqs.map((faq, index) => (
-                    <Disclosure>
+                    <Disclosure key={index}>
                       {({ open }) => (
                         <div className="flex justify-between items-start gap-3">
                           <div className="flex-1">

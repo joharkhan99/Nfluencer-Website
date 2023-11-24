@@ -123,11 +123,11 @@ const CryptoWalletsConnect = ({ user }) => {
               </a>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-gray-700 text-sm">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 text-gray-500 font-medium text-xs">
               <div className="text-center w-full flex-1">
                 <img
                   src="https://lh3.googleusercontent.com/QW0gZ3yugzXDvTANa5-cc1EpabQ2MGnl6enW11O6kIerEaBQGOhgyUOvhRedndD9io8RJMmJZfIXq1rMxUsFHS2Ttw=s60"
-                  className="mx-auto"
+                  className="mx-auto mb-2"
                   alt="MetaMask"
                 />
                 <p>MetaMask</p>
@@ -135,7 +135,7 @@ const CryptoWalletsConnect = ({ user }) => {
               <div className="text-center w-full flex-1">
                 <img
                   src="https://lh3.googleusercontent.com/dXvdD2VjLS-imsW8WG2oB3y7sBHhL9gFlv7KZnqZSA9_MU1VROSHRpJidav8-a77uQT1-8X_zK5ibsAC39IFn5tn=s60"
-                  className="mx-auto"
+                  className="mx-auto mb-2"
                   alt="Phantom"
                 />
                 <p>Phantom</p>
@@ -143,7 +143,7 @@ const CryptoWalletsConnect = ({ user }) => {
               <div className="text-center w-full flex-1">
                 <img
                   src="https://lh3.googleusercontent.com/BmQtjccsO615vh8Dnc_SIATj9lQAFzBltJbW15pxEce8c3yHC_iXTn-Pa8_5jXL130l1hEIqiTn5_jUIjR6iNyif=s60"
-                  className="mx-auto"
+                  className="mx-auto mb-2"
                   alt="Crypto.com"
                 />
                 <p>Crypto.com</p>
@@ -151,7 +151,7 @@ const CryptoWalletsConnect = ({ user }) => {
               <div className="text-center w-full flex-1">
                 <img
                   src="https://lh3.googleusercontent.com/HE43gZIKp76W3bCaCbPwiTf8uB__YpY8byc4dkb300gNQGDcAraTM4l1uiwfsjhre9rtsHGiok8d3TY11dirxvLq=s60"
-                  className="mx-auto"
+                  className="mx-auto mb-2"
                   alt="Coinbase"
                 />
                 <p>Coinbase</p>
@@ -159,7 +159,7 @@ const CryptoWalletsConnect = ({ user }) => {
               <div className="text-center w-full flex-1">
                 <img
                   src="https://lh3.googleusercontent.com/np4HOumdAD8htlHsTMiuJz_CyjcWhaG8BUG7WW_GJx7g3nb370MuBYEE8fZbG8bdsBiQZxiX_uJqutp2fn99C7X1uQI=s60"
-                  className="mx-auto"
+                  className="mx-auto mb-2"
                   alt="Trust Wallet"
                 />
                 <p>Trust Wallet</p>
@@ -167,7 +167,7 @@ const CryptoWalletsConnect = ({ user }) => {
               <div className="text-center w-full flex-1">
                 <img
                   src="https://lh3.googleusercontent.com/uSYrwIYFZ-7kwg0-P_0YKubeNhFUN_jGg9J8bPbCOYjwW94jbFCEMqHUaV35sn0bvqujkuy6M72gjIRD4NTCirsQpXc=s60"
-                  className="mx-auto"
+                  className="mx-auto mb-2"
                   alt="Core"
                 />
                 <p>Core</p>
@@ -175,7 +175,7 @@ const CryptoWalletsConnect = ({ user }) => {
               <div className="text-center w-full flex-1">
                 <img
                   src="https://lh3.googleusercontent.com/swyt6mPcoM0CR2sGlvFfIEQp3KcpxFNR3L6yukbNuSHQe9aBNyQwOQ4axVF3nFazaQ4Pr98BI5ZiZNjehwy5PeZR=s60"
-                  className="mx-auto"
+                  className="mx-auto mb-2"
                   alt="Rainbow"
                 />
                 <p>Rainbow</p>
@@ -183,7 +183,7 @@ const CryptoWalletsConnect = ({ user }) => {
               <div className="text-center w-full flex-1">
                 <img
                   src="https://lh3.googleusercontent.com/3IPcfAuQRJip3MVL7DxvkkXPBYmCHpieDbKngiUGN-XQwwDh-jViXidDv9wXXE5FWhvUARmSdh-gBKedfd71Wx9qevo=s60"
-                  className="mx-auto"
+                  className="mx-auto mb-2"
                   alt="Zerion"
                 />
                 <p>Zerion</p>
@@ -191,7 +191,7 @@ const CryptoWalletsConnect = ({ user }) => {
               <div className="text-center w-full flex-1">
                 <img
                   src="https://lh3.googleusercontent.com/FX5p3lkSFGhNy888EmvEzuegJFhTnhB6ZdIAp9UyE_IuOWWVRigyEJeL0hi7cSu-4nApqY-MU3OqdEqROs070c_n=s60"
-                  className="mx-auto"
+                  className="mx-auto mb-2"
                   alt="Exodus"
                 />
                 <p>Exodus</p>

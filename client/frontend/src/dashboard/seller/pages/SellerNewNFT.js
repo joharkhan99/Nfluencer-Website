@@ -729,7 +729,10 @@ const SellerNewNFT = () => {
 
                 <div className="flex  gap-2">
                   {traits.map((trait, index) => (
-                    <div className="justify-between flex items-center bg-gray-50 rounded-xl p-3 gap-3 text-sm">
+                    <div
+                      className="justify-between flex items-center bg-gray-50 rounded-xl p-3 gap-3 text-sm"
+                      key={index}
+                    >
                       <div className="flex gap-1 font-semibold">
                         <span>{trait.traitType}</span>
                         <span>:</span>

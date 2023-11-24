@@ -653,8 +653,11 @@ function Explore() {
                         </div>
 
                         <div className="flex flex-wrap justify-center gap-3">
-                          {nfts.map((nft) => (
-                            <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300">
+                          {nfts.map((nft, index) => (
+                            <div
+                              className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300"
+                              key={index}
+                            >
                               <div className="w-64 ">
                                 <div className="flex justify-between items-center mb-5">
                                   <div className="flex -space-x-2">
