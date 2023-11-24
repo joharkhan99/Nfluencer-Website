@@ -102,7 +102,7 @@ const CryptoWalletsConnect = ({ user }) => {
 
   return (
     <div>
-      <div class="flex items-center justify-center h-full w-full">
+      <div className="flex items-center justify-center h-full w-full">
         <div>
           <div className="bg-white rounded-xl text-gray-800 shadow-lg shadow-gray-200 p-7 max-w-xl">
             <h2 className="text-2xl font-extrabold tracking-tight text-gray-800">

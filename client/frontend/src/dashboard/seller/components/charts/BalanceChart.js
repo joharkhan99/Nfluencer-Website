@@ -37,8 +37,8 @@ const BalanceChart = () => {
         const yValue = series[seriesIndex][dataPointIndex]; // Get the y-value
 
         return (
-          '<div class="p-2 bg-white shadow-none text-center border-none shadow-white">' +
-          `<span class="text-xs font-bold block">$${yValue}</span>` +
+          '<div className="p-2 bg-white shadow-none text-center border-none shadow-white">' +
+          `<span className="text-xs font-bold block">$${yValue}</span>` +
           "</div>"
         );
       },

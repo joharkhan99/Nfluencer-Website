@@ -116,11 +116,11 @@ const YourNFTs = ({ user }) => {
     <>
       {nfts.length > 0 ? (
         <div className="mt-10">
-          <div class="flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <h2 className="text-2xl font-extrabold tracking-tight text-gray-800 mb-7">
               Your NFTs
             </h2>
-            <button class="text-nft-primary-light font-medium text-sm block">
+            <button className="text-nft-primary-light font-medium text-sm block">
               View All
             </button>
           </div>
@@ -192,9 +192,9 @@ const YourNFTs = ({ user }) => {
                           {nft.name}
                         </div>
 
-                        <button class="rounded-xl text-nft-primary-light bg-white p-2 flex gap-1 items-center absolute top-2 right-2 text-sm">
-                          <HeartIcon class="h-5 w-5 fill-nft-primary-light" />
-                          <span class="font-semibold">12</span>
+                        <button className="rounded-xl text-nft-primary-light bg-white p-2 flex gap-1 items-center absolute top-2 right-2 text-sm">
+                          <HeartIcon className="h-5 w-5 fill-nft-primary-light" />
+                          <span className="font-semibold">12</span>
                         </button>
                       </div>
 
@@ -226,11 +226,11 @@ const YourNFTs = ({ user }) => {
                         </div>
                       </div>
 
-                      <div class="flex items-center justify-between gap-3 text-sm">
-                        <button class="bg-gray-200 font-medium p-3 rounded-xl hover:opacity-80 w-full text-gray-800">
+                      <div className="flex items-center justify-between gap-3 text-sm">
+                        <button className="bg-gray-200 font-medium p-3 rounded-xl hover:opacity-80 w-full text-gray-800">
                           Manage
                         </button>
-                        <button class="bg-nft-primary-light border border-nft-primary-light text-white font-medium p-3 rounded-xl hover:opacity-80 w-full">
+                        <button className="bg-nft-primary-light border border-nft-primary-light text-white font-medium p-3 rounded-xl hover:opacity-80 w-full">
                           View Details
                         </button>
                       </div>
@@ -241,15 +241,15 @@ const YourNFTs = ({ user }) => {
             ))}
           </div>
 
-          <div class="flex items-center gap-4 justify-center">
-            <button class="bg-nft-primary-light border border-nft-primary-light text-white font-bold p-3 rounded-xl px-10 hover:opacity-80">
+          <div className="flex items-center gap-4 justify-center">
+            <button className="bg-nft-primary-light border border-nft-primary-light text-white font-bold p-3 rounded-xl px-10 hover:opacity-80">
               View All
             </button>
           </div>
         </div>
       ) : (
         <div className="mt-10">
-          <div class="flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <h2 className="text-2xl font-extrabold tracking-tight text-gray-800">
               Your NFTs
             </h2>
