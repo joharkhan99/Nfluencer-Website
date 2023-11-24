@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { HeartIcon, TrophyIcon } from "@heroicons/react/24/outline";
+import { HeartIcon, TrophyIcon, PlusIcon } from "@heroicons/react/24/outline";
 import FirstNFT from "./FirstNFT";
 import { ethers } from "ethers";
 import axios from "axios";
@@ -10,10 +10,12 @@ import {
   NFTMarketplaceContractABI,
   NFTMarketplaceContractAddress,
 } from "../../../../constants/ContractDetails";
+import { Link } from "react-router-dom";
 
 const YourNFTs = ({ user }) => {
   const [nfts, setNFTs] = useState([]);
   const [firstNFT, setFirstNFT] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   /*
   // fetch all the gigs for the user
@@ -65,6 +67,7 @@ const YourNFTs = ({ user }) => {
   };
 
   const fetchNFTs = async () => {
+    setLoading(true);
     try {
       const web3Modal = new Web3Modal();
       const connection = await web3Modal.connect();
@@ -72,27 +75,17 @@ const YourNFTs = ({ user }) => {
       const signer = provider.getSigner();
 
       const { marketplaceContract, nftContract } = fetchContract(signer);
-
       const data = await marketplaceContract.fetchItemsCreated();
 
       const items = await Promise.all(
         data.map(async (i) => {
           const tokenUri = await nftContract.tokenURI(i.tokenId);
           const meta = await axios.get(tokenUri);
-          console.log(meta);
-          // let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
-          // let item = {
-          //   price,
-          //   tokenId: i.tokenId.toNumber(),
-          //   seller: i.seller,
-          //   owner: i.owner,
-          //   image: meta.data.image,
-          // }
           return meta.data;
         })
       );
 
-      console.log(data);
+      // console.log(data);
       console.log(items);
 
       if (items.length >= 1) {
@@ -102,16 +95,26 @@ const YourNFTs = ({ user }) => {
     } catch (error) {
       console.log(`Error fetching NFTs: ${error}`);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchNFTs();
-    // console.log(nfts);
   }, []);
+
+  const loader = (
+    <div className="flex w-full justify-center items-center m-auto gap-1 flex-col my-10">
+      <div className="border-t-gray-700 border-2 w-7 h-7 flex items-center justify-center rounded-full animate-spin"></div>
+    </div>
+  );
+
+  if (loading) {
+    return loader;
+  }
 
   return (
     <>
-      {nfts && (
+      {nfts.length > 0 ? (
         <div className="mt-10">
           <div class="flex items-center justify-between">
             <h2 className="text-2xl font-extrabold tracking-tight text-gray-800 mb-7">
@@ -239,6 +242,21 @@ const YourNFTs = ({ user }) => {
             <button class="bg-nft-primary-light border border-nft-primary-light text-white font-bold p-3 rounded-xl px-10 hover:opacity-80">
               View All
             </button>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-10">
+          <div class="flex items-center justify-between">
+            <h2 className="text-2xl font-extrabold tracking-tight text-gray-800">
+              Your NFTs
+            </h2>
+            <Link
+              to="/seller/newnft"
+              className="bg-nft-primary-light text-white w-fit p-3 rounded-full text-sm hover:opacity-80 flex items-center gap-2"
+            >
+              <PlusIcon className="w-6 h-6 object-contain" />
+              <span>Create Your First NFT</span>
+            </Link>
           </div>
         </div>
       )}

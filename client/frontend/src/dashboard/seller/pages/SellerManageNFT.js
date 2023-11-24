@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import herobg from "../assets/img/vr-glasses2.PNG";
 import BalanceChart from "../components/charts/BalanceChart";
 import { Link } from "react-router-dom";
@@ -13,6 +13,12 @@ const SellerManageNFT = () => {
   const isWalletConnected = useSelector(
     (state) => state.user.isWalletConnected
   );
+
+  useEffect(() => {
+    window.ethereum.on("accountsChanged", async function (accounts) {
+      window.location.reload();
+    });
+  }, []);
 
   return (
     <div className="w-full">
