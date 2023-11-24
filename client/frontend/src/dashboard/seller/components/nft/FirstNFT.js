@@ -19,13 +19,13 @@ const FirstNFT = ({ NFT }) => {
         <div>
           {NFT.fileType === "image" ? (
             <img
-              src={NFT.file}
+              src={NFT.fileUrl}
               alt=""
               className="w-full h-96 object-cover rounded-2xl"
             />
           ) : (
             <video
-              src={NFT.file}
+              src={NFT.fileUrl}
               alt=""
               className="w-full h-96 object-cover rounded-2xl"
             ></video>
@@ -56,14 +56,14 @@ const FirstNFT = ({ NFT }) => {
 
             <div className="flex items-center justify-start gap-5">
               <img
-                src={NFT.collectionData.image}
+                src={NFT.collection.image}
                 alt=""
                 className="w-14 h-14 rounded-full"
               />
               <div className="flex flex-col">
-                <span className="font-bold">{NFT.collectionData.name}</span>
+                <span className="font-bold">{NFT.collection.name}</span>
                 <span className="text-gray-500 font-medium">
-                  {NFT.collectionData.totalItems} Items
+                  {NFT.collection.totalItems} Items
                 </span>
               </div>
             </div>

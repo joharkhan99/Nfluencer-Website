@@ -60,7 +60,7 @@ const SellerNewNFT = () => {
   const data = encoder.encode(`${projectId}:${projectSecretKey}`);
   const auth = `Basic ${btoa(String.fromCharCode.apply(null, data))}`;
   const subdomain = process.env.REACT_APP_INFURA_SUBDOMAIN;
-  const web3 = new Web3(process.env.REACT_APP_BLOCKCHAIN_NETWORK_LINK);
+  const web3 = new Web3(process.env.REACT_APP_ALCHEMY_SEPOLIA_URL);
 
   const client = ipfsHttpClient({
     host: process.env.REACT_APP_INFURA_HOST,
@@ -304,36 +304,36 @@ const SellerNewNFT = () => {
 
       console.log("Transaction Receipt: ", transactionReceipt);
 
-      await AddTokenToCollection(tokenId);
+      // await AddTokenToCollection(tokenId);
 
       if (transactionReceipt) {
         const logs = transactionReceipt.logs;
-        // const tokenId = web3.utils.hexToNumber(logs[0].topics[3]);
-        // const from = transaction.from;
-        // const to = transaction.to;
+        const tokenId = web3.utils.hexToNumber(logs[0].topics[3]);
+        const from = transaction.from;
+        const to = transaction.to;
 
-        // const data = {
-        //   name,
-        //   description,
-        //   file: fileUrl,
-        //   fileType,
-        //   price,
-        //   currency: "ETH",
-        //   traits,
-        //   selectedCollection,
-        //   royalties,
-        //   from,
-        //   to,
-        //   tokenId,
-        //   creator: user._id,
-        //   transactionHash,
-        //   gasUsed: transactionReceipt.gasUsed,
-        //   effectiveGasPrice: transactionReceipt.effectiveGasPrice,
-        //   blockHash: transactionReceipt.blockHash,
-        //   nftUrl: url,
-        // };
+        const data = {
+          name,
+          description,
+          file: fileUrl,
+          fileType,
+          price,
+          currency: "ETH",
+          traits,
+          selectedCollection,
+          royalties,
+          from,
+          to,
+          tokenId,
+          creator: user._id,
+          transactionHash,
+          gasUsed: transactionReceipt.gasUsed,
+          effectiveGasPrice: transactionReceipt.effectiveGasPrice,
+          blockHash: transactionReceipt.blockHash,
+          nftUrl: url,
+        };
 
-        // saveNFTData(data);
+        saveNFTData(data);
       } else {
         setErrors({ message: "Transaction receipt not found" });
       }
@@ -355,6 +355,7 @@ const SellerNewNFT = () => {
   };
 
   const saveNFTData = async (data) => {
+    setNFTStatusMessage("Saving NFT data...");
     const res = await fetch(`${process.env.REACT_APP_API_URL}/api/nft/`, {
       method: "POST",
       headers: {
