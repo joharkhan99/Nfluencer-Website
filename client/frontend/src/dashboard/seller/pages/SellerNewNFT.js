@@ -265,37 +265,45 @@ const SellerNewNFT = () => {
 
       console.log("Market Transaction: ", transaction);
 
-      // if (transactionReceipt) {
-      //   const logs = transactionReceipt.logs;
-      //   const tokenId = web3.utils.hexToNumber(logs[0].topics[3]);
-      //   const from = transaction.from;
-      //   const to = transaction.to;
+      const transactionHash = transaction.hash;
 
-      //   const data = {
-      //     name,
-      //     description,
-      //     file: fileUrl,
-      //     fileType,
-      //     price,
-      //     currency: "ETH",
-      //     traits,
-      //     selectedCollection,
-      //     royalties,
-      //     from,
-      //     to,
-      //     tokenId,
-      //     creator: user._id,
-      //     transactionHash,
-      //     gasUsed: transactionReceipt.gasUsed,
-      //     effectiveGasPrice: transactionReceipt.effectiveGasPrice,
-      //     blockHash: transactionReceipt.blockHash,
-      //     nftUrl: url,
-      //   };
+      const transactionReceipt = await web3.eth.getTransactionReceipt(
+        transactionHash
+      );
 
-      //   saveNFTData(data);
-      // } else {
-      //   setErrors({ message: "Transaction receipt not found" });
-      // }
+      console.log("Transaction Receipt: ", transactionReceipt);
+
+      if (transactionReceipt) {
+        const logs = transactionReceipt.logs;
+        const tokenId = web3.utils.hexToNumber(logs[0].topics[3]);
+        const from = transaction.from;
+        const to = transaction.to;
+
+        const data = {
+          name,
+          description,
+          file: fileUrl,
+          fileType,
+          price,
+          currency: "ETH",
+          traits,
+          selectedCollection,
+          royalties,
+          from,
+          to,
+          tokenId,
+          creator: user._id,
+          transactionHash,
+          gasUsed: transactionReceipt.gasUsed,
+          effectiveGasPrice: transactionReceipt.effectiveGasPrice,
+          blockHash: transactionReceipt.blockHash,
+          nftUrl: url,
+        };
+
+        saveNFTData(data);
+      } else {
+        setErrors({ message: "Transaction receipt not found" });
+      }
     } catch (error) {
       setErrors({ message: "Error creating sale" });
       console.log(`Error creating sale: ${error}`);
