@@ -165,7 +165,7 @@ const YourNFTs = ({ user }) => {
                                     className="w-5 h-5 object-contain"
                                   />
                                   <span className="font-semibold text-sm">
-                                    {nft.etherPrice} ETH
+                                    {nft.price} ETH
                                   </span>
                                 </span>
                               </div>

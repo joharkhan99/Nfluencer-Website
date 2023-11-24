@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import {
-  HeartIcon,
   PlusIcon,
-  TrophyIcon,
+  ChevronDownIcon,
   XMarkIcon,
+  CheckIcon,
 } from "@heroicons/react/24/outline";
 
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
@@ -20,8 +20,8 @@ import {
   NFTContractAddress,
 } from "../../../constants/ContractDetails";
 import { create as ipfsHttpClient } from "ipfs-http-client";
-import axios from "axios";
 import { Web3 } from "web3";
+import { Listbox, Transition } from "@headlessui/react";
 
 const SellerNewNFT = () => {
   const isWalletConnected = useSelector(
@@ -53,6 +53,16 @@ const SellerNewNFT = () => {
   const [collectionImage, setCollectionImage] = useState(null);
   const [collectionErrors, setCollectionErrors] = useState({});
   const [collections, setCollections] = useState([]);
+
+  const categories = [
+    { name: "Art" },
+    { name: "Gaming" },
+    { name: "Memberships" },
+    { name: "PFPs" },
+    { name: "Photography" },
+    { name: "Music" },
+  ];
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const projectId = process.env.REACT_APP_INFURA_API_KEY;
   const projectSecretKey = process.env.REACT_APP_INFURA_API_KEY_SECRET;
@@ -155,6 +165,11 @@ const SellerNewNFT = () => {
     if (!selectedCollection) {
       errors.selectedCollection = "Please select a collection";
     }
+    if (!selectedCategory) {
+      errors.category = "Please select a category";
+    }
+
+    // console.log(selectedCategory);
 
     setErrors(errors);
     return Object.keys(errors).length === 0;
@@ -206,6 +221,7 @@ const SellerNewNFT = () => {
         fileType,
         price,
         currency: "ETH",
+        category: selectedCategory.name,
         traits,
         collection,
         royalties,
@@ -258,8 +274,6 @@ const SellerNewNFT = () => {
     }
   };
 
-  const AddTokenToCollection = async (tokenId) => {};
-
   // Create Sale
   const createSale = async (url, formInputPrice, fileUrl, isReselling, id) => {
     try {
@@ -271,14 +285,9 @@ const SellerNewNFT = () => {
       let transaction = await nftContract.createToken(url);
       let tx = await transaction.wait();
 
-      // console.log("nft Transaction: ", tx);
-      // console.log("Transaction events: ", tx.events[0]);
       let event = tx.events[0];
       let value = event.args[2];
-      let tokenId = value.toNumber(); //we need to convert it a number
-
-      console.log("Token ID: ", tokenId);
-
+      let tokenId = value.toNumber();
       const _price = ethers.utils.parseUnits(price.toString(), "ether");
 
       let listingPrice = await marketplaceContract.getListingPrice();
@@ -294,8 +303,6 @@ const SellerNewNFT = () => {
 
       await transaction.wait();
 
-      console.log("Market Transaction: ", transaction);
-
       const transactionHash = transaction.hash;
 
       const transactionReceipt = await web3.eth.getTransactionReceipt(
@@ -303,8 +310,6 @@ const SellerNewNFT = () => {
       );
 
       console.log("Transaction Receipt: ", transactionReceipt);
-
-      // await AddTokenToCollection(tokenId);
 
       if (transactionReceipt) {
         const logs = transactionReceipt.logs;
@@ -317,20 +322,23 @@ const SellerNewNFT = () => {
           description,
           file: fileUrl,
           fileType,
-          price,
+          price: price.toString(),
+          etherPrice: web3.utils.fromWei(price, "ether"),
           currency: "ETH",
+          category: selectedCategory.name,
           traits,
-          selectedCollection,
+          collection: selectedCollection,
           royalties,
           from,
           to,
           tokenId,
           creator: user._id,
           transactionHash,
-          gasUsed: transactionReceipt.gasUsed,
-          effectiveGasPrice: transactionReceipt.effectiveGasPrice,
+          gasUsed: transactionReceipt.gasUsed.toString(),
+          effectiveGasPrice: transactionReceipt.effectiveGasPrice.toString(),
           blockHash: transactionReceipt.blockHash,
           nftUrl: url,
+          walletAddress: user.walletAddress,
         };
 
         saveNFTData(data);
@@ -362,29 +370,7 @@ const SellerNewNFT = () => {
         "x-auth-token": user.jwtToken,
         "Content-Type": "application/json",
       },
-
-      body: JSON.stringify({
-        name: data.name,
-        description: data.description,
-        file: data.file,
-        fileType: data.fileType,
-        price: data.price.toString(),
-        etherPrice: web3.utils.fromWei(data.price, "ether"),
-        currency: data.currency,
-        traits: data.traits,
-        collection: data.selectedCollection,
-        royalties: data.royalties,
-        from: data.from,
-        to: data.to,
-        tokenId: data.tokenId,
-        creator: data.creator,
-        transactionHash: data.transactionHash,
-        gasUsed: data.gasUsed.toString(),
-        effectiveGasPrice: data.effectiveGasPrice.toString(),
-        blockHash: data.blockHash,
-        nftUrl: data.nftUrl,
-        walletAddress: user.walletAddress,
-      }),
+      body: JSON.stringify(data),
     });
 
     const responseData = await res.json();
@@ -396,52 +382,6 @@ const SellerNewNFT = () => {
 
     navigate("/seller/nfts");
   };
-
-  const fetchNFTs = async () => {
-    try {
-      const web3Modal = new Web3Modal();
-      const connection = await web3Modal.connect();
-      const provider = new ethers.providers.Web3Provider(connection);
-      const signer = provider.getSigner();
-
-      const { marketplaceContract, nftContract } = fetchContract(signer);
-
-      const data = await marketplaceContract.fetchItemsCreated();
-
-      const items = await Promise.all(
-        data.map(async (i) => {
-          const tokenUri = await nftContract.tokenURI(i.tokenId);
-          const meta = await axios.get(tokenUri);
-          console.log(meta);
-          // let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
-          // let item = {
-          //   price,
-          //   tokenId: i.tokenId.toNumber(),
-          //   seller: i.seller,
-          //   owner: i.owner,
-          //   image: meta.data.image,
-          // }
-          return meta;
-        })
-      );
-
-      console.log(data);
-      console.log(items);
-    } catch (error) {
-      console.log(`Error fetching NFTs: ${error}`);
-    }
-  };
-
-  const [nfts, setNfts] = useState([]);
-
-  useEffect(() => {
-    fetchNFTs().then((nfts) => {
-      console.log(nfts);
-      setNfts(nfts);
-    });
-
-    // console.log(nfts);
-  }, []);
 
   const AddNewCollection = async () => {
     setCollectionErrors({ isloading: true });
@@ -618,21 +558,84 @@ const SellerNewNFT = () => {
               They all serve the same purpose, but each one takes.
             </p>
             <div className="mt-6">
-              <div className="mb-6">
-                <label className="block font-semibold text-sm text-gray-800 mb-2">
-                  Name your item
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Brown Grizzly Bear Smile"
-                  className="w-full rounded-xl border-gray-200 border p-4 outline-none text-sm placeholder:text-gray-400 placeholder:font-medium font-semibold px-5 focus:ring-2 focus:ring-nft-primary-light bg-gray-100 hover:opacity-80 focus:bg-white"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
+              <div className="mb-6 flex justify-between items-center gap-6">
+                <div className="w-full">
+                  <label className="block font-semibold text-sm text-gray-800 mb-2">
+                    Name your item
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Brown Grizzly Bear Smile"
+                    className="w-full rounded-xl border-gray-200 border p-4 outline-none text-sm placeholder:text-gray-400 placeholder:font-medium font-semibold px-5 focus:ring-2 focus:ring-nft-primary-light bg-gray-100 hover:opacity-80 focus:bg-white"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
 
-                {errors.name && (
-                  <div className="text-red-500 text-sm mt-2">{errors.name}</div>
-                )}
+                  {errors.name && (
+                    <div className="text-red-500 text-sm mt-2">
+                      {errors.name}
+                    </div>
+                  )}
+                </div>
+                <div className="w-full">
+                  <label className="block font-semibold text-sm text-gray-800 mb-2">
+                    Choose category
+                  </label>
+                  <Listbox
+                    value={selectedCategory}
+                    onChange={setSelectedCategory}
+                  >
+                    <div className="relative">
+                      <Listbox.Button className="relative cursor-pointer pr-10 text-left sm:text-sm w-full rounded-xl border-gray-200 border p-4 outline-none text-sm font-semibold px-5 focus:ring-2 focus:ring-nft-primary-light bg-gray-100 hover:opacity-80 focus:bg-white">
+                        {selectedCategory !== null ? (
+                          <span className="block truncate">
+                            {selectedCategory.name}
+                          </span>
+                        ) : (
+                          <span className="block truncate text-gray-400 font-medium">
+                            Select a category
+                          </span>
+                        )}
+                        <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                          <ChevronDownIcon
+                            className="h-5 w-5 text-gray-400"
+                            aria-hidden="true"
+                          />
+                        </span>
+                      </Listbox.Button>
+                      <Transition
+                        as={Fragment}
+                        leave="transition ease-in duration-100"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                      >
+                        <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white shadow-md text-sm z-50">
+                          {categories.map((person, personIdx) => (
+                            <Listbox.Option
+                              key={personIdx}
+                              className="text-gray-900 pl-4 hover:bg-gray-200 py-2 cursor-pointer"
+                              value={person}
+                            >
+                              {() => (
+                                <>
+                                  <span className="block truncate">
+                                    {person.name}
+                                  </span>
+                                </>
+                              )}
+                            </Listbox.Option>
+                          ))}
+                        </Listbox.Options>
+                      </Transition>
+                    </div>
+                  </Listbox>
+
+                  {errors.category && (
+                    <div className="text-red-500 text-sm mt-2">
+                      {errors.category}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="mb-6">
@@ -673,6 +676,7 @@ const SellerNewNFT = () => {
                       className="w-full outline-none text-sm placeholder:text-gray-400 placeholder:font-medium font-semibold px-2 pl-10 p-4 focus:ring-2 focus:ring-nft-primary-light focus:bg-white border-gray-200 border rounded-xl bg-gray-100"
                       placeholder="e.g. 17"
                       value={price}
+                      min={0}
                       onChange={(e) => setPrice(e.target.value)}
                     />
                   </div>
@@ -691,6 +695,7 @@ const SellerNewNFT = () => {
                     type="number"
                     className="w-full rounded-xl border-gray-200 border p-4 outline-none text-sm placeholder:text-gray-400 placeholder:font-medium font-semibold px-5 focus:ring-2 focus:ring-nft-primary-light bg-gray-100 hover:opacity-80 focus:bg-white"
                     placeholder="e.g. 12"
+                    min={0}
                     value={royalties}
                     onChange={(e) => setroyalties(e.target.value)}
                   />
@@ -974,6 +979,7 @@ const SellerNewNFT = () => {
             preview={preview}
             traits={traits}
             isVideoFile={isVideoFile}
+            category={selectedCategory ? selectedCategory.name : ""}
           />
         </div>
       </div>

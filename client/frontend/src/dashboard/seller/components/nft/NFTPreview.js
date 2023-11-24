@@ -8,6 +8,7 @@ const NFTPreview = ({
   preview,
   traits,
   isVideoFile,
+  category,
 }) => {
   return (
     <div className="flex flex-wrap justify-center gap-6 sticky top-0">
@@ -60,14 +61,6 @@ const NFTPreview = ({
                 )}
               </div>
             )}
-
-            {/* {preview && (
-              <img
-                src={preview}
-                alt="sd"
-                className="h-full w-full object-cover"
-              />
-            )} */}
           </div>
           <div className="py-2 pt-3">
             <h3 className="text-lg font-bold tracking-tight text-gray-800">
@@ -96,6 +89,12 @@ const NFTPreview = ({
                   <TrophyIcon className="w-5 h-5 text-yellow-500" />
                 </span>
                 <span className="textsm font-semibold">{royalties}%</span>
+              </div>
+
+              <div>
+                <span className="block bg-nft-primary-light text-white p-1 px-2 font-normal text-sm rounded-full">
+                  {category}
+                </span>
               </div>
             </div>
 

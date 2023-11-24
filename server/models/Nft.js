@@ -8,7 +8,8 @@ const nftSchema = new mongoose.Schema(
     fileType: { type: String, required: true },
     price: { type: String, required: true },
     etherPrice: { type: String, required: true },
-    currency: { type: String, required: true }, // Add currency field
+    currency: { type: String, required: true },
+    category: { type: String, required: true },
     royalties: { type: Number, required: true },
     traits: { type: Array, required: true },
     collectionData: {

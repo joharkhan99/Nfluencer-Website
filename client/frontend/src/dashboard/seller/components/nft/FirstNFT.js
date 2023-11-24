@@ -83,9 +83,7 @@ const FirstNFT = ({ NFT }) => {
                     alt=""
                     className="w-8 h-8 object-contain"
                   />
-                  <span className="font-bold text-xl">
-                    {NFT.etherPrice} ETH
-                  </span>
+                  <span className="font-bold text-xl">{NFT.price} ETH</span>
                 </span>
               </div>
               <div className="flex flex-col gap-2">

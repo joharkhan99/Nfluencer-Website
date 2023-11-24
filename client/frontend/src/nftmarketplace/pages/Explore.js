@@ -512,12 +512,15 @@ function Explore() {
                           <Carousel
                             swipeable={true}
                             draggable={true}
-                            showDots={true}
+                            showDots={false}
                             responsive={responsive}
                             infinite={true}
+                            autoPlay={true}
+                            transitionDuration={10000}
+                            pauseOnHover={true}
                             // focusOnSelect={true}
                             dotListclassName="custom-dot-list-style"
-                            itemclassName="carousel-item-padding-40-px pb-5"
+                            itemclassName="carousel-item-padding-40-px"
                           >
                             <a
                               href="#sd"
@@ -571,6 +574,35 @@ function Explore() {
                                       />
                                     </div>
                                     <span className="font-bold">Mark</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </a>
+                            <a
+                              href="#sd"
+                              className="decoration-transparent hover:shadow-xl shadow-lg rounded-xl transition-colors duration-300 p-0 m-2 block pb-1"
+                            >
+                              <div className="relative shadow-sm rounded-xl shadow-gray-100">
+                                <div className="max-w-sm rounded-xl overflow-hidden pb-2">
+                                  <img
+                                    src={require("../assets/nft17.jpg")}
+                                    alt="Card Imagea"
+                                    className="h-40 w-full object-cover"
+                                  />
+                                  <div className="flex items-center justify-start gap-4 px-3">
+                                    <div
+                                      className="rounded-2xl overflow-hidden -mt-3 border-4 border-white"
+                                      style={{ width: "70px", height: "70px" }}
+                                    >
+                                      <img
+                                        src={require("../assets/user3.webp")}
+                                        alt="User Idmage"
+                                        className="w-full h-full object-cover"
+                                      />
+                                    </div>
+                                    <span className="font-bold">
+                                      Will Smith
+                                    </span>
                                   </div>
                                 </div>
                               </div>

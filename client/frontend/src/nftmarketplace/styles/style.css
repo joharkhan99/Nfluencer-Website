@@ -55,10 +55,18 @@
   border-color: #7852f3 !important;
 }
 
+.react-multi-carousel-dot {
+  border-color: rgb(158, 157, 157) !important;
+}
+
 .active-tab-look {
   /* padding: 5px; */
   background: rgb(243 244 246 / var(--tw-border-opacity));
   color: black !important;
+}
+
+.react-multi-carousel-list {
+  padding-bottom: 20px;
 }
 
 /* sort table/stas yable */
