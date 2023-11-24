@@ -6,6 +6,7 @@ import {
   nftDetails,
   addCollection,
   getCollections,
+  getCollection,
 } from "../controllers/NftController.js";
 import authenticate from "../middleware/authenticate.js";
 
@@ -20,5 +21,6 @@ router.post("/user-nfts", fetchUserNFTs);
 router.post("/", createNft);
 router.post("/addCollection", addCollection);
 router.post("/getCollections", getCollections);
+router.post("/getCollection", getCollection);
 
 export default router;

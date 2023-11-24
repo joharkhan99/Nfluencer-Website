@@ -154,6 +154,22 @@ const getCollections = async (req, res) => {
   }
 };
 
+const getCollection = async (req, res) => {
+  const { collectionId } = req.body;
+
+  try {
+    const collection = await Collection.findOne({
+      _id: collectionId,
+    }).exec();
+
+    return res.status(200).json(collection);
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+};
+
 export {
   createNft,
   fetchUserNFTs,
@@ -161,4 +177,5 @@ export {
   nftDetails,
   addCollection,
   getCollections,
+  getCollection,
 };

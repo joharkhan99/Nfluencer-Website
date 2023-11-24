@@ -45,6 +45,7 @@ const SellerNewNFT = () => {
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const [isVideoFile, setIsVideoFile] = useState(false);
+  const [nftStatusMessage, setNFTStatusMessage] = useState("");
 
   const [isNewCollection, setIsNewCollection] = useState(false);
   const [selectedCollection, setSelectedCollection] = useState(null);
@@ -58,11 +59,11 @@ const SellerNewNFT = () => {
   const encoder = new TextEncoder();
   const data = encoder.encode(`${projectId}:${projectSecretKey}`);
   const auth = `Basic ${btoa(String.fromCharCode.apply(null, data))}`;
-  const subdomain = "https://nfluencer.infura-ipfs.io";
+  const subdomain = process.env.REACT_APP_INFURA_SUBDOMAIN;
   const web3 = new Web3(process.env.REACT_APP_BLOCKCHAIN_NETWORK_LINK);
 
   const client = ipfsHttpClient({
-    host: "nfluencer.infura-ipfs.io",
+    host: process.env.REACT_APP_INFURA_HOST,
     port: 5001,
     protocol: "https",
     headers: {
@@ -130,6 +131,7 @@ const SellerNewNFT = () => {
   };
 
   const validateForm = () => {
+    setNFTStatusMessage("Validating...");
     const errors = {};
 
     if (!name) {
@@ -159,6 +161,7 @@ const SellerNewNFT = () => {
   };
 
   const uploadToIPFS = async (file) => {
+    setNFTStatusMessage("Uploading to IPFS...");
     try {
       const added = await client.add({ content: file });
       const url = `${subdomain}/ipfs/${added.path}`;
@@ -169,27 +172,49 @@ const SellerNewNFT = () => {
     }
   };
 
+  const getCollection = async (collectionId) => {
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/nft/getCollection`,
+      {
+        method: "POST",
+        headers: {
+          "x-auth-token": user.jwtToken,
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          collectionId,
+        }),
+      }
+    );
+
+    const responseData = await res.json();
+    console.log(responseData);
+    return responseData;
+  };
+
   // Create NFT
   const createNFT = async (name, price, fileUrl, description, router) => {
+    setNFTStatusMessage("Creating NFT...");
     try {
-      if (!name || !description || !price || !fileUrl) {
-        setErrors({ message: "Please make sure all fields are completed" });
-        return;
-      }
-
+      const collection = await getCollection(selectedCollection);
       const data = JSON.stringify({
         name,
         description,
+        creator: user,
         fileUrl,
         fileType,
         price,
         currency: "ETH",
         traits,
-        selectedCollection,
+        collection,
         royalties,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       });
 
       const added = await client.add(data);
+      console.log("Added file: ", added);
       const url = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;
 
       await createSale(url, price, fileUrl);
@@ -200,6 +225,7 @@ const SellerNewNFT = () => {
   };
 
   const fetchContract = (signerOrProvider) => {
+    setNFTStatusMessage("Fetching contract...");
     const marketplaceContract = new ethers.Contract(
       NFTMarketplaceContractAddress,
       NFTMarketplaceContractABI,
@@ -216,6 +242,7 @@ const SellerNewNFT = () => {
   };
 
   const connectingWithSmartContract = async () => {
+    setNFTStatusMessage("Loading smart contract...");
     try {
       const w3modal = new Web3Modal();
       const connection = await w3modal.connect();
@@ -231,6 +258,8 @@ const SellerNewNFT = () => {
     }
   };
 
+  const AddTokenToCollection = async (tokenId) => {};
+
   // Create Sale
   const createSale = async (url, formInputPrice, fileUrl, isReselling, id) => {
     try {
@@ -238,11 +267,12 @@ const SellerNewNFT = () => {
       const { marketplaceContract, nftContract } =
         await connectingWithSmartContract();
 
+      setNFTStatusMessage("Creating NFT Token...");
       let transaction = await nftContract.createToken(url);
       let tx = await transaction.wait();
 
-      console.log("nft Transaction: ", tx);
-      console.log("Transaction events: ", tx.events[0]);
+      // console.log("nft Transaction: ", tx);
+      // console.log("Transaction events: ", tx.events[0]);
       let event = tx.events[0];
       let value = event.args[2];
       let tokenId = value.toNumber(); //we need to convert it a number
@@ -254,6 +284,7 @@ const SellerNewNFT = () => {
       let listingPrice = await marketplaceContract.getListingPrice();
       listingPrice = listingPrice.toString();
 
+      setNFTStatusMessage("Listing on Marketplace...");
       transaction = await marketplaceContract.createMarketItem(
         nftContract.address,
         tokenId,
@@ -273,34 +304,36 @@ const SellerNewNFT = () => {
 
       console.log("Transaction Receipt: ", transactionReceipt);
 
+      await AddTokenToCollection(tokenId);
+
       if (transactionReceipt) {
         const logs = transactionReceipt.logs;
-        const tokenId = web3.utils.hexToNumber(logs[0].topics[3]);
-        const from = transaction.from;
-        const to = transaction.to;
+        // const tokenId = web3.utils.hexToNumber(logs[0].topics[3]);
+        // const from = transaction.from;
+        // const to = transaction.to;
 
-        const data = {
-          name,
-          description,
-          file: fileUrl,
-          fileType,
-          price,
-          currency: "ETH",
-          traits,
-          selectedCollection,
-          royalties,
-          from,
-          to,
-          tokenId,
-          creator: user._id,
-          transactionHash,
-          gasUsed: transactionReceipt.gasUsed,
-          effectiveGasPrice: transactionReceipt.effectiveGasPrice,
-          blockHash: transactionReceipt.blockHash,
-          nftUrl: url,
-        };
+        // const data = {
+        //   name,
+        //   description,
+        //   file: fileUrl,
+        //   fileType,
+        //   price,
+        //   currency: "ETH",
+        //   traits,
+        //   selectedCollection,
+        //   royalties,
+        //   from,
+        //   to,
+        //   tokenId,
+        //   creator: user._id,
+        //   transactionHash,
+        //   gasUsed: transactionReceipt.gasUsed,
+        //   effectiveGasPrice: transactionReceipt.effectiveGasPrice,
+        //   blockHash: transactionReceipt.blockHash,
+        //   nftUrl: url,
+        // };
 
-        saveNFTData(data);
+        // saveNFTData(data);
       } else {
         setErrors({ message: "Transaction receipt not found" });
       }
@@ -317,6 +350,7 @@ const SellerNewNFT = () => {
       const fileUrl = await uploadToIPFS(image);
       await createNFT(name, price, fileUrl, description, navigate);
     }
+    setNFTStatusMessage("");
     setIsSubmitting(false);
   };
 
@@ -364,15 +398,34 @@ const SellerNewNFT = () => {
 
   const fetchNFTs = async () => {
     try {
-      const provider = new ethers.providers.JsonRpcProvider(
-        "https://eth-sepolia.g.alchemy.com/v2/afK5DQtH4pQHAXdTA8bzZnNwcbWNzCTG"
-      );
-      console.log(provider);
-      const { marketplaceContract } = fetchContract(provider);
-      console.log(marketplaceContract);
+      const web3Modal = new Web3Modal();
+      const connection = await web3Modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
+      const signer = provider.getSigner();
 
-      const data = await marketplaceContract.fetchMarketItems();
+      const { marketplaceContract, nftContract } = fetchContract(signer);
+
+      const data = await marketplaceContract.fetchItemsCreated();
+
+      const items = await Promise.all(
+        data.map(async (i) => {
+          const tokenUri = await nftContract.tokenURI(i.tokenId);
+          const meta = await axios.get(tokenUri);
+          console.log(meta);
+          // let price = ethers.utils.formatUnits(i.price.toString(), 'ether')
+          // let item = {
+          //   price,
+          //   tokenId: i.tokenId.toNumber(),
+          //   seller: i.seller,
+          //   owner: i.owner,
+          //   image: meta.data.image,
+          // }
+          return meta;
+        })
+      );
+
       console.log(data);
+      console.log(items);
     } catch (error) {
       console.log(`Error fetching NFTs: ${error}`);
     }
@@ -892,7 +945,12 @@ const SellerNewNFT = () => {
                     onClick={handleSubmit}
                   >
                     {isSubmitting ? (
-                      <div className="h-5 w-5 mx-auto rounded-full border-t-white border-nft-primary-dark border-2 animate-spin"></div>
+                      <div className="flex gap-2 items-center justify-center">
+                        <div className="h-5 w-5 rounded-full border-t-white border-nft-primary-dark border-2 animate-spin"></div>
+                        <span className="font-normal text-sm">
+                          {nftStatusMessage}
+                        </span>
+                      </div>
                     ) : (
                       <>
                         <span>Create NFT</span>

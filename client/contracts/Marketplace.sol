@@ -13,7 +13,7 @@ contract Marketplace is ReentrancyGuard {
 
     address payable owner; //owner of the smart contract
     //people have to pay to puy their NFT on this marketplace
-    uint256 listingPrice = 0.025 ether;
+    uint256 listingPrice = 0.00001 ether;
 
     constructor() {
         owner = payable(msg.sender);
@@ -105,7 +105,7 @@ contract Marketplace is ReentrancyGuard {
 
         require(
             msg.value == price,
-            "Please submit the asking price in order to complete purchase"
+            "Please make the price to be same as listing price"
         );
 
         //pay the seller the amount
@@ -145,8 +145,8 @@ contract Marketplace is ReentrancyGuard {
         return items; //return array of all unsold items
     }
 
-    /// @notice fetch list of NFTS owned/bought by this user
-    function fetchMyNFTs() public view returns (MarketItem[] memory) {
+    /// @notice fetch list of NFTS purchased by this user
+    function fetchPurchasedNFTs() public view returns (MarketItem[] memory) {
         //get total number of items ever created
         uint totalItemCount = _itemIds.current();
 
@@ -172,7 +172,7 @@ contract Marketplace is ReentrancyGuard {
         return items;
     }
 
-    /// @notice fetch list of NFTS owned/bought by this user
+    /// @notice fetch list of NFTS created by this user
     function fetchItemsCreated() public view returns (MarketItem[] memory) {
         //get total number of items ever created
         uint totalItemCount = _itemIds.current();
