@@ -83,7 +83,7 @@ const YourNFTs = ({ user }) => {
         data.map(async (i) => {
           const tokenUri = await nftContract.tokenURI(i.tokenId);
           const activity = await marketplaceContract.getNFTActivity(i.tokenId);
-          console.log(i.tokenId, activity);
+          console.log(activity);
           const meta = await axios.get(tokenUri);
           return meta.data;
         })

@@ -108,6 +108,23 @@ contract Marketplace is ReentrancyGuard {
 
         // store activity
         // recordActivity(itemId, address(0), msg.sender, "Mint", price);
+        activities[itemId] = Activity(
+            itemId,
+            address(0),
+            msg.sender,
+            "Mint",
+            price,
+            block.timestamp
+        );
+
+        emit ActivityRecorded(
+            itemId,
+            address(0),
+            msg.sender,
+            "Mint",
+            price,
+            block.timestamp
+        );
 
         //log this transaction
         emit MarketItemCreated(
@@ -129,7 +146,7 @@ contract Marketplace is ReentrancyGuard {
         address to,
         string memory eventType,
         uint256 price
-    ) public payable nonReentrant {
+    ) internal {
         activities[itemId] = Activity(
             itemId,
             from,
