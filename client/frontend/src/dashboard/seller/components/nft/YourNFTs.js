@@ -82,18 +82,18 @@ const YourNFTs = ({ user }) => {
       const items = await Promise.all(
         data.map(async (i) => {
           const tokenUri = await nftContract.tokenURI(i.tokenId);
-          const nftDetails = await marketplaceContract.getNFTDetails(i.tokenId);
-          console.log(nftDetails);
+          const activity = await marketplaceContract.getNFTActivity(i.tokenId);
+          console.log(i.tokenId, activity);
           const meta = await axios.get(tokenUri);
           return meta.data;
         })
       );
 
       // console.log(data);
-      console.log(items);
       items.reverse();
+      console.log(items);
 
-      if (items.length >= 1) {
+      if (items.length > 0) {
         setFirstNFT(items[0]);
       }
       setNFTs(items.slice(1));
@@ -119,7 +119,7 @@ const YourNFTs = ({ user }) => {
 
   return (
     <>
-      {nfts.length > 0 ? (
+      {nfts.length > 0 || firstNFT ? (
         <div className="mt-10">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-extrabold tracking-tight text-gray-800 mb-7">
