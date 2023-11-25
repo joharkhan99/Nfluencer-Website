@@ -31,6 +31,7 @@ const nftSchema = new mongoose.Schema(
     blockHash: { type: String, required: true },
     nftUrl: { type: String, required: true },
     walletAddress: { type: String, required: true },
+    isRewardItem: { type: Boolean, required: true },
   },
   {
     timestamps: true,

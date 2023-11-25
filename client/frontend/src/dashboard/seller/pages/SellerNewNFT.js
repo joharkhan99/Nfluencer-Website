@@ -240,6 +240,108 @@ const SellerNewNFT = () => {
     }
   };
 
+  // Create Sale
+  const createSale = async (url, formInputPrice, fileUrl, isReselling, id) => {
+    try {
+      const price = ethers.utils.parseUnits(formInputPrice.toString(), "ether");
+      const { marketplaceContract, nftContract } =
+        await connectingWithSmartContract();
+
+      setNFTStatusMessage("Creating NFT Token...");
+      let transaction = await nftContract.createToken(url);
+      let tx = await transaction.wait();
+
+      let event = tx.events[0];
+      let value = event.args[2];
+      let tokenId = value.toNumber();
+      const _price = ethers.utils.parseUnits(price.toString(), "ether");
+
+      let listingPrice = await marketplaceContract.getListingPrice();
+      listingPrice = listingPrice.toString();
+
+      setNFTStatusMessage("Listing on Marketplace...");
+      transaction = await marketplaceContract.createMarketItem(
+        nftContract.address,
+        tokenId,
+        _price,
+        false, //isreward item field
+        { value: listingPrice }
+      );
+
+      await transaction.wait();
+
+      const transactionHash = transaction.hash;
+
+      const transactionReceipt = await web3.eth.getTransactionReceipt(
+        transactionHash
+      );
+
+      console.log("Transaction Receipt: ", transactionReceipt);
+
+      if (transactionReceipt) {
+        const logs = transactionReceipt.logs;
+        // const tokenId = web3.utils.hexToNumber(logs[0].topics[3]);
+        const from = transaction.from;
+        const to = transaction.to;
+
+        const data = {
+          name,
+          description,
+          file: fileUrl,
+          fileType,
+          price: price.toString(),
+          etherPrice: web3.utils.fromWei(price, "ether").toString(),
+          currency: "ETH",
+          category: selectedCategory.name,
+          traits,
+          collection: selectedCollection,
+          royalties,
+          from,
+          to,
+          tokenId,
+          creator: user._id,
+          transactionHash,
+          gasUsed: transactionReceipt.gasUsed.toString(),
+          effectiveGasPrice: transactionReceipt.effectiveGasPrice.toString(),
+          blockHash: transactionReceipt.blockHash,
+          nftUrl: url,
+          walletAddress: user.walletAddress,
+          isRewardItem: false,
+        };
+
+        console.log("NFT Data: ", data);
+
+        await saveNFTData(data);
+      } else {
+        setErrors({ message: "Transaction receipt not found" });
+      }
+    } catch (error) {
+      setErrors({ message: "Error creating sale" });
+      console.log(`Error creating sale: ${error}`);
+    }
+  };
+
+  const saveNFTData = async (data) => {
+    setNFTStatusMessage("Saving NFT data...");
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/nft/`, {
+      method: "POST",
+      headers: {
+        "x-auth-token": user.jwtToken,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const responseData = await res.json();
+    console.log(responseData);
+    if (responseData.error) {
+      setErrors({ message: responseData.message });
+      return;
+    }
+
+    navigate("/seller/nfts");
+  };
+
   const fetchContract = (signerOrProvider) => {
     setNFTStatusMessage("Fetching contract...");
     const marketplaceContract = new ethers.Contract(
@@ -274,83 +376,6 @@ const SellerNewNFT = () => {
     }
   };
 
-  // Create Sale
-  const createSale = async (url, formInputPrice, fileUrl, isReselling, id) => {
-    try {
-      const price = ethers.utils.parseUnits(formInputPrice.toString(), "ether");
-      const { marketplaceContract, nftContract } =
-        await connectingWithSmartContract();
-
-      setNFTStatusMessage("Creating NFT Token...");
-      let transaction = await nftContract.createToken(url);
-      let tx = await transaction.wait();
-
-      let event = tx.events[0];
-      let value = event.args[2];
-      let tokenId = value.toNumber();
-      const _price = ethers.utils.parseUnits(price.toString(), "ether");
-
-      let listingPrice = await marketplaceContract.getListingPrice();
-      listingPrice = listingPrice.toString();
-
-      setNFTStatusMessage("Listing on Marketplace...");
-      transaction = await marketplaceContract.createMarketItem(
-        nftContract.address,
-        tokenId,
-        _price,
-        { value: listingPrice }
-      );
-
-      await transaction.wait();
-
-      const transactionHash = transaction.hash;
-
-      const transactionReceipt = await web3.eth.getTransactionReceipt(
-        transactionHash
-      );
-
-      console.log("Transaction Receipt: ", transactionReceipt);
-
-      if (transactionReceipt) {
-        const logs = transactionReceipt.logs;
-        const tokenId = web3.utils.hexToNumber(logs[0].topics[3]);
-        const from = transaction.from;
-        const to = transaction.to;
-
-        const data = {
-          name,
-          description,
-          file: fileUrl,
-          fileType,
-          price: price.toString(),
-          etherPrice: web3.utils.fromWei(price, "ether"),
-          currency: "ETH",
-          category: selectedCategory.name,
-          traits,
-          collection: selectedCollection,
-          royalties,
-          from,
-          to,
-          tokenId,
-          creator: user._id,
-          transactionHash,
-          gasUsed: transactionReceipt.gasUsed.toString(),
-          effectiveGasPrice: transactionReceipt.effectiveGasPrice.toString(),
-          blockHash: transactionReceipt.blockHash,
-          nftUrl: url,
-          walletAddress: user.walletAddress,
-        };
-
-        saveNFTData(data);
-      } else {
-        setErrors({ message: "Transaction receipt not found" });
-      }
-    } catch (error) {
-      setErrors({ message: "Error creating sale" });
-      console.log(`Error creating sale: ${error}`);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -360,27 +385,6 @@ const SellerNewNFT = () => {
     }
     setNFTStatusMessage("");
     setIsSubmitting(false);
-  };
-
-  const saveNFTData = async (data) => {
-    setNFTStatusMessage("Saving NFT data...");
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/api/nft/`, {
-      method: "POST",
-      headers: {
-        "x-auth-token": user.jwtToken,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    const responseData = await res.json();
-    console.log(responseData);
-    if (responseData.error) {
-      setErrors({ message: responseData.message });
-      return;
-    }
-
-    navigate("/seller/nfts");
   };
 
   const AddNewCollection = async () => {

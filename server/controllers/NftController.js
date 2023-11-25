@@ -37,6 +37,7 @@ const createNft = async (req, res) => {
       blockHash,
       nftUrl,
       walletAddress,
+      isRewardItem,
     } = req.body;
 
     // Create a new NFT instance
@@ -62,6 +63,7 @@ const createNft = async (req, res) => {
       blockHash,
       nftUrl,
       walletAddress,
+      isRewardItem,
     });
 
     const savedNFT = await newNFT.save();
