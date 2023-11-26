@@ -7,6 +7,7 @@ import TopCreators from "../components/nft/TopCreators";
 import YourNFTs from "../components/nft/YourNFTs";
 import CryptoWalletsConnect from "../components/nft/CryptoWalletsConnect";
 import { useSelector } from "react-redux";
+import PurchasedNFTs from "../components/nft/PurchasedNFTs";
 
 const SellerManageNFT = () => {
   const user = useSelector((state) => state.user.user);
@@ -80,6 +81,8 @@ const SellerManageNFT = () => {
           </div>
 
           <YourNFTs user={user} />
+
+          <PurchasedNFTs user={user} />
         </div>
       ) : (
         <CryptoWalletsConnect user={user} />

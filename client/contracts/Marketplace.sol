@@ -242,4 +242,71 @@ contract Marketplace is ReentrancyGuard {
         require(itemId > 0 && itemId <= _itemIds.current(), "Invalid Item ID");
         return marketItems[itemId];
     }
+
+    /// @notice function to buy an NFT
+    function buyMarketItem(uint256 tokenId) public payable {
+        uint256 price = marketItems[tokenId].price;
+
+        marketItems[tokenId].owner = payable(msg.sender);
+        marketItems[tokenId].seller = payable(address(0));
+        marketItems[tokenId].sold = true;
+
+        _itemsSold.increment();
+
+        addActivity(tokenId, address(0), msg.sender, "Sale", price);
+        //transfer ownership of the nft to the buyer
+        IERC721(marketItems[tokenId].nftContract).transferFrom(
+            address(this),
+            msg.sender,
+            marketItems[tokenId].tokenId
+        );
+        addActivity(tokenId, address(0), msg.sender, "Transfer", price);
+
+        payable(owner).transfer(listingPrice);
+        payable(marketItems[tokenId].seller).transfer(msg.value);
+    }
+
+    /// @notice function to resell an NFT
+    function resellToken(uint256 tokenId, uint256 price) public payable {
+        require(
+            marketItems[tokenId].owner == msg.sender,
+            "Only item owner can perform this operation"
+        );
+        // require(
+        //     msg.value == listingPrice,
+        //     "Price must be equal to listing price"
+        // );
+        marketItems[tokenId].sold = false;
+        marketItems[tokenId].price = price;
+        marketItems[tokenId].seller = payable(msg.sender);
+        marketItems[tokenId].owner = payable(address(this));
+        _itemsSold.decrement();
+
+        // approve the contract to transfer the token
+        IERC721(marketItems[tokenId].nftContract).approve(
+            address(this),
+            marketItems[tokenId].tokenId
+        );
+
+        //transfer ownership of the nft to the contract itself
+        IERC721(marketItems[tokenId].nftContract).transferFrom(
+            msg.sender,
+            address(this),
+            marketItems[tokenId].tokenId
+        );
+        addActivity(tokenId, address(0), msg.sender, "List", price);
+        // emit MarketItemCreated(
+        //         marketItems[tokenId].itemId,
+        //         marketItems[tokenId].nftContract,
+        //         marketItems[tokenId].tokenId,
+        //         msg.sender,
+        //         address(0),
+        //         marketItems[tokenId].creator,
+        //         price,
+        //         false,
+        //         marketItems[tokenId].isRewardItem,
+        //         0,
+        //         0
+        //     );
+    }
 }

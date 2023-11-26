@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { HeartIcon, TrophyIcon, PlusIcon } from "@heroicons/react/24/outline";
-import FirstNFT from "./FirstNFT";
+import {
+  HeartIcon,
+  TrophyIcon,
+  ArrowUpRightIcon,
+} from "@heroicons/react/24/outline";
 import { ethers } from "ethers";
 import axios from "axios";
 import Web3Modal from "web3modal";
@@ -12,9 +15,8 @@ import {
 } from "../../../../constants/ContractDetails";
 import { Link } from "react-router-dom";
 
-const YourNFTs = ({ user }) => {
+const PurchasedNFTs = ({ user }) => {
   const [nfts, setNFTs] = useState([]);
-  const [firstNFT, setFirstNFT] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fetchContract = (signerOrProvider) => {
@@ -42,7 +44,7 @@ const YourNFTs = ({ user }) => {
       const signer = provider.getSigner();
 
       const { marketplaceContract, nftContract } = fetchContract(signer);
-      const data = await marketplaceContract.fetchItemsCreated();
+      const data = await marketplaceContract.fetchPurchasedNFTs();
 
       console.log(data);
 
@@ -63,11 +65,7 @@ const YourNFTs = ({ user }) => {
       // console.log(data);
       items.reverse();
       console.log(items);
-
-      if (items.length > 0) {
-        setFirstNFT(items[0]);
-      }
-      setNFTs(items.slice(1));
+      setNFTs(items);
     } catch (error) {
       console.log(`Error fetching NFTs: ${error}`);
     }
@@ -78,8 +76,7 @@ const YourNFTs = ({ user }) => {
     fetchNFTs();
   }, []);
 
-  const likeNFT = async (tokenId) => {
-    setLoading(true);
+  const resellNFT = async (tokenId) => {
     try {
       const web3Modal = new Web3Modal();
       const connection = await web3Modal.connect();
@@ -88,23 +85,16 @@ const YourNFTs = ({ user }) => {
 
       const { marketplaceContract } = fetchContract(signer);
 
-      const act = await marketplaceContract.getActivities(tokenId);
-      const purchased = await marketplaceContract.fetchPurchasedNFTs();
-
-      console.log(act);
-      console.log(purchased);
-
-      // await marketplaceContract.incrementLikes(tokenId);
-      // console.log(act);
+      const price = ethers.utils.parseUnits("0.00001", "ether");
+      console.log(price);
+      const transaction = await marketplaceContract.resellToken(tokenId, price);
+      await transaction.wait();
+      console.log("Transaction mined", transaction);
+      fetchNFTs();
     } catch (error) {
-      console.log(`Error fetching NFTs: ${error}`);
+      console.log(`Error listing NFT: ${error}`);
     }
-    setLoading(false);
   };
-
-  useEffect(() => {
-    likeNFT(2);
-  }, []);
 
   const loader = (
     <div className="flex w-full justify-center items-center m-auto gap-1 flex-col my-10">
@@ -118,19 +108,16 @@ const YourNFTs = ({ user }) => {
 
   return (
     <>
-      {nfts.length > 0 || firstNFT ? (
+      {nfts.length > 0 ? (
         <div className="mt-10">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-extrabold tracking-tight text-gray-800 mb-7">
-              Your NFTs
+              Purchased NFTs
             </h2>
             <button className="text-nft-primary-light font-medium text-sm block">
               View All
             </button>
-            <button onClick={() => likeNFT(firstNFT.tokenId)}>Like</button>
           </div>
-
-          {firstNFT && <FirstNFT NFT={firstNFT} />}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 my-10">
             {nfts.map((nft, index) => (
@@ -232,10 +219,13 @@ const YourNFTs = ({ user }) => {
                       </div>
 
                       <div className="flex items-center justify-between gap-3 text-sm">
-                        <button className="bg-gray-200 font-medium p-3 rounded-xl hover:opacity-80 w-full text-gray-800">
-                          Manage
+                        <button
+                          className="bg-nft-primary-light border border-nft-primary-light text-white font-medium p-3 rounded-xl hover:opacity-80 w-full"
+                          onClick={() => resellNFT(nft.tokenId)}
+                        >
+                          Resell NFT
                         </button>
-                        <button className="bg-nft-primary-light border border-nft-primary-light text-white font-medium p-3 rounded-xl hover:opacity-80 w-full">
+                        <button className="bg-gray-200 font-medium p-3 rounded-xl hover:opacity-80 w-full text-gray-800">
                           View Details
                         </button>
                       </div>
@@ -256,14 +246,14 @@ const YourNFTs = ({ user }) => {
         <div className="mt-10">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-extrabold tracking-tight text-gray-800">
-              Your NFTs
+              Purchased NFTs
             </h2>
             <Link
               to="/seller/newnft"
               className="bg-nft-primary-light text-white w-fit p-3 rounded-full text-sm hover:opacity-80 flex items-center gap-2"
             >
-              <PlusIcon className="w-6 h-6 object-contain" />
-              <span>Create Your First NFT</span>
+              <span>Explore NFTs Now</span>
+              <ArrowUpRightIcon className="w-6 h-6 object-contain" />
             </Link>
           </div>
         </div>
@@ -272,4 +262,4 @@ const YourNFTs = ({ user }) => {
   );
 };
 
-export default YourNFTs;
+export default PurchasedNFTs;

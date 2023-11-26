@@ -5,6 +5,17 @@ import Footer from "../components/Footer";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import Carousel from "react-multi-carousel";
 import { Link } from "react-router-dom";
+import { Web3 } from "web3";
+import {
+  NFTMarketplaceContractABI,
+  NFTMarketplaceContractAddress,
+  NFTContractAddress,
+  NFTContractABI,
+} from "../../constants/ContractDetails";
+import { ethers } from "ethers";
+import axios from "axios";
+import { HeartIcon } from "@heroicons/react/24/solid";
+import Web3Modal from "web3modal";
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -66,27 +77,86 @@ function Explore() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const [nfts, setNFTs] = useState([]);
+  const fetchContract = (signerOrProvider) => {
+    const marketplaceContract = new ethers.Contract(
+      NFTMarketplaceContractAddress,
+      NFTMarketplaceContractABI,
+      signerOrProvider
+    );
+
+    const nftContract = new ethers.Contract(
+      NFTContractAddress,
+      NFTContractABI,
+      signerOrProvider
+    );
+
+    return { marketplaceContract, nftContract };
+  };
 
   const fetchNFTs = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/nft/getallnfts`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-      const data = await response.json();
-      console.log(data);
-      setNFTs(data);
-    } catch (error) {
-      console.error(error);
-    }
+    const web3 = new Web3(window.ethereum);
+    // await window.ethereum.enable();
+
+    const provider = new ethers.providers.JsonRpcProvider(
+      process.env.REACT_APP_ALCHEMY_SEPOLIA_URL
+    );
+
+    const { marketplaceContract, nftContract } = fetchContract(provider);
+
+    const fetchedMarketItems = await marketplaceContract.fetchMarketItems();
+
+    const items = await Promise.all(
+      fetchedMarketItems.map(async (i) => {
+        const tokenUri = await nftContract.tokenURI(i.tokenId);
+        const meta = await axios.get(tokenUri);
+        return {
+          ...meta.data,
+          likes: i.likes.toString(),
+          tokenId: i.tokenId.toString(),
+        };
+      })
+    );
+
+    items.reverse();
+    setNFTs(items);
+    console.log(items);
   };
 
   useEffect(() => {
     fetchNFTs();
   }, []);
+
+  //   // Buy NFT
+  const connectingWithSmartContract = async () => {
+    try {
+      const w3modal = new Web3Modal();
+      const connection = await w3modal.connect();
+      // setNFTStatusMessage("Opening Modal...");
+
+      const provider = new ethers.providers.Web3Provider(connection);
+      const signer = await provider.getSigner();
+
+      const { marketplaceContract, nftContract } = fetchContract(signer);
+      return { marketplaceContract, nftContract };
+    } catch (error) {
+      // setErrors({ message: "Error connecting with smart contract" });
+      console.log(`Error connecting with smart contract: ${error}`);
+    }
+  };
+
+  const buyNFT = async (nft) => {
+    try {
+      const { marketplaceContract } = await connectingWithSmartContract();
+      const price = ethers.utils.parseUnits(nft.price.toString(), "ether");
+      const transaction = await marketplaceContract.buyMarketItem(nft.tokenId, {
+        value: price,
+      });
+      await transaction.wait();
+      fetchNFTs();
+    } catch (error) {
+      console.log(`Error buying NFT: ${error}`);
+    }
+  };
 
   const responsive = {
     desktop: {
@@ -684,97 +754,97 @@ function Explore() {
                           </div>
                         </div>
 
-                        <div className="flex flex-wrap justify-center gap-3">
+                        <div className="flex flex-wrap justify-start">
                           {nfts.map((nft, index) => (
                             <div
-                              className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300"
+                              className="w-full sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/3 p-2"
                               key={index}
                             >
-                              <div className="w-64 ">
-                                <div className="flex justify-between items-center mb-5">
-                                  <div className="flex -space-x-2">
-                                    <img
-                                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                      src={require("../assets/user1.jpeg")}
-                                      alt="User Imageas"
-                                    />
-                                    <img
-                                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                      src={require("../assets/user2.jpeg")}
-                                      alt="User Imageas"
-                                    />
-                                    <img
-                                      className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                                      src={require("../assets/user3.webp")}
-                                      alt="User Imageas"
-                                    />
-                                  </div>
-                                  <div className="flex items-center justify-center">
-                                    <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
-                                      <span>···</span>
-                                    </button>
-                                  </div>
-                                </div>
+                              <div className="w-full h-full decoration-transparent rounded-xl shadow-xl transition-colors duration-300 relative group">
                                 <div
-                                  className="h-auto rounded-xl bg-gray-200 overflow-hidden"
+                                  className="h-auto bg-gray-100 overflow-hidden rounded-t-xl"
                                   style={{ height: "300px" }}
                                 >
-                                  <img
-                                    src={nft.image}
-                                    alt={nft.name}
-                                    className="h-full w-full object-cover"
-                                  />
-                                </div>
-                                <div className="py-2 pt-3">
-                                  <h3 className="text-xl font-bold tracking-tight text-black">
-                                    {nft.name}
-                                  </h3>
-                                  <div className="flex items-center text-gray-500 text-sm mt-2">
+                                  {nft.fileType === "image" ? (
                                     <img
-                                      src={require("../assets/eth.png")}
-                                      alt="sd"
-                                      className="h-5 w-5 object-contain"
+                                      src={nft.fileUrl}
+                                      alt={nft.name}
+                                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                     />
-                                    <span className="pl-2">
-                                      from{" "}
-                                      <span className="font-bold text-sm text-black">
-                                        {nft.price} ETH
+                                  ) : (
+                                    <video controls width="100%" height="100%">
+                                      <source
+                                        src={nft.fileUrl}
+                                        type="video/mp4"
+                                      />
+                                      Your browser does not support the video
+                                      tag.
+                                    </video>
+                                  )}
+                                </div>
+                                <div className="p-2">
+                                  <div className="p-2">
+                                    <h3 className="text-xl font-bold tracking-tight text-black">
+                                      {nft.name}
+                                    </h3>
+                                    <div className="flex items-center text-gray-500 text-sm mt-2">
+                                      <img
+                                        src={require("../assets/eth.png")}
+                                        alt="sd"
+                                        className="h-5 w-5 object-contain"
+                                      />
+                                      <span className="pl-2">
+                                        from{" "}
+                                        <span className="font-bold text-sm text-black">
+                                          {nft.price} ETH
+                                        </span>
                                       </span>
-                                    </span>
-                                  </div>
-                                  <div className="flex justify-between items-center mt-5">
-                                    <div>
-                                      <Link
-                                        to={`/nftdetails/${nft.name
-                                          .replace(/[^a-zA-Z0-9-]+/g, "-")
-                                          .replace(/-+/g, "-")
-                                          .toLowerCase()}/${nft._id}`}
-                                        className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm"
-                                      >
-                                        Buy Now
-                                      </Link>
                                     </div>
-                                    <div className="flex items-center">
-                                      <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth={1.5}
-                                        stroke="currentColor"
-                                        className="w-4 h-4"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                                        />
-                                      </svg>
-                                      <span className="pl-1 font-bold text-sm">
-                                        10
-                                      </span>
+                                  </div>
+
+                                  <div class="flex items-center justify-between gap-1 text-sm mt-4 text-center">
+                                    <button
+                                      class="bg-nft-primary-light border-nft-primary-light text-white font-medium p-4 rounded-xl hover:bg-nft-primary-dark w-full"
+                                      onClick={() => buyNFT(nft)}
+                                    >
+                                      Buy Now
+                                    </button>
+                                    <Link
+                                      class="bg-gray-200 font-medium p-4 rounded-xl hover:bg-gray-300 w-full text-gray-800"
+                                      to={`/nftdetails/${nft.name
+                                        .replace(/[^a-zA-Z0-9-]+/g, "-")
+                                        .replace(/-+/g, "-")
+                                        .toLowerCase()}/${nft._id}`}
+                                    >
+                                      View Details
+                                    </Link>
+                                  </div>
+                                </div>
+
+                                <div className="absolute top-2 left-2">
+                                  <div className="bg-white rounded-full bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-50 text-black overflow-hidden p-2">
+                                    <div>
+                                      <div className="flex rounded-2xl justify-evenly items-center">
+                                        <div className="flex flex-col gap-1 items-center">
+                                          <span className="flex gap-1">
+                                            <img
+                                              src={require("../assets/eth.png")}
+                                              alt=""
+                                              className="w-5 h-5 object-contain"
+                                            />
+                                          </span>
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
+
+                                <button class="rounded-xl text-nft-primary-light bg-white p-2 flex gap-1 items-center absolute top-2 right-2 text-sm">
+                                  <HeartIcon className="w-5 h-5" />
+                                  <span class="font-semibold text-gray-700">
+                                    12
+                                  </span>
+                                </button>
                               </div>
                             </div>
                           ))}
