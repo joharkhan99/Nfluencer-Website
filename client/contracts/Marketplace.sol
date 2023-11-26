@@ -34,9 +34,12 @@ contract Marketplace is ReentrancyGuard {
         uint256 tokenId;
         address payable seller; //person selling the nft
         address payable owner; //owner of the nft
+        address payable creator; //creator of the nft
         uint256 price;
         bool sold;
         bool isRewardItem;
+        uint likes;
+        uint views;
     }
 
     //a way to access values of the MarketItem struct above by passing an integer ID
@@ -50,9 +53,12 @@ contract Marketplace is ReentrancyGuard {
         uint256 indexed tokenId,
         address seller,
         address owner,
+        address creator,
         uint256 price,
         bool sold,
-        bool isRewardItem
+        bool isRewardItem,
+        uint likes,
+        uint views
     );
 
     event ActivityRecorded(
@@ -63,6 +69,36 @@ contract Marketplace is ReentrancyGuard {
         uint256 price,
         uint256 timestamp
     );
+
+    /// @notice item likes gettters and setters
+    function getItemLikes(uint256 itemId) public view returns (uint) {
+        return marketItems[itemId].likes;
+    }
+
+    function incrementItemLikes(uint256 itemId) public returns (uint) {
+        marketItems[itemId].likes += 1;
+        return marketItems[itemId].likes;
+    }
+
+    function decrementItemLikes(uint256 itemId) public returns (uint) {
+        marketItems[itemId].likes -= 1;
+        return marketItems[itemId].likes;
+    }
+
+    /// @notice item views gettters and setters
+    function getItemViews(uint256 itemId) public view returns (uint) {
+        return marketItems[itemId].views;
+    }
+
+    function incrementItemViews(uint256 itemId) public returns (uint) {
+        marketItems[itemId].views += 1;
+        return marketItems[itemId].views;
+    }
+
+    function decrementItemViews(uint256 itemId) public returns (uint) {
+        marketItems[itemId].views -= 1;
+        return marketItems[itemId].views;
+    }
 
     /// @notice function to get listingprice
     function getListingPrice() public view returns (uint256) {
@@ -98,9 +134,12 @@ contract Marketplace is ReentrancyGuard {
             tokenId,
             payable(msg.sender), //address of the seller putting the nft up for sale
             payable(address(0)), //no owner yet (set owner to empty address)
+            payable(msg.sender), //address of the creator of the nft
             price,
             false,
-            isRewardItem
+            isRewardItem,
+            0,
+            0
         );
 
         //transfer ownership of the nft to the contract itself
@@ -133,9 +172,12 @@ contract Marketplace is ReentrancyGuard {
             tokenId,
             msg.sender,
             address(0),
+            msg.sender,
             price,
             false,
-            isRewardItem
+            isRewardItem,
+            0,
+            0
         );
     }
 

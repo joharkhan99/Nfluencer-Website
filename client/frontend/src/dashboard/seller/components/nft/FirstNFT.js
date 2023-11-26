@@ -44,7 +44,7 @@ const FirstNFT = ({ NFT }) => {
               <img
                 src={NFT.creator.avatar}
                 alt=""
-                className="w-14 h-14 rounded-full"
+                className="w-14 h-14 rounded-full object-cover"
               />
               <div className="flex flex-col">
                 <span className="font-bold">{NFT.creator.name}</span>
@@ -58,7 +58,7 @@ const FirstNFT = ({ NFT }) => {
               <img
                 src={NFT.collection.image}
                 alt=""
-                className="w-14 h-14 rounded-full"
+                className="w-14 h-14 rounded-full object-cover"
               />
               <div className="flex flex-col">
                 <span className="font-bold">{NFT.collection.name}</span>
@@ -114,7 +114,7 @@ const FirstNFT = ({ NFT }) => {
           <div className="flex items-center gap-5 mt-2">
             <button className="rounded-xl text-nft-primary-light bg-purple-200 p-3 flex gap-3 items-center">
               <HeartIcon className="h-6 w-6 fill-nft-primary-light" />
-              <span className="font-semibold">12</span>
+              <span className="font-semibold">{NFT.likes}</span>
             </button>
 
             <div className="flex items-center gap-4">

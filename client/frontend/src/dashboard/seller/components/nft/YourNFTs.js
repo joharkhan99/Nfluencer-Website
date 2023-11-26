@@ -17,39 +17,6 @@ const YourNFTs = ({ user }) => {
   const [firstNFT, setFirstNFT] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  /*
-  // fetch all the gigs for the user
-  const fetchNFTs = async () => {
-    try {
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/nft/user-nfts`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": user.jwtToken,
-          },
-          body: JSON.stringify({ userId: user._id }),
-        }
-      );
-
-      const data = await response.json();
-      if (data.length >= 1) {
-        setFirstNFT(data[0]);
-      }
-      console.log(data);
-      setNFTs(data.slice(1));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchNFTs();
-  }, []);
-
-  */
-
   const fetchContract = (signerOrProvider) => {
     const marketplaceContract = new ethers.Contract(
       NFTMarketplaceContractAddress,
@@ -77,15 +44,19 @@ const YourNFTs = ({ user }) => {
       const { marketplaceContract, nftContract } = fetchContract(signer);
       const data = await marketplaceContract.fetchItemsCreated();
 
-      // console.log(data[0].itemId.toString());
+      console.log(data);
 
       const items = await Promise.all(
         data.map(async (i) => {
           const tokenUri = await nftContract.tokenURI(i.tokenId);
-          const activity = await marketplaceContract.getNFTActivity(i.tokenId);
-          console.log(activity);
+          // const activity = await marketplaceContract.getNFTActivity(i.tokenId);
+          // console.log(activity);
           const meta = await axios.get(tokenUri);
-          return meta.data;
+          return {
+            ...meta.data,
+            likes: i.likes.toString(),
+            tokenId: i.tokenId.toString(),
+          };
         })
       );
 
@@ -106,6 +77,8 @@ const YourNFTs = ({ user }) => {
   useEffect(() => {
     fetchNFTs();
   }, []);
+
+  const likeNFT = async (tokenId) => {};
 
   const loader = (
     <div className="flex w-full justify-center items-center m-auto gap-1 flex-col my-10">
@@ -128,6 +101,7 @@ const YourNFTs = ({ user }) => {
             <button className="text-nft-primary-light font-medium text-sm block">
               View All
             </button>
+            <button onClick={() => likeNFT(firstNFT.tokenId)}>Like</button>
           </div>
 
           {firstNFT && <FirstNFT NFT={firstNFT} />}
