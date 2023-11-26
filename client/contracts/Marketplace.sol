@@ -44,7 +44,7 @@ contract Marketplace is ReentrancyGuard {
 
     //a way to access values of the MarketItem struct above by passing an integer ID
     mapping(uint256 => MarketItem) private marketItems;
-    mapping(uint256 => Activity) private activities;
+    mapping(uint256 => Activity[]) public activities;
 
     //log message (when Item is sold)
     event MarketItemCreated(
@@ -61,43 +61,28 @@ contract Marketplace is ReentrancyGuard {
         uint views
     );
 
-    event ActivityRecorded(
-        uint indexed itemId,
+    function addActivity(
+        uint256 tokenId,
         address from,
         address to,
-        string eventType,
-        uint256 price,
-        uint256 timestamp
-    );
-
-    /// @notice item likes gettters and setters
-    function getItemLikes(uint256 itemId) public view returns (uint) {
-        return marketItems[itemId].likes;
+        string memory eventType,
+        uint256 price
+    ) public {
+        Activity memory activity = Activity(
+            tokenId,
+            from,
+            to,
+            eventType,
+            price,
+            block.timestamp
+        );
+        activities[tokenId].push(activity);
     }
 
-    function incrementItemLikes(uint256 itemId) public returns (uint) {
-        marketItems[itemId].likes += 1;
-        return marketItems[itemId].likes;
-    }
-
-    function decrementItemLikes(uint256 itemId) public returns (uint) {
-        marketItems[itemId].likes -= 1;
-        return marketItems[itemId].likes;
-    }
-
-    /// @notice item views gettters and setters
-    function getItemViews(uint256 itemId) public view returns (uint) {
-        return marketItems[itemId].views;
-    }
-
-    function incrementItemViews(uint256 itemId) public returns (uint) {
-        marketItems[itemId].views += 1;
-        return marketItems[itemId].views;
-    }
-
-    function decrementItemViews(uint256 itemId) public returns (uint) {
-        marketItems[itemId].views -= 1;
-        return marketItems[itemId].views;
+    function getActivities(
+        uint256 tokenId
+    ) public view returns (Activity[] memory) {
+        return activities[tokenId];
     }
 
     /// @notice function to get listingprice
@@ -142,28 +127,12 @@ contract Marketplace is ReentrancyGuard {
             0
         );
 
+        addActivity(itemId, address(0), msg.sender, "Mint", price);
+
         //transfer ownership of the nft to the contract itself
         IERC721(nftContract).transferFrom(msg.sender, address(this), tokenId);
 
-        // store activity
-        // recordActivity(itemId, address(0), msg.sender, "Mint", price);
-        activities[itemId] = Activity(
-            itemId,
-            address(0),
-            msg.sender,
-            "Mint",
-            price,
-            block.timestamp
-        );
-
-        emit ActivityRecorded(
-            itemId,
-            address(0),
-            msg.sender,
-            "Mint",
-            price,
-            block.timestamp
-        );
+        addActivity(itemId, address(0), msg.sender, "List", price);
 
         //log this transaction
         emit MarketItemCreated(
@@ -178,33 +147,6 @@ contract Marketplace is ReentrancyGuard {
             isRewardItem,
             0,
             0
-        );
-    }
-
-    /// @notice function to record activity
-    function recordActivity(
-        uint256 itemId,
-        address from,
-        address to,
-        string memory eventType,
-        uint256 price
-    ) internal {
-        activities[itemId] = Activity(
-            itemId,
-            from,
-            to,
-            eventType,
-            price,
-            block.timestamp
-        );
-
-        emit ActivityRecorded(
-            itemId,
-            from,
-            to,
-            eventType,
-            price,
-            block.timestamp
         );
     }
 
@@ -291,12 +233,6 @@ contract Marketplace is ReentrancyGuard {
     function updateIsRewardItem(uint256 itemId, bool isRewardItem) public {
         require(msg.sender == owner, "Only the owner can update isRewardItem");
         marketItems[itemId].isRewardItem = isRewardItem;
-    }
-
-    function getNFTActivity(
-        uint256 tokenId
-    ) public view returns (Activity memory) {
-        return activities[tokenId];
     }
 
     /// @notice function to get NFT details by TokenId/ItemId

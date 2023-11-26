@@ -5,9 +5,8 @@ import nft from "./NFT.json";
 
 export const NFTMarketplaceContractAddress =
   process.env.REACT_APP_MARKETPLACE_SMART_CONTRACT_ADDRESS;
+export const NFTMarketplaceContractABI = nftMarketplace.abi;
 
 export const NFTContractAddress =
   process.env.REACT_APP_NFT_SMART_CONTRACT_ADDRESS;
-
-export const NFTMarketplaceContractABI = nftMarketplace.abi;
 export const NFTContractABI = nft.abi;

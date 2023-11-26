@@ -78,7 +78,25 @@ const YourNFTs = ({ user }) => {
     fetchNFTs();
   }, []);
 
-  const likeNFT = async (tokenId) => {};
+  const likeNFT = async (tokenId) => {
+    setLoading(true);
+    try {
+      const web3Modal = new Web3Modal();
+      const connection = await web3Modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
+      const signer = provider.getSigner();
+
+      const { marketplaceContract } = fetchContract(signer);
+
+      const act = await marketplaceContract.getActivities(tokenId);
+
+      await marketplaceContract.incrementLikes(tokenId);
+      console.log(act);
+    } catch (error) {
+      console.log(`Error fetching NFTs: ${error}`);
+    }
+    setLoading(false);
+  };
 
   const loader = (
     <div className="flex w-full justify-center items-center m-auto gap-1 flex-col my-10">
