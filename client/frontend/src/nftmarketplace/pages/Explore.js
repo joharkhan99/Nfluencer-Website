@@ -84,13 +84,13 @@ function Explore() {
       signerOrProvider
     );
 
-    const nftContract = new ethers.Contract(
-      NFTContractAddress,
-      NFTContractABI,
-      signerOrProvider
-    );
+    // const nftContract = new ethers.Contract(
+    //   NFTContractAddress,
+    //   NFTContractABI,
+    //   signerOrProvider
+    // );
 
-    return { marketplaceContract, nftContract };
+    return { marketplaceContract };
   };
 
   const fetchNFTs = async () => {
@@ -101,18 +101,20 @@ function Explore() {
       process.env.REACT_APP_ALCHEMY_SEPOLIA_URL
     );
 
-    const { marketplaceContract, nftContract } = fetchContract(provider);
+    const { marketplaceContract } = fetchContract(provider);
 
     const fetchedMarketItems = await marketplaceContract.fetchMarketItems();
 
+    console.log(fetchedMarketItems);
+
     const items = await Promise.all(
       fetchedMarketItems.map(async (i) => {
-        const tokenUri = await nftContract.tokenURI(i.tokenId);
+        const tokenUri = await marketplaceContract.tokenURI(i.itemId);
         const meta = await axios.get(tokenUri);
         return {
           ...meta.data,
           likes: i.likes.toString(),
-          tokenId: i.tokenId.toString(),
+          itemId: Number(i.itemId),
         };
       })
     );
@@ -136,8 +138,8 @@ function Explore() {
       const provider = new ethers.providers.Web3Provider(connection);
       const signer = await provider.getSigner();
 
-      const { marketplaceContract, nftContract } = fetchContract(signer);
-      return { marketplaceContract, nftContract };
+      const { marketplaceContract } = fetchContract(signer);
+      return { marketplaceContract };
     } catch (error) {
       // setErrors({ message: "Error connecting with smart contract" });
       console.log(`Error connecting with smart contract: ${error}`);
@@ -148,10 +150,12 @@ function Explore() {
     try {
       const { marketplaceContract } = await connectingWithSmartContract();
       const price = ethers.utils.parseUnits(nft.price.toString(), "ether");
-      const transaction = await marketplaceContract.buyMarketItem(nft.tokenId, {
+      console.log(nft.itemId, price);
+      const transaction = await marketplaceContract.buyMarketItem(nft.itemId, {
         value: price,
       });
       await transaction.wait();
+      console.log("Transaction is completed", transaction);
       fetchNFTs();
     } catch (error) {
       console.log(`Error buying NFT: ${error}`);

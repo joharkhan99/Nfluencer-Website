@@ -2,61 +2,78 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("Marketplace", function () {
-  it("Should create and execute market sales", async function () {
+  it("Should create, buy, and resell market items", async function () {
+    const [owner, buyer, reseller] = await ethers.getSigners();
+
     const Market = await ethers.getContractFactory("Marketplace");
     const market = await Market.deploy();
-    await market.deployed(); //deploy the Marketplace contract
+    await market.deployed();
     const marketAddress = market.address;
 
     const NFT = await ethers.getContractFactory("NFT");
     const nft = await NFT.deploy(marketAddress);
-    await nft.deployed(); //deploy the NFT contract
+    await nft.deployed();
     const nftContractAddress = nft.address;
 
-    //get the listing price
+    // get the listing price
     let listingPrice = await market.getListingPrice();
     listingPrice = listingPrice.toString();
 
-    //set an auction price
-    const auctionPrice = ethers.utils.parseUnits("100", "ether");
+    // set an auction price
+    const auctionPrice = ethers.utils.parseUnits("0.0001", "ether");
 
-    //create 2 test tokens
-    await nft.createToken("https://www.mytokenlocation.com");
-    await nft.createToken("https://www.mytokenlocation2.com");
-
-    //create 2 test nfts
+    // create test token and market item
+    await nft.connect(owner).createToken("https://www.mytokenlocation.com");
     await market.createMarketItem(nftContractAddress, 1, auctionPrice, {
       value: listingPrice,
     });
 
-    await market.createMarketItem(nftContractAddress, 2, auctionPrice, {
-      value: listingPrice,
+    // Ensure the market item is created
+    let items = await market.fetchMarketItems();
+    expect(items.length).to.equal(1);
+
+    // Connect the buyer and reseller to the market
+    const marketWithBuyer = market.connect(buyer);
+    const marketWithReseller = market.connect(reseller);
+
+    // Buyer purchases the item
+    await marketWithBuyer.createMarketSale(nftContractAddress, 1, {
+      value: auctionPrice,
     });
 
-    const [_, buyerAddress] = await ethers.getSigners();
+    // Fetch updated market items
+    items = await market.fetchMarketItems();
+    expect(items.length).to.equal(0); // The item should no longer be listed
 
-    await market
-      .connect(buyerAddress)
-      .createMarketSale(nftContractAddress, 1, { value: auctionPrice });
+    // Ensure the buyer is the new owner of the sold item
+    const soldItem = await market.getNFTDetails(1);
+    expect(soldItem.owner).to.equal(buyer.address);
 
-    //fetch market items
-    let items = await market.fetchMarketItems();
+    // Ensure the seller is now the market contract address
+    expect(soldItem.seller).to.equal(market.address);
 
-    items = await Promise.all(
-      items.map(async (i) => {
-        const tokenUri = await nft.tokenURI(i.tokenId);
-
-        let item = {
-          price: i.price.toString(),
-          tokenId: i.tokenId.toString(),
-          seller: i.seller,
-          owner: i.owner,
-          tokenUri,
-        };
-        return item;
+    // Reseller attempts to resell the item
+    const resellPrice = ethers.utils.parseUnits("150", "ether");
+    await expect(
+      marketWithReseller.resellToken(1, resellPrice, {
+        value: listingPrice,
       })
-    );
+    ).to.be.revertedWith("Only item owner can perform this operation");
 
-    console.log("items: ", items);
+    // Reseller becomes the owner of the item
+    await marketWithReseller.createMarketSale(nftContractAddress, 1, {
+      value: resellPrice,
+    });
+
+    // Fetch updated market items
+    items = await market.fetchMarketItems();
+    expect(items.length).to.equal(0); // The item should no longer be listed
+
+    // Ensure the reseller is the new owner of the resold item
+    const resoldItem = await market.getNFTDetails(1);
+    expect(resoldItem.owner).to.equal(reseller.address);
+
+    // Ensure the original buyer is now the seller
+    expect(resoldItem.seller).to.equal(buyer.address);
   });
 });

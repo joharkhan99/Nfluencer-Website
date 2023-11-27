@@ -26,13 +26,13 @@ const PurchasedNFTs = ({ user }) => {
       signerOrProvider
     );
 
-    const nftContract = new ethers.Contract(
-      NFTContractAddress,
-      NFTContractABI,
-      signerOrProvider
-    );
+    // const nftContract = new ethers.Contract(
+    //   NFTContractAddress,
+    //   NFTContractABI,
+    //   signerOrProvider
+    // );
 
-    return { marketplaceContract, nftContract };
+    return { marketplaceContract };
   };
 
   const fetchNFTs = async () => {
@@ -43,21 +43,21 @@ const PurchasedNFTs = ({ user }) => {
       const provider = new ethers.providers.Web3Provider(connection);
       const signer = provider.getSigner();
 
-      const { marketplaceContract, nftContract } = fetchContract(signer);
+      const { marketplaceContract } = fetchContract(signer);
       const data = await marketplaceContract.fetchPurchasedNFTs();
 
       console.log(data);
 
       const items = await Promise.all(
         data.map(async (i) => {
-          const tokenUri = await nftContract.tokenURI(i.tokenId);
-          // const activity = await marketplaceContract.getNFTActivity(i.tokenId);
+          const tokenUri = await marketplaceContract.tokenURI(i.itemId);
+          // const activity = await marketplaceContract.getNFTActivity(i.itemId);
           // console.log(activity);
           const meta = await axios.get(tokenUri);
           return {
             ...meta.data,
             likes: i.likes.toString(),
-            tokenId: i.tokenId.toString(),
+            itemId: i.itemId.toString(),
           };
         })
       );
@@ -76,7 +76,7 @@ const PurchasedNFTs = ({ user }) => {
     fetchNFTs();
   }, []);
 
-  const resellNFT = async (tokenId) => {
+  const resellNFT = async (nftItem) => {
     try {
       const web3Modal = new Web3Modal();
       const connection = await web3Modal.connect();
@@ -84,12 +84,21 @@ const PurchasedNFTs = ({ user }) => {
       const signer = provider.getSigner();
 
       const { marketplaceContract } = fetchContract(signer);
+      const priceFormatted = ethers.utils.parseUnits("0.0001", "ether");
 
-      const price = ethers.utils.parseUnits("0.00001", "ether");
-      console.log(price);
-      const transaction = await marketplaceContract.resellToken(tokenId, price);
+      let listingPrice = await marketplaceContract.getListingPrice();
+      console.log(listingPrice);
+
+      listingPrice = listingPrice.toString();
+      let transaction = await marketplaceContract.resellToken(
+        nftItem.itemId,
+        priceFormatted,
+        {
+          value: listingPrice,
+        }
+      );
       await transaction.wait();
-      console.log("Transaction mined", transaction);
+      console.log(transaction);
       fetchNFTs();
     } catch (error) {
       console.log(`Error listing NFT: ${error}`);
@@ -221,7 +230,7 @@ const PurchasedNFTs = ({ user }) => {
                       <div className="flex items-center justify-between gap-3 text-sm">
                         <button
                           className="bg-nft-primary-light border border-nft-primary-light text-white font-medium p-3 rounded-xl hover:opacity-80 w-full"
-                          onClick={() => resellNFT(nft.tokenId)}
+                          onClick={() => resellNFT(nft)}
                         >
                           Resell NFT
                         </button>

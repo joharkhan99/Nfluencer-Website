@@ -244,31 +244,27 @@ const SellerNewNFT = () => {
   const createSale = async (url, formInputPrice, fileUrl, isReselling, id) => {
     try {
       const price = ethers.utils.parseUnits(formInputPrice.toString(), "ether");
-      const { marketplaceContract, nftContract } =
-        await connectingWithSmartContract();
+      const { marketplaceContract } = await connectingWithSmartContract();
 
       setNFTStatusMessage("Creating NFT Token...");
-      let transaction = await nftContract.createToken(url);
-      let tx = await transaction.wait();
+      // let transaction = await nftContract.createToken(url);
+      // let tx = await transaction.wait();
 
-      let event = tx.events[0];
-      let value = event.args[2];
-      let tokenId = value.toNumber();
+      // let event = tx.events[0];
+      // let value = event.args[2];
+      // let tokenId = value.toNumber();
       const _price = ethers.utils.parseUnits(price.toString(), "ether");
-
       let listingPrice = await marketplaceContract.getListingPrice();
       listingPrice = listingPrice.toString();
 
       setNFTStatusMessage("Listing on Marketplace...");
-      transaction = await marketplaceContract.createMarketItem(
-        nftContract.address,
-        tokenId,
-        _price,
-        false, //isreward item field
-        { value: listingPrice }
-      );
+      const transaction = await marketplaceContract.createToken(url, _price, {
+        value: listingPrice,
+      });
 
       await transaction.wait();
+
+      console.log("Market Transaction: ", transaction);
 
       const transactionHash = transaction.hash;
 
@@ -280,7 +276,7 @@ const SellerNewNFT = () => {
 
       if (transactionReceipt) {
         const logs = transactionReceipt.logs;
-        // const tokenId = web3.utils.hexToNumber(logs[0].topics[3]);
+        const tokenId = web3.utils.hexToNumber(logs[0].topics[3]);
         const from = transaction.from;
         const to = transaction.to;
 
@@ -308,9 +304,7 @@ const SellerNewNFT = () => {
           walletAddress: user.walletAddress,
           isRewardItem: false,
         };
-
         console.log("NFT Data: ", data);
-
         await saveNFTData(data);
       } else {
         setErrors({ message: "Transaction receipt not found" });
@@ -350,13 +344,13 @@ const SellerNewNFT = () => {
       signerOrProvider
     );
 
-    const nftContract = new ethers.Contract(
-      NFTContractAddress,
-      NFTContractABI,
-      signerOrProvider
-    );
+    // const nftContract = new ethers.Contract(
+    //   NFTContractAddress,
+    //   NFTContractABI,
+    //   signerOrProvider
+    // );
 
-    return { marketplaceContract, nftContract };
+    return { marketplaceContract };
   };
 
   const connectingWithSmartContract = async () => {
@@ -368,8 +362,8 @@ const SellerNewNFT = () => {
       const provider = new ethers.providers.Web3Provider(connection);
       const signer = await provider.getSigner();
 
-      const { marketplaceContract, nftContract } = fetchContract(signer);
-      return { marketplaceContract, nftContract };
+      const { marketplaceContract } = fetchContract(signer);
+      return { marketplaceContract };
     } catch (error) {
       setErrors({ message: "Error connecting with smart contract" });
       console.log(`Error connecting with smart contract: ${error}`);

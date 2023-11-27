@@ -24,13 +24,13 @@ const YourNFTs = ({ user }) => {
       signerOrProvider
     );
 
-    const nftContract = new ethers.Contract(
-      NFTContractAddress,
-      NFTContractABI,
-      signerOrProvider
-    );
+    // const nftContract = new ethers.Contract(
+    //   NFTContractAddress,
+    //   NFTContractABI,
+    //   signerOrProvider
+    // );
 
-    return { marketplaceContract, nftContract };
+    return { marketplaceContract };
   };
 
   const fetchNFTs = async () => {
@@ -41,21 +41,21 @@ const YourNFTs = ({ user }) => {
       const provider = new ethers.providers.Web3Provider(connection);
       const signer = provider.getSigner();
 
-      const { marketplaceContract, nftContract } = fetchContract(signer);
+      const { marketplaceContract } = fetchContract(signer);
       const data = await marketplaceContract.fetchItemsCreated();
 
       console.log(data);
 
       const items = await Promise.all(
         data.map(async (i) => {
-          const tokenUri = await nftContract.tokenURI(i.tokenId);
+          const tokenUri = await marketplaceContract.tokenURI(i.itemId);
           // const activity = await marketplaceContract.getNFTActivity(i.tokenId);
           // console.log(activity);
           const meta = await axios.get(tokenUri);
           return {
             ...meta.data,
             likes: i.likes.toString(),
-            tokenId: i.tokenId.toString(),
+            tokenId: i.itemId.toString(),
           };
         })
       );
