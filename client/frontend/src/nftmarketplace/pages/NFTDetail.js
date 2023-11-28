@@ -2,16 +2,6 @@ import React, { useEffect, useState } from "react";
 import "../styles/style.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Loader from "../../utils/Loader";
 import { ethers } from "ethers";
@@ -31,8 +21,15 @@ import {
   ArrowsRightLeftIcon,
   SparklesIcon,
   TagIcon,
+  ArrowTrendingUpIcon,
+  QueueListIcon,
+  ChevronUpIcon,
+  CpuChipIcon,
+  ListBulletIcon,
 } from "@heroicons/react/24/outline";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
+import PriceHistory from "../components/nft/PriceHistory";
+import { Disclosure } from "@headlessui/react";
 
 const data = [
   {
@@ -85,7 +82,6 @@ function NFTDetail() {
   const [nftMetaData, setNftMetaData] = useState(null);
   const [nftUsdPrice, setNftUsdPrice] = useState(0);
   const [priceHistory, setPriceHistory] = useState([]);
-  const [nftActivity, setNftActivity] = useState([]);
 
   useEffect(() => {
     if (!itemId) {
@@ -93,8 +89,9 @@ function NFTDetail() {
       return;
     }
     fetchNFTDetails(itemId);
-    if (nftMetaData && nftMetaData.price)
-      convertEthToDollars(nftMetaData.price);
+    fetchNFTPriceHistory(itemId);
+    if (nftMetaData && nftMetaData.weiPrice)
+      convertEthToDollars(getFormattedPrice(nftMetaData.weiPrice));
   }, [itemId, navigate]);
 
   const fetchContract = (signerOrProvider) => {
@@ -113,19 +110,39 @@ function NFTDetail() {
     );
     const { marketplaceContract } = fetchContract(provider);
     const fetchedNFT = await marketplaceContract.getNFTDetails(itemId);
-    console.log(fetchedNFT);
+    console.log("NFT IS: ", fetchedNFT);
 
     const act_res = await marketplaceContract.getActivities(itemId);
-    // act_res.reverse();
-    console.log(act_res);
     setNftActivity(act_res);
-
-    // const priceHistory = await marketplaceContract.getPriceHistory(itemId);
-    // console.log(priceHistory);
+    setFilteredNftActivity(act_res);
 
     const tokenUri = await marketplaceContract.tokenURI(fetchedNFT.itemId);
     const meta = await axios.get(tokenUri);
-    setNftMetaData({ ...meta.data, seller: fetchedNFT.seller });
+
+    console.log("Meta Data: ", meta.data);
+    setNftMetaData({
+      ...meta.data,
+      seller: fetchedNFT.seller,
+      weiPrice: fetchedNFT.price,
+    });
+  };
+
+  const fetchNFTPriceHistory = async (itemId) => {
+    try {
+      const provider = new ethers.providers.JsonRpcProvider(
+        process.env.REACT_APP_ALCHEMY_SEPOLIA_URL
+      );
+      const { marketplaceContract } = fetchContract(provider);
+
+      console.log("Marketplace Contract:", marketplaceContract);
+
+      const priceHistory = await marketplaceContract.getPriceHistory(itemId);
+      console.log("his", priceHistory);
+      setPriceHistory(priceHistory);
+    } catch (error) {
+      console.log(error);
+      console.error("Error fetching price history:", error.message);
+    }
   };
 
   async function convertEthToDollars(ethAmount) {
@@ -133,6 +150,8 @@ function NFTDetail() {
     const coingeckoApiResponse = await axios.get(
       "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
     );
+
+    console.log(coingeckoApiResponse);
 
     const ethToUsdRate = coingeckoApiResponse.data.ethereum.usd;
     const dollars = ethAmount * ethToUsdRate;
@@ -145,6 +164,72 @@ function NFTDetail() {
     List: <TagIcon className="w-6 h-6" />,
     Transfer: <ArrowsRightLeftIcon className="w-6 h-6" />,
     Mint: <SparklesIcon className="w-6 h-6" />,
+  };
+
+  const activityFilters = ["All", "Sale", "List", "Transfer", "Mint"];
+  const [activityFilter, setActivityFilter] = useState("All");
+  const [nftActivity, setNftActivity] = useState([]);
+  const [filteredNftActivity, setFilteredNftActivity] = useState([]);
+
+  const handleActivityFilterChange = (filter) => {
+    setActivityFilter(filter);
+
+    if (filter === "All") {
+      setFilteredNftActivity(nftActivity);
+      return;
+    }
+
+    var updatedList = [...nftActivity];
+    updatedList = updatedList.filter((item) => item.eventType === filter);
+    setFilteredNftActivity(updatedList);
+  };
+
+  function timeAgo(timestamp) {
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    const seconds = currentTimestamp - timestamp;
+
+    const interval = Math.floor(seconds / 60);
+
+    if (interval < 1) {
+      return "Just now";
+    }
+    if (interval < 60) {
+      return `${interval} ${interval === 1 ? "minute" : "minutes"} ago`;
+    }
+
+    const hours = Math.floor(interval / 60);
+    if (hours < 24) {
+      return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+    }
+
+    const days = Math.floor(hours / 24);
+    if (days < 7) {
+      return `${days} ${days === 1 ? "day" : "days"} ago`;
+    }
+
+    const weeks = Math.floor(days / 7);
+    if (weeks < 4) {
+      return `${weeks} ${weeks === 1 ? "week" : "weeks"} ago`;
+    }
+
+    const months = Math.floor(days / 30);
+    if (months < 12) {
+      return `${months} ${months === 1 ? "month" : "months"} ago`;
+    }
+
+    const years = Math.floor(days / 365);
+    return `${years} ${years === 1 ? "year" : "years"} ago`;
+  }
+
+  const getFormattedPrice = (price) => {
+    // console.log(price);
+    // const BigNumber = ethers.BigNumber;
+    // // const priceObject = price;
+    // const priceString = BigNumber.from(price._hex).toString();
+    // const humanReadablePrice = (parseFloat(priceString) / 1e18).toFixed(5);
+    // console.log(humanReadablePrice); // Output: 0.00001
+    // return humanReadablePrice;
+    // return ethers.utils.formatEther(price.toString());
   };
 
   if (!nftMetaData) {
@@ -298,7 +383,7 @@ function NFTDetail() {
                 </span>
                 <div className="flex items-end text-gray-900 text-sm my-3 mb-7 gap-3">
                   <h1 className="text-4xl font-extrabold tracking-tight sm:text-4xl">
-                    {nftMetaData.price} ETH
+                    {getFormattedPrice(nftMetaData.weiPrice)} ETH
                   </h1>
                   <div className="text-gray-500 text-base">
                     ${nftUsdPrice.toFixed(5)}
@@ -321,200 +406,143 @@ function NFTDetail() {
 
           <div className="flex flex-col md:flex-row md:gap-16 mt-12">
             <div className="md:w-1/2">
-              <div className="relative overflow-x-auto border-2 p-5 rounded-xl">
-                <div className="text-lg font-extrabold border-b-2 pb-4 pt-2">
-                  Offers
+              <div className="relative overflow-x-auto border border-gray-100 shadow-lg shadow-gray-100 p-5 rounded-xl text-gray-800">
+                <div>
+                  <div className="text-lg font-extrabold pb-4 pt-2 flex gap-3 border-b">
+                    <QueueListIcon className="w-6 h-6 inline-block" />
+                    <span>Description</span>
+                  </div>
+
+                  <div className="my-5 px-4 pb-2 pt-4 text-sm text-gray-500">
+                    <div className="flex gap-1">
+                      <span className="text-gray-400 font-medium">By</span>
+                      <span className="font-semibold text-nft-primary-light">
+                        {nftMetaData.creator.name}
+                      </span>
+                    </div>
+                    <p className="font-normal text-sm">
+                      {nftMetaData.description}
+                    </p>
+                  </div>
                 </div>
-                <table className="w-full text-sm text-start">
-                  <thead className="text-xs text-gray-500 ">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="text-start font-semibold py-6 pb-3"
-                      >
-                        Price
-                      </th>
-                      <th
-                        scope="col"
-                        className="text-start font-semibold py-6 pb-3"
-                      >
-                        USD Price
-                      </th>
-                      <th
-                        scope="col"
-                        className="text-start font-semibold py-6 pb-3"
-                      >
-                        Difference
-                      </th>
-                      <th
-                        scope="col"
-                        className="text-start font-semibold py-6 pb-3"
-                      >
-                        Expiration
-                      </th>
-                      <th
-                        scope="col"
-                        className="text-start font-semibold py-6 pb-3"
-                      >
-                        From
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b-2">
-                      <td className="pb-5 pt-5">
-                        <div className="flex items-center text-sm">
-                          <img
-                            src={require("../assets/bitcoin.png")}
-                            alt="sd"
-                            className="h-5 w-5 object-contain"
+
+                <div>
+                  <Disclosure>
+                    {({ open }) => (
+                      <>
+                        <Disclosure.Button className="flex w-full justify-between items-center border-t pt-4 pb-4">
+                          <div className="text-lg font-extrabold flex gap-3">
+                            <CpuChipIcon className="w-6 h-6 inline-block" />
+                            <span>Traits</span>
+                          </div>
+                          <ChevronUpIcon
+                            className={`${
+                              open ? "rotate-180 transform" : ""
+                            } h-4 w-4 text-gray-500`}
                           />
-                          <span className="pl-2">
-                            <span className="font-bold text-sm text-gra">
-                              2.68 BTC
-                            </span>
-                          </span>
-                        </div>
-                      </td>
-                      <td className="pb-5 pt-5">$6402.84</td>
-                      <td className="pb-5 pt-5">29% below</td>
-                      <td className="pb-5 pt-5">7 min</td>
-                      <td className="pb-5 pt-5 font-bold">nfinitcom</td>
-                    </tr>
-                    <tr className="border-b-2">
-                      <td className="pb-5 pt-5">
-                        <div className="flex items-center text-sm">
-                          <img
-                            src={require("../assets/bitcoin.png")}
-                            alt="sd"
-                            className="h-5 w-5 object-contain"
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+                          <div className="grid grid-cols-4 items-center gap-2">
+                            {nftMetaData.traits.map((attribute, index) => {
+                              return (
+                                <div
+                                  key={index}
+                                  className="flex items-center flex-col gap-1 justify-center bg-gray-100 p-4 rounded-xl px-6 w-full"
+                                >
+                                  <span className="text-sm text-gray-500 font-semibold uppercase">
+                                    {attribute.traitName}
+                                  </span>
+                                  <span className="font-normal text-base text-gray-800">
+                                    {attribute.traitType}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </Disclosure.Panel>
+                      </>
+                    )}
+                  </Disclosure>
+                </div>
+
+                <div>
+                  <Disclosure>
+                    {({ open }) => (
+                      <>
+                        <Disclosure.Button className="flex w-full justify-between items-center border-b border-t pt-4 pb-4">
+                          <div className="text-lg font-extrabold flex gap-3">
+                            <ListBulletIcon className="w-6 h-6 inline-block" />
+                            <span>Details</span>
+                          </div>
+                          <ChevronUpIcon
+                            className={`${
+                              open ? "rotate-180 transform" : ""
+                            } h-4 w-4 text-gray-500`}
                           />
-                          <span className="pl-2">
-                            <span className="font-bold text-sm text-gra">
-                              3.68 BTC
-                            </span>
-                          </span>
-                        </div>
-                      </td>
-                      <td className="pb-5 pt-5">$602.84</td>
-                      <td className="pb-5 pt-5">70% below</td>
-                      <td className="pb-5 pt-5">10 min</td>
-                      <td className="pb-5 pt-5 font-bold">bitminer</td>
-                    </tr>
-                    <tr className="border-b-2">
-                      <td className="pb-5 pt-5">
-                        <div className="flex items-center text-sm">
-                          <img
-                            src={require("../assets/bitcoin.png")}
-                            alt="sd"
-                            className="h-5 w-5 object-contain"
-                          />
-                          <span className="pl-2">
-                            <span className="font-bold text-sm text-gra">
-                              10 BTC
-                            </span>
-                          </span>
-                        </div>
-                      </td>
-                      <td className="pb-5 pt-5">$1000.84</td>
-                      <td className="pb-5 pt-5">2% below</td>
-                      <td className="pb-5 pt-5">11 min</td>
-                      <td className="pb-5 pt-5 font-bold">nfinitcom</td>
-                    </tr>
-                    <tr className="border-b-2">
-                      <td className="pb-5 pt-5">
-                        <div className="flex items-center text-sm">
-                          <img
-                            src={require("../assets/bitcoin.png")}
-                            alt="sd"
-                            className="h-5 w-5 object-contain"
-                          />
-                          <span className="pl-2">
-                            <span className="font-bold text-sm text-gra">
-                              2.68 BTC
-                            </span>
-                          </span>
-                        </div>
-                      </td>
-                      <td className="pb-5 pt-5">$6402.84</td>
-                      <td className="pb-5 pt-5">29% below</td>
-                      <td className="pb-5 pt-5">7 min</td>
-                      <td className="pb-5 pt-5 font-bold">nfinitcom</td>
-                    </tr>
-                    <tr>
-                      <td className="pb-5 pt-5">
-                        <div className="flex items-center text-sm">
-                          <img
-                            src={require("../assets/bitcoin.png")}
-                            alt="sd"
-                            className="h-5 w-5 object-contain"
-                          />
-                          <span className="pl-2">
-                            <span className="font-bold text-sm text-gra">
-                              3.68 BTC
-                            </span>
-                          </span>
-                        </div>
-                      </td>
-                      <td className="pb-5 pt-5">$602.84</td>
-                      <td className="pb-5 pt-5">70% below</td>
-                      <td className="pb-5 pt-5">10 min</td>
-                      <td className="pb-5 pt-5 font-bold">bitminer</td>
-                    </tr>
-                  </tbody>
-                </table>
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+                          <div className="flex flex-col gap-2">
+                            <div className="flex justify-between items-center">
+                              <span className="text-base text-gray-700">
+                                Contract Address
+                              </span>
+                              <span className="font-medium text-nft-primary-light">
+                                0x0000...b719
+                              </span>
+                            </div>
+
+                            <div className="flex justify-between items-center">
+                              <span className="text-base text-gray-700">
+                                Token ID
+                              </span>
+                              <span className="font-normal text-sm text-gray-700">
+                                {itemId}
+                              </span>
+                            </div>
+
+                            <div className="flex justify-between items-center">
+                              <span className="text-base text-gray-700">
+                                Token Standard
+                              </span>
+                              <span className="font-normal text-sm text-gray-700">
+                                ERC-721
+                              </span>
+                            </div>
+
+                            <div className="flex justify-between items-center">
+                              <span className="text-base text-gray-700">
+                                Chain
+                              </span>
+                              <span className="font-normal text-sm text-gray-700">
+                                Ethereum
+                              </span>
+                            </div>
+
+                            <div className="flex justify-between items-center">
+                              <span className="text-base text-gray-700">
+                                Creator Earnings
+                              </span>
+                              <span className="font-normal text-sm text-gray-700">
+                                {nftMetaData.royalties}%
+                              </span>
+                            </div>
+                          </div>
+                        </Disclosure.Panel>
+                      </>
+                    )}
+                  </Disclosure>
+                </div>
               </div>
             </div>
+
             <div className="md:w-1/2 flex">
-              <div className="w-full border-2 p-5 rounded-xl">
-                <div className="text-lg font-extrabold border-b-2 pb-4 pt-2">
-                  Price History
+              <div className="w-full border border-gray-100 shadow-lg shadow-gray-100 p-5 rounded-xl">
+                <div className="text-lg font-extrabold pb-4 pt-2 flex gap-3 border-b">
+                  <ArrowTrendingUpIcon className="w-6 h-6 inline-block" />
+                  <span>Price History</span>
                 </div>
                 <div className="w-full flex-grow" style={{ height: "87%" }}>
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart
-                      width={500}
-                      height={300}
-                      data={data}
-                      margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                      }}
-                    >
-                      <defs>
-                        <filter
-                          id="shadow"
-                          x="-20%"
-                          y="-20%"
-                          width="140%"
-                          height="140%"
-                        >
-                          <feDropShadow
-                            dx={2}
-                            dy={2}
-                            stdDeviation={9}
-                            floodColor="orange"
-                          />
-                        </filter>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis tick={{ display: "none" }} />
-                      <Tooltip />
-                      <Legend />
-                      <Line
-                        type="monotone"
-                        dataKey="BTC"
-                        stroke="orange"
-                        activeDot={{ r: 8 }}
-                        strokeWidth={3}
-                        filter="url(#shadow)" // Apply the shadow filter to the line
-                      />
-                      {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" /> */}
-                    </LineChart>
-                  </ResponsiveContainer>
+                  <PriceHistory data={priceHistory} />
                 </div>
               </div>
             </div>
@@ -522,28 +550,28 @@ function NFTDetail() {
 
           <div className="flex flex-col md:flex-row md:gap-16 mt-12">
             <div className="w-full">
-              <div className="relative overflow-x-auto border-2 p-5 pb-0 rounded-xl">
+              <div className="relative overflow-x-auto border border-gray-100 shadow-lg shadow-gray-100 p-5 pb-0 rounded-xl">
                 <div className="flex justify-between items-center border-b pb-3">
                   <div className="text-lg font-extrabold pb-4 pt-2 flex gap-3">
                     <PresentationChartLineIcon className="w-6 h-6 inline-block" />
                     <span>Item Activity</span>
                   </div>
                   <div className="flex gap-3 flex-row justify-start flex-wrap">
-                    <div className="border border-nft-primary-light bg-nft-primary-light text-white rounded-xl p-3 px-5 text-sm font-medium items-center cursor-pointer">
-                      All
-                    </div>
-                    <div className="border border-gray-200 rounded-xl p-3 px-5 text-sm font-medium items-center hover:bg-gray-100 cursor-pointer">
-                      Sales
-                    </div>
-                    <div className="border border-gray-200 rounded-xl p-3 px-5 text-sm font-medium items-center hover:bg-gray-100 cursor-pointer">
-                      Listings
-                    </div>
-                    <div className="border border-gray-200 rounded-xl p-3 px-5 text-sm font-medium items-center hover:bg-gray-100 cursor-pointer">
-                      Transfers
-                    </div>
-                    <div className="border border-gray-200 rounded-xl p-3 px-5 text-sm font-medium items-center hover:bg-gray-100 cursor-pointer">
-                      Mint
-                    </div>
+                    {activityFilters.map((filter, index) => {
+                      return (
+                        <button
+                          key={index}
+                          className={`rounded-xl p-3 px-5 text-sm font-medium items-center cursor-pointer ${
+                            activityFilter === filter
+                              ? "bg-nft-primary-light text-white border border-nft-primary-light"
+                              : "text-gray-500 hover:bg-gray-100 border border-gray-200"
+                          }`}
+                          onClick={() => handleActivityFilterChange(filter)}
+                        >
+                          {filter}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
                 <table className="w-full text-sm text-start">
@@ -581,8 +609,8 @@ function NFTDetail() {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="text-gray-800">
-                    {nftActivity
+                  <tbody className="text-gray-800 text-base">
+                    {filteredNftActivity
                       .slice()
                       .reverse()
                       .map((activity, index) => {
@@ -601,16 +629,32 @@ function NFTDetail() {
                                 </span>
                               </div>
                             </td>
-                            <td className="pb-5 pt-5">
-                              {ethers.utils.formatEther(
-                                activity.price.toString()
+                            <td className="pb-5 pt-5 font-medium">
+                              {getFormattedPrice(activity.price)} ETH
+                            </td>
+                            <td className="pb-5 pt-5 font-semibold text-nft-primary-light">
+                              {activity.eventType === "Mint" ? (
+                                <span className="opacity-60">Null Address</span>
+                              ) : (
+                                activity.from.substring(0, 6) +
+                                "..." +
+                                activity.from.substring(
+                                  activity.from.length - 4,
+                                  activity.from.length
+                                )
                               )}
                             </td>
-                            <td className="pb-5 pt-5 font-bold">
-                              nonkosi.joyi
+                            <td className="pb-5 pt-5 font-semibold text-nft-primary-light">
+                              {activity.to.substring(0, 6) +
+                                "..." +
+                                activity.to.substring(
+                                  activity.to.length - 4,
+                                  activity.to.length
+                                )}
                             </td>
-                            <td className="pb-5 pt-5 font-bold">nfinitcom</td>
-                            <td className="pb-5 pt-5">31 DEC 2021</td>
+                            <td className="pb-5 pt-5">
+                              {timeAgo(activity.timestamp)}
+                            </td>
                           </tr>
                         );
                       })}

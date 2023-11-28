@@ -82,7 +82,7 @@ const PurchasedNFTs = ({ user }) => {
       const signer = provider.getSigner();
 
       const { marketplaceContract } = fetchContract(signer);
-      const priceFormatted = ethers.utils.parseUnits("0.0001", "ether");
+      const priceFormatted = ethers.utils.parseUnits("10", "ether");
 
       let listingPrice = await marketplaceContract.getListingPrice();
       console.log(listingPrice);
