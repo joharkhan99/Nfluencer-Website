@@ -27,6 +27,13 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         uint256 timestamp;
     }
 
+    // a way to store price history of an item
+    struct PriceHistory {
+        uint256 itemId;
+        uint256 price;
+        uint256 timestamp;
+    }
+
     struct MarketItem {
         uint itemId;
         address payable seller; //person selling the nft
@@ -43,6 +50,7 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
     //a way to access values of the MarketItem struct above by passing an integer ID
     mapping(uint256 => MarketItem) private marketItems;
     mapping(uint256 => Activity[]) public activities;
+    mapping(uint256 => PriceHistory[]) public priceHistories;
 
     //log message (when Item is sold)
     event MarketItemCreated(
@@ -100,6 +108,7 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         addActivity(tokenId, address(0), msg.sender, "Mint", price);
         _transfer(msg.sender, address(this), tokenId);
         addActivity(tokenId, address(0), msg.sender, "List", price);
+        addPriceHistory(tokenId, price);
 
         emit MarketItemCreated(
             tokenId,
@@ -172,6 +181,7 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
 
         _transfer(msg.sender, address(this), tokenId);
         addActivity(tokenId, address(this), msg.sender, "List", price);
+        addPriceHistory(tokenId, price);
     }
 
     /// @notice fetch list of NFTS purchased by this user
@@ -248,6 +258,22 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
             block.timestamp
         );
         activities[tokenId].push(activity);
+    }
+
+    function addPriceHistory(uint256 tokenId, uint256 price) public {
+        PriceHistory memory priceHistory = PriceHistory(
+            tokenId,
+            price,
+            block.timestamp
+        );
+        priceHistories[tokenId].push(priceHistory);
+    }
+
+    /// @notice function to get price history of an NFT
+    function getPriceHistory(
+        uint256 tokenId
+    ) public view returns (PriceHistory[] memory) {
+        return priceHistories[tokenId];
     }
 
     function getActivities(

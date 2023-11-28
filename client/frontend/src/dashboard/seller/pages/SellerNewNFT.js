@@ -3,7 +3,6 @@ import {
   PlusIcon,
   ChevronDownIcon,
   XMarkIcon,
-  CheckIcon,
 } from "@heroicons/react/24/outline";
 
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
@@ -16,8 +15,6 @@ import Web3Modal from "web3modal";
 import {
   NFTMarketplaceContractABI,
   NFTMarketplaceContractAddress,
-  NFTContractABI,
-  NFTContractAddress,
 } from "../../../constants/ContractDetails";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import { Web3 } from "web3";

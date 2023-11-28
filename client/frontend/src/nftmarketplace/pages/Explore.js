@@ -9,8 +9,6 @@ import { Web3 } from "web3";
 import {
   NFTMarketplaceContractABI,
   NFTMarketplaceContractAddress,
-  NFTContractAddress,
-  NFTContractABI,
 } from "../../constants/ContractDetails";
 import { ethers } from "ethers";
 import axios from "axios";

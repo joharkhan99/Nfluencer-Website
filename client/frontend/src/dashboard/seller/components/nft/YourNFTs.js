@@ -5,8 +5,6 @@ import { ethers } from "ethers";
 import axios from "axios";
 import Web3Modal from "web3modal";
 import {
-  NFTContractABI,
-  NFTContractAddress,
   NFTMarketplaceContractABI,
   NFTMarketplaceContractAddress,
 } from "../../../../constants/ContractDetails";
@@ -49,8 +47,8 @@ const YourNFTs = ({ user }) => {
       const items = await Promise.all(
         data.map(async (i) => {
           const tokenUri = await marketplaceContract.tokenURI(i.itemId);
-          // const activity = await marketplaceContract.getNFTActivity(i.tokenId);
-          // console.log(activity);
+          const activity = await marketplaceContract.getActivities(i.itemId);
+          console.log(activity);
           const meta = await axios.get(tokenUri);
           return {
             ...meta.data,
