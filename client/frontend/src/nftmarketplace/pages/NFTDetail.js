@@ -12,7 +12,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Loader from "../../utils/Loader";
 import { ethers } from "ethers";
 import axios from "axios";
@@ -25,6 +25,12 @@ import {
   EyeIcon,
   ShareIcon,
   ArrowPathIcon,
+  BookmarkIcon,
+  ShoppingCartIcon,
+  PresentationChartLineIcon,
+  ArrowsRightLeftIcon,
+  SparklesIcon,
+  TagIcon,
 } from "@heroicons/react/24/outline";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 
@@ -77,6 +83,9 @@ function NFTDetail() {
   let { itemId } = useParams();
   const navigate = useNavigate();
   const [nftMetaData, setNftMetaData] = useState(null);
+  const [nftUsdPrice, setNftUsdPrice] = useState(0);
+  const [priceHistory, setPriceHistory] = useState([]);
+  const [nftActivity, setNftActivity] = useState([]);
 
   useEffect(() => {
     if (!itemId) {
@@ -84,6 +93,8 @@ function NFTDetail() {
       return;
     }
     fetchNFTDetails(itemId);
+    if (nftMetaData && nftMetaData.price)
+      convertEthToDollars(nftMetaData.price);
   }, [itemId, navigate]);
 
   const fetchContract = (signerOrProvider) => {
@@ -104,9 +115,36 @@ function NFTDetail() {
     const fetchedNFT = await marketplaceContract.getNFTDetails(itemId);
     console.log(fetchedNFT);
 
+    const act_res = await marketplaceContract.getActivities(itemId);
+    // act_res.reverse();
+    console.log(act_res);
+    setNftActivity(act_res);
+
+    // const priceHistory = await marketplaceContract.getPriceHistory(itemId);
+    // console.log(priceHistory);
+
     const tokenUri = await marketplaceContract.tokenURI(fetchedNFT.itemId);
     const meta = await axios.get(tokenUri);
     setNftMetaData({ ...meta.data, seller: fetchedNFT.seller });
+  };
+
+  async function convertEthToDollars(ethAmount) {
+    // Get the current Ether to USD exchange rate from CoinGecko API
+    const coingeckoApiResponse = await axios.get(
+      "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
+    );
+
+    const ethToUsdRate = coingeckoApiResponse.data.ethereum.usd;
+    const dollars = ethAmount * ethToUsdRate;
+    console.log(dollars);
+    setNftUsdPrice(dollars);
+  }
+
+  const activityIcons = {
+    Sale: <ShoppingCartIcon className="w-6 h-6" />,
+    List: <TagIcon className="w-6 h-6" />,
+    Transfer: <ArrowsRightLeftIcon className="w-6 h-6" />,
+    Mint: <SparklesIcon className="w-6 h-6" />,
   };
 
   if (!nftMetaData) {
@@ -118,14 +156,43 @@ function NFTDetail() {
         <div className="container mx-auto my-10">
           <div className="flex flex-col md:flex-row gap-16">
             <div className="md:w-1/2 relative">
-              <img
-                src={nftMetaData.fileUrl}
-                alt={nftMetaData.name}
-                className="rounded-lg h-auto w-full md:h-full object-cover"
-              />
-              <button class="rounded-xl text-nft-primary-light bg-white p-2 flex gap-1 items-center absolute top-2 right-2 text-sm">
+              {nftMetaData.fileType === "image" ? (
+                <img
+                  src={nftMetaData.fileUrl}
+                  alt={nftMetaData.name}
+                  className="rounded-lg h-auto w-full md:h-full object-cover"
+                />
+              ) : (
+                <video controls width="100%" height="100%">
+                  <source src={nftMetaData.fileUrl} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              )}
+              <Link
+                class="rounded-xl text-nft-primary-light bg-white p-2 flex gap-1 items-center absolute top-2 right-2 text-sm"
+                to={nftMetaData.fileUrl}
+                target="_blank"
+                title="View Original Media File"
+              >
                 <ArrowTopRightOnSquareIcon className="w-5 h-5" />
-              </button>
+              </Link>
+              <div className="absolute top-2 left-2">
+                <div className="bg-white rounded-full bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-50 overflow-hidden p-2">
+                  <div>
+                    <div className="flex rounded-2xl justify-evenly items-center">
+                      <div className="flex flex-col gap-1 items-center">
+                        <span className="flex gap-1">
+                          <img
+                            src={require("../assets/eth.png")}
+                            alt=""
+                            className="w-6 h-6 object-contain"
+                          />
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="md:w-1/2 ">
@@ -145,48 +212,58 @@ function NFTDetail() {
                   </button>
                 </div>
                 <div className="flex gap-4 items-center">
-                  <button className="rounded-xl border p-3">
+                  <button
+                    className="rounded-xl border p-3 hover:bg-gray-100"
+                    title="Share"
+                  >
                     <ShareIcon className="w-5 h-5" />
                   </button>
-                  <button className="rounded-xl border p-3">
+                  <button
+                    className="rounded-xl border p-3 hover:bg-gray-100"
+                    title="Refresh metadata"
+                  >
                     <ArrowPathIcon className="w-5 h-5" />
                   </button>
                 </div>
               </div>
 
-              <h1 className="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
+              <h1 className="text-4xl font-extrabold tracking-tight text-gra sm:text-4xl">
                 {nftMetaData.name}
               </h1>
 
               <div className="flex items-center text-gray-500 text-base my-3 mb-7">
                 Owned by
                 <span className="pl-2 font-bold text-nft-primary-light">
-                  nfinitcom
+                  {nftMetaData.creator.name}
                 </span>
               </div>
 
               <div className="flex items-center mt-7 justify-between">
                 <div>
                   <span className="text-sm mb-4 block">
-                    <span className="text-black font-semibold">Owner</span>
-                    <span className="text-gray-500 ml-1">
-                      {nftMetaData.royalties}% royalities
-                    </span>
+                    <span className="text-gray-900 font-semibold">Owner</span>
                   </span>
-                  <a href="s" className="flex items-center">
-                    <img
-                      src={nftMetaData.creator.avatar}
-                      alt="User Imasge"
-                      className="rounded-full h-14 w-14"
-                    />
-                    <span className="ml-2 font-bold">
-                      {nftMetaData.seller.substring(0, 10) +
-                        "..." +
-                        nftMetaData.seller.substring(
-                          nftMetaData.seller.length - 4,
-                          nftMetaData.seller.length
-                        )}
-                    </span>
+                  <a href="s" className="block">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={nftMetaData.creator.avatar}
+                        alt="User Imasge"
+                        className="rounded-full h-14 w-14"
+                      />
+                      <div className="flex flex-col items-start">
+                        <button className="font-bold text-gray-900">
+                          {nftMetaData.creator.name}
+                        </button>
+                        <div className="text-sm text-gray-500">
+                          {nftMetaData.seller.substring(0, 10) +
+                            "..." +
+                            nftMetaData.seller.substring(
+                              nftMetaData.seller.length - 4,
+                              nftMetaData.seller.length
+                            )}
+                        </div>
+                      </div>
+                    </div>
                   </a>
                 </div>
                 <div>
@@ -200,7 +277,7 @@ function NFTDetail() {
                       <img
                         src={nftMetaData.collection.image}
                         alt="User Imasge"
-                        className="rounded-full h-14 w-14"
+                        className="rounded-full h-14 w-14 object-cover"
                       />
                       <div className="flex flex-col items-start">
                         <button className="font-bold text-gray-900">
@@ -215,105 +292,28 @@ function NFTDetail() {
                 </div>
               </div>
 
-              <div className="mt-4 p-6 shadow-lg rounded-xl">
-                <span className="text-gray-500 text-sm font-bold">Top bid</span>
-                <div className="flex items-center text-gray-500 text-sm my-3 mb-7">
-                  <img
-                    src={require("../assets/bitcoin.png")}
-                    alt="sd"
-                    className="h-10 w-10 object-contain bg-orange-100 rounded-full p-2"
-                  />
-                  <span className="pl-2">
-                    <span className="font-bold text-lg text-black">
-                      {nftMetaData.price} BTC ($9118.1 USD)
-                    </span>
-                  </span>
+              <div className="mt-10 p-6 shadow-md shadow-gray-100 rounded-xl border border-gray-200">
+                <span className="text-gray-900 text-sm font-medium">
+                  Current Price
+                </span>
+                <div className="flex items-end text-gray-900 text-sm my-3 mb-7 gap-3">
+                  <h1 className="text-4xl font-extrabold tracking-tight sm:text-4xl">
+                    {nftMetaData.price} ETH
+                  </h1>
+                  <div className="text-gray-500 text-base">
+                    ${nftUsdPrice.toFixed(5)}
+                  </div>
                 </div>
 
                 <div className="flex gap-4">
-                  <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm w-full font-semibold">
-                    Place your bid
+                  <button class="bg-nft-primary-light border-nft-primary-light text-white font-medium p-4 rounded-xl hover:bg-nft-primary-dark w-full flex items-center justify-center gap-2">
+                    <ShoppingCartIcon className="w-6 h-6" />
+                    Buy Now
                   </button>
-                  <button className="bg-nft-primary-transparent rounded-full px-6 py-3 font-semibold text-sm text-nft-primary-light w-full hover:bg-nft-primary-light hover:text-white duration-300 transition-colors">
+                  <button className="bg-nft-primary-transparent rounded-xl p-4 font-semibold text-nft-primary-light w-full hover:bg-nft-primary-light hover:text-white duration-300 transition-colors flex items-center justify-center gap-2">
+                    <BookmarkIcon className="w-6 h-6" />
                     <span>Save for later</span>
                   </button>
-                </div>
-              </div>
-
-              {/* <div className="text-sm mt-7">
-              <div className="text-gray-500 mb-1">Blockchain</div>
-              <div className="text-black font-bold flex gap-2">
-                <img
-                  src={require("../assets/bitcoin.png")}
-                  alt="sd"
-                  className="h-5 w-5 object-contain"
-                />
-                <span>Bitcoin</span>
-              </div>
-            </div> */}
-
-              {/* <div className="flex justify-evenly mt-7 gap-5 border p-5 rounded-xl">
-              <div className="text-center ">
-                <h1 className="text-2xl font-extrabold tracking-tight text-black sm:text-2xl">
-                  $24.50
-                </h1>
-                <span className="text-gray-500 text-sm font-semibold">
-                  Auction price
-                </span>
-              </div>
-              <div className="border"></div>
-              <div className="text-center">
-                <h1 className="text-2xl font-extrabold tracking-tight text-black sm:text-2xl">
-                  $99.50
-                </h1>
-                <span className="text-gray-500 text-sm font-semibold">
-                  Buy it now
-                </span>
-              </div>
-            </div> */}
-
-              <div className="text-sm mt-7 w-full">
-                <div className="text-black font-bold flex gap-2 mb-4">
-                  Properties
-                </div>
-                <div className="flex gap-3 flex-row justify-start flex-wrap">
-                  {nftMetaData.traits.map((trait, index) => (
-                    <div
-                      className="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100"
-                      key={index}
-                    >
-                      <div className=" outline-none cursor-pointer bg-transparent">
-                        {trait.traitType}: {trait.traitName}
-                      </div>
-                    </div>
-                  ))}
-
-                  {/* <div className="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100">
-                  <label>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-4 h-4"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M10.05 4.575a1.575 1.575 0 10-3.15 0v3m3.15-3v-1.5a1.575 1.575 0 013.15 0v1.5m-3.15 0l.075 5.925m3.075.75V4.575m0 0a1.575 1.575 0 013.15 0V15M6.9 7.575a1.575 1.575 0 10-3.15 0v8.175a6.75 6.75 0 006.75 6.75h2.018a5.25 5.25 0 003.712-1.538l1.732-1.732a5.25 5.25 0 001.538-3.712l.003-2.024a.668.668 0 01.198-.471 1.575 1.575 0 10-2.228-2.228 3.818 3.818 0 00-1.12 2.687M6.9 7.575V12m6.27 4.318A4.49 4.49 0 0116.35 15m.002 0h-.002"
-                      />
-                    </svg>
-                  </label>
-                  <div className=" outline-none cursor-pointer bg-transparent">
-                    Mouth grade: Fresh
-                  </div>
-                </div> */}
-                  <div className="flex flex-row border bg-gray-100 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-200 text-gray-500">
-                    <div className=" outline-none cursor-pointer bg-transparent">
-                      See more
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -370,7 +370,7 @@ function NFTDetail() {
                             className="h-5 w-5 object-contain"
                           />
                           <span className="pl-2">
-                            <span className="font-bold text-sm text-black">
+                            <span className="font-bold text-sm text-gra">
                               2.68 BTC
                             </span>
                           </span>
@@ -390,7 +390,7 @@ function NFTDetail() {
                             className="h-5 w-5 object-contain"
                           />
                           <span className="pl-2">
-                            <span className="font-bold text-sm text-black">
+                            <span className="font-bold text-sm text-gra">
                               3.68 BTC
                             </span>
                           </span>
@@ -410,7 +410,7 @@ function NFTDetail() {
                             className="h-5 w-5 object-contain"
                           />
                           <span className="pl-2">
-                            <span className="font-bold text-sm text-black">
+                            <span className="font-bold text-sm text-gra">
                               10 BTC
                             </span>
                           </span>
@@ -430,7 +430,7 @@ function NFTDetail() {
                             className="h-5 w-5 object-contain"
                           />
                           <span className="pl-2">
-                            <span className="font-bold text-sm text-black">
+                            <span className="font-bold text-sm text-gra">
                               2.68 BTC
                             </span>
                           </span>
@@ -450,7 +450,7 @@ function NFTDetail() {
                             className="h-5 w-5 object-contain"
                           />
                           <span className="pl-2">
-                            <span className="font-bold text-sm text-black">
+                            <span className="font-bold text-sm text-gra">
                               3.68 BTC
                             </span>
                           </span>
@@ -522,251 +522,98 @@ function NFTDetail() {
 
           <div className="flex flex-col md:flex-row md:gap-16 mt-12">
             <div className="w-full">
-              <div className="relative overflow-x-auto border-2 p-5 rounded-xl">
-                <div className="flex justify-between items-center border-b-2">
-                  <div className="text-lg font-extrabold pb-4 pt-2">
-                    Item Activity
+              <div className="relative overflow-x-auto border-2 p-5 pb-0 rounded-xl">
+                <div className="flex justify-between items-center border-b pb-3">
+                  <div className="text-lg font-extrabold pb-4 pt-2 flex gap-3">
+                    <PresentationChartLineIcon className="w-6 h-6 inline-block" />
+                    <span>Item Activity</span>
                   </div>
                   <div className="flex gap-3 flex-row justify-start flex-wrap">
-                    <div className="border border-nft-primary-transparent bg-nft-primary-transparent text-nft-primary-light rounded-full p-2 px-3 text-sm font-semibold items-center cursor-pointer">
-                      Listings
+                    <div className="border border-nft-primary-light bg-nft-primary-light text-white rounded-xl p-3 px-5 text-sm font-medium items-center cursor-pointer">
+                      All
                     </div>
-                    <div className="border border-gray-200 rounded-full p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100 cursor-pointer">
+                    <div className="border border-gray-200 rounded-xl p-3 px-5 text-sm font-medium items-center hover:bg-gray-100 cursor-pointer">
                       Sales
                     </div>
-                    <div className="border border-nft-primary-transparent bg-nft-primary-transparent text-nft-primary-light rounded-full p-2 px-3 text-sm font-semibold items-center cursor-pointer">
-                      Bids
+                    <div className="border border-gray-200 rounded-xl p-3 px-5 text-sm font-medium items-center hover:bg-gray-100 cursor-pointer">
+                      Listings
                     </div>
-                    <div className="border border-gray-200 rounded-full p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100 cursor-pointer">
+                    <div className="border border-gray-200 rounded-xl p-3 px-5 text-sm font-medium items-center hover:bg-gray-100 cursor-pointer">
                       Transfers
+                    </div>
+                    <div className="border border-gray-200 rounded-xl p-3 px-5 text-sm font-medium items-center hover:bg-gray-100 cursor-pointer">
+                      Mint
                     </div>
                   </div>
                 </div>
                 <table className="w-full text-sm text-start">
-                  <thead className="text-xs text-gray-500 ">
-                    <tr>
+                  <thead className="text-sm text-gray-500 ">
+                    <tr className="border-b">
                       <th
                         scope="col"
-                        className="text-start font-semibold py-6 pb-3"
+                        className="text-start font-semibold py-6 pb-3 pt-3"
                       >
                         Event
                       </th>
                       <th
                         scope="col"
-                        className="text-start font-semibold py-6 pb-3"
+                        className="text-start font-semibold py-6 pb-3 pt-3"
                       >
                         Price
                       </th>
                       <th
                         scope="col"
-                        className="text-start font-semibold py-6 pb-3"
+                        className="text-start font-semibold py-6 pb-3 pt-3"
                       >
                         From
                       </th>
                       <th
                         scope="col"
-                        className="text-start font-semibold py-6 pb-3"
+                        className="text-start font-semibold py-6 pb-3 pt-3"
                       >
                         To
                       </th>
                       <th
                         scope="col"
-                        className="text-start font-semibold py-6 pb-3"
+                        className="text-start font-semibold py-6 pb-3 pt-3"
                       >
                         Date
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr className="border-b-2">
-                      <td className="pb-5 pt-5">
-                        <div className="flex items-center text-sm">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-5 h-5"
+                  <tbody className="text-gray-800">
+                    {nftActivity
+                      .slice()
+                      .reverse()
+                      .map((activity, index) => {
+                        return (
+                          <tr
+                            className={
+                              index + 1 < nftActivity.length && "border-b"
+                            }
+                            key={index}
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
-                            />
-                          </svg>
-
-                          <span className="pl-2">
-                            <span className="font-bold text-sm text-black">
-                              Transfer
-                            </span>
-                          </span>
-                        </div>
-                      </td>
-                      <td className="pb-5 pt-5"></td>
-                      <td className="pb-5 pt-5 font-bold">nonkosi.joyi</td>
-                      <td className="pb-5 pt-5 font-bold">nfinitcom</td>
-                      <td className="pb-5 pt-5">31 DEC 2021</td>
-                    </tr>
-                    <tr className="border-b-2">
-                      <td className="pb-5 pt-5">
-                        <div className="flex items-center text-sm">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-5 h-5"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                            />
-                          </svg>
-
-                          <span className="pl-2">
-                            <span className="font-bold text-sm text-black">
-                              Sale
-                            </span>
-                          </span>
-                        </div>
-                      </td>
-                      <td className="pb-5 pt-5">
-                        <div className="flex items-center text-sm">
-                          <img
-                            src={require("../assets/bitcoin.png")}
-                            alt="sd"
-                            className="h-5 w-5 object-contain"
-                          />
-                          <span className="pl-2">
-                            <span className="font-bold text-sm text-black">
-                              2.52 BTC
-                            </span>
-                          </span>
-                        </div>
-                      </td>
-                      <td className="pb-5 pt-5 font-bold">nonkosi.joyi</td>
-                      <td className="pb-5 pt-5 font-bold">peter.ty</td>
-                      <td className="pb-5 pt-5">13 JAN 2021</td>
-                    </tr>
-                    <tr className="border-b-2">
-                      <td className="pb-5 pt-5">
-                        <div className="flex items-center text-sm">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-5 h-5"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                            />
-                          </svg>
-
-                          <span className="pl-2">
-                            <span className="font-bold text-sm text-black">
-                              Sale
-                            </span>
-                          </span>
-                        </div>
-                      </td>
-                      <td className="pb-5 pt-5">
-                        <div className="flex items-center text-sm">
-                          <img
-                            src={require("../assets/bitcoin.png")}
-                            alt="sd"
-                            className="h-5 w-5 object-contain"
-                          />
-                          <span className="pl-2">
-                            <span className="font-bold text-sm text-black">
-                              3.65 BTC
-                            </span>
-                          </span>
-                        </div>
-                      </td>
-                      <td className="pb-5 pt-5 font-bold">peter.tyi</td>
-                      <td className="pb-5 pt-5 font-bold">jumaima</td>
-                      <td className="pb-5 pt-5">31 DEC 2021</td>
-                    </tr>
-                    <tr className="border-b-2">
-                      <td className="pb-5 pt-5">
-                        <div className="flex items-center text-sm">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-5 h-5"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
-                            />
-                          </svg>
-
-                          <span className="pl-2">
-                            <span className="font-bold text-sm text-black">
-                              Transfer
-                            </span>
-                          </span>
-                        </div>
-                      </td>
-                      <td className="pb-5 pt-5"></td>
-                      <td className="pb-5 pt-5 font-bold">jumaima</td>
-                      <td className="pb-5 pt-5 font-bold">faadi.al.rahman</td>
-                      <td className="pb-5 pt-5">15 SEP 2022</td>
-                    </tr>
-                    <tr>
-                      <td className="pb-5 pt-5">
-                        <div className="flex items-center text-sm">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-5 h-5"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                            />
-                          </svg>
-
-                          <span className="pl-2">
-                            <span className="font-bold text-sm text-black">
-                              Sale
-                            </span>
-                          </span>
-                        </div>
-                      </td>
-                      <td className="pb-5 pt-5">
-                        <div className="flex items-center text-sm">
-                          <img
-                            src={require("../assets/bitcoin.png")}
-                            alt="sd"
-                            className="h-5 w-5 object-contain"
-                          />
-                          <span className="pl-2">
-                            <span className="font-bold text-sm text-black">
-                              4.32 BTC
-                            </span>
-                          </span>
-                        </div>
-                      </td>
-                      <td className="pb-5 pt-5 font-bold">faadi.al.rahman</td>
-                      <td className="pb-5 pt-5 font-bold">thanawan</td>
-                      <td className="pb-5 pt-5 text-sm">21 FEB 2021</td>
-                    </tr>
+                            <td className="pb-5 pt-5">
+                              <div className="flex items-center text-sm gap-3">
+                                {activityIcons[activity.eventType]}
+                                <span className="text-base">
+                                  {activity.eventType}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="pb-5 pt-5">
+                              {ethers.utils.formatEther(
+                                activity.price.toString()
+                              )}
+                            </td>
+                            <td className="pb-5 pt-5 font-bold">
+                              nonkosi.joyi
+                            </td>
+                            <td className="pb-5 pt-5 font-bold">nfinitcom</td>
+                            <td className="pb-5 pt-5">31 DEC 2021</td>
+                          </tr>
+                        );
+                      })}
                   </tbody>
                 </table>
               </div>
@@ -774,7 +621,7 @@ function NFTDetail() {
           </div>
 
           <div className="py-11">
-            <h1 className="text-2xl font-extrabold tracking-tight text-black sm:text-2xl">
+            <h1 className="text-2xl font-extrabold tracking-tight text-gra sm:text-2xl">
               More from this collection
             </h1>
 
@@ -816,7 +663,7 @@ function NFTDetail() {
                     />
                   </div>
                   <div className="pt-3">
-                    <h3 className="text-xl font-bold tracking-tight text-black">
+                    <h3 className="text-xl font-bold tracking-tight text-gra">
                       Diamond Ride
                     </h3>
 
@@ -829,7 +676,7 @@ function NFTDetail() {
                         />
                         <span className="pl-2">
                           from{" "}
-                          <span className="font-bold text-sm text-black">
+                          <span className="font-bold text-sm text-gra">
                             0.45 ETH
                           </span>
                         </span>
@@ -851,225 +698,6 @@ function NFTDetail() {
                           />
                         </svg>
                         <span className="pl-1 font-bold text-sm">10</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-4 px-4 border transition-colors duration-300">
-                <div className="w-64 ">
-                  <div className="flex justify-between items-center mb-5">
-                    <div className="flex -space-x-2">
-                      <img
-                        className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                        src={require("../assets/user2.jpeg")}
-                        alt="User Imageas"
-                      />
-                      <img
-                        className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                        src={require("../assets/user3.webp")}
-                        alt="User Imageas"
-                      />
-                    </div>
-                    <div className="flex items-center justify-center">
-                      <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
-                        <span>···</span>
-                      </button>
-                    </div>
-                  </div>
-                  <div
-                    className="h-auto rounded-xl bg-gray-200 overflow-hidden"
-                    style={{ height: "300px" }}
-                  >
-                    <img
-                      src={require("../assets/nft36.jpg")}
-                      alt="sd"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div className="pt-3">
-                    <h3 className="text-xl font-bold tracking-tight text-black">
-                      Silent Ghost
-                    </h3>
-
-                    <div className="flex justify-between items-center mt-2">
-                      <div className="flex items-center text-gray-500 text-sm mt-2">
-                        <img
-                          src={require("../assets/theta.png")}
-                          alt="sd"
-                          className="h-5 w-5 object-contain"
-                        />
-                        <span className="pl-2">
-                          from{" "}
-                          <span className="font-bold text-sm text-black">
-                            4 THT
-                          </span>
-                        </span>
-                      </div>
-
-                      <div className="flex items-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-4 h-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                          />
-                        </svg>
-                        <span className="pl-1 font-bold text-sm">29</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-4 px-4 border transition-colors duration-300">
-                <div className="w-64 ">
-                  <div className="flex justify-between items-center mb-5">
-                    <div className="flex -space-x-2">
-                      <img
-                        className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                        src={require("../assets/user1.jpeg")}
-                        alt="User Imageas"
-                      />
-                    </div>
-                    <div className="flex items-center justify-center">
-                      <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
-                        <span>···</span>
-                      </button>
-                    </div>
-                  </div>
-                  <div
-                    className="h-auto rounded-xl bg-gray-200 overflow-hidden"
-                    style={{ height: "300px" }}
-                  >
-                    <img
-                      src={require("../assets/nft39.PNG")}
-                      alt="sd"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div className="pt-3">
-                    <h3 className="text-xl font-bold tracking-tight text-black">
-                      Egg Galaxy
-                    </h3>
-
-                    <div className="flex justify-between items-center mt-2">
-                      <div className="flex items-center text-gray-500 text-sm mt-2">
-                        <img
-                          src={require("../assets/uniswap.png")}
-                          alt="sd"
-                          className="h-5 w-5 object-contain"
-                        />
-                        <span className="pl-2">
-                          from{" "}
-                          <span className="font-bold text-sm text-black">
-                            260 UNS
-                          </span>
-                        </span>
-                      </div>
-
-                      <div className="flex items-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-4 h-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                          />
-                        </svg>
-                        <span className="pl-1 font-bold text-sm">15</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-4 px-4 border transition-colors duration-300">
-                <div className="w-64 ">
-                  <div className="flex justify-between items-center mb-5">
-                    <div className="flex -space-x-2">
-                      <img
-                        className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                        src={require("../assets/user3.webp")}
-                        alt="User Imageas"
-                      />
-                      <img
-                        className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                        src={require("../assets/user1.jpeg")}
-                        alt="User Imageas"
-                      />
-                      <img
-                        className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                        src={require("../assets/user2.jpeg")}
-                        alt="User Imageas"
-                      />
-                    </div>
-                    <div className="flex items-center justify-center">
-                      <button className="font-bold text-xl hover:bg-gray-200 rounded-full w-7 h-7">
-                        <span>···</span>
-                      </button>
-                    </div>
-                  </div>
-                  <div
-                    className="h-auto rounded-xl bg-gray-200 overflow-hidden"
-                    style={{ height: "300px" }}
-                  >
-                    <img
-                      src={require("../assets/nft30.jpg")}
-                      alt="sd"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div className="pt-3">
-                    <h3 className="text-xl font-bold tracking-tight text-black">
-                      Urban Life
-                    </h3>
-
-                    <div className="flex justify-between items-center mt-2">
-                      <div className="flex items-center text-gray-500 text-sm mt-2">
-                        <img
-                          src={require("../assets/bitcoin.png")}
-                          alt="sd"
-                          className="h-5 w-5 object-contain"
-                        />
-                        <span className="pl-2">
-                          from{" "}
-                          <span className="font-bold text-sm text-black">
-                            2.3 BTC
-                          </span>
-                        </span>
-                      </div>
-
-                      <div className="flex items-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-4 h-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                          />
-                        </svg>
-                        <span className="pl-1 font-bold text-sm">35</span>
                       </div>
                     </div>
                   </div>
