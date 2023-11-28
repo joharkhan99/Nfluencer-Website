@@ -447,6 +447,7 @@ const SellerNewNFT = () => {
 
     const data = await res.json();
     console.log(data);
+
     setCollections(data.collections);
   };
 

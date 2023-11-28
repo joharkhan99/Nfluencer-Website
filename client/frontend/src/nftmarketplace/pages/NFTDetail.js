@@ -14,6 +14,19 @@ import {
 } from "recharts";
 import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../utils/Loader";
+import { ethers } from "ethers";
+import axios from "axios";
+import {
+  NFTMarketplaceContractABI,
+  NFTMarketplaceContractAddress,
+} from "../../constants/ContractDetails";
+import {
+  HeartIcon,
+  EyeIcon,
+  ShareIcon,
+  ArrowPathIcon,
+} from "@heroicons/react/24/outline";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 
 const data = [
   {
@@ -61,42 +74,42 @@ const data = [
 ];
 
 function NFTDetail() {
-  let { nfttitle, nftId } = useParams();
-
+  let { itemId } = useParams();
   const navigate = useNavigate();
-  const [nft, setNft] = useState(null);
-
-  const fetchNFTDetails = async () => {
-    const req = await fetch(
-      `${process.env.REACT_APP_API_URL}/api/nft/details`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nftId: nftId,
-        }),
-      }
-    );
-    const res = await req.json();
-    console.log(res);
-    if (res.error) {
-      navigate("/");
-      return;
-    }
-    setNft(res[0]);
-  };
+  const [nftMetaData, setNftMetaData] = useState(null);
 
   useEffect(() => {
-    if (!nftId) {
-      navigate("/");
+    if (!itemId) {
+      navigate("/explore");
       return;
     }
-    fetchNFTDetails();
-  }, [nftId, navigate]);
+    fetchNFTDetails(itemId);
+  }, [itemId, navigate]);
 
-  if (!nft) {
+  const fetchContract = (signerOrProvider) => {
+    const marketplaceContract = new ethers.Contract(
+      NFTMarketplaceContractAddress,
+      NFTMarketplaceContractABI,
+      signerOrProvider
+    );
+
+    return { marketplaceContract };
+  };
+
+  const fetchNFTDetails = async (itemId) => {
+    const provider = new ethers.providers.JsonRpcProvider(
+      process.env.REACT_APP_ALCHEMY_SEPOLIA_URL
+    );
+    const { marketplaceContract } = fetchContract(provider);
+    const fetchedNFT = await marketplaceContract.getNFTDetails(itemId);
+    console.log(fetchedNFT);
+
+    const tokenUri = await marketplaceContract.tokenURI(fetchedNFT.itemId);
+    const meta = await axios.get(tokenUri);
+    setNftMetaData({ ...meta.data, seller: fetchedNFT.seller });
+  };
+
+  if (!nftMetaData) {
     <Loader />;
   } else
     return (
@@ -104,122 +117,126 @@ function NFTDetail() {
         <Header transparent={true} />
         <div className="container mx-auto my-10">
           <div className="flex flex-col md:flex-row gap-16">
-            <div className="md:w-1/2">
+            <div className="md:w-1/2 relative">
               <img
-                src={nft.image}
-                alt={nft.name}
+                src={nftMetaData.fileUrl}
+                alt={nftMetaData.name}
                 className="rounded-lg h-auto w-full md:h-full object-cover"
               />
+              <button class="rounded-xl text-nft-primary-light bg-white p-2 flex gap-1 items-center absolute top-2 right-2 text-sm">
+                <ArrowTopRightOnSquareIcon className="w-5 h-5" />
+              </button>
             </div>
 
             <div className="md:w-1/2 ">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 px-5 bg-white text-black rounded-full border">
-                    <button className="flex items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="w-5 h-5"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                        ></path>
-                      </svg>
-                      <span className="pl-2 font-bold text-sm">36</span>
-                    </button>
-                  </div>
-                  <div className="p-3 px-5 bg-white text-black rounded-full">
-                    <button className="flex items-center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-5 h-5"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                      </svg>
-
-                      <span className="pl-2 font-bold text-sm">124.6k</span>
-                    </button>
-                  </div>
+                  <button class="bg-gray-100 font-medium p-3 rounded-xl hover:bg-gray-300 text-gray-800 flex items-center">
+                    <HeartIcon className="w-5 h-5" />
+                    <span className="pl-2 font-medium text-gray-600 text-sm">
+                      36 favorites
+                    </span>
+                  </button>
+                  <button className="flex items-center p-3">
+                    <EyeIcon className="w-5 h-5" />
+                    <span className="pl-2 font-medium text-gray-600 text-sm">
+                      124.6k
+                    </span>
+                  </button>
                 </div>
-                <button className="font-bold text-xl hover:bg-gray-100 rounded-full w-9 h-9 border text-center">
-                  <span>···</span>
-                </button>
+                <div className="flex gap-4 items-center">
+                  <button className="rounded-xl border p-3">
+                    <ShareIcon className="w-5 h-5" />
+                  </button>
+                  <button className="rounded-xl border p-3">
+                    <ArrowPathIcon className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
 
               <h1 className="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
-                {nft.name}
+                {nftMetaData.name}
               </h1>
-              <div className="flex items-center text-gray-500 text-sm my-3 mb-7">
-                <img
-                  src={require("../assets/bitcoin.png")}
-                  alt="sd"
-                  className="h-5 w-5 object-contain"
-                />
-                <span className="pl-2">
-                  on Sale for{" "}
-                  <span className="font-bold text-sm text-black">
-                    {nft.price} BTC
-                  </span>
+
+              <div className="flex items-center text-gray-500 text-base my-3 mb-7">
+                Owned by
+                <span className="pl-2 font-bold text-nft-primary-light">
+                  nfinitcom
                 </span>
               </div>
-
-              <p className="text-sm">{nft.description}</p>
 
               <div className="flex items-center mt-7 justify-between">
                 <div>
                   <span className="text-sm mb-4 block">
-                    <span className="text-black font-semibold">Creator</span>
+                    <span className="text-black font-semibold">Owner</span>
                     <span className="text-gray-500 ml-1">
-                      {nft.royalties}% royalities
+                      {nftMetaData.royalties}% royalities
                     </span>
                   </span>
                   <a href="s" className="flex items-center">
                     <img
-                      src={nft.user.avatar}
+                      src={nftMetaData.creator.avatar}
                       alt="User Imasge"
-                      className="rounded-full h-10 w-10"
+                      className="rounded-full h-14 w-14"
                     />
                     <span className="ml-2 font-bold">
-                      {nft.walletAddress.substring(0, 10) +
+                      {nftMetaData.seller.substring(0, 10) +
                         "..." +
-                        nft.walletAddress.substring(
-                          nft.walletAddress.length - 4,
-                          nft.walletAddress.length
+                        nftMetaData.seller.substring(
+                          nftMetaData.seller.length - 4,
+                          nftMetaData.seller.length
                         )}
                     </span>
                   </a>
                 </div>
                 <div>
                   <span className="text-sm mb-4 block">
-                    <span className="text-black font-semibold">Collection</span>
+                    <span className="text-gray-900 font-semibold">
+                      Collection
+                    </span>
                   </span>
-                  <a href="s" className="flex items-center">
-                    <img
-                      src={require("../assets/nft1.jpg")}
-                      alt="User Imasge"
-                      className="rounded-full h-10 w-10"
-                    />
-                    <span className="ml-2 font-bold">Fellaz Collection</span>
+                  <a href="s" className="block">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={nftMetaData.collection.image}
+                        alt="User Imasge"
+                        className="rounded-full h-14 w-14"
+                      />
+                      <div className="flex flex-col items-start">
+                        <button className="font-bold text-gray-900">
+                          {nftMetaData.collection.name}
+                        </button>
+                        <div className="text-sm text-gray-500">
+                          {nftMetaData.collection.totalItems} Items
+                        </div>
+                      </div>
+                    </div>
                   </a>
+                </div>
+              </div>
+
+              <div className="mt-4 p-6 shadow-lg rounded-xl">
+                <span className="text-gray-500 text-sm font-bold">Top bid</span>
+                <div className="flex items-center text-gray-500 text-sm my-3 mb-7">
+                  <img
+                    src={require("../assets/bitcoin.png")}
+                    alt="sd"
+                    className="h-10 w-10 object-contain bg-orange-100 rounded-full p-2"
+                  />
+                  <span className="pl-2">
+                    <span className="font-bold text-lg text-black">
+                      {nftMetaData.price} BTC ($9118.1 USD)
+                    </span>
+                  </span>
+                </div>
+
+                <div className="flex gap-4">
+                  <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm w-full font-semibold">
+                    Place your bid
+                  </button>
+                  <button className="bg-nft-primary-transparent rounded-full px-6 py-3 font-semibold text-sm text-nft-primary-light w-full hover:bg-nft-primary-light hover:text-white duration-300 transition-colors">
+                    <span>Save for later</span>
+                  </button>
                 </div>
               </div>
 
@@ -260,7 +277,7 @@ function NFTDetail() {
                   Properties
                 </div>
                 <div className="flex gap-3 flex-row justify-start flex-wrap">
-                  {nft.traits.map((trait, index) => (
+                  {nftMetaData.traits.map((trait, index) => (
                     <div
                       className="flex flex-row border border-gray-200 rounded-full gap-2 p-2 px-3 text-sm font-semibold items-center hover:bg-gray-100"
                       key={index}
@@ -297,31 +314,6 @@ function NFTDetail() {
                       See more
                     </div>
                   </div>
-                </div>
-              </div>
-
-              <div className="mt-4 p-6 shadow-lg rounded-xl">
-                <span className="text-gray-500 text-sm font-bold">Top bid</span>
-                <div className="flex items-center text-gray-500 text-sm my-3 mb-7">
-                  <img
-                    src={require("../assets/bitcoin.png")}
-                    alt="sd"
-                    className="h-10 w-10 object-contain bg-orange-100 rounded-full p-2"
-                  />
-                  <span className="pl-2">
-                    <span className="font-bold text-lg text-black">
-                      {nft.price} BTC ($9118.1 USD)
-                    </span>
-                  </span>
-                </div>
-
-                <div className="flex gap-4">
-                  <button className="bg-nft-primary-light text-white p-3 px-7 rounded-full text-sm w-full font-semibold">
-                    Place your bid
-                  </button>
-                  <button className="bg-nft-primary-transparent rounded-full px-6 py-3 font-semibold text-sm text-nft-primary-light w-full hover:bg-nft-primary-light hover:text-white duration-300 transition-colors">
-                    <span>Save for later</span>
-                  </button>
                 </div>
               </div>
             </div>

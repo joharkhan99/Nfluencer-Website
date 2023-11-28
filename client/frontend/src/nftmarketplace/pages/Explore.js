@@ -813,10 +813,7 @@ function Explore() {
                                     </button>
                                     <Link
                                       class="bg-gray-200 font-medium p-4 rounded-xl hover:bg-gray-300 w-full text-gray-800"
-                                      to={`/nftdetails/${nft.name
-                                        .replace(/[^a-zA-Z0-9-]+/g, "-")
-                                        .replace(/-+/g, "-")
-                                        .toLowerCase()}/${nft._id}`}
+                                      to={`/nft/${nft.itemId}`}
                                     >
                                       View Details
                                     </Link>
