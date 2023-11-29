@@ -199,10 +199,10 @@ const likeNFT = async (req, res) => {
 };
 
 const getNFTLikes = async (req, res) => {
-  const { nftId } = req.params;
+  const { id } = req.params;
   try {
     const totalNFTLikes = await LikeNFT.find({
-      nftId,
+      nftId: id,
     });
     return res.status(200).json({
       error: false,

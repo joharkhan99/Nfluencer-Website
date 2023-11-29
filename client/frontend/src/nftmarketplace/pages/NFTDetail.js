@@ -35,6 +35,8 @@ import {
 } from "@heroicons/react/24/solid";
 import PriceHistory from "../components/nft/PriceHistory";
 import { Disclosure } from "@headlessui/react";
+import { useSelector } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
 
 function NFTDetail() {
   let { itemId } = useParams();
@@ -42,8 +44,9 @@ function NFTDetail() {
   const [nftMetaData, setNftMetaData] = useState(null);
   const [nftUsdPrice, setNftUsdPrice] = useState(0);
   const [priceHistory, setPriceHistory] = useState([]);
-  const [nftLikes, setNftLikes] = useState("0");
+  const [nftLikes, setNftLikes] = useState(0);
   const [isNFTLiked, setIsNFTLiked] = useState(false);
+  const [likesData, setLikesData] = useState([]);
 
   useEffect(() => {
     if (!itemId) {
@@ -106,7 +109,6 @@ function NFTDetail() {
     );
     const ethToUsdRate = coingeckoApiResponse.data.ethereum.usd;
     const dollars = ethAmount * ethToUsdRate;
-    console.log(dollars);
     setNftUsdPrice(dollars);
   }
 
@@ -187,6 +189,8 @@ function NFTDetail() {
     );
   };
 
+  const user = useSelector((state) => state.user.user);
+
   const fetchNFTLikes = async (itemId) => {
     try {
       const response = await axios.get(
@@ -197,10 +201,73 @@ function NFTDetail() {
           },
         }
       );
-
-      setNftLikes(response.data.totalNFTLikes);
-      console.log(response);
+      const userLikes = response.data.totalNFTLikes.filter((like) => {
+        return like.userId === user._id;
+      });
+      setLikesData(response.data.totalNFTLikes);
+      setNftLikes(response.data.totalNFTLikes.length);
+      if (userLikes.length > 0) {
+        setIsNFTLiked(true);
+      }
     } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addOrRemoveLike = async (nftId) => {
+    if (!user) {
+      toast.error("Please login to like this NFT");
+      return;
+    }
+
+    try {
+      if (isNFTLiked) {
+        const likeId = likesData.filter((like) => {
+          return like.userId === user._id;
+        })[0]._id;
+        const response = await axios.delete(
+          `${process.env.REACT_APP_API_URL}/api/nft/like/${likeId}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": user.jwtToken,
+            },
+          }
+        );
+        if (response.data.error === false) {
+          const newNFTLikes = likesData.filter((like) => {
+            return like._id !== likeId;
+          });
+          setLikesData(newNFTLikes);
+          setIsNFTLiked(false);
+          setNftLikes(nftLikes - 1);
+          toast.success("NFT unliked successfully");
+        }
+      } else {
+        // add like
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/api/nft/like`,
+          {
+            nftId: nftId,
+            userId: user._id,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": user.jwtToken,
+            },
+          }
+        );
+        if (response.data.error === false) {
+          const newNFTLikes = [...likesData, response.data.nftLike];
+          setLikesData(newNFTLikes);
+          setIsNFTLiked(true);
+          setNftLikes(newNFTLikes.length);
+          toast.success("NFT liked successfully");
+        }
+      }
+    } catch (error) {
+      toast.error("Error liking NFT");
       console.log(error);
     }
   };
@@ -210,6 +277,7 @@ function NFTDetail() {
   } else
     return (
       <>
+        <Toaster />
         <Header transparent={true} />
         <div className="container mx-auto my-10">
           <div className="flex flex-col md:flex-row gap-16">
@@ -257,14 +325,20 @@ function NFTDetail() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   {isNFTLiked ? (
-                    <button class="bg-nft-primary-light font-medium p-3 rounded-xl hover:bg-nft-primary-dark text-white flex items-center">
+                    <button
+                      class="bg-nft-primary-light font-medium p-3 rounded-xl hover:bg-nft-primary-dark text-white flex items-center"
+                      onClick={() => addOrRemoveLike(itemId)}
+                    >
                       <HeartIcon className="w-5 h-5 fill-white" />
                       <span className="pl-2 font-medium text-white text-sm">
                         {nftLikes} favorites
                       </span>
                     </button>
                   ) : (
-                    <button class="bg-gray-100 font-medium p-3 rounded-xl hover:bg-gray-300 text-gray-800 flex items-center">
+                    <button
+                      class="bg-gray-100 font-medium p-3 rounded-xl hover:bg-gray-300 text-gray-800 flex items-center"
+                      onClick={() => addOrRemoveLike(itemId)}
+                    >
                       <HeartIcon className="w-5 h-5" />
                       <span className="pl-2 font-medium text-gray-600 text-sm">
                         {nftLikes} favorites

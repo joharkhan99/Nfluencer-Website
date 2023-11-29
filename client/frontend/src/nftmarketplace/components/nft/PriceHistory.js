@@ -3,8 +3,6 @@ import Chart from "react-apexcharts";
 import { ethers } from "ethers";
 
 const PriceHistory = ({ data }) => {
-  console.log(data);
-
   const getFormattedPrice = (price) => {
     const BigNumber = ethers.BigNumber;
     const priceString = BigNumber.from(price._hex).toString();
@@ -32,9 +30,6 @@ const PriceHistory = ({ data }) => {
       return formatTime(item.timestamp);
     });
 
-    console.log(prices);
-    console.log(dates);
-
     setnftPrices(prices);
     setnftDates(dates);
   };
@@ -45,10 +40,6 @@ const PriceHistory = ({ data }) => {
 
     setnftPrices(prices);
     setnftDates(dates);
-
-    console.log(prices);
-    console.log(dates);
-    console.log(data);
   }, [data]);
 
   const [options, setOptions] = useState({
