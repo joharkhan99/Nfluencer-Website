@@ -42,6 +42,7 @@ const YourNFTs = ({ user }) => {
         data.map(async (i) => {
           const tokenUri = await marketplaceContract.tokenURI(i.itemId);
           const meta = await axios.get(tokenUri);
+          console.log(meta);
           return {
             ...meta.data,
             likes: i.likes.toString(),
@@ -66,33 +67,7 @@ const YourNFTs = ({ user }) => {
     fetchNFTs();
   }, []);
 
-  const likeNFT = async (tokenId) => {
-    setLoading(true);
-    try {
-      const web3Modal = new Web3Modal();
-      const connection = await web3Modal.connect();
-      const provider = new ethers.providers.Web3Provider(connection);
-      const signer = provider.getSigner();
-
-      const { marketplaceContract } = fetchContract(signer);
-
-      const act = await marketplaceContract.getActivities(tokenId);
-      const purchased = await marketplaceContract.fetchPurchasedNFTs();
-
-      console.log(act);
-      console.log(purchased);
-
-      // await marketplaceContract.incrementLikes(tokenId);
-      // console.log(act);
-    } catch (error) {
-      console.log(`Error fetching NFTs: ${error}`);
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    likeNFT(2);
-  }, []);
+  const likeNFT = async (tokenId) => {};
 
   const getFormattedPrice = (price) => {
     return ethers.utils.formatEther(price.toString());

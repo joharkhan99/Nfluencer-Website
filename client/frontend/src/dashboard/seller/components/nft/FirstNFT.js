@@ -74,7 +74,9 @@ const FirstNFT = ({ NFT }) => {
             </div>
           </div>
 
-          <p className="py-4 block">{NFT.description.substring(0, 200)}...</p>
+          <p className="py-4 block break-words">
+            {NFT.description.substring(0, 200)}...
+          </p>
 
           <div className="flex gap-2">
             <div className="bg-gray-100 flex p-6 px-3 rounded-xl gap-14 w-1/2 justify-center">

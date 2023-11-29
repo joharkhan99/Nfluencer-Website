@@ -30,7 +30,7 @@ const nftSchema = new mongoose.Schema(
     effectiveGasPrice: { type: String, required: true },
     blockHash: { type: String, required: true },
     nftUrl: { type: String, required: true },
-    walletAddress: { type: String, required: true },
+    walletAddress: { type: String },
     isRewardItem: { type: Boolean, required: true },
   },
   {

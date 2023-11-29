@@ -183,7 +183,7 @@ function Explore() {
     const data = JSON.stringify({
       name: nft.name,
       description: nft.description,
-      creator: nft.user,
+      creator: nft.creator,
       currentOwner: user,
       ownershipHistory: [...nft.ownershipHistory, user],
       fileUrl: nft.fileUrl,

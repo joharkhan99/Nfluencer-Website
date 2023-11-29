@@ -202,13 +202,13 @@ const PurchasedNFTs = ({ user }) => {
                       <div className="flex justify-between items-center">
                         <div className="flex items-center justify-start gap-2 mb-5">
                           <img
-                            src={nft.creator.avatar}
+                            src={nft.currentOwner.avatar}
                             alt=""
                             className="w-10 h-10 rounded-full"
                           />
                           <div className="flex flex-col">
                             <span className="text-sm text-gray-500 font-semibold">
-                              {nft.creator.name}
+                              {nft.currentOwner.name}
                             </span>
                           </div>
                         </div>

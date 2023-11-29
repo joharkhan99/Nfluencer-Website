@@ -27,6 +27,7 @@ import {
   CpuChipIcon,
   ListBulletIcon,
   Square3Stack3DIcon,
+  UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import PriceHistory from "../components/nft/PriceHistory";
@@ -169,6 +170,17 @@ function NFTDetail() {
     return ethers.utils.formatEther(price.toString());
   };
 
+  const formatDate = (dateString) => {
+    var date = new Date(dateString);
+    return (
+      date.getDate() +
+      " " +
+      date.toLocaleString("default", { month: "short" }) +
+      " " +
+      date.getFullYear()
+    );
+  };
+
   if (!nftMetaData) {
     <Loader />;
   } else
@@ -253,37 +265,47 @@ function NFTDetail() {
                 {nftMetaData.name}
               </h1>
 
-              <div className="flex items-center text-gray-500 text-base my-3 mb-7">
-                Owned by
-                <span className="pl-2 font-bold text-nft-primary-light">
-                  {nftMetaData.creator.name}
+              <div className="flex items-center text-gray-500 text-sm my-3 mb-7">
+                Published on
+                <span className="pl-2 font-bold text-gray-600">
+                  {formatDate(nftMetaData.createdAt)}
                 </span>
               </div>
 
-              <div className="flex items-center mt-7 justify-between">
-                <div>
+              <div className="flex items-center mt-7 justify-evenly w-full text-left">
+                <div className="text-left w-full">
+                  <span className="text-sm mb-4 block">
+                    <span className="text-gray-900 font-semibold">
+                      Current Owner
+                    </span>
+                  </span>
                   <a href="s" className="block">
                     <div className="flex items-center gap-3">
-                      <span className="w-14 h-14 rounded-full bg-gray-100 flex justify-center items-center">
-                        <Square3Stack3DIcon className="w-7 h-7" />
-                      </span>
+                      <img
+                        src={nftMetaData.currentOwner.avatar}
+                        alt="User Imasge"
+                        className="rounded-full h-14 w-14"
+                      />
                       <div className="flex flex-col items-start">
                         <button className="font-bold text-gray-900">
-                          Category
+                          {nftMetaData.currentOwner.name}
                         </button>
                         <div className="text-sm text-gray-500">
-                          {nftMetaData.category}
+                          {nftMetaData.seller.substring(0, 10) +
+                            "..." +
+                            nftMetaData.seller.substring(
+                              nftMetaData.seller.length - 4,
+                              nftMetaData.seller.length
+                            )}
                         </div>
                       </div>
                     </div>
                   </a>
                 </div>
-              </div>
 
-              <div className="flex items-center mt-7 justify-between">
-                <div>
+                <div className="text-left w-full">
                   <span className="text-sm mb-4 block">
-                    <span className="text-gray-900 font-semibold">Owner</span>
+                    <span className="text-gray-900 font-semibold">Creator</span>
                   </span>
                   <a href="s" className="block">
                     <div className="flex items-center gap-3">
@@ -308,7 +330,27 @@ function NFTDetail() {
                     </div>
                   </a>
                 </div>
-                <div>
+              </div>
+
+              <div className="flex items-center mt-7 justify-evenly w-full text-left">
+                <div className="text-left w-full">
+                  <a href="s" className="block">
+                    <div className="flex items-center gap-3">
+                      <span className="w-14 h-14 rounded-full bg-gray-100 flex justify-center items-center">
+                        <Square3Stack3DIcon className="w-7 h-7" />
+                      </span>
+                      <div className="flex flex-col items-start">
+                        <button className="font-bold text-gray-900">
+                          Category
+                        </button>
+                        <div className="text-sm text-gray-500">
+                          {nftMetaData.category}
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <div className="text-left w-full">
                   <span className="text-sm mb-4 block">
                     <span className="text-gray-900 font-semibold">
                       Collection
@@ -374,13 +416,46 @@ function NFTDetail() {
                     <div className="flex gap-1">
                       <span className="text-gray-500 font-medium">By</span>
                       <span className="font-semibold text-nft-primary-light">
-                        {nftMetaData.creator.name}
+                        {nftMetaData.currentOwner.name}
                       </span>
                     </div>
                     <p className="font-normal text-sm">
                       {nftMetaData.description}
                     </p>
                   </div>
+                </div>
+
+                <div>
+                  <Disclosure defaultOpen={true}>
+                    {({ open }) => (
+                      <>
+                        <Disclosure.Button className="flex w-full justify-between items-center border-t pt-4 pb-4">
+                          <div className="text-lg font-extrabold flex gap-3">
+                            <UserGroupIcon className="w-6 h-6 inline-block" />
+                            <span>Ownership History</span>
+                          </div>
+                          <ChevronUpIcon
+                            className={`${
+                              open ? "rotate-180 transform" : ""
+                            } h-4 w-4 text-gray-500`}
+                          />
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+                          <div className="flex flex-col gap-2">
+                            {nftMetaData.ownershipHistory
+                              .reverse()
+                              .map((history, index) => {
+                                return (
+                                  <div key={index}>
+                                    <div className="flex justify-between items-center"></div>
+                                  </div>
+                                );
+                              })}
+                          </div>
+                        </Disclosure.Panel>
+                      </>
+                    )}
+                  </Disclosure>
                 </div>
 
                 <div>
