@@ -5,14 +5,19 @@ import Footer from "../components/Footer";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import Carousel from "react-multi-carousel";
 import { Link } from "react-router-dom";
-import { Web3 } from "web3";
 import {
   NFTMarketplaceContractABI,
   NFTMarketplaceContractAddress,
 } from "../../constants/ContractDetails";
 import { ethers } from "ethers";
 import axios from "axios";
-import { HeartIcon } from "@heroicons/react/24/solid";
+import {
+  HeartIcon,
+  ClipboardDocumentListIcon,
+  PhotoIcon,
+  FlagIcon,
+  ArrowUpRightIcon,
+} from "@heroicons/react/24/solid";
 import Web3Modal from "web3modal";
 import toast, { Toaster } from "react-hot-toast";
 import { create as ipfsHttpClient } from "ipfs-http-client";
@@ -825,7 +830,7 @@ function Explore() {
                             >
                               <div className="w-full h-full decoration-transparent rounded-xl shadow-xl transition-colors duration-300 relative group">
                                 <div
-                                  className="h-auto bg-gray-100 overflow-hidden rounded-t-xl"
+                                  className="h-auto bg-gray-100 overflow-hidden rounded-xl"
                                   style={{ height: "300px" }}
                                 >
                                   {nft.fileType === "image" ? (
@@ -846,32 +851,97 @@ function Explore() {
                                   )}
                                 </div>
                                 <div className="p-2">
+                                  <div className="flex justify-between items-center -mt-8 z-50">
+                                    <div className="flex -space-x-3">
+                                      {nft.ownershipHistory.map(
+                                        (history, index) => (
+                                          <img
+                                            className="w-12 h-12 rounded-full border-2 object-cover border-white z-50"
+                                            src={history.avatar}
+                                            alt="User Imageas"
+                                          />
+                                        )
+                                      )}
+                                    </div>
+                                    <div className="flex items-center justify-center">
+                                      <Menu
+                                        as="div"
+                                        className="relative text-left"
+                                      >
+                                        <div>
+                                          <Menu.Button className="font-black text-xl bg-white rounded-full w-12 h-12 z-50 shadow-lg hover:bg-gray-100 text-gray-700">
+                                            <span>···</span>
+                                          </Menu.Button>
+                                        </div>
+
+                                        <Menu.Items className="absolute right-0 z-10 mt-1 w-40 origin-top-right rounded-xl bg-white shadow-xl focus:outline-none  p-1 border border-gray-50">
+                                          <Menu.Item>
+                                            <button className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium">
+                                              <ClipboardDocumentListIcon className="w-5 h-5" />
+                                              <span>Copy Link</span>
+                                            </button>
+                                          </Menu.Item>
+                                          <Menu.Item>
+                                            <Link
+                                              to={nft.fileUrl}
+                                              target="_blank"
+                                              className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium"
+                                            >
+                                              <PhotoIcon className="w-5 h-5" />
+                                              <span>Open Original</span>
+                                            </Link>
+                                          </Menu.Item>
+                                          <Menu.Item>
+                                            <button className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium">
+                                              <FlagIcon className="w-5 h-5" />
+                                              <span>Report</span>
+                                            </button>
+                                          </Menu.Item>
+                                        </Menu.Items>
+                                      </Menu>
+                                    </div>
+                                  </div>
+
                                   <div className="p-2">
                                     <h3 className="text-xl font-bold tracking-tight text-black">
                                       {nft.name}
                                     </h3>
-                                    <div className="flex items-center text-gray-500 text-sm mt-2">
-                                      <img
-                                        src={require("../assets/eth.png")}
-                                        alt="sd"
-                                        className="h-5 w-5 object-contain"
-                                      />
-                                      <span className="pl-2">
-                                        from{" "}
-                                        <span className="font-bold text-sm text-black">
-                                          {getFormattedPrice(nft.weiPrice)} ETH
+                                    <div className="flex items-center text-gray-500 text-sm mt-2 justify-between">
+                                      <div>
+                                        <span className="block text-xs text-center">
+                                          Price
                                         </span>
-                                      </span>
+                                        <span className="font-bold text-sm text-black">
+                                          <span className="text-gray-500 pr-1 font-medium">
+                                            {getFormattedPrice(nft.weiPrice)}
+                                          </span>
+                                          ETH
+                                        </span>
+                                      </div>
+                                      <div>
+                                        <span className="block text-xs text-center">
+                                          Collection
+                                        </span>
+                                        <Link
+                                          to={"s"}
+                                          className="text-nft-primary-light font-semibold"
+                                        >
+                                          <span>{nft.collection.name}</span>
+                                          <ArrowUpRightIcon className="w-4 h-4 inline-block" />
+                                        </Link>
+                                      </div>
                                     </div>
                                   </div>
 
                                   <div class="flex items-center justify-between gap-1 text-sm mt-4 text-center">
-                                    <button
-                                      class="bg-nft-primary-light border-nft-primary-light text-white font-medium p-4 rounded-xl hover:bg-nft-primary-dark w-full"
-                                      onClick={() => buyNFT(nft)}
-                                    >
-                                      Buy Now
-                                    </button>
+                                    {nft.currentOwner._id !== user._id ? (
+                                      <button
+                                        class="bg-nft-primary-light border-nft-primary-light text-white font-medium p-4 rounded-xl hover:bg-nft-primary-dark w-full"
+                                        onClick={() => buyNFT(nft)}
+                                      >
+                                        Buy Now
+                                      </button>
+                                    ) : null}
                                     <Link
                                       class="bg-gray-200 font-medium p-4 rounded-xl hover:bg-gray-300 w-full text-gray-800"
                                       to={`/nft/${nft.itemId}`}
@@ -900,7 +970,7 @@ function Explore() {
                                 </div>
 
                                 <button class="rounded-xl text-nft-primary-light bg-white p-2 flex gap-1 items-center absolute top-2 right-2 text-sm">
-                                  <HeartIcon className="w-5 h-5" />
+                                  <HeartIcon className="w-5 h-5 fill-none stroke-nft-primary-light stroke-2" />
                                   <span class="font-semibold text-gray-700">
                                     12
                                   </span>

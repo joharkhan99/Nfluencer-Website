@@ -34,6 +34,13 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         uint256 timestamp;
     }
 
+    // a way to store the likes of an item
+    struct Like {
+        uint256 itemId;
+        address from;
+        uint256 timestamp;
+    }
+
     struct MarketItem {
         uint itemId;
         address payable seller; //person selling the nft
@@ -51,6 +58,7 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
     mapping(uint256 => MarketItem) private marketItems;
     mapping(uint256 => Activity[]) public activities;
     mapping(uint256 => PriceHistory[]) public priceHistories;
+    mapping(uint256 => Like[]) public likes;
 
     //log message (when Item is sold)
     event MarketItemCreated(
@@ -299,5 +307,28 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
     /// @notice function to update the tokenURI of an item
     function updateTokenURI(uint256 tokenId, string memory newTokenURI) public {
         _setTokenURI(tokenId, newTokenURI);
+    }
+
+    /// @notice function to add a like to an NFT
+    function addLike(uint256 itemId) public {
+        Like memory like = Like(itemId, msg.sender, block.timestamp);
+        likes[itemId].push(like);
+        marketItems[itemId].likes += 1;
+    }
+
+    /// @notice function to get likes of an NFT
+    function getLikes(uint256 itemId) public view returns (Like[] memory) {
+        return likes[itemId];
+    }
+
+    /// @notice function to remove a like from an NFT
+    function removeLike(uint256 itemId) public {
+        uint256 totalLikes = likes[itemId].length;
+        for (uint256 i = 0; i < totalLikes; i++) {
+            if (likes[itemId][i].from == msg.sender) {
+                delete likes[itemId][i];
+                marketItems[itemId].likes -= 1;
+            }
+        }
     }
 }

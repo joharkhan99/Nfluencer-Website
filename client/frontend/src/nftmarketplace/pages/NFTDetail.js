@@ -26,10 +26,13 @@ import {
   ChevronUpIcon,
   CpuChipIcon,
   ListBulletIcon,
-  Square3Stack3DIcon,
+  // Square3Stack3DIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
+import {
+  ArrowTopRightOnSquareIcon,
+  Square3Stack3DIcon,
+} from "@heroicons/react/24/solid";
 import PriceHistory from "../components/nft/PriceHistory";
 import { Disclosure } from "@headlessui/react";
 
@@ -284,7 +287,7 @@ function NFTDetail() {
                       <img
                         src={nftMetaData.currentOwner.avatar}
                         alt="User Imasge"
-                        className="rounded-full h-14 w-14"
+                        className="rounded-full h-14 w-14 object-cover"
                       />
                       <div className="flex flex-col items-start">
                         <button className="font-bold text-gray-900">
@@ -312,7 +315,7 @@ function NFTDetail() {
                       <img
                         src={nftMetaData.creator.avatar}
                         alt="User Imasge"
-                        className="rounded-full h-14 w-14"
+                        className="rounded-full h-14 w-14 object-cover"
                       />
                       <div className="flex flex-col items-start">
                         <button className="font-bold text-gray-900">
@@ -336,7 +339,7 @@ function NFTDetail() {
                 <div className="text-left w-full">
                   <a href="s" className="block">
                     <div className="flex items-center gap-3">
-                      <span className="w-14 h-14 rounded-full bg-gray-100 flex justify-center items-center">
+                      <span className="w-14 h-14 rounded-full bg-nft-primary-transparent flex justify-center items-center text-nft-primary-light">
                         <Square3Stack3DIcon className="w-7 h-7" />
                       </span>
                       <div className="flex flex-col items-start">
@@ -441,13 +444,57 @@ function NFTDetail() {
                           />
                         </Disclosure.Button>
                         <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                          <div className="flex flex-col gap-2">
+                          <div className="flex flex-col">
                             {nftMetaData.ownershipHistory
                               .reverse()
                               .map((history, index) => {
                                 return (
                                   <div key={index}>
-                                    <div className="flex justify-between items-center"></div>
+                                    <div className="w-full flex items-center gap-5">
+                                      <a href="s" className="block">
+                                        <div className="flex items-center gap-4">
+                                          <img
+                                            src={history.avatar}
+                                            alt="User Imasge"
+                                            className="rounded-full h-10 w-10 object-cover"
+                                          />
+                                          <div className="flex flex-col items-start">
+                                            <button className="font-bold text-gray-900">
+                                              {history.name}
+                                            </button>
+
+                                            <div className="text-sm text-gray-500">
+                                              {"0x939B0edbd94C7CD117d003d84b6D164Ba110bBee".substring(
+                                                0,
+                                                10
+                                              ) +
+                                                "..." +
+                                                "0x939B0edbd94C7CD117d003d84b6D164Ba110bBee".substring(
+                                                  "0x939B0edbd94C7CD117d003d84b6D164Ba110bBee"
+                                                    .length - 4,
+                                                  "0x939B0edbd94C7CD117d003d84b6D164Ba110bBee"
+                                                    .length
+                                                )}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </a>
+
+                                      {nftMetaData.ownershipHistory.length ===
+                                      index + 1 ? (
+                                        <span className="text-sm rounded-md p-1 px-3 bg-green-200 text-green-800">
+                                          Creator
+                                        </span>
+                                      ) : (
+                                        <span className="text-sm rounded-md p-1 px-3 bg-gray-200 text-gray-800">
+                                          Buyer
+                                        </span>
+                                      )}
+                                    </div>
+                                    {nftMetaData.ownershipHistory.length !==
+                                      index + 1 && (
+                                      <div class="border-l-2 my-1 border-dotted h-5 border-gray-400 ml-5"></div>
+                                    )}
                                   </div>
                                 );
                               })}
