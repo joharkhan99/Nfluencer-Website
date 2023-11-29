@@ -231,11 +231,134 @@ function Explore() {
     return ethers.utils.formatEther(price.toString());
   };
 
+  const [nftLikes, setNFTLikes] = useState([]);
+
+  const fetchLikes = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/nft/getLikes`,
+        {
+          nftIds: nfts.map((nft) => nft.itemId),
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setNFTLikes(response.data.totalNFTLikes);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const countNFTLikes = (nft) => {
+    // console.log(nftLikes);
+    if (nftLikes.length === 0) {
+      return 0;
+    }
+
+    const nftLike = nftLikes.filter(
+      (like) => like.nftId.toString() === nft.itemId.toString()
+    );
+
+    console.log("Likes", nftLike);
+    return nftLike.length;
+  };
+
+  const checkIfUserLikedNFT = (nft) => {
+    if (nftLikes.length === 0 || !user) {
+      return false;
+    }
+    const nftLike = nftLikes.filter(
+      (like) =>
+        like.nftId.toString() === nft.itemId.toString() &&
+        like.userId.toString() === user._id.toString()
+    );
+    console.log("Likes", nftLike);
+    return nftLike.length > 0;
+  };
+
+  useEffect(() => {
+    if (nfts.length > 0) fetchLikes();
+  }, [nfts]);
+
+  const addOrRemoveLike = async (nft) => {
+    if (!user) {
+      toast.error("Please login to like this NFT");
+      return;
+    }
+
+    try {
+      const nftLike = nftLikes.filter(
+        (like) =>
+          like.nftId.toString() === nft.itemId.toString() &&
+          like.userId.toString() === user._id.toString()
+      );
+
+      if (nftLike.length > 0) {
+        const response = await axios.delete(
+          `${process.env.REACT_APP_API_URL}/api/nft/like/${nftLike[0]._id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": user.jwtToken,
+            },
+          }
+        );
+        if (response.data.error === false) {
+          console.log("DISLIKE, ", response.data.error);
+          const newNFTLikes = nftLikes.filter(
+            (like) => like._id.toString() !== nftLike[0]._id.toString()
+          );
+          setNFTLikes(newNFTLikes);
+          toast.success("Like removed successfully");
+        }
+        return;
+      } else {
+        // add like
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/api/nft/like`,
+          {
+            nftId: nft.itemId,
+            userId: user._id,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": user.jwtToken,
+            },
+          }
+        );
+        if (response.data.error === false) {
+          console.log("LIKE, ", response.data.error);
+          const newNFTLikes = [...nftLikes, response.data.nftLike];
+          setNFTLikes(newNFTLikes);
+          toast.success("NFT liked successfully");
+        }
+      }
+    } catch (error) {
+      toast.error("Error liking NFT");
+      console.log(error);
+    }
+  };
+
+  const handleCopyToClipboard = async (textToCopy) => {
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+    } catch (err) {
+      console.error("Failed to copy to clipboard:", err);
+    }
+  };
+
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
 
       <Header transparent={true} />
+
       <div className="container mx-auto">
         <div className="py-11 pt-0">
           {/* LAYOUT */}
@@ -856,6 +979,7 @@ function Explore() {
                                       {nft.ownershipHistory.map(
                                         (history, index) => (
                                           <img
+                                            key={index}
                                             className="w-12 h-12 rounded-full border-2 object-cover border-white z-50"
                                             src={history.avatar}
                                             alt="User Imageas"
@@ -876,7 +1000,17 @@ function Explore() {
 
                                         <Menu.Items className="absolute right-0 z-10 mt-1 w-40 origin-top-right rounded-xl bg-white shadow-xl focus:outline-none  p-1 border border-gray-50">
                                           <Menu.Item>
-                                            <button className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium">
+                                            <button
+                                              className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium"
+                                              onClick={() => {
+                                                handleCopyToClipboard(
+                                                  `${window.location.origin}/nft/${nft.itemId}`
+                                                );
+                                                toast.success(
+                                                  "Link copied to clipboard"
+                                                );
+                                              }}
+                                            >
                                               <ClipboardDocumentListIcon className="w-5 h-5" />
                                               <span>Copy Link</span>
                                             </button>
@@ -933,17 +1067,18 @@ function Explore() {
                                     </div>
                                   </div>
 
-                                  <div class="flex items-center justify-between gap-1 text-sm mt-4 text-center">
-                                    {nft.currentOwner._id !== user._id ? (
+                                  <div className="flex items-center justify-between gap-1 text-sm mt-4 text-center">
+                                    {user &&
+                                    nft.currentOwner._id !== user._id ? (
                                       <button
-                                        class="bg-nft-primary-light border-nft-primary-light text-white font-medium p-4 rounded-xl hover:bg-nft-primary-dark w-full"
+                                        className="bg-nft-primary-light border-nft-primary-light text-white font-medium p-4 rounded-xl hover:bg-nft-primary-dark w-full"
                                         onClick={() => buyNFT(nft)}
                                       >
                                         Buy Now
                                       </button>
                                     ) : null}
                                     <Link
-                                      class="bg-gray-200 font-medium p-4 rounded-xl hover:bg-gray-300 w-full text-gray-800"
+                                      className="bg-gray-200 font-medium p-4 rounded-xl hover:bg-gray-300 w-full text-gray-800"
                                       to={`/nft/${nft.itemId}`}
                                     >
                                       View Details
@@ -969,10 +1104,22 @@ function Explore() {
                                   </div>
                                 </div>
 
-                                <button class="rounded-xl text-nft-primary-light bg-white p-2 flex gap-1 items-center absolute top-2 right-2 text-sm">
-                                  <HeartIcon className="w-5 h-5 fill-none stroke-nft-primary-light stroke-2" />
-                                  <span class="font-semibold text-gray-700">
-                                    12
+                                <button
+                                  className={`rounded-xl p-2 flex gap-1 items-center absolute top-2 right-2 text-sm font-semibold ${
+                                    checkIfUserLikedNFT(nft)
+                                      ? "bg-nft-primary-light text-white"
+                                      : "text-nft-primary-light bg-white"
+                                  }`}
+                                  onClick={() => addOrRemoveLike(nft)}
+                                >
+                                  <HeartIcon className="w-5 h-5" />
+                                  <span
+                                    className={
+                                      !checkIfUserLikedNFT(nft) &&
+                                      "text-gray-700"
+                                    }
+                                  >
+                                    {nftLikes && countNFTLikes(nft)}
                                   </span>
                                 </button>
                               </div>

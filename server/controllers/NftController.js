@@ -1,5 +1,6 @@
 import Collection from "../models/Collection.js";
 import Gig from "../models/Gig.js";
+import LikeNFT from "../models/NFTLikes.js";
 import NFT from "../models/Nft.js";
 import Package from "../models/Package.js";
 import User from "../models/User.js";
@@ -176,6 +177,81 @@ const getCollection = async (req, res) => {
   }
 };
 
+const likeNFT = async (req, res) => {
+  const { nftId, userId } = req.body;
+  try {
+    const nftLike = new LikeNFT({
+      nftId,
+      userId,
+    });
+    await nftLike.save();
+
+    return res.status(200).json({
+      error: false,
+      message: "NFT liked successfully.",
+      nftLike,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+};
+
+const getNFTLikes = async (req, res) => {
+  const { nftId } = req.params;
+  try {
+    const totalNFTLikes = await LikeNFT.find({
+      nftId,
+    });
+    return res.status(200).json({
+      error: false,
+      message: "NFT likes fetched successfully.",
+      totalNFTLikes,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+};
+
+const getAllNFTLikes = async (req, res) => {
+  try {
+    const { nftIds } = req.body;
+
+    const totalNFTLikes = await LikeNFT.find({
+      nftId: { $in: nftIds },
+    }).exec();
+
+    return res.status(200).json({
+      error: false,
+      message: "NFT likes fetched successfully.",
+      totalNFTLikes,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+};
+
+const deleteLikeNFT = async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  try {
+    await LikeNFT.findByIdAndDelete(id).exec();
+    return res.status(200).json({
+      error: false,
+      message: "NFT like deleted successfully.",
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+};
+
 export {
   createNft,
   fetchUserNFTs,
@@ -184,4 +260,8 @@ export {
   addCollection,
   getCollections,
   getCollection,
+  likeNFT,
+  getAllNFTLikes,
+  getNFTLikes,
+  deleteLikeNFT,
 };

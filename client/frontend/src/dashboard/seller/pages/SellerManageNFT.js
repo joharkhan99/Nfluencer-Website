@@ -8,12 +8,15 @@ import YourNFTs from "../components/nft/YourNFTs";
 import CryptoWalletsConnect from "../components/nft/CryptoWalletsConnect";
 import { useSelector } from "react-redux";
 import PurchasedNFTs from "../components/nft/PurchasedNFTs";
+import { useDispatch } from "react-redux";
 
 const SellerManageNFT = () => {
   const user = useSelector((state) => state.user.user);
   const isWalletConnected = useSelector(
     (state) => state.user.isWalletConnected
   );
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.ethereum.on("accountsChanged", async function (accounts) {

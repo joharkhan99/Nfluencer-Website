@@ -42,6 +42,8 @@ function NFTDetail() {
   const [nftMetaData, setNftMetaData] = useState(null);
   const [nftUsdPrice, setNftUsdPrice] = useState(0);
   const [priceHistory, setPriceHistory] = useState([]);
+  const [nftLikes, setNftLikes] = useState("0");
+  const [isNFTLiked, setIsNFTLiked] = useState(false);
 
   useEffect(() => {
     if (!itemId) {
@@ -50,6 +52,7 @@ function NFTDetail() {
     }
     fetchNFTDetails(itemId);
     fetchNFTPriceHistory(itemId);
+    fetchNFTLikes(itemId);
     if (nftMetaData && nftMetaData.weiPrice)
       convertEthToDollars(getFormattedPrice(nftMetaData.weiPrice));
   }, [itemId, navigate]);
@@ -184,6 +187,24 @@ function NFTDetail() {
     );
   };
 
+  const fetchNFTLikes = async (itemId) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/nft/getNFTLikes/${itemId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setNftLikes(response.data.totalNFTLikes);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (!nftMetaData) {
     <Loader />;
   } else
@@ -235,12 +256,22 @@ function NFTDetail() {
             <div className="md:w-1/2 ">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <button class="bg-gray-100 font-medium p-3 rounded-xl hover:bg-gray-300 text-gray-800 flex items-center">
-                    <HeartIcon className="w-5 h-5" />
-                    <span className="pl-2 font-medium text-gray-600 text-sm">
-                      36 favorites
-                    </span>
-                  </button>
+                  {isNFTLiked ? (
+                    <button class="bg-nft-primary-light font-medium p-3 rounded-xl hover:bg-nft-primary-dark text-white flex items-center">
+                      <HeartIcon className="w-5 h-5 fill-white" />
+                      <span className="pl-2 font-medium text-white text-sm">
+                        {nftLikes} favorites
+                      </span>
+                    </button>
+                  ) : (
+                    <button class="bg-gray-100 font-medium p-3 rounded-xl hover:bg-gray-300 text-gray-800 flex items-center">
+                      <HeartIcon className="w-5 h-5" />
+                      <span className="pl-2 font-medium text-gray-600 text-sm">
+                        {nftLikes} favorites
+                      </span>
+                    </button>
+                  )}
+
                   <button className="flex items-center p-3">
                     <EyeIcon className="w-5 h-5" />
                     <span className="pl-2 font-medium text-gray-600 text-sm">

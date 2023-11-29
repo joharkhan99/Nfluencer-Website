@@ -7,6 +7,10 @@ import {
   addCollection,
   getCollections,
   getCollection,
+  likeNFT,
+  getAllNFTLikes,
+  deleteLikeNFT,
+  getNFTLikes,
 } from "../controllers/NftController.js";
 import authenticate from "../middleware/authenticate.js";
 
@@ -14,6 +18,8 @@ const router = Router();
 
 router.post("/getallnfts", getAllNFTs);
 router.post("/details", nftDetails);
+router.post("/getLikes", getAllNFTLikes);
+router.get("/getNFTLikes/:id", getNFTLikes);
 
 router.use(authenticate);
 
@@ -22,5 +28,7 @@ router.post("/", createNft);
 router.post("/addCollection", addCollection);
 router.post("/getCollections", getCollections);
 router.post("/getCollection", getCollection);
+router.post("/like", likeNFT);
+router.delete("/like/:id", deleteLikeNFT);
 
 export default router;

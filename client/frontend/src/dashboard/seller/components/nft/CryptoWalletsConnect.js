@@ -1,53 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  setIsWalletConnected,
-  setUser,
-} from "../../../../redux/slices/UserSlice";
+import { setIsWalletConnected } from "../../../../redux/slices/UserSlice";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { ethers } from "ethers";
 
 const CryptoWalletsConnect = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [metaMaskSelected, setMetaMaskSelected] = useState(false);
   const [currentAccount, setCurrentAccount] = useState(null);
   const dispatch = useDispatch();
-
-  /*
-  const ConnectMetaMask = async () => {
-    if (checkMetamaskAvailability()) {
-      setMetaMaskSelected(true);
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      if (signer) {
-        const walletAddress = await signer.getAddress();
-        const request = await fetch(
-          `${process.env.REACT_APP_API_URL}/api/user/wallet`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": user.jwtToken,
-            },
-            body: JSON.stringify({
-              walletAddress,
-              username: user.username,
-            }),
-          }
-        );
-
-        const response = await request.json();
-        if (response.error) {
-          alert(response.message);
-          return;
-        } else {
-          dispatch(setUser(response.user));
-          dispatch(setIsWalletConnected(true));
-        }
-      }
-    }
-  };
-  */
 
   const closeModal = () => {
     setIsOpen(false);
@@ -66,6 +25,7 @@ const CryptoWalletsConnect = ({ user }) => {
 
       if (accounts.length) {
         setIsOpen(false);
+        console.log(window.ethereum);
         setCurrentAccount(accounts[0]);
         dispatch(setIsWalletConnected(true));
       }
