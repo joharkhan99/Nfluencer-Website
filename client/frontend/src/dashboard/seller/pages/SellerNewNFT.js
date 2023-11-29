@@ -214,6 +214,8 @@ const SellerNewNFT = () => {
         name,
         description,
         creator: user,
+        currentOwner: user,
+        ownershipHistory: [user],
         fileUrl,
         fileType,
         price,
@@ -379,53 +381,58 @@ const SellerNewNFT = () => {
 
   const AddNewCollection = async () => {
     setCollectionErrors({ isloading: true });
-    if (!collectionName) {
-      setCollectionErrors({ message: "Collection name cannot be empty" });
-      return;
-    }
-    if (!collectionImage) {
-      setCollectionErrors({ message: "Collection image cannot be empty" });
-      return;
-    }
-    if (collectionName.length > 20) {
-      setCollectionErrors({
-        message: "Collection name cannot be more than 20 characters",
-      });
-      return;
-    }
-
-    if (collectionName && collectionImage) {
-      const fileUrl = await uploadToIPFS(collectionImage);
-
-      const formData = new FormData();
-      formData.append("name", collectionName);
-      formData.append("image", fileUrl);
-      formData.append("userId", user._id);
-
-      const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/nft/addCollection`,
-        {
-          method: "POST",
-          headers: {
-            "x-auth-token": user.jwtToken,
-          },
-          body: formData,
-        }
-      );
-
-      const data = await res.json();
-
-      if (data.error) {
-        setCollectionErrors({ message: data.message });
+    try {
+      if (!collectionName) {
+        setCollectionErrors({ message: "Collection name cannot be empty" });
+        return;
+      }
+      if (!collectionImage) {
+        setCollectionErrors({ message: "Collection image cannot be empty" });
+        return;
+      }
+      if (collectionName.length > 20) {
+        setCollectionErrors({
+          message: "Collection name cannot be more than 20 characters",
+        });
         return;
       }
 
-      setCollectionImage(null);
-      setCollectionName("");
-      setCollectionErrors({ message: "" });
-      setIsNewCollection(false);
-      setCollections(data.collections);
+      if (collectionName && collectionImage) {
+        const fileUrl = await uploadToIPFS(collectionImage);
+        const res = await fetch(
+          `${process.env.REACT_APP_API_URL}/api/nft/addCollection`,
+          {
+            method: "POST",
+            headers: {
+              "x-auth-token": user.jwtToken,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: collectionName,
+              image: fileUrl,
+              userId: user._id,
+            }),
+          }
+        );
+
+        const data = await res.json();
+
+        if (data.error) {
+          setCollectionErrors({ message: data.message });
+          return;
+        }
+
+        setCollectionImage(null);
+        setCollectionName("");
+        setCollectionErrors({ message: "" });
+        setIsNewCollection(false);
+        setCollections(data.collections);
+      }
+    } catch (error) {
+      console.log(errors);
+      setCollectionErrors({ message: error.message });
     }
+
     setCollectionErrors({ isloading: false });
   };
 

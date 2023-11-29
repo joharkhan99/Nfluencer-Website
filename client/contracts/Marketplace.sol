@@ -135,7 +135,7 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         marketItems[tokenId].isListed = false;
         _itemsSold.increment();
 
-        addActivity(tokenId, address(0), msg.sender, "Sale", price);
+        addActivity(tokenId, address(this), msg.sender, "Sale", price);
         _transfer(address(this), msg.sender, tokenId);
         addActivity(tokenId, address(0), msg.sender, "Transfer", 0);
 
@@ -180,7 +180,7 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         _itemsSold.decrement();
 
         _transfer(msg.sender, address(this), tokenId);
-        addActivity(tokenId, address(this), msg.sender, "List", listingPrice);
+        addActivity(tokenId, address(0), msg.sender, "List", listingPrice);
         addPriceHistory(tokenId, price);
     }
 
@@ -294,5 +294,10 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
     ) public view returns (MarketItem memory) {
         require(itemId > 0 && itemId <= _itemIds.current(), "Invalid Item ID");
         return marketItems[itemId];
+    }
+
+    /// @notice function to update the tokenURI of an item
+    function updateTokenURI(uint256 tokenId, string memory newTokenURI) public {
+        _setTokenURI(tokenId, newTokenURI);
     }
 }

@@ -111,6 +111,8 @@ const nftDetails = async (req, res) => {
 const addCollection = async (req, res) => {
   const { name, image, userId } = req.body;
 
+  console.log(name, image, userId);
+
   if (!name || !image) {
     return res
       .status(400)

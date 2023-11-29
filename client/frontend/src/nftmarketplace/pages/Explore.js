@@ -15,6 +15,8 @@ import axios from "axios";
 import { HeartIcon } from "@heroicons/react/24/solid";
 import Web3Modal from "web3modal";
 import toast, { Toaster } from "react-hot-toast";
+import { create as ipfsHttpClient } from "ipfs-http-client";
+import { useSelector } from "react-redux";
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -76,6 +78,21 @@ function Explore() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [isloading, setIsLoading] = useState(false);
 
+  const projectId = process.env.REACT_APP_INFURA_API_KEY;
+  const projectSecretKey = process.env.REACT_APP_INFURA_API_KEY_SECRET;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(`${projectId}:${projectSecretKey}`);
+  const auth = `Basic ${btoa(String.fromCharCode.apply(null, data))}`;
+  const client = ipfsHttpClient({
+    host: process.env.REACT_APP_INFURA_HOST,
+    port: 5001,
+    protocol: "https",
+    headers: {
+      authorization: auth,
+    },
+  });
+  const user = useSelector((state) => state.user.user);
+
   const [nfts, setNFTs] = useState([]);
   const fetchContract = (signerOrProvider) => {
     const marketplaceContract = new ethers.Contract(
@@ -88,7 +105,6 @@ function Explore() {
   };
 
   const fetchNFTs = async () => {
-    const web3 = new Web3(window.ethereum);
     const provider = new ethers.providers.JsonRpcProvider(
       process.env.REACT_APP_ALCHEMY_SEPOLIA_URL
     );
@@ -134,15 +150,20 @@ function Explore() {
   };
 
   const buyNFT = async (nft) => {
+    if (!user) {
+      toast.error("Please login and connect your wallet to buy this NFT");
+      return;
+    }
     setIsLoading(true);
     try {
       const { marketplaceContract } = await connectingWithSmartContract();
       const price = ethers.utils.parseUnits(nft.weiPrice.toString(), "wei");
-
       const transaction = await marketplaceContract.buyMarketItem(nft.itemId, {
         value: price,
       });
+
       await transaction.wait();
+      await updateTokenURI(marketplaceContract, nft);
       console.log("Transaction is completed", transaction);
       fetchNFTs();
       toast.success("NFT bought successfully");
@@ -156,6 +177,31 @@ function Explore() {
       console.log(`Error buying NFT: ${error.code}`);
     }
     setIsLoading(false);
+  };
+
+  const updateTokenURI = async (marketplaceContract, nft) => {
+    const data = JSON.stringify({
+      name: nft.name,
+      description: nft.description,
+      creator: nft.user,
+      currentOwner: user,
+      ownershipHistory: [...nft.ownershipHistory, user],
+      fileUrl: nft.fileUrl,
+      fileType: nft.fileType,
+      price: nft.price,
+      currency: "ETH",
+      category: nft.category,
+      traits: nft.traits,
+      collection: nft.collection,
+      royalties: nft.royalties,
+      createdAt: nft.createdAt,
+      updatedAt: new Date().toISOString(),
+    });
+    const added = await client.add(data);
+    const newUrl = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;
+
+    console.log("Added file: ", added);
+    await marketplaceContract.updateTokenURI(nft.itemId, newUrl);
   };
 
   const responsive = {
@@ -719,10 +765,12 @@ function Explore() {
                       <div className="results mt-14 relative">
                         {isloading && (
                           <div className="flex w-full absolute h-full top-0 z-40 justify-center items-center m-auto gap-1 flex-col bg-white bg-opacity-30">
-                            <div className="border-t-gray-700 border-4 w-10 h-10 flex items-center justify-center rounded-full animate-spin"></div>
-                            <span className="text-sm text-gray-700 font-medium">
-                              processing...
-                            </span>
+                            <div className="w-fit bg-white flex items-center flex-col justify-center p-4 rounded-xl">
+                              <div className="border-t-gray-700 border-4 w-10 h-10 flex items-center justify-center rounded-full animate-spin"></div>
+                              <span className="text-sm text-gray-700 font-medium">
+                                processing...
+                              </span>
+                            </div>
                           </div>
                         )}
 

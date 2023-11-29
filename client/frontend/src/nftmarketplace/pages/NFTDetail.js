@@ -26,55 +26,11 @@ import {
   ChevronUpIcon,
   CpuChipIcon,
   ListBulletIcon,
+  Square3Stack3DIcon,
 } from "@heroicons/react/24/outline";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import PriceHistory from "../components/nft/PriceHistory";
 import { Disclosure } from "@headlessui/react";
-
-const data = [
-  {
-    name: "Jan",
-    BTC: 1.2055,
-    uv: 2400,
-    amt: 0.2055,
-  },
-  {
-    name: "Feb",
-    BTC: 2.5,
-    uv: 1398,
-    amt: 2.5,
-  },
-  {
-    name: "Mar",
-    BTC: 1.5,
-    uv: 9800,
-    amt: 1.5,
-  },
-  {
-    name: "Apr",
-    BTC: 0.5,
-    uv: 3908,
-    amt: 0.5,
-  },
-  {
-    name: "May",
-    BTC: 2,
-    uv: 4800,
-    amt: 2,
-  },
-  {
-    name: "Jun",
-    BTC: 1.9,
-    uv: 3800,
-    amt: 1.9,
-  },
-  {
-    name: "Jul",
-    BTC: 2.3,
-    uv: 4300,
-    amt: 2.3,
-  },
-];
 
 function NFTDetail() {
   let { itemId } = useParams();
@@ -306,6 +262,26 @@ function NFTDetail() {
 
               <div className="flex items-center mt-7 justify-between">
                 <div>
+                  <a href="s" className="block">
+                    <div className="flex items-center gap-3">
+                      <span className="w-14 h-14 rounded-full bg-gray-100 flex justify-center items-center">
+                        <Square3Stack3DIcon className="w-7 h-7" />
+                      </span>
+                      <div className="flex flex-col items-start">
+                        <button className="font-bold text-gray-900">
+                          Category
+                        </button>
+                        <div className="text-sm text-gray-500">
+                          {nftMetaData.category}
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-center mt-7 justify-between">
+                <div>
                   <span className="text-sm mb-4 block">
                     <span className="text-gray-900 font-semibold">Owner</span>
                   </span>
@@ -517,7 +493,7 @@ function NFTDetail() {
             </div>
 
             <div className="md:w-1/2 flex">
-              <div className="w-full border-2 border-gray-100 shadow-lg shadow-gray-100 p-5 rounded-xl">
+              <div className="w-full border-2 border-gray-100 shadow-lg shadow-gray-100 p-5 rounded-xl h-fit">
                 <div className="text-lg font-extrabold pb-4 pt-2 flex gap-3 border-b">
                   <ArrowTrendingUpIcon className="w-6 h-6 inline-block" />
                   <span>Price History</span>
