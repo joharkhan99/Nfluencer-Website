@@ -22,12 +22,6 @@ const YourNFTs = ({ user }) => {
       signerOrProvider
     );
 
-    // const nftContract = new ethers.Contract(
-    //   NFTContractAddress,
-    //   NFTContractABI,
-    //   signerOrProvider
-    // );
-
     return { marketplaceContract };
   };
 
@@ -47,20 +41,16 @@ const YourNFTs = ({ user }) => {
       const items = await Promise.all(
         data.map(async (i) => {
           const tokenUri = await marketplaceContract.tokenURI(i.itemId);
-          const activity = await marketplaceContract.getActivities(i.itemId);
-          console.log(activity);
           const meta = await axios.get(tokenUri);
           return {
             ...meta.data,
             likes: i.likes.toString(),
             tokenId: i.itemId.toString(),
+            weiPrice: i.price,
           };
         })
       );
-
-      // console.log(data);
       items.reverse();
-      console.log(items);
 
       if (items.length > 0) {
         setFirstNFT(items[0]);
@@ -103,6 +93,10 @@ const YourNFTs = ({ user }) => {
   useEffect(() => {
     likeNFT(2);
   }, []);
+
+  const getFormattedPrice = (price) => {
+    return ethers.utils.formatEther(price.toString());
+  };
 
   const loader = (
     <div className="flex w-full justify-center items-center m-auto gap-1 flex-col my-10">
@@ -168,7 +162,7 @@ const YourNFTs = ({ user }) => {
                                     className="w-5 h-5 object-contain"
                                   />
                                   <span className="font-semibold text-sm">
-                                    {nft.price} ETH
+                                    {getFormattedPrice(nft.weiPrice)} ETH
                                   </span>
                                 </span>
                               </div>

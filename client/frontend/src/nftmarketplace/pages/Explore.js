@@ -14,6 +14,7 @@ import { ethers } from "ethers";
 import axios from "axios";
 import { HeartIcon } from "@heroicons/react/24/solid";
 import Web3Modal from "web3modal";
+import toast, { Toaster } from "react-hot-toast";
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -73,6 +74,7 @@ function classNames(...classes) {
 
 function Explore() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [isloading, setIsLoading] = useState(false);
 
   const [nfts, setNFTs] = useState([]);
   const fetchContract = (signerOrProvider) => {
@@ -82,28 +84,17 @@ function Explore() {
       signerOrProvider
     );
 
-    // const nftContract = new ethers.Contract(
-    //   NFTContractAddress,
-    //   NFTContractABI,
-    //   signerOrProvider
-    // );
-
     return { marketplaceContract };
   };
 
   const fetchNFTs = async () => {
     const web3 = new Web3(window.ethereum);
-    // await window.ethereum.enable();
-
     const provider = new ethers.providers.JsonRpcProvider(
       process.env.REACT_APP_ALCHEMY_SEPOLIA_URL
     );
 
     const { marketplaceContract } = fetchContract(provider);
-
     const fetchedMarketItems = await marketplaceContract.fetchMarketItems();
-
-    console.log(fetchedMarketItems);
 
     const items = await Promise.all(
       fetchedMarketItems.map(async (i) => {
@@ -113,6 +104,7 @@ function Explore() {
           ...meta.data,
           likes: i.likes.toString(),
           itemId: Number(i.itemId),
+          weiPrice: i.price,
         };
       })
     );
@@ -126,13 +118,10 @@ function Explore() {
     fetchNFTs();
   }, []);
 
-  //   // Buy NFT
   const connectingWithSmartContract = async () => {
     try {
       const w3modal = new Web3Modal();
       const connection = await w3modal.connect();
-      // setNFTStatusMessage("Opening Modal...");
-
       const provider = new ethers.providers.Web3Provider(connection);
       const signer = await provider.getSigner();
 
@@ -145,19 +134,28 @@ function Explore() {
   };
 
   const buyNFT = async (nft) => {
+    setIsLoading(true);
     try {
       const { marketplaceContract } = await connectingWithSmartContract();
-      const price = ethers.utils.parseUnits(nft.price.toString(), "ether");
-      console.log(nft.itemId, price);
+      const price = ethers.utils.parseUnits(nft.weiPrice.toString(), "wei");
+
       const transaction = await marketplaceContract.buyMarketItem(nft.itemId, {
         value: price,
       });
       await transaction.wait();
       console.log("Transaction is completed", transaction);
       fetchNFTs();
+      toast.success("NFT bought successfully");
     } catch (error) {
-      console.log(`Error buying NFT: ${error}`);
+      if (error.code) {
+        toast.error(error.code);
+      }
+      if (error.code === 4001) {
+        toast.error("Transaction rejected by the user");
+      }
+      console.log(`Error buying NFT: ${error.code}`);
     }
+    setIsLoading(false);
   };
 
   const responsive = {
@@ -178,8 +176,14 @@ function Explore() {
     },
   };
 
+  const getFormattedPrice = (price) => {
+    return ethers.utils.formatEther(price.toString());
+  };
+
   return (
     <>
+      <Toaster position="top-center" reverseOrder={false} />
+
       <Header transparent={true} />
       <div className="container mx-auto">
         <div className="py-11 pt-0">
@@ -712,7 +716,16 @@ function Explore() {
                         </div>
                       </div>
 
-                      <div className="results mt-14">
+                      <div className="results mt-14 relative">
+                        {isloading && (
+                          <div className="flex w-full absolute h-full top-0 z-40 justify-center items-center m-auto gap-1 flex-col bg-white bg-opacity-30">
+                            <div className="border-t-gray-700 border-4 w-10 h-10 flex items-center justify-center rounded-full animate-spin"></div>
+                            <span className="text-sm text-gray-700 font-medium">
+                              processing...
+                            </span>
+                          </div>
+                        )}
+
                         <div className="mb-4">
                           <h4 className="font-bold">467458 items</h4>
                           <div className="filters flex gap-3 items-center mt-5">
@@ -798,7 +811,7 @@ function Explore() {
                                       <span className="pl-2">
                                         from{" "}
                                         <span className="font-bold text-sm text-black">
-                                          {nft.price} ETH
+                                          {getFormattedPrice(nft.weiPrice)} ETH
                                         </span>
                                       </span>
                                     </div>

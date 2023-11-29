@@ -15,7 +15,7 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
     Counters.Counter private _itemsSold; //total number of items sold
 
     address payable owner; //owner of the smart contract
-    uint256 listingPrice = 0.00001 ether;
+    uint256 listingPrice = 0.000082 ether;
 
     //a way to store the activity of an item
     struct Activity {
@@ -105,9 +105,9 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
             true
         );
 
-        addActivity(tokenId, address(0), msg.sender, "Mint", price);
+        addActivity(tokenId, address(0), msg.sender, "Mint", 0.0005 ether);
         _transfer(msg.sender, address(this), tokenId);
-        addActivity(tokenId, address(0), msg.sender, "List", price);
+        addActivity(tokenId, address(0), msg.sender, "List", listingPrice);
         addPriceHistory(tokenId, price);
 
         emit MarketItemCreated(
@@ -137,7 +137,7 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
 
         addActivity(tokenId, address(0), msg.sender, "Sale", price);
         _transfer(address(this), msg.sender, tokenId);
-        addActivity(tokenId, address(0), msg.sender, "Transfer", price);
+        addActivity(tokenId, address(0), msg.sender, "Transfer", 0);
 
         payable(owner).transfer(listingPrice);
         payable(seller).transfer(msg.value);
@@ -180,7 +180,7 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         _itemsSold.decrement();
 
         _transfer(msg.sender, address(this), tokenId);
-        addActivity(tokenId, address(this), msg.sender, "List", price);
+        addActivity(tokenId, address(this), msg.sender, "List", listingPrice);
         addPriceHistory(tokenId, price);
     }
 

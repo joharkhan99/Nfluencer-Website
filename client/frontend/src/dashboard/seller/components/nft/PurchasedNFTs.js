@@ -3,6 +3,7 @@ import {
   HeartIcon,
   TrophyIcon,
   ArrowUpRightIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { ethers } from "ethers";
 import axios from "axios";
@@ -16,6 +17,10 @@ import { Link } from "react-router-dom";
 const PurchasedNFTs = ({ user }) => {
   const [nfts, setNFTs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [resellError, setResellError] = useState(null);
+  const [resellModalOpen, setresellModalOpen] = useState(false);
+  const [resellNFTItem, setresellNFTItem] = useState(null);
+  const [newPrice, setNewPrice] = useState("");
 
   const fetchContract = (signerOrProvider) => {
     const marketplaceContract = new ethers.Contract(
@@ -23,12 +28,6 @@ const PurchasedNFTs = ({ user }) => {
       NFTMarketplaceContractABI,
       signerOrProvider
     );
-
-    // const nftContract = new ethers.Contract(
-    //   NFTContractAddress,
-    //   NFTContractABI,
-    //   signerOrProvider
-    // );
 
     return { marketplaceContract };
   };
@@ -49,18 +48,16 @@ const PurchasedNFTs = ({ user }) => {
       const items = await Promise.all(
         data.map(async (i) => {
           const tokenUri = await marketplaceContract.tokenURI(i.itemId);
-          // const activity = await marketplaceContract.getNFTActivity(i.itemId);
-          // console.log(activity);
           const meta = await axios.get(tokenUri);
           return {
             ...meta.data,
             likes: i.likes.toString(),
             itemId: i.itemId.toString(),
+            weiPrice: i.price,
           };
         })
       );
 
-      // console.log(data);
       items.reverse();
       console.log(items);
       setNFTs(items);
@@ -82,10 +79,11 @@ const PurchasedNFTs = ({ user }) => {
       const signer = provider.getSigner();
 
       const { marketplaceContract } = fetchContract(signer);
-      const priceFormatted = ethers.utils.parseUnits("10", "ether");
-
+      const priceFormatted = ethers.utils.parseUnits(
+        newPrice.toString(),
+        "ether"
+      );
       let listingPrice = await marketplaceContract.getListingPrice();
-      console.log(listingPrice);
 
       listingPrice = listingPrice.toString();
       let transaction = await marketplaceContract.resellToken(
@@ -101,6 +99,10 @@ const PurchasedNFTs = ({ user }) => {
     } catch (error) {
       console.log(`Error listing NFT: ${error}`);
     }
+  };
+
+  const getFormattedPrice = (price) => {
+    return ethers.utils.formatEther(price.toString());
   };
 
   const loader = (
@@ -164,7 +166,7 @@ const PurchasedNFTs = ({ user }) => {
                                     className="w-5 h-5 object-contain"
                                   />
                                   <span className="font-semibold text-sm">
-                                    {nft.price} ETH
+                                    {getFormattedPrice(nft.weiPrice)} ETH
                                   </span>
                                 </span>
                               </div>
@@ -228,7 +230,10 @@ const PurchasedNFTs = ({ user }) => {
                       <div className="flex items-center justify-between gap-3 text-sm">
                         <button
                           className="bg-nft-primary-light border border-nft-primary-light text-white font-medium p-3 rounded-xl hover:opacity-80 w-full"
-                          onClick={() => resellNFT(nft)}
+                          onClick={() => {
+                            setresellNFTItem(nft);
+                            setresellModalOpen(true);
+                          }}
                         >
                           Resell NFT
                         </button>
@@ -247,6 +252,56 @@ const PurchasedNFTs = ({ user }) => {
             <button className="bg-nft-primary-light border border-nft-primary-light text-white font-bold p-3 rounded-xl px-10 hover:opacity-80">
               View All
             </button>
+          </div>
+
+          <div
+            className={`fixed top-0 right-0 justify-center z-50 w-full h-full bg-black bg-opacity-70 ${
+              resellModalOpen ? "flex" : "hidden"
+            }`}
+          >
+            <div className="w-1/3 bg-white p-4 rounded-xl shadow-xl h-fit mt-16 relative">
+              <h2 className="block font-bold text-xl text-gray-800">
+                Resell Your NFT
+              </h2>
+              <p className="text-sm text-gray-500 mb-5">
+                Please note that you will be charged for listing your NFT.
+              </p>
+              <button
+                className="text-gray-500 hover:text-gray-700 absolute right-2 top-2"
+                onClick={() => setresellModalOpen(false)}
+              >
+                <XMarkIcon className="w-6 h-6" />
+              </button>
+              <div className="relative">
+                <span className="absolute top-2 left-2">
+                  <img
+                    src={require("../../../../nftmarketplace/assets/eth.png")}
+                    alt=""
+                    className="w-5"
+                  />
+                </span>
+                <input
+                  type="number"
+                  className="w-full outline-none text-sm placeholder:text-gray-400 placeholder:font-medium font-semibold px-2 pl-10 p-4 focus:ring-2 focus:ring-nft-primary-light focus:bg-white border-gray-200 border rounded-xl bg-gray-100"
+                  placeholder="Enter New Price"
+                  value={newPrice}
+                  min={0}
+                  onChange={(e) => setNewPrice(e.target.value)}
+                />
+              </div>
+
+              <div className="text-red-500 text-sm mt-2">{resellError}</div>
+
+              <button
+                className="w-full bg-nft-primary-light text-white p-3 mt-5 rounded-xl hover:opacity-80"
+                onClick={() => {
+                  setresellModalOpen(false);
+                  resellNFT(resellNFTItem);
+                }}
+              >
+                Resell NFT
+              </button>
+            </div>
           </div>
         </div>
       ) : (

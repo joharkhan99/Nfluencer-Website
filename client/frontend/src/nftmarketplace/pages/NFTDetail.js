@@ -110,16 +110,11 @@ function NFTDetail() {
     );
     const { marketplaceContract } = fetchContract(provider);
     const fetchedNFT = await marketplaceContract.getNFTDetails(itemId);
-    console.log("NFT IS: ", fetchedNFT);
-
     const act_res = await marketplaceContract.getActivities(itemId);
     setNftActivity(act_res);
     setFilteredNftActivity(act_res);
-
     const tokenUri = await marketplaceContract.tokenURI(fetchedNFT.itemId);
     const meta = await axios.get(tokenUri);
-
-    console.log("Meta Data: ", meta.data);
     setNftMetaData({
       ...meta.data,
       seller: fetchedNFT.seller,
@@ -133,11 +128,7 @@ function NFTDetail() {
         process.env.REACT_APP_ALCHEMY_SEPOLIA_URL
       );
       const { marketplaceContract } = fetchContract(provider);
-
-      console.log("Marketplace Contract:", marketplaceContract);
-
       const priceHistory = await marketplaceContract.getPriceHistory(itemId);
-      console.log("his", priceHistory);
       setPriceHistory(priceHistory);
     } catch (error) {
       console.log(error);
@@ -150,9 +141,6 @@ function NFTDetail() {
     const coingeckoApiResponse = await axios.get(
       "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd"
     );
-
-    console.log(coingeckoApiResponse);
-
     const ethToUsdRate = coingeckoApiResponse.data.ethereum.usd;
     const dollars = ethAmount * ethToUsdRate;
     console.log(dollars);
@@ -222,14 +210,7 @@ function NFTDetail() {
   }
 
   const getFormattedPrice = (price) => {
-    // console.log(price);
-    // const BigNumber = ethers.BigNumber;
-    // // const priceObject = price;
-    // const priceString = BigNumber.from(price._hex).toString();
-    // const humanReadablePrice = (parseFloat(priceString) / 1e18).toFixed(5);
-    // console.log(humanReadablePrice); // Output: 0.00001
-    // return humanReadablePrice;
-    // return ethers.utils.formatEther(price.toString());
+    return ethers.utils.formatEther(price.toString());
   };
 
   if (!nftMetaData) {
@@ -377,7 +358,7 @@ function NFTDetail() {
                 </div>
               </div>
 
-              <div className="mt-10 p-6 shadow-md shadow-gray-100 rounded-xl border border-gray-200">
+              <div className="mt-10 p-6 shadow-md shadow-gray-100 rounded-xl border-2 border-gray-200 bg-gray-50">
                 <span className="text-gray-900 text-sm font-medium">
                   Current Price
                 </span>
@@ -386,7 +367,7 @@ function NFTDetail() {
                     {getFormattedPrice(nftMetaData.weiPrice)} ETH
                   </h1>
                   <div className="text-gray-500 text-base">
-                    ${nftUsdPrice.toFixed(5)}
+                    ${nftUsdPrice && nftUsdPrice.toFixed(5)}
                   </div>
                 </div>
 
@@ -406,16 +387,16 @@ function NFTDetail() {
 
           <div className="flex flex-col md:flex-row md:gap-16 mt-12">
             <div className="md:w-1/2">
-              <div className="relative overflow-x-auto border border-gray-100 shadow-lg shadow-gray-100 p-5 rounded-xl text-gray-800">
+              <div className="relative overflow-x-auto border-2 border-gray-100 shadow-lg shadow-gray-100 p-5 rounded-xl text-gray-800 ">
                 <div>
                   <div className="text-lg font-extrabold pb-4 pt-2 flex gap-3 border-b">
                     <QueueListIcon className="w-6 h-6 inline-block" />
                     <span>Description</span>
                   </div>
 
-                  <div className="my-5 px-4 pb-2 pt-4 text-sm text-gray-500">
+                  <div className="my-5 px-4 pb-2 pt-4 text-base text-gray-500">
                     <div className="flex gap-1">
-                      <span className="text-gray-400 font-medium">By</span>
+                      <span className="text-gray-500 font-medium">By</span>
                       <span className="font-semibold text-nft-primary-light">
                         {nftMetaData.creator.name}
                       </span>
@@ -447,13 +428,13 @@ function NFTDetail() {
                               return (
                                 <div
                                   key={index}
-                                  className="flex items-center flex-col gap-1 justify-center bg-gray-100 p-4 rounded-xl px-6 w-full"
+                                  className="flex items-center flex-col gap-0.5 justify-center bg-gray-100 p-3 rounded-md w-full"
                                 >
-                                  <span className="text-sm text-gray-500 font-semibold uppercase">
-                                    {attribute.traitName}
-                                  </span>
-                                  <span className="font-normal text-base text-gray-800">
+                                  <span className="text-xs text-gray-400 font-medium uppercase">
                                     {attribute.traitType}
+                                  </span>
+                                  <span className="font-semibold text-base text-gray-800">
+                                    {attribute.traitName}
                                   </span>
                                 </div>
                               );
@@ -536,7 +517,7 @@ function NFTDetail() {
             </div>
 
             <div className="md:w-1/2 flex">
-              <div className="w-full border border-gray-100 shadow-lg shadow-gray-100 p-5 rounded-xl">
+              <div className="w-full border-2 border-gray-100 shadow-lg shadow-gray-100 p-5 rounded-xl">
                 <div className="text-lg font-extrabold pb-4 pt-2 flex gap-3 border-b">
                   <ArrowTrendingUpIcon className="w-6 h-6 inline-block" />
                   <span>Price History</span>
@@ -550,7 +531,7 @@ function NFTDetail() {
 
           <div className="flex flex-col md:flex-row md:gap-16 mt-12">
             <div className="w-full">
-              <div className="relative overflow-x-auto border border-gray-100 shadow-lg shadow-gray-100 p-5 pb-0 rounded-xl">
+              <div className="relative overflow-x-auto border-2 border-gray-100 shadow-lg shadow-gray-100 p-5 pb-0 rounded-xl ">
                 <div className="flex justify-between items-center border-b pb-3">
                   <div className="text-lg font-extrabold pb-4 pt-2 flex gap-3">
                     <PresentationChartLineIcon className="w-6 h-6 inline-block" />
@@ -630,7 +611,8 @@ function NFTDetail() {
                               </div>
                             </td>
                             <td className="pb-5 pt-5 font-medium">
-                              {getFormattedPrice(activity.price)} ETH
+                              {activity.eventType !== "Transfer" &&
+                                getFormattedPrice(activity.price) + " ETH"}
                             </td>
                             <td className="pb-5 pt-5 font-semibold text-nft-primary-light">
                               {activity.eventType === "Mint" ? (

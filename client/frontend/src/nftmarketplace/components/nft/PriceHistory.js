@@ -40,11 +40,15 @@ const PriceHistory = ({ data }) => {
   };
 
   useEffect(() => {
-    const prices = data.slice(1).map((item) => getFormattedPrice(item.price));
-    const dates = data.slice(1).map((item) => formatTime(item.timestamp));
+    const prices = data.map((item) => getFormattedPrice(item.price));
+    const dates = data.map((item) => formatTime(item.timestamp));
 
     setnftPrices(prices);
     setnftDates(dates);
+
+    console.log(prices);
+    console.log(dates);
+    console.log(data);
   }, [data]);
 
   const [options, setOptions] = useState({

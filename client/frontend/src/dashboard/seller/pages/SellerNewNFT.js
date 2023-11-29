@@ -240,17 +240,14 @@ const SellerNewNFT = () => {
   // Create Sale
   const createSale = async (url, formInputPrice, fileUrl, isReselling, id) => {
     try {
-      const price = ethers.utils.parseUnits(formInputPrice.toString(), "ether");
       const { marketplaceContract } = await connectingWithSmartContract();
 
       setNFTStatusMessage("Creating NFT Token...");
-      // let transaction = await nftContract.createToken(url);
-      // let tx = await transaction.wait();
-
-      // let event = tx.events[0];
-      // let value = event.args[2];
-      // let tokenId = value.toNumber();
-      const _price = ethers.utils.parseUnits(price.toString(), "ether");
+      const _price = ethers.utils.parseUnits(
+        formInputPrice.toString(),
+        "ether"
+      );
+      console.log(_price);
       let listingPrice = await marketplaceContract.getListingPrice();
       listingPrice = listingPrice.toString();
 
@@ -282,8 +279,10 @@ const SellerNewNFT = () => {
           description,
           file: fileUrl,
           fileType,
-          price: price.toString(),
-          etherPrice: web3.utils.fromWei(price, "ether").toString(),
+          price: formInputPrice.toString(),
+          etherPrice: web3.utils
+            .fromWei(Number(formInputPrice), "ether")
+            .toString(),
           currency: "ETH",
           category: selectedCategory.name,
           traits,
@@ -728,7 +727,7 @@ const SellerNewNFT = () => {
                   </div>
                 )}
 
-                <div className="flex  gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   {traits.map((trait, index) => (
                     <div
                       className="justify-between flex items-center bg-gray-50 rounded-xl p-3 gap-3 text-sm"
