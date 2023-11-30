@@ -663,7 +663,7 @@ function NFTDetail() {
                     <div className="flex items-center gap-3">
                       <img
                         src={nftMetaData.currentOwner.avatar}
-                        alt="User Imasge"
+                        alt="User"
                         className="rounded-full h-14 w-14 object-cover"
                       />
                       <div className="flex flex-col items-start">

@@ -4,7 +4,12 @@ import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setUser } from "../../redux/slices/UserSlice";
-import { PlusIcon } from "@heroicons/react/24/solid";
+import {
+  PlusIcon,
+  ArrowDownTrayIcon,
+  UserPlusIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
 
 const Header = ({ transparent = false }) => {
   const user = useSelector((state) => state.user.user);
@@ -51,26 +56,12 @@ const Header = ({ transparent = false }) => {
                 <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"></span>
               </Link>
               {transparent ? (
-                <div className="flex relative max-sm:hidden">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="gray"
-                    className="w-5 h-5 absolute top-2 left-3"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                    />
-                  </svg>
-
+                <div className="flex relative max-sm:hidden items-center">
+                  <MagnifyingGlassIcon className="w-5 h-5 absolute top-3 left-3 text-gray-500" />
                   <input
                     type="text"
                     placeholder="Search items, collections"
-                    className="bg-gray-100 p-2 rounded-full outline-none px-6 pl-10 md:w-96 text-gray-500 placeholder:text-gray-500 text-sm focus:shadow-sm focus:shadow-gray-300"
+                    className="bg-gray-100 p-3 rounded-xl outline-none px-6 pl-10 md:w-96 text-gray-800 placeholder:text-gray-500 focus:ring-2 text-sm focus:shadow-sm focus:ring-nft-primary-light focus:bg-white"
                   />
                 </div>
               ) : (
@@ -136,17 +127,19 @@ const Header = ({ transparent = false }) => {
                     <li>
                       <Link
                         to="/login"
-                        className="rounded-full bg-white text-sm text-gray-800 px-4 py-3 shadow-md hover:opacity-80"
+                        className="rounded-xl bg-nft-primary-transparent text-sm text-nft-primary-light px-4 py-3 hover:opacity-80 flex items-center gap-2"
                       >
-                        Login
+                        <span>Login</span>
+                        <ArrowDownTrayIcon className="w-5 h-5 transform -rotate-90" />
                       </Link>
                     </li>
                     <li>
                       <Link
                         to="/signup"
-                        className="rounded-full bg-nft-primary-light text-sm text-white px-4 py-3 hover:opacity-80"
+                        className="rounded-xl bg-nft-primary-light text-sm text-white px-4 py-3 hover:opacity-80 flex items-center gap-2"
                       >
-                        Sign Up
+                        <span>Sign Up</span>
+                        <UserPlusIcon className="w-5 h-5" />
                       </Link>
                     </li>
                   </>
@@ -167,7 +160,7 @@ const Header = ({ transparent = false }) => {
                         to="/seller/nfts"
                         className="rounded-xl bg-nft-primary-light text-sm text-white px-4 py-3 hover:opacity-80 flex items-center gap-2"
                       >
-                        <PlusIcon className="w-4 h-4 inline-block text-white" />
+                        <PlusIcon className="w-5 h-5 inline-block" />
                         <span>Create</span>
                       </Link>
                     </li>
