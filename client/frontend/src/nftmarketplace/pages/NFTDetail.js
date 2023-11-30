@@ -39,10 +39,14 @@ import {
 } from "@heroicons/react/24/solid";
 import PriceHistory from "../components/nft/PriceHistory";
 import { Disclosure, Menu } from "@headlessui/react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import Web3Modal from "web3modal";
 import { create as ipfsHttpClient } from "ipfs-http-client";
+import {
+  setIsWalletConnected,
+  setWaletAddress,
+} from "../../redux/slices/UserSlice";
 
 function NFTDetail() {
   let { itemId } = useParams();
@@ -63,14 +67,18 @@ function NFTDetail() {
       return;
     }
     fetchNFTDetails(itemId);
+  }, [itemId]);
+
+  useEffect(() => {
     fetchNFTPriceHistory(itemId);
     fetchNFTLikes(itemId);
     fetchItemSaved(itemId);
+    console.log(nftMetaData, itemId);
     if (nftMetaData && nftMetaData.weiPrice) {
       convertEthToDollars(getFormattedPrice(nftMetaData.weiPrice));
       // fetchCollectionNFTs();
     }
-  }, [itemId]);
+  }, [nftMetaData]);
 
   const fetchContract = (signerOrProvider) => {
     const marketplaceContract = new ethers.Contract(
@@ -234,6 +242,34 @@ function NFTDetail() {
       date.getFullYear()
     );
   };
+
+  const dispatch = useDispatch();
+
+  const checkIfWalletIsConnected = async () => {
+    try {
+      if (!window.ethereum) {
+        return;
+      }
+
+      const accounts = await window.ethereum.request({
+        method: "eth_accounts",
+      });
+
+      if (accounts.length) {
+        dispatch(setWaletAddress(accounts[0]));
+        dispatch(setIsWalletConnected(true));
+      } else {
+        dispatch(setIsWalletConnected(false));
+        dispatch(setWaletAddress(null));
+      }
+    } catch (error) {
+      console.log(`Error connecting with smart contract: ${error}`);
+    }
+  };
+
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, []);
 
   const user = useSelector((state) => state.user.user);
   const walletAddress = useSelector((state) => state.user.walletAddress);
@@ -503,6 +539,7 @@ function NFTDetail() {
       <>
         <Toaster />
         <Header transparent={true} />
+
         <div className="container mx-auto my-10">
           <div className="flex flex-col md:flex-row gap-16">
             <div className="md:w-1/2 relative">
@@ -697,11 +734,11 @@ function NFTDetail() {
                   </a>
                 </div>
                 <div className="text-left w-full">
-                  <span className="text-sm mb-4 block">
+                  {/* <span className="text-sm mb-4 block">
                     <span className="text-gray-900 font-semibold">
                       Collection
                     </span>
-                  </span>
+                  </span> */}
                   <a href="s" className="block">
                     <div className="flex items-center gap-3">
                       <img
@@ -711,10 +748,10 @@ function NFTDetail() {
                       />
                       <div className="flex flex-col items-start">
                         <button className="font-bold text-gray-900">
-                          {nftMetaData.collection.name}
+                          Collection
                         </button>
                         <div className="text-sm text-gray-500">
-                          {nftMetaData.collection.totalItems} Items
+                          {nftMetaData.collection.name}
                         </div>
                       </div>
                     </div>
@@ -738,7 +775,7 @@ function NFTDetail() {
                 <div className="flex gap-4">
                   {nftMetaData &&
                   user &&
-                  nftMetaData.currentOwner._id === user._id ? (
+                  nftMetaData.currentOwner.walletAddress === walletAddress ? (
                     <button
                       class="bg-nft-primary-light border-nft-primary-light text-white font-medium p-4 rounded-xl hover:bg-nft-primary-dark w-full flex items-center justify-center gap-2 opacity-50"
                       disabled
@@ -855,6 +892,10 @@ function NFTDetail() {
                                       index + 1 ? (
                                         <span className="text-sm rounded-md p-1 px-3 bg-green-200 text-green-800">
                                           Creator
+                                        </span>
+                                      ) : index === 0 ? (
+                                        <span className="text-sm rounded-md p-1 px-3 bg-green-200 text-green-800">
+                                          Owner
                                         </span>
                                       ) : (
                                         <span className="text-sm rounded-md p-1 px-3 bg-gray-200 text-gray-800">

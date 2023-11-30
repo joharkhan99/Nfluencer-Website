@@ -50,6 +50,7 @@ const SellerNewNFT = () => {
   const [isNewCollection, setIsNewCollection] = useState(false);
   const [selectedCollection, setSelectedCollection] = useState(null);
   const [collectionName, setCollectionName] = useState("");
+  const [collectionDescription, setCollectionDescription] = useState("");
   const [collectionImage, setCollectionImage] = useState(null);
   const [collectionErrors, setCollectionErrors] = useState({});
   const [collections, setCollections] = useState([]);
@@ -296,7 +297,6 @@ const SellerNewNFT = () => {
           isRewardItem: false,
         };
         await saveNFTData(data);
-        toast.success("NFT created successfully");
       } else {
         setErrors({ message: "Transaction receipt not found" });
       }
@@ -328,7 +328,7 @@ const SellerNewNFT = () => {
       setErrors({ message: responseData.message });
       return;
     }
-
+    toast.success("NFT created successfully");
     navigate("/seller/nfts");
   };
 
@@ -394,8 +394,14 @@ const SellerNewNFT = () => {
         });
         return;
       }
+      if (!collectionDescription) {
+        setCollectionErrors({
+          message: "Collection description cannot be empty",
+        });
+        return;
+      }
 
-      if (collectionName && collectionImage) {
+      if (collectionName && collectionImage && collectionDescription) {
         const fileUrl = await uploadToIPFS(collectionImage);
         const res = await fetch(
           `${process.env.REACT_APP_API_URL}/api/nft/addCollection`,
@@ -408,6 +414,7 @@ const SellerNewNFT = () => {
             body: JSON.stringify({
               name: collectionName,
               image: fileUrl,
+              description: collectionDescription,
               userId: user._id,
             }),
           }
@@ -856,19 +863,18 @@ const SellerNewNFT = () => {
                       <XMarkIcon className="w-6 h-6" />
                     </button>
 
-                    <div className="w-full mb-4">
+                    <div className="w-full mb-2">
                       <label className="block font-semibold text-sm text-gray-800 mb-2">
                         Logo Image
                       </label>
                       <input
                         type="file"
                         className="w-full rounded-xl border-gray-200 border p-3 outline-none focus:ring-2 focus:ring-nft-primary-light font-normal block"
-                        // value={collectionImage}
                         onChange={(e) => setCollectionImage(e.target.files[0])}
                       />
                     </div>
 
-                    <div className="w-full">
+                    <div className="w-full mb-2">
                       <label className="block font-semibold text-sm text-gray-800 mb-2">
                         Collection Name
                       </label>
@@ -879,6 +885,21 @@ const SellerNewNFT = () => {
                         value={collectionName}
                         onChange={(e) => setCollectionName(e.target.value)}
                       />
+                    </div>
+
+                    <div className="w-full">
+                      <label className="block font-semibold text-sm text-gray-800 mb-2">
+                        Enter short description
+                      </label>
+                      <textarea
+                        type="text"
+                        className="w-full rounded-xl border-gray-200 border p-3 outline-none focus:ring-2 focus:ring-nft-primary-light font-normal block h-40 resize-none"
+                        placeholder="e.g. Description about the collection"
+                        value={collectionDescription}
+                        onChange={(e) =>
+                          setCollectionDescription(e.target.value)
+                        }
+                      ></textarea>
                     </div>
 
                     {collectionErrors.message && (

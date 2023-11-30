@@ -79,7 +79,7 @@ const FirstNFT = ({ NFT }) => {
           </p>
 
           <div className="flex gap-2">
-            <div className="bg-gray-100 flex p-6 px-3 rounded-xl gap-14 w-1/2 justify-center">
+            <div className="bg-gray-100 flex p-6 px-3 rounded-xl gap-14 w-1/2 justify-center items-center">
               <div className="flex flex-col gap-2">
                 <span className="text-sm font-semibold text-gray-500">
                   Price Starts From

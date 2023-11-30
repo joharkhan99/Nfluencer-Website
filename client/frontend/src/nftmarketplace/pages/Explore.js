@@ -21,7 +21,11 @@ import {
 import Web3Modal from "web3modal";
 import toast, { Toaster } from "react-hot-toast";
 import { create as ipfsHttpClient } from "ipfs-http-client";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setIsWalletConnected,
+  setWaletAddress,
+} from "../../redux/slices/UserSlice";
 
 const sortOptions = [
   { name: "Most Popular", href: "#", current: true },
@@ -96,6 +100,35 @@ function Explore() {
       authorization: auth,
     },
   });
+
+  const dispatch = useDispatch();
+
+  const checkIfWalletIsConnected = async () => {
+    try {
+      if (!window.ethereum) {
+        return;
+      }
+
+      const accounts = await window.ethereum.request({
+        method: "eth_accounts",
+      });
+
+      if (accounts.length) {
+        dispatch(setWaletAddress(accounts[0]));
+        dispatch(setIsWalletConnected(true));
+      } else {
+        dispatch(setIsWalletConnected(false));
+        dispatch(setWaletAddress(null));
+      }
+    } catch (error) {
+      console.log(`Error connecting with smart contract: ${error}`);
+    }
+  };
+
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, []);
+
   const user = useSelector((state) => state.user.user);
   const walletAddress = useSelector((state) => state.user.walletAddress);
 
@@ -118,10 +151,13 @@ function Explore() {
     const { marketplaceContract } = fetchContract(provider);
     const fetchedMarketItems = await marketplaceContract.fetchMarketItems();
 
+    console.log(fetchedMarketItems);
+
     const items = await Promise.all(
       fetchedMarketItems.map(async (i) => {
         const tokenUri = await marketplaceContract.tokenURI(i.itemId);
         const meta = await axios.get(tokenUri);
+        console.log(meta.data);
         return {
           ...meta.data,
           likes: i.likes.toString(),
@@ -133,6 +169,7 @@ function Explore() {
 
     items.reverse();
     setNFTs(items);
+    console.log(items);
   };
 
   useEffect(() => {
@@ -1058,7 +1095,8 @@ function Explore() {
 
                                   <div className="flex items-center justify-between gap-1 text-sm mt-4 text-center">
                                     {user &&
-                                    nft.currentOwner._id === user._id ? null : (
+                                    nft.currentOwner.walletAddress ===
+                                      walletAddress ? null : (
                                       <button
                                         className="bg-nft-primary-light border-nft-primary-light text-white font-medium p-4 rounded-xl hover:bg-nft-primary-dark w-full"
                                         onClick={() => buyNFT(nft)}

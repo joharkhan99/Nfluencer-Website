@@ -9,6 +9,9 @@ const collectionSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    description: {
+      type: String,
+    },
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     totalItems: {
       type: Number,

@@ -13,6 +13,7 @@ import {
   NFTMarketplaceContractAddress,
 } from "../../../../constants/ContractDetails";
 import { Link } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const PurchasedNFTs = ({ user }) => {
   const [nfts, setNFTs] = useState([]);
@@ -92,7 +93,14 @@ const PurchasedNFTs = ({ user }) => {
       );
       await transaction.wait();
       fetchNFTs();
+      toast.success("NFT listed successfully");
     } catch (error) {
+      if (error.code) {
+        toast.error(error.code);
+      }
+      if (error.code === 4001) {
+        toast.error("Transaction rejected by the user");
+      }
       console.log(`Error listing NFT: ${error}`);
     }
   };
@@ -113,6 +121,7 @@ const PurchasedNFTs = ({ user }) => {
 
   return (
     <>
+      <Toaster />
       {nfts.length > 0 ? (
         <div className="mt-10">
           <div className="flex items-center justify-between">

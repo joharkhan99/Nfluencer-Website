@@ -111,9 +111,7 @@ const nftDetails = async (req, res) => {
 };
 
 const addCollection = async (req, res) => {
-  const { name, image, userId } = req.body;
-
-  console.log(name, image, userId);
+  const { name, image, userId, description } = req.body;
 
   if (!name || !image) {
     return res
@@ -122,7 +120,12 @@ const addCollection = async (req, res) => {
   }
 
   try {
-    const newCollection = new Collection({ name, image, user: userId });
+    const newCollection = new Collection({
+      name,
+      image,
+      user: userId,
+      description,
+    });
     await newCollection.save();
 
     const collections = await Collection.find({
