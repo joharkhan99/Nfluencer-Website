@@ -261,8 +261,8 @@ const Collection = () => {
   const sortingOptions = [
     { name: "Price Low to High" },
     { name: "Price High to Low" },
-    { name: "Oldest" },
-    { name: "Latest" },
+    { name: "Sort by Oldest" },
+    { name: "Sort by Latest" },
   ];
   const ownerships = [{ name: "All" }, { name: "Me" }];
   const [selectedCategory, setSelectedCategory] = useState(categories[0].name);
@@ -310,7 +310,24 @@ const Collection = () => {
         : selectedOwnership === "Me"
         ? user && item.currentOwner.walletAddress === walletAddress
         : true
-    );
+    )
+    .sort((a, b) => {
+      if (selectedSortingOption === "Sort by Oldest")
+        return new Date(a.createdAt) - new Date(b.createdAt);
+      else if (selectedSortingOption === "Sort by Latest")
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      else if (selectedSortingOption === "Price Low to High")
+        return (
+          Number(getFormattedPrice(a.weiPrice)) -
+          Number(getFormattedPrice(b.weiPrice))
+        );
+      else if (selectedSortingOption === "Price High to Low")
+        return (
+          Number(getFormattedPrice(b.weiPrice)) -
+          Number(getFormattedPrice(a.weiPrice))
+        );
+      else return 0;
+    });
 
   // if (loading) {
   //   return <Loader />;
