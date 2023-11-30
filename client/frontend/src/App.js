@@ -24,6 +24,7 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import Loader from "./utils/Loader";
 import SellerManageNFT from "./dashboard/seller/pages/SellerManageNFT";
 import SellerInbox from "./dashboard/seller/pages/SellerInbox";
+import Collection from "./nftmarketplace/pages/Collection";
 
 function App() {
   const dispatch = useDispatch();
@@ -93,6 +94,10 @@ function App() {
         <Route path="/login" Component={Login} />
         <Route path="/services" Component={Services} />
         <Route path="/gigdetails/:gigtitle/:gigId" Component={GigDetails} />
+        <Route
+          path="/marketplace/collection/:collectionId"
+          Component={Collection}
+        />
 
         <Route
           path="/user-details/:verificationToken"
