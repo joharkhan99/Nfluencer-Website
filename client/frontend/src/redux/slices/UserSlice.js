@@ -16,8 +16,11 @@ const userSlice = createSlice({
     setIsWalletConnected(state, action) {
       state.isWalletConnected = action.payload;
     },
+    setWaletAddress(state, action) {
+      state.walletAddress = action.payload;
+    },
   },
 });
 
-export const { setUser, setIsWalletConnected } = userSlice.actions;
+export const { setUser, setIsWalletConnected, setWaletAddress } = userSlice.actions;
 export default userSlice.reducer;

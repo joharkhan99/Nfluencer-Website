@@ -4,33 +4,35 @@ import { MagnifyingGlassIcon, ClipboardIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
-import { setIsWalletConnected, setUser } from "../../../redux/slices/UserSlice";
 import {
-  ArrowRightOnRectangleIcon,
+  setIsWalletConnected,
+  setUser,
+  setWaletAddress,
+} from "../../../redux/slices/UserSlice";
+import {
   BellIcon,
   ChatBubbleLeftEllipsisIcon,
   CreditCardIcon,
 } from "@heroicons/react/24/outline";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
-import Web3 from "web3";
 
 const Header = () => {
   const [balance, setBalance] = useState(0);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
+  const walletAddress = useSelector((state) => state.user.walletAddress);
   const isWalletConnected = useSelector(
     (state) => state.user.isWalletConnected
   );
-  const [walletAddress, setWalletAddress] = useState("");
-  const [walletLogo, setWalletLogo] = useState(null);
 
   const logout = () => {
     Cookies.remove("authId");
     localStorage.removeItem("user");
     dispatch(setUser(null));
     dispatch(setIsWalletConnected(false));
+    dispatch(setWaletAddress(null));
     navigate("/");
   };
 
@@ -56,7 +58,6 @@ const Header = () => {
       const balance = await provider.getBalance(account);
       const balanceInEther = ethers.utils.formatEther(balance);
 
-      setWalletAddress(account);
       setBalance(balanceInEther.substring(0, 6));
     } catch (error) {
       console.error("Error fetching wallet information:", error);
@@ -157,14 +158,6 @@ const Header = () => {
                             {balance} ETH
                           </div>
                         </div>
-
-                        {/* <button
-                          className="flex items-center gap-4 p-1 py-3 hover:bg-gray-100 rounded-xl w-full"
-                          onClick={disconnectMetamask}
-                        >
-                          <ArrowRightOnRectangleIcon className="w-9 h-9 text-gray-600" />
-                          <div className="font-semibold">Logout Wallet</div>
-                        </button> */}
                       </div>
                     </Menu.Item>
                   </div>

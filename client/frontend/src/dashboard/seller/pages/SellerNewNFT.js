@@ -20,11 +20,13 @@ import { create as ipfsHttpClient } from "ipfs-http-client";
 import { Web3 } from "web3";
 import { Listbox, Transition } from "@headlessui/react";
 import toast, { Toaster } from "react-hot-toast";
+import { useDispatch } from "react-redux";
 
 const SellerNewNFT = () => {
   const isWalletConnected = useSelector(
     (state) => state.user.isWalletConnected
   );
+  const walletAddress = useSelector((state) => state.user.walletAddress);
   const [preview, setPreview] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -167,8 +169,6 @@ const SellerNewNFT = () => {
       errors.category = "Please select a category";
     }
 
-    // console.log(selectedCategory);
-
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -202,7 +202,6 @@ const SellerNewNFT = () => {
     );
 
     const responseData = await res.json();
-    console.log(responseData);
     return responseData;
   };
 
@@ -214,9 +213,9 @@ const SellerNewNFT = () => {
       const data = JSON.stringify({
         name,
         description,
-        creator: user,
-        currentOwner: user,
-        ownershipHistory: [user],
+        creator: { ...user, walletAddress },
+        currentOwner: { ...user, walletAddress },
+        ownershipHistory: [{ ...user, walletAddress }],
         fileUrl,
         fileType,
         price,
@@ -230,7 +229,6 @@ const SellerNewNFT = () => {
       });
 
       const added = await client.add(data);
-      console.log("Added file: ", added);
       const url = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;
 
       await createSale(url, price, fileUrl);
@@ -250,7 +248,6 @@ const SellerNewNFT = () => {
         formInputPrice.toString(),
         "ether"
       );
-      console.log(_price);
       let listingPrice = await marketplaceContract.getListingPrice();
       listingPrice = listingPrice.toString();
 
@@ -260,16 +257,11 @@ const SellerNewNFT = () => {
       });
 
       await transaction.wait();
-
-      console.log("Market Transaction: ", transaction);
-
       const transactionHash = transaction.hash;
 
       const transactionReceipt = await web3.eth.getTransactionReceipt(
         transactionHash
       );
-
-      console.log("Transaction Receipt: ", transactionReceipt);
 
       if (transactionReceipt) {
         const logs = transactionReceipt.logs;
@@ -300,10 +292,9 @@ const SellerNewNFT = () => {
           effectiveGasPrice: transactionReceipt.effectiveGasPrice.toString(),
           blockHash: transactionReceipt.blockHash,
           nftUrl: url,
-          walletAddress: user.walletAddress,
+          walletAddress: walletAddress,
           isRewardItem: false,
         };
-        console.log("NFT Data: ", data);
         await saveNFTData(data);
         toast.success("NFT created successfully");
       } else {
@@ -333,7 +324,6 @@ const SellerNewNFT = () => {
     });
 
     const responseData = await res.json();
-    console.log(responseData);
     if (responseData.error) {
       setErrors({ message: responseData.message });
       return;
@@ -460,8 +450,6 @@ const SellerNewNFT = () => {
     );
 
     const data = await res.json();
-    console.log(data);
-
     setCollections(data.collections);
   };
 

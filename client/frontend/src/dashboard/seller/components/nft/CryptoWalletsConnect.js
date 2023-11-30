@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setIsWalletConnected } from "../../../../redux/slices/UserSlice";
+import {
+  setIsWalletConnected,
+  setWaletAddress,
+} from "../../../../redux/slices/UserSlice";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 const CryptoWalletsConnect = ({ user }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [currentAccount, setCurrentAccount] = useState(null);
   const dispatch = useDispatch();
 
   const closeModal = () => {
@@ -25,8 +27,7 @@ const CryptoWalletsConnect = ({ user }) => {
 
       if (accounts.length) {
         setIsOpen(false);
-        console.log(window.ethereum);
-        setCurrentAccount(accounts[0]);
+        dispatch(setWaletAddress(accounts[0]));
         dispatch(setIsWalletConnected(true));
       }
     } catch (error) {
@@ -45,11 +46,12 @@ const CryptoWalletsConnect = ({ user }) => {
       });
 
       if (accounts.length) {
-        setCurrentAccount(accounts[0]);
+        dispatch(setWaletAddress(accounts[0]));
         dispatch(setIsWalletConnected(true));
       } else {
         console.log("No authorized account found");
         dispatch(setIsWalletConnected(false));
+        dispatch(setWaletAddress(null));
       }
     } catch (error) {
       console.log(`Error connecting with smart contract: ${error}`);

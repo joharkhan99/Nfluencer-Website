@@ -43,8 +43,6 @@ const PurchasedNFTs = ({ user }) => {
       const { marketplaceContract } = fetchContract(signer);
       const data = await marketplaceContract.fetchPurchasedNFTs();
 
-      console.log(data);
-
       const items = await Promise.all(
         data.map(async (i) => {
           const tokenUri = await marketplaceContract.tokenURI(i.itemId);
@@ -59,7 +57,6 @@ const PurchasedNFTs = ({ user }) => {
       );
 
       items.reverse();
-      console.log(items);
       setNFTs(items);
     } catch (error) {
       console.log(`Error fetching NFTs: ${error}`);
@@ -94,7 +91,6 @@ const PurchasedNFTs = ({ user }) => {
         }
       );
       await transaction.wait();
-      console.log(transaction);
       fetchNFTs();
     } catch (error) {
       console.log(`Error listing NFT: ${error}`);

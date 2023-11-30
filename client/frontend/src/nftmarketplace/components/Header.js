@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import Cookies from "js-cookie";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setUser } from "../../redux/slices/UserSlice";
@@ -16,6 +16,12 @@ const Header = ({ transparent = false }) => {
     dispatch(setUser(null));
     navigate("/");
   };
+
+  useEffect(() => {
+    window.ethereum.on("accountsChanged", async function (accounts) {
+      window.location.reload();
+    });
+  }, []);
 
   return (
     <>

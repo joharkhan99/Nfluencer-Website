@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 
 import "../styles/style.css";
 import Header from "../components/Header";
@@ -10,6 +10,11 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {
+  setIsWalletConnected,
+  setWaletAddress,
+} from "../../redux/slices/UserSlice";
 
 function Home() {
   const responsive = {
@@ -29,6 +34,36 @@ function Home() {
       slidesToSlide: 1, // optional, default to 1.
     },
   };
+
+  const dispatch = useDispatch();
+
+  const checkIfWalletIsConnected = async () => {
+    try {
+      if (!window.ethereum) {
+        return;
+      }
+
+      const accounts = await window.ethereum.request({
+        method: "eth_accounts",
+      });
+
+      if (accounts.length) {
+        dispatch(setWaletAddress(accounts[0]));
+        dispatch(setIsWalletConnected(true));
+      } else {
+        console.log("No authorized account found");
+        dispatch(setIsWalletConnected(false));
+        dispatch(setWaletAddress(null));
+      }
+    } catch (error) {
+      console.log(`Error connecting with smart contract: ${error}`);
+    }
+  };
+
+  useEffect(() => {
+    checkIfWalletIsConnected();
+  }, []);
+
   return (
     <>
       <div className="bg-transparent">

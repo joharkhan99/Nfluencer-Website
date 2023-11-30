@@ -236,6 +236,7 @@ function NFTDetail() {
   };
 
   const user = useSelector((state) => state.user.user);
+  const walletAddress = useSelector((state) => state.user.walletAddress);
 
   const fetchNFTLikes = async (itemId) => {
     try {
@@ -445,8 +446,8 @@ function NFTDetail() {
       name: nft.name,
       description: nft.description,
       creator: nft.creator,
-      currentOwner: user,
-      ownershipHistory: [...nft.ownershipHistory, user],
+      currentOwner: { ...user, walletAddress },
+      ownershipHistory: [...nft.ownershipHistory, { ...user, walletAddress }],
       fileUrl: nft.fileUrl,
       fileType: nft.fileType,
       price: nft.price,
@@ -633,11 +634,14 @@ function NFTDetail() {
                           {nftMetaData.currentOwner.name}
                         </button>
                         <div className="text-sm text-gray-500">
-                          {nftMetaData.seller.substring(0, 10) +
+                          {nftMetaData.currentOwner.walletAddress.substring(
+                            0,
+                            10
+                          ) +
                             "..." +
-                            nftMetaData.seller.substring(
-                              nftMetaData.seller.length - 4,
-                              nftMetaData.seller.length
+                            nftMetaData.currentOwner.walletAddress.substring(
+                              nftMetaData.currentOwner.walletAddress.length - 4,
+                              nftMetaData.currentOwner.walletAddress.length
                             )}
                         </div>
                       </div>
@@ -661,11 +665,11 @@ function NFTDetail() {
                           {nftMetaData.creator.name}
                         </button>
                         <div className="text-sm text-gray-500">
-                          {nftMetaData.seller.substring(0, 10) +
+                          {nftMetaData.creator.walletAddress.substring(0, 10) +
                             "..." +
-                            nftMetaData.seller.substring(
-                              nftMetaData.seller.length - 4,
-                              nftMetaData.seller.length
+                            nftMetaData.creator.walletAddress.substring(
+                              nftMetaData.creator.walletAddress.length - 4,
+                              nftMetaData.creator.walletAddress.length
                             )}
                         </div>
                       </div>
@@ -823,7 +827,7 @@ function NFTDetail() {
                                         <div className="flex items-center gap-4">
                                           <img
                                             src={history.avatar}
-                                            alt="User Imasge"
+                                            alt={history.name}
                                             className="rounded-full h-10 w-10 object-cover"
                                           />
                                           <div className="flex flex-col items-start">
@@ -832,16 +836,15 @@ function NFTDetail() {
                                             </button>
 
                                             <div className="text-sm text-gray-500">
-                                              {"0x939B0edbd94C7CD117d003d84b6D164Ba110bBee".substring(
+                                              {history.walletAddress.substring(
                                                 0,
                                                 10
                                               ) +
                                                 "..." +
-                                                "0x939B0edbd94C7CD117d003d84b6D164Ba110bBee".substring(
-                                                  "0x939B0edbd94C7CD117d003d84b6D164Ba110bBee"
-                                                    .length - 4,
-                                                  "0x939B0edbd94C7CD117d003d84b6D164Ba110bBee"
-                                                    .length
+                                                history.walletAddress.substring(
+                                                  history.walletAddress.length -
+                                                    4,
+                                                  history.walletAddress.length
                                                 )}
                                             </div>
                                           </div>

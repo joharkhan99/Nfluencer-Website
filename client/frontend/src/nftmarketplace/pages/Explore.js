@@ -97,6 +97,7 @@ function Explore() {
     },
   });
   const user = useSelector((state) => state.user.user);
+  const walletAddress = useSelector((state) => state.user.walletAddress);
 
   const [nfts, setNFTs] = useState([]);
   const fetchContract = (signerOrProvider) => {
@@ -132,7 +133,6 @@ function Explore() {
 
     items.reverse();
     setNFTs(items);
-    console.log(items);
   };
 
   useEffect(() => {
@@ -169,7 +169,6 @@ function Explore() {
 
       await transaction.wait();
       await updateTokenURI(marketplaceContract, nft);
-      console.log("Transaction is completed", transaction);
       fetchNFTs();
       toast.success("NFT bought successfully");
     } catch (error) {
@@ -189,8 +188,8 @@ function Explore() {
       name: nft.name,
       description: nft.description,
       creator: nft.creator,
-      currentOwner: user,
-      ownershipHistory: [...nft.ownershipHistory, user],
+      currentOwner: { ...user, walletAddress },
+      ownershipHistory: [...nft.ownershipHistory, { ...user, walletAddress }],
       fileUrl: nft.fileUrl,
       fileType: nft.fileType,
       price: nft.price,
@@ -204,8 +203,6 @@ function Explore() {
     });
     const added = await client.add(data);
     const newUrl = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;
-
-    console.log("Added file: ", added);
     await marketplaceContract.updateTokenURI(nft.itemId, newUrl);
   };
 
@@ -248,23 +245,18 @@ function Explore() {
       );
 
       setNFTLikes(response.data.totalNFTLikes);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
 
   const countNFTLikes = (nft) => {
-    // console.log(nftLikes);
     if (nftLikes.length === 0) {
       return 0;
     }
-
     const nftLike = nftLikes.filter(
       (like) => like.nftId.toString() === nft.itemId.toString()
     );
-
-    console.log("Likes", nftLike);
     return nftLike.length;
   };
 
@@ -277,7 +269,6 @@ function Explore() {
         like.nftId.toString() === nft.itemId.toString() &&
         like.userId.toString() === user._id.toString()
     );
-    console.log("Likes", nftLike);
     return nftLike.length > 0;
   };
 
@@ -309,7 +300,6 @@ function Explore() {
           }
         );
         if (response.data.error === false) {
-          console.log("DISLIKE, ", response.data.error);
           const newNFTLikes = nftLikes.filter(
             (like) => like._id.toString() !== nftLike[0]._id.toString()
           );
@@ -333,7 +323,6 @@ function Explore() {
           }
         );
         if (response.data.error === false) {
-          console.log("LIKE, ", response.data.error);
           const newNFTLikes = [...nftLikes, response.data.nftLike];
           setNFTLikes(newNFTLikes);
           toast.success("NFT liked successfully");
