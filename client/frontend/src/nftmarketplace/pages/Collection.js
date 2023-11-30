@@ -23,6 +23,7 @@ import {
   NFTMarketplaceContractABI,
   NFTMarketplaceContractAddress,
 } from "../../constants/ContractDetails";
+import toast, { Toaster } from "react-hot-toast";
 
 const Collection = () => {
   const dispatch = useDispatch();
@@ -56,6 +57,7 @@ const Collection = () => {
 
   const { collectionId } = useParams();
   const [nfts, setNfts] = useState([]);
+  const [nftLikes, setNFTLikes] = useState([]);
 
   const fetchContract = (signerOrProvider) => {
     const marketplaceContract = new ethers.Contract(
@@ -81,29 +83,148 @@ const Collection = () => {
         const meta = await axios.get(tokenUri);
 
         if (meta.data.collection._id === collectionId) {
-          console.log(meta.data);
-          return;
-        } else
           return {
             ...meta.data,
             likes: i.likes.toString(),
             itemId: Number(i.itemId),
             weiPrice: i.price,
           };
+        } else return;
       })
     );
 
-    items.reverse();
-    setNfts(items);
-    console.log(items);
+    // remove null or undefined items from array
+    const filteredItems = items.filter(function (el) {
+      return el != null;
+    });
+
+    filteredItems.reverse();
+    setNfts(filteredItems);
   };
 
   useEffect(() => {
     fetchNFTs();
   }, [collectionId]);
 
+  const handleCopyToClipboard = async (textToCopy) => {
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+    } catch (err) {
+      console.error("Failed to copy to clipboard:", err);
+    }
+  };
+
+  const getFormattedPrice = (price) => {
+    return ethers.utils.formatEther(price.toString());
+  };
+
+  const fetchLikes = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/nft/getLikes`,
+        {
+          nftIds: nfts.map((nft) => nft.itemId),
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setNFTLikes(response.data.totalNFTLikes);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const countNFTLikes = (nft) => {
+    if (nftLikes.length === 0) {
+      return 0;
+    }
+    const nftLike = nftLikes.filter(
+      (like) => like.nftId.toString() === nft.itemId.toString()
+    );
+    return nftLike.length;
+  };
+
+  const checkIfUserLikedNFT = (nft) => {
+    if (nftLikes.length === 0 || !user) {
+      return false;
+    }
+    const nftLike = nftLikes.filter(
+      (like) =>
+        like.nftId.toString() === nft.itemId.toString() &&
+        like.userId.toString() === user._id.toString()
+    );
+    return nftLike.length > 0;
+  };
+
+  const addOrRemoveLike = async (nft) => {
+    if (!user) {
+      toast.error("Please login to like this NFT");
+      return;
+    }
+
+    try {
+      const nftLike = nftLikes.filter(
+        (like) =>
+          like.nftId.toString() === nft.itemId.toString() &&
+          like.userId.toString() === user._id.toString()
+      );
+
+      if (nftLike.length > 0) {
+        const response = await axios.delete(
+          `${process.env.REACT_APP_API_URL}/api/nft/like/${nftLike[0]._id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": user.jwtToken,
+            },
+          }
+        );
+        if (response.data.error === false) {
+          const newNFTLikes = nftLikes.filter(
+            (like) => like._id.toString() !== nftLike[0]._id.toString()
+          );
+          setNFTLikes(newNFTLikes);
+          toast.success("Like removed successfully");
+        }
+        return;
+      } else {
+        // add like
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/api/nft/like`,
+          {
+            nftId: nft.itemId,
+            userId: user._id,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": user.jwtToken,
+            },
+          }
+        );
+        if (response.data.error === false) {
+          const newNFTLikes = [...nftLikes, response.data.nftLike];
+          setNFTLikes(newNFTLikes);
+          toast.success("NFT liked successfully");
+        }
+      }
+    } catch (error) {
+      toast.error("Error liking NFT");
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (nfts.length > 0) fetchLikes();
+  }, [nfts]);
+
   return (
     <>
+      <Toaster />
       <Header transparent={true} />
       <div className="mt-8">
         <div className="container mx-auto">
@@ -117,7 +238,7 @@ const Collection = () => {
                 className="absolute w-full h-full object-cover rounded-xl"
               />
               <div className="flex items-center justify-end p-5 gap-4">
-                <button className="bg-white rounded-full w-auto h-10 z-50 shadow-lg hover:bg-gray-100 text-gray-700 flex items-center px-4 text-sm gap-2 font-medium">
+                <button className="bg-white rounded-full w-auto h-10 z-10 shadow-lg hover:bg-gray-100 text-gray-700 flex items-center px-4 text-sm gap-2 font-medium">
                   <HeartIcon className="w-5 h-5 text-nft-primary-light" />
                   <span>Add to Favorites</span>
                 </button>
@@ -341,192 +462,172 @@ const Collection = () => {
             </div>
 
             <div className="flex flex-wrap justify-start py-10">
-              {/* {nfts.map((nft, index) => ( */}
-              <div
-                className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
-                // key={index}
-              >
-                <div className="w-full h-full decoration-transparent rounded-xl shadow-xl transition-colors duration-300 relative group">
-                  <div
-                    className="h-auto bg-gray-100 overflow-hidden rounded-xl"
-                    style={{ height: "300px" }}
-                  >
-                    {/* {nft.fileType === "image" ? ( */}
-                    <img
-                      // src={nft.fileUrl}
-                      src="https://cdn.dribbble.com/users/2256359/screenshots/15433092/media/311b79dd55ecde91f8096d9e49dc2577.jpg"
-                      // alt={nft.name}
-                      alt="nft name"
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    {/* ) : (
-                                    <video controls width="100%" height="100%">
-                                      <source
-                                        src={nft.fileUrl}
-                                        type="video/mp4"
-                                      />
-                                      Your browser does not support the video
-                                      tag.
-                                    </video>
-                                  )} */}
-                  </div>
-                  <div className="p-2">
-                    <div className="flex justify-between items-center -mt-8 z-50">
-                      <div className="flex -space-x-3">
-                        {/* {nft.ownershipHistory.map( */}
-                        {/* (history, index) => ( */}
-                        <img
-                          // key={index}
-                          className="w-12 h-12 rounded-full border-2 object-cover border-white z-10"
-                          // src={history.avatar}
-                          src="https://cdn.dribbble.com/users/2256359/screenshots/15433092/media/311b79dd55ecde91f8096d9e49dc2577.jpg"
-                          alt="User Imageas"
-                        />
-                        {/* )
-                                      )} */}
-                      </div>
-                      <div className="flex items-center justify-center">
-                        <Menu as="div" className="relative text-left">
-                          <div>
-                            <Menu.Button className="font-black text-xl bg-white rounded-full w-12 h-12 z-50 shadow-lg hover:bg-gray-100 text-gray-700">
-                              <span>···</span>
-                            </Menu.Button>
-                          </div>
-
-                          <Menu.Items className="absolute right-0 z-10 mt-1 w-40 origin-top-right rounded-xl bg-white shadow-xl focus:outline-none  p-1 border border-gray-50">
-                            <Menu.Item>
-                              <button
-                                className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium"
-                                // onClick={() => {
-                                //   handleCopyToClipboard(
-                                //     `${window.location.origin}/nft/${nft.itemId}`
-                                //   );
-                                //   toast.success(
-                                //     "Link copied to clipboard"
-                                //   );
-                                // }}
-                              >
-                                <ClipboardDocumentListIcon className="w-5 h-5" />
-                                <span>Copy Link</span>
-                              </button>
-                            </Menu.Item>
-                            <Menu.Item>
-                              <Link
-                                // to={nft.fileUrl}
-                                target="_blank"
-                                className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium"
-                              >
-                                <PhotoIcon className="w-5 h-5" />
-                                <span>Open Original</span>
-                              </Link>
-                            </Menu.Item>
-                            <Menu.Item>
-                              <button className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium">
-                                <FlagIcon className="w-5 h-5" />
-                                <span>Report</span>
-                              </button>
-                            </Menu.Item>
-                          </Menu.Items>
-                        </Menu>
-                      </div>
-                    </div>
-
-                    <div className="p-2">
-                      <h3 className="text-xl font-bold tracking-tight text-black">
-                        {/* {nft.name} */}
-                        nft name 12
-                      </h3>
-                      <div className="flex items-center text-gray-500 text-sm mt-2 justify-between">
-                        <div>
-                          <span className="block text-xs text-center">
-                            Price
-                          </span>
-                          <span className="font-bold text-sm text-black">
-                            <span className="text-gray-500 pr-1 font-medium">
-                              {/* {getFormattedPrice(nft.weiPrice)} */}
-                              0.0001
-                            </span>
-                            ETH
-                          </span>
-                        </div>
-                        <div>
-                          <span className="block text-xs text-center">
-                            Collection
-                          </span>
-                          <Link
-                            to={"s"}
-                            className="text-nft-primary-light font-semibold"
-                          >
-                            {/* <span>{nft.collection.name}</span> */}
-                            <span>collection name</span>
-                            <ArrowUpRightIcon className="w-4 h-4 inline-block" />
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between gap-1 text-sm mt-4 text-center">
-                      {/* {user &&
-                                    nft.currentOwner.walletAddress ===
-                                      walletAddress ? null : ( */}
-                      <button
-                        className="bg-nft-primary-light border-nft-primary-light text-white font-medium p-4 rounded-xl hover:bg-nft-primary-dark w-full"
-                        // onClick={() => buyNFT(nft)}
-                      >
-                        Buy Now
-                      </button>
-                      {/* // )} */}
-                      <Link
-                        className="bg-gray-200 font-medium p-4 rounded-xl hover:bg-gray-300 w-full text-gray-800"
-                        // to={`/nft/${nft.itemId}`}
-                      >
-                        View Details
-                      </Link>
-                    </div>
-                  </div>
-
-                  <div className="absolute top-2 left-2">
-                    <div className="bg-white rounded-full bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-50 text-black overflow-hidden p-2">
-                      <div>
-                        <div className="flex rounded-2xl justify-evenly items-center">
-                          <div className="flex flex-col gap-1 items-center">
-                            <span className="flex gap-1">
-                              <img
-                                src={require("../assets/eth.png")}
-                                alt=""
-                                className="w-5 h-5 object-contain"
-                              />
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <button
-                    // className={`rounded-xl p-2 flex gap-1 items-center absolute top-2 right-2 text-sm font-semibold ${
-                    //   checkIfUserLikedNFT(nft)
-                    //     ? "bg-nft-primary-light text-white"
-                    //     : "text-nft-primary-light bg-white"
-                    // }`}
-                    className={`rounded-xl p-2 flex gap-1 items-center absolute top-2 right-2 text-sm font-semibold bg-white text-nft-primary-light`}
-                    // onClick={() => addOrRemoveLike(nft)}
-                  >
-                    <HeartIcon className="w-5 h-5" />
-                    <span
-                      className={
-                        // !checkIfUserLikedNFT(nft) &&
-                        "text-gray-700"
-                      }
+              {nfts.map((nft, index) => (
+                <div
+                  className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
+                  key={index}
+                >
+                  <div className="w-full h-full decoration-transparent rounded-xl shadow-xl transition-colors duration-300 relative group">
+                    <div
+                      className="h-auto bg-gray-100 overflow-hidden rounded-xl"
+                      style={{ height: "300px" }}
                     >
-                      {/* {nftLikes && countNFTLikes(nft)} */}
-                      12
-                    </span>
-                  </button>
-                </div>
-              </div>
+                      {nft.fileType === "image" ? (
+                        <img
+                          src={nft.fileUrl}
+                          alt={nft.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      ) : (
+                        <video controls width="100%" height="100%">
+                          <source src={nft.fileUrl} type="video/mp4" />
+                          Your browser does not support the video tag.
+                        </video>
+                      )}
+                    </div>
+                    <div className="p-2">
+                      <div className="flex justify-between items-center -mt-8 z-50">
+                        <div className="flex -space-x-3">
+                          {nft.ownershipHistory.map((history, index) => (
+                            <img
+                              key={index}
+                              className="w-12 h-12 rounded-full border-2 object-cover border-white z-10"
+                              src={history.avatar}
+                              alt="avatar"
+                            />
+                          ))}
+                        </div>
+                        <div className="flex items-center justify-center">
+                          <Menu as="div" className="relative text-left">
+                            <div>
+                              <Menu.Button className="font-black text-xl bg-white rounded-full w-12 h-12 z-50 shadow-lg hover:bg-gray-100 text-gray-700">
+                                <span>···</span>
+                              </Menu.Button>
+                            </div>
 
-              {/* ))} */}
+                            <Menu.Items className="absolute right-0 z-10 mt-1 w-40 origin-top-right rounded-xl bg-white shadow-xl focus:outline-none  p-1 border border-gray-50">
+                              <Menu.Item>
+                                <button
+                                  className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium"
+                                  onClick={() => {
+                                    handleCopyToClipboard(
+                                      `${window.location.origin}/nft/${nft.itemId}`
+                                    );
+                                    toast.success("Link copied to clipboard");
+                                  }}
+                                >
+                                  <ClipboardDocumentListIcon className="w-5 h-5" />
+                                  <span>Copy Link</span>
+                                </button>
+                              </Menu.Item>
+                              <Menu.Item>
+                                <Link
+                                  to={nft.fileUrl}
+                                  target="_blank"
+                                  className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium"
+                                >
+                                  <PhotoIcon className="w-5 h-5" />
+                                  <span>Open Original</span>
+                                </Link>
+                              </Menu.Item>
+                              <Menu.Item>
+                                <button className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium">
+                                  <FlagIcon className="w-5 h-5" />
+                                  <span>Report</span>
+                                </button>
+                              </Menu.Item>
+                            </Menu.Items>
+                          </Menu>
+                        </div>
+                      </div>
+
+                      <div className="p-2">
+                        <h3 className="text-xl font-bold tracking-tight text-black">
+                          {nft.name}
+                        </h3>
+                        <div className="flex items-center text-gray-500 text-sm mt-2 justify-between">
+                          <div>
+                            <span className="block text-xs text-center">
+                              Price
+                            </span>
+                            <span className="font-bold text-sm text-black">
+                              <span className="text-gray-500 pr-1 font-medium">
+                                {getFormattedPrice(nft.weiPrice)}
+                              </span>
+                              ETH
+                            </span>
+                          </div>
+                          <div>
+                            <span className="block text-xs text-center">
+                              Collection
+                            </span>
+                            <Link
+                              to={"s"}
+                              className="text-nft-primary-light font-semibold"
+                            >
+                              <span>{nft.collection.name}</span>
+                              <ArrowUpRightIcon className="w-4 h-4 inline-block" />
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between gap-1 text-sm mt-4 text-center">
+                        {user &&
+                        nft.currentOwner.walletAddress ===
+                          walletAddress ? null : (
+                          <button
+                            className="bg-nft-primary-light border-nft-primary-light text-white font-medium p-4 rounded-xl hover:bg-nft-primary-dark w-full"
+                            // onClick={() => buyNFT(nft)}
+                          >
+                            Buy Now
+                          </button>
+                        )}
+                        <Link
+                          className="bg-gray-200 font-medium p-4 rounded-xl hover:bg-gray-300 w-full text-gray-800"
+                          to={`/nft/${nft.itemId}`}
+                        >
+                          View Details
+                        </Link>
+                      </div>
+                    </div>
+
+                    <div className="absolute top-2 left-2">
+                      <div className="bg-white rounded-full bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-50 text-black overflow-hidden p-2">
+                        <div>
+                          <div className="flex rounded-2xl justify-evenly items-center">
+                            <div className="flex flex-col gap-1 items-center">
+                              <span className="flex gap-1">
+                                <img
+                                  src={require("../assets/eth.png")}
+                                  alt=""
+                                  className="w-5 h-5 object-contain"
+                                />
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      className={`rounded-xl p-2 flex gap-1 items-center absolute top-2 right-2 text-sm font-semibold ${
+                        checkIfUserLikedNFT(nft)
+                          ? "bg-nft-primary-light text-white"
+                          : "text-nft-primary-light bg-white"
+                      }`}
+                      onClick={() => addOrRemoveLike(nft)}
+                    >
+                      <HeartIcon className="w-5 h-5" />
+                      <span
+                        className={!checkIfUserLikedNFT(nft) && "text-gray-700"}
+                      >
+                        {nftLikes && countNFTLikes(nft)}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 

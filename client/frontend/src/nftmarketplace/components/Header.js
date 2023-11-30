@@ -4,6 +4,7 @@ import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setUser } from "../../redux/slices/UserSlice";
+import { PlusIcon } from "@heroicons/react/24/solid";
 
 const Header = ({ transparent = false }) => {
   const user = useSelector((state) => state.user.user);
@@ -103,23 +104,29 @@ const Header = ({ transparent = false }) => {
               className="hidden w-full md:block md:w-auto"
               id="navbar-default"
             >
-              <ul className="font-bold flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-3 md:mt-0 md:border-0 items-center">
+              <ul className="font-semibold flex flex-col p-4 md:p-0 mt-4 border rounded-lg md:flex-row md:space-x-3 md:mt-0 md:border-0 items-center">
                 <li>
                   <Link
                     to="/marketplace"
-                    className="text-sm text-black px-4 py-2"
+                    className="text-sm text-gray-800 px-4 py-2 hover:opacity-80"
                     aria-current="page"
                   >
                     Home
                   </Link>
                 </li>
                 <li>
-                  <Link to="/stats" className="text-sm text-black px-4 py-2">
+                  <Link
+                    to="/stats"
+                    className="text-sm text-gray-800 px-4 py-2 hover:opacity-80"
+                  >
                     Stats
                   </Link>
                 </li>
                 <li>
-                  <Link to="/explore" className="text-sm text-black px-4 py-2">
+                  <Link
+                    to="/explore"
+                    className="text-sm text-gray-800 px-4 py-2 hover:opacity-80"
+                  >
                     Explore
                   </Link>
                 </li>
@@ -129,7 +136,7 @@ const Header = ({ transparent = false }) => {
                     <li>
                       <Link
                         to="/login"
-                        className="rounded-full bg-white text-sm text-black px-4 py-3 shadow-md"
+                        className="rounded-full bg-white text-sm text-gray-800 px-4 py-3 shadow-md hover:opacity-80"
                       >
                         Login
                       </Link>
@@ -137,7 +144,7 @@ const Header = ({ transparent = false }) => {
                     <li>
                       <Link
                         to="/signup"
-                        className="rounded-full bg-nft-primary-light text-sm text-white px-4 py-3"
+                        className="rounded-full bg-nft-primary-light text-sm text-white px-4 py-3 hover:opacity-80"
                       >
                         Sign Up
                       </Link>
@@ -158,15 +165,16 @@ const Header = ({ transparent = false }) => {
                     <li>
                       <Link
                         to="/seller/nfts"
-                        className="rounded-full bg-nft-primary-light text-sm text-white px-4 py-3"
+                        className="rounded-xl bg-nft-primary-light text-sm text-white px-4 py-3 hover:opacity-80 flex items-center gap-2"
                       >
-                        Create
+                        <PlusIcon className="w-4 h-4 inline-block text-white" />
+                        <span>Create</span>
                       </Link>
                     </li>
 
                     <li>
                       <Menu as="div" className="relative text-left">
-                        <div>
+                        <div className="flex h-full items-center">
                           <Menu.Button className="group shadow-md rounded-full w-10 h-10">
                             <img
                               src={user.avatar}
@@ -206,8 +214,12 @@ const Header = ({ transparent = false }) => {
                                           ...
                                         </span>
                                       </div>
-                                      <div className="text-gray-500 text-sm w-full">
-                                        {user.email.substring(0, 18)}...
+                                      <div className="text-gray-500 text-sm w-full font-normal">
+                                        {user.email.substring(0, 5) +
+                                          "..." +
+                                          user.email.substring(
+                                            user.email.indexOf("@")
+                                          )}
                                       </div>
                                     </div>
                                   </div>
@@ -222,7 +234,7 @@ const Header = ({ transparent = false }) => {
                               <Menu.Item>
                                 <a
                                   href="{option.href}"
-                                  className="text-gray-600 block p-2 rounded-xl hover:bg-gray-100 text-base"
+                                  className="text-gray-600 block p-2 rounded-xl hover:bg-gray-100 text-base font-normal"
                                 >
                                   Profile
                                 </a>
@@ -230,14 +242,14 @@ const Header = ({ transparent = false }) => {
                               <Menu.Item>
                                 <a
                                   href="{option.href}"
-                                  className="text-gray-600 block p-2 rounded-xl hover:bg-gray-100 text-base"
+                                  className="text-gray-600 block p-2 rounded-xl hover:bg-gray-100 text-base font-normal"
                                 >
                                   Settings
                                 </a>
                               </Menu.Item>
                               <Menu.Item>
                                 <button
-                                  className="text-gray-600 block p-2 rounded-xl hover:bg-gray-100 text-base w-full text-start"
+                                  className="text-gray-600 block p-2 rounded-xl hover:bg-gray-100 text-base w-full text-start font-normal"
                                   onClick={logout}
                                 >
                                   Logout
