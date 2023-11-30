@@ -6,6 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setUser } from "../../redux/slices/UserSlice";
 import Loader from "../../utils/Loader";
+import {
+  PlusIcon,
+  ArrowDownTrayIcon,
+  UserPlusIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/outline";
 
 function Header({ transparent = false }) {
   const navigate = useNavigate();
@@ -374,26 +380,39 @@ function Header({ transparent = false }) {
                     <li>
                       <Link
                         to="/signup"
-                        className={`rounded-xl text-sm px-4 py-3 shadow-md transition-colors ${
+                        className={`rounded-xl text-sm px-4 py-3 hover:opacity-80 flex items-center gap-2 ${
                           transparent
-                            ? "bg-nft-primary-light text-white hover:bg-nft-primary-dark hover:text-white"
-                            : "bg-white text-gray-800 hover:bg-nft-primary-light hover:text-white"
+                            ? "bg-nft-primary-light text-white"
+                            : "bg-white text-gray-800"
                         }`}
                       >
-                        Sign Up
+                        <span>Sign Up</span>
+                        <UserPlusIcon className="w-5 h-5" />
                       </Link>
                     </li>
                   </>
                 ) : (
                   <>
                     <li>
-                      <Link
+                      {/* <Link
                         to="/seller"
                         className={`text-sm px-4 py-2 hover:opacity-80 ${
                           transparent ? "text-gray-800" : "text-white"
                         }`}
                       >
                         Dashboard
+                      </Link> */}
+
+                      <Link
+                        to="/seller"
+                        className={`rounded-xl text-sm px-4 py-3 hover:opacity-80 flex items-center gap-2 ${
+                          transparent
+                            ? "bg-nft-primary-light text-white"
+                            : "bg-white text-gray-800"
+                        }`}
+                      >
+                        <Squares2X2Icon className="w-5 h-5" />
+                        <span>Dashboard</span>
                       </Link>
                     </li>
                     <li>

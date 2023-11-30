@@ -127,7 +127,11 @@ const Header = ({ transparent = false }) => {
                     <li>
                       <Link
                         to="/login"
-                        className="rounded-xl bg-nft-primary-transparent text-sm text-nft-primary-light px-4 py-3 hover:opacity-80 flex items-center gap-2"
+                        className={`rounded-xl text-sm px-4 py-3 hover:opacity-80 flex items-center gap-2 ${
+                          transparent
+                            ? "text-nft-primary-light bg-nft-primary-transparent"
+                            : "text-gray-800 bg-white"
+                        }`}
                       >
                         <span>Login</span>
                         <ArrowDownTrayIcon className="w-5 h-5 transform -rotate-90" />

@@ -112,11 +112,6 @@ const Collection = () => {
 
   useEffect(() => {
     fetchNFTs(collectionId);
-    // if (nfts) {
-    //   console.log(collectionCreator);
-    //   console.log(nfts);
-    //   console.log(collectionInfo);
-    // }
   }, [collectionId]);
 
   const handleCopyToClipboard = async (textToCopy) => {
@@ -282,22 +277,40 @@ const Collection = () => {
   );
   const [searchQuery, setSearchQuery] = useState("");
 
-  const handlePriceRangeSelect = (priceRange) => {
-    setSelectedPriceRange(priceRange);
-    // You can perform additional actions based on the selected price range
-  };
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-    // You can perform additional actions based on the selected category
-  };
-  const handleOwnershipSelect = (ownership) => {
-    setSelectedOwnership(ownership);
-    // You can perform additional actions based on the selected ownership
-  };
-  const handleSortingOptionSelect = (sortingOption) => {
-    setSelectedSortingOption(sortingOption);
-    // You can perform additional actions based on the selected sorting option
-  };
+  const filteredNFTArray = nfts
+    .filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .filter((item) =>
+      selectedCategory === "All"
+        ? true
+        : item.category.toLowerCase().includes(selectedCategory.toLowerCase())
+    )
+    .filter((item) =>
+      selectedPriceRange === "All"
+        ? true
+        : selectedPriceRange === "< 0.01 ETH"
+        ? Number(getFormattedPrice(item.weiPrice)) < 0.01
+        : selectedPriceRange === "0.01 ETH - 0.1 ETH"
+        ? Number(getFormattedPrice(item.weiPrice)) >= 0.01 &&
+          Number(getFormattedPrice(item.weiPrice)) < 0.1
+        : selectedPriceRange === "0.1 ETH - 1 ETH"
+        ? Number(getFormattedPrice(item.weiPrice)) >= 0.1 &&
+          Number(getFormattedPrice(item.weiPrice)) < 1
+        : selectedPriceRange === "1 ETH - 10 ETH"
+        ? Number(getFormattedPrice(item.weiPrice)) >= 1 &&
+          Number(getFormattedPrice(item.weiPrice)) < 10
+        : selectedPriceRange === "> 10 ETH"
+        ? Number(getFormattedPrice(item.weiPrice)) >= 10
+        : true
+    )
+    .filter((item) =>
+      selectedOwnership === "All"
+        ? true
+        : selectedOwnership === "Me"
+        ? user && item.currentOwner.walletAddress === walletAddress
+        : true
+    );
 
   // if (loading) {
   //   return <Loader />;
@@ -454,7 +467,7 @@ const Collection = () => {
                             <Menu.Item key={index}>
                               <button
                                 onClick={() =>
-                                  handleCategorySelect(category.name)
+                                  setSelectedCategory(category.name)
                                 }
                                 className="font-medium text-gray-800 hover:bg-gray-100 block p-3 rounded-lg w-full text-left"
                               >
@@ -484,7 +497,7 @@ const Collection = () => {
                             <Menu.Item key={index}>
                               <button
                                 onClick={() =>
-                                  handlePriceRangeSelect(priceRange.name)
+                                  setSelectedPriceRange(priceRange.name)
                                 }
                                 className="font-medium text-gray-800 hover:bg-gray-100 block p-3 rounded-lg w-full text-left"
                               >
@@ -514,7 +527,7 @@ const Collection = () => {
                             <Menu.Item key={index}>
                               <button
                                 onClick={() =>
-                                  handleOwnershipSelect(ownership.name)
+                                  setSelectedOwnership(ownership.name)
                                 }
                                 className="font-medium text-gray-800 hover:bg-gray-100 block p-3 rounded-lg w-full text-left"
                               >
@@ -564,7 +577,7 @@ const Collection = () => {
                             <Menu.Item key={index}>
                               <button
                                 onClick={() =>
-                                  handleSortingOptionSelect(option.name)
+                                  setSelectedSortingOption(option.name)
                                 }
                                 className="font-medium text-gray-800 hover:bg-gray-100 block p-3 rounded-lg w-full text-left"
                               >
@@ -579,7 +592,9 @@ const Collection = () => {
 
                   <div className="mt-2 px-4">
                     <div className="text-gray-500 flex items-center gap-2">
-                      <span className="font-medium">2850</span>
+                      <span className="font-medium">
+                        {filteredNFTArray.length}
+                      </span>
                       results
                     </div>
                   </div>
@@ -587,7 +602,7 @@ const Collection = () => {
               </div>
 
               <div className="flex flex-wrap justify-start py-10">
-                {nfts.map((nft, index) => (
+                {filteredNFTArray.map((nft, index) => (
                   <div
                     className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
                     key={index}
