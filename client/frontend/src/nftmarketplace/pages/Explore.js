@@ -1069,14 +1069,14 @@ function Explore() {
 
                                   <div className="flex items-center justify-between gap-1 text-sm mt-4 text-center">
                                     {user &&
-                                    nft.currentOwner._id !== user._id ? (
+                                    nft.currentOwner._id === user._id ? null : (
                                       <button
                                         className="bg-nft-primary-light border-nft-primary-light text-white font-medium p-4 rounded-xl hover:bg-nft-primary-dark w-full"
                                         onClick={() => buyNFT(nft)}
                                       >
                                         Buy Now
                                       </button>
-                                    ) : null}
+                                    )}
                                     <Link
                                       className="bg-gray-200 font-medium p-4 rounded-xl hover:bg-gray-300 w-full text-gray-800"
                                       to={`/nft/${nft.itemId}`}

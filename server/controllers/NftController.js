@@ -3,6 +3,7 @@ import Gig from "../models/Gig.js";
 import LikeNFT from "../models/NFTLikes.js";
 import NFT from "../models/Nft.js";
 import Package from "../models/Package.js";
+import SavedItem from "../models/SavedItem.js";
 import User from "../models/User.js";
 import cloudinary from "../utils/cloudinaryConfig.js";
 
@@ -252,6 +253,78 @@ const deleteLikeNFT = async (req, res) => {
   }
 };
 
+const saveItem = async (req, res) => {
+  const { itemId, itemType, userId } = req.body;
+
+  try {
+    const savedItem = new SavedItem({
+      itemId,
+      itemType,
+      userId,
+    });
+    await savedItem.save();
+    return res.status(200).json({
+      error: false,
+      message: "Item saved successfully.",
+      savedItem,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+};
+
+const checkSaveItem = async (req, res) => {
+  const { itemId, itemType, userId } = req.body;
+
+  // check if item is already saved using itemId, itemType and userId
+  try {
+    const savedItem = await SavedItem.findOne({
+      itemId,
+      itemType,
+      userId,
+    }).exec();
+
+    if (savedItem) {
+      return res.status(200).json({
+        error: false,
+        message: "Item already saved.",
+        savedItem,
+        isSaved: true,
+      });
+    } else {
+      return res.status(200).json({
+        error: false,
+        message: "Item not saved.",
+        savedItem: null,
+        isSaved: false,
+      });
+    }
+  } catch (error) {
+    console.error("Error checking saved item:", error);
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+};
+
+const deleteSavedItem = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await SavedItem.findByIdAndDelete(id).exec();
+    return res.status(200).json({
+      error: false,
+      message: "Saved item deleted successfully.",
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+};
+
 export {
   createNft,
   fetchUserNFTs,
@@ -264,4 +337,7 @@ export {
   getAllNFTLikes,
   getNFTLikes,
   deleteLikeNFT,
+  checkSaveItem,
+  deleteSavedItem,
+  saveItem,
 };
