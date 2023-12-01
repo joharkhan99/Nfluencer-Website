@@ -262,10 +262,10 @@ const Collection = () => {
     { name: "> 10 ETH" },
   ];
   const sortingOptions = [
+    { name: "Sort by Latest" },
+    { name: "Sort by Oldest" },
     { name: "Price Low to High" },
     { name: "Price High to Low" },
-    { name: "Sort by Oldest" },
-    { name: "Sort by Latest" },
   ];
   const mediatypes = [{ name: "All" }, { name: "Image" }, { name: "Video" }];
   const ownerships = [{ name: "All" }, { name: "Me" }];
@@ -465,7 +465,7 @@ const Collection = () => {
 
   const addOrRemoveSavedItem = async (itemId) => {
     if (!user) {
-      toast.error("Please login to save this NFT");
+      toast.error("Please login to save this Collection");
       return;
     }
     console.log("Collection", itemId);

@@ -130,7 +130,7 @@ const Header = ({ transparent = false }) => {
                         className={`rounded-xl text-sm px-4 py-3 hover:opacity-80 flex items-center gap-2 ${
                           transparent
                             ? "text-nft-primary-light bg-nft-primary-transparent"
-                            : "text-gray-800 bg-white"
+                            : "text-gray-800 bg-white bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-50"
                         }`}
                       >
                         <span>Login</span>
