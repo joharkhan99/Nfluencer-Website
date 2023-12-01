@@ -373,6 +373,27 @@ const Collection = () => {
     }
   };
 
+  const updateCollectionDetails = async (collectionId, price) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/api/nft/updateCollectionDetails/${collectionId}`,
+        {
+          salePrice: price,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": user.jwtToken,
+          },
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      toast.error("Error updating collection details");
+      console.log(error);
+    }
+  };
+
   const updateTokenURI = async (marketplaceContract, nft) => {
     const data = JSON.stringify({
       name: nft.name,
@@ -393,6 +414,7 @@ const Collection = () => {
     });
     const added = await client.add(data);
     const newUrl = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;
+    await updateCollectionDetails(nft.collection._id, nft.price);
     await marketplaceContract.updateTokenURI(nft.itemId, newUrl);
   };
 

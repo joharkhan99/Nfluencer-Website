@@ -29,6 +29,7 @@ import {
   setWaletAddress,
 } from "../../redux/slices/UserSlice";
 import Loader from "../../utils/Loader";
+import { setSearchQuery } from "../../redux/slices/SearchNftSlice";
 
 function Explore() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -79,15 +80,19 @@ function Explore() {
 
   const user = useSelector((state) => state.user.user);
   const walletAddress = useSelector((state) => state.user.walletAddress);
-  const userSearchQuery = useSelector((state) => state.nftSearch.searchQuery);
+  const reduxSearchQuery = useSelector((state) => state.nftSearch.searchQuery);
 
   useEffect(() => {
-    if (userSearchQuery === "" || userSearchQuery === null) {
-      setSearchQuery("");
-      return;
+    if (reduxSearchQuery === "" || reduxSearchQuery === null) {
+      setInputQuery("");
+    } else {
+      setInputQuery(reduxSearchQuery);
     }
-    setSearchQuery(userSearchQuery);
-  }, [userSearchQuery]);
+
+    return () => {
+      dispatch(setSearchQuery(""));
+    };
+  }, [reduxSearchQuery]);
 
   const [nfts, setNFTs] = useState([]);
   const fetchContract = (signerOrProvider) => {
@@ -392,7 +397,7 @@ function Explore() {
   const [selectedCategories, setSelectedCategories] = useState(["All"]);
   const [selectedCollections, setSelectedCollections] = useState([]);
   const [FilterCollections, setFilterCollections] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [inputQuery, setInputQuery] = useState("");
   const [minPrice, setMinPrice] = useState();
   const [maxPrice, setMaxPrice] = useState();
 
@@ -424,7 +429,7 @@ function Explore() {
 
   const filteredNFTS = nfts
     .filter((item) =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      item.name.toLowerCase().includes(inputQuery.toLowerCase())
     )
     .filter((item) => {
       if (
@@ -501,7 +506,7 @@ function Explore() {
     return selectedCollections.includes(item._id);
   })
     .filter((item) =>
-      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      item.name.toLowerCase().includes(inputQuery.toLowerCase())
     )
     .sort((a, b) => {
       if (selectedSortingOption === "Sort by Oldest")
@@ -928,9 +933,9 @@ function Explore() {
                                   type="text"
                                   className="text-base rounded-xl border-gray-200 shadow-sm focus:border-nft-primary-light pl-9 block w-full p-3 outline-none border ring-purple-700 focus:ring-1 focus:bg-transparent placeholder-gray-500 text-gray-800"
                                   placeholder="Search by item name"
-                                  value={searchQuery}
+                                  value={inputQuery}
                                   onChange={(e) =>
-                                    setSearchQuery(e.target.value)
+                                    setInputQuery(e.target.value)
                                   }
                                 />
                               </div>

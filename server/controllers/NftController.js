@@ -374,6 +374,31 @@ const countViews = async (req, res) => {
   }
 };
 
+const updateCollectionDetails = async (req, res) => {
+  const { collectionId } = req.params;
+  const { salePrice } = req.body;
+  try {
+    await NFTView.findOneAndUpdate(
+      { _id: collectionId },
+      {
+        $inc: { totalItemsSold: 1 },
+        $addToSet: { totalSales: Number(salePrice) },
+      },
+      { new: true, upsert: true }
+    );
+
+    return res.status(200).json({
+      error: false,
+      message: "Collection details updated successfully.",
+    });
+  } catch (error) {
+    console.error("Error updating collection:", error);
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+};
+
 export {
   createNft,
   fetchUserNFTs,
@@ -391,4 +416,5 @@ export {
   saveItem,
   getCollectionItemsCount,
   countViews,
+  updateCollectionDetails,
 };

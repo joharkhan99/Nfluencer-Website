@@ -57,7 +57,7 @@ function Home() {
 
   const handlekeywordInputKeyDown = (e) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
-      navigate("/explore");
+      navigate("/marketplace/explore");
     }
   };
 

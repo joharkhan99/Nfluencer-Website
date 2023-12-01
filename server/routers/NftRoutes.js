@@ -16,6 +16,7 @@ import {
   saveItem,
   getCollectionItemsCount,
   countViews,
+  updateCollectionDetails,
 } from "../controllers/NftController.js";
 import authenticate from "../middleware/authenticate.js";
 
@@ -40,5 +41,6 @@ router.delete("/like/:id", deleteLikeNFT);
 router.post("/checkSaveItem", checkSaveItem);
 router.delete("/saveItem/:id", deleteSavedItem);
 router.post("/saveItem", saveItem);
+router.put("/updateCollectionDetails/:collectionId", updateCollectionDetails);
 
 export default router;

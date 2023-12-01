@@ -17,6 +17,14 @@ const collectionSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    totalItemsSold: {
+      type: Number,
+      default: 0,
+    },
+    totalSales: {
+      type: Number,
+      default: 0,
+    },
   },
 
   {
