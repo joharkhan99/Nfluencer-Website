@@ -199,9 +199,13 @@ const YourNFTs = ({ user }) => {
                         <button className="bg-gray-200 font-medium p-3 rounded-xl hover:opacity-80 w-full text-gray-800">
                           Manage
                         </button>
-                        <button className="bg-nft-primary-light border border-nft-primary-light text-white font-medium p-3 rounded-xl hover:opacity-80 w-full">
+                        <Link
+                          className="bg-nft-primary-light border border-nft-primary-light text-white font-medium p-3 rounded-xl hover:opacity-80 w-full"
+                          to={`/marketplace/nft/${nft.tokenId}`}
+                          target="_blank"
+                        >
                           View Details
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   </div>

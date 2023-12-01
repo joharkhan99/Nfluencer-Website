@@ -85,23 +85,27 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" Component={LandingPage} />
-        <Route path="/marketplace" Component={Home} />
-        <Route path="/stats" Component={Stats} />
-        <Route path="/explore" Component={Explore} />
-        <Route path="/nft/:itemId" Component={NFTDetail} />
+        {/* general */}
         <Route path="/signup" Component={Register} />
         <Route path="/login" Component={Login} />
-        <Route path="/services" Component={Services} />
-        <Route path="/gigdetails/:gigtitle/:gigId" Component={GigDetails} />
-        <Route
-          path="/marketplace/collection/:collectionId"
-          Component={Collection}
-        />
-
         <Route
           path="/user-details/:verificationToken"
           Component={RegisterUserDetails}
+        />
+
+        {/* freelance */}
+        <Route path="/" Component={LandingPage} />
+        <Route path="/services" Component={Services} />
+        <Route path="/gigdetails/:gigtitle/:gigId" Component={GigDetails} />
+
+        {/* marketplace */}
+        <Route path="/marketplace" Component={Home} />
+        <Route path="/marketplace/stats" Component={Stats} />
+        <Route path="/marketplace/explore" Component={Explore} />
+        <Route path="/marketplace/nft/:itemId" Component={NFTDetail} />
+        <Route
+          path="/marketplace/collection/:collectionId"
+          Component={Collection}
         />
 
         {/* Dashboard Section */}

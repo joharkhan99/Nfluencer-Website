@@ -38,7 +38,7 @@ const Header = ({ transparent = false }) => {
 
   const handlekeywordInputKeyDown = (e) => {
     if (e.key === "Enter" && e.target.value.trim() !== "") {
-      navigate("/explore");
+      navigate("/marketplace/explore");
     }
   };
 
@@ -123,7 +123,7 @@ const Header = ({ transparent = false }) => {
                 </li>
                 <li>
                   <Link
-                    to="/stats"
+                    to="/marketplace/stats"
                     className="text-sm text-gray-800 px-4 py-2 hover:opacity-80"
                   >
                     Stats
@@ -131,7 +131,7 @@ const Header = ({ transparent = false }) => {
                 </li>
                 <li>
                   <Link
-                    to="/explore"
+                    to="/marketplace/explore"
                     className="text-sm text-gray-800 px-4 py-2 hover:opacity-80"
                   >
                     Explore
@@ -177,7 +177,7 @@ const Header = ({ transparent = false }) => {
 
                     <li>
                       <Link
-                        to="/seller/nfts"
+                        to="/marketplace/seller/nfts"
                         className="rounded-xl bg-nft-primary-light text-sm text-white px-4 py-3 hover:opacity-80 flex items-center gap-2"
                       >
                         <PlusIcon className="w-5 h-5 inline-block" />

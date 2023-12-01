@@ -1,8 +1,10 @@
 import React from "react";
 import { HeartIcon, TrophyIcon } from "@heroicons/react/24/outline";
 import { ethers } from "ethers";
+import { Link } from "react-router-dom";
 
 const FirstNFT = ({ NFT }) => {
+  // console.log(NFT);
   const formatDate = (dateString) => {
     var date = new Date(dateString);
     return (
@@ -127,9 +129,13 @@ const FirstNFT = ({ NFT }) => {
             </button>
 
             <div className="flex items-center gap-4">
-              <button className="bg-nft-primary-light border border-nft-primary-light text-white font-bold p-3 rounded-xl px-10 hover:opacity-80">
+              <Link
+                className="bg-nft-primary-light border border-nft-primary-light text-white font-bold p-3 rounded-xl px-10 hover:opacity-80"
+                to={`/marketplace/nft/${NFT.tokenId}`}
+                target="_blank"
+              >
                 View Details
-              </button>
+              </Link>
             </div>
           </div>
         </div>

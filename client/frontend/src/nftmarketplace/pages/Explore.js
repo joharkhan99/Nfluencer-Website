@@ -1241,7 +1241,7 @@ function Explore() {
                                     )}
                                     <Link
                                       className="bg-gray-200 font-medium p-4 rounded-xl hover:bg-gray-300 w-full text-gray-800"
-                                      to={`/nft/${nft.itemId}`}
+                                      to={`/marketplace/nft/${nft.itemId}`}
                                     >
                                       View Details
                                     </Link>

@@ -1323,7 +1323,7 @@ function NFTDetail() {
                         <div className="flex items-center justify-between gap-1 text-sm mt-4 text-center">
                           <Link
                             className="bg-nft-primary-light font-medium p-4 rounded-xl hover:bg-nft-primary-dark w-full text-white"
-                            to={`/nft/${nft.itemId}`}
+                            to={`/marketplace/nft/${nft.itemId}`}
                           >
                             View Details
                           </Link>

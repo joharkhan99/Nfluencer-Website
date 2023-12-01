@@ -242,9 +242,13 @@ const PurchasedNFTs = ({ user }) => {
                         >
                           Resell NFT
                         </button>
-                        <button className="bg-gray-200 font-medium p-3 rounded-xl hover:opacity-80 w-full text-gray-800">
+                        <Link
+                          className="bg-gray-200 font-medium p-3 rounded-xl hover:opacity-80 w-full text-gray-800"
+                          to={`/marketplace/nft/${nft.itemId}`}
+                          target="_blank"
+                        >
                           View Details
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   </div>
