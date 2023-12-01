@@ -100,6 +100,7 @@ function Explore() {
 
     const { marketplaceContract } = fetchContract(provider);
     const fetchedMarketItems = await marketplaceContract.fetchMarketItems();
+    const tempcollections = [];
 
     console.log(fetchedMarketItems);
 
@@ -108,6 +109,9 @@ function Explore() {
         const tokenUri = await marketplaceContract.tokenURI(i.itemId);
         const meta = await axios.get(tokenUri);
         console.log(meta.data);
+        if (meta.data.collection) {
+          tempcollections.push(meta.data.collection);
+        }
         return {
           ...meta.data,
           likes: i.likes.toString(),
@@ -117,6 +121,14 @@ function Explore() {
       })
     );
 
+    // remove duplicate collections from tempcollections by using _id
+    const collections = tempcollections.filter(
+      (thing, index, self) =>
+        index ===
+        self.findIndex((t) => t._id.toString() === thing._id.toString())
+    );
+
+    setFilterCollections(collections);
     items.reverse();
     setNFTs(items);
     console.log(items);
@@ -344,10 +356,107 @@ function Explore() {
     { name: "Photography" },
     { name: "Music" },
   ];
-
+  const ownerships = [{ name: "All" }, { name: "Me" }];
+  const mediatypes = [{ name: "All" }, { name: "Image" }, { name: "Video" }];
+  const [selectedOwnership, setSelectedOwnership] = useState(
+    ownerships[0].name
+  );
   const [selectedSortingOption, setSelectedSortingOption] = useState(
     sortingOptions[0].name
   );
+  const [selectedMediaType, setSelectedMediaType] = useState(
+    mediatypes[0].name
+  );
+  const [selectedCategories, setSelectedCategories] = useState(["All"]);
+  const [selectedCollections, setSelectedCollections] = useState([]);
+  const [FilterCollections, setFilterCollections] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [minPrice, setMinPrice] = useState();
+  const [maxPrice, setMaxPrice] = useState();
+
+  const handleCategoryChange = (e) => {
+    const { value } = e.target;
+    if (selectedCategories.includes(value)) {
+      const newSelectedCategories = selectedCategories.filter(
+        (category) => category !== value
+      );
+      setSelectedCategories(newSelectedCategories);
+    } else {
+      setSelectedCategories([...selectedCategories, value]);
+    }
+  };
+
+  const handleCollectionChange = (e) => {
+    const { value } = e.target;
+    if (selectedCollections.includes(value)) {
+      const newSelectedCollections = selectedCollections.filter(
+        (coll) => coll !== value
+      );
+      setSelectedCollections(newSelectedCollections);
+    } else {
+      setSelectedCollections([...selectedCollections, value]);
+    }
+  };
+
+  // console.log(selectedCategories);
+
+  const filteredNFTS = nfts
+    .filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .filter((item) => {
+      if (
+        selectedCategories.includes("All") ||
+        selectedCategories.length === 0
+      ) {
+        return true;
+      }
+      return selectedCategories.includes(item.category);
+    })
+    .filter((item) => {
+      // user can provide either min or max price or both
+      if (!minPrice && !maxPrice) {
+        return true;
+      }
+      if (minPrice && !maxPrice) {
+        return Number(getFormattedPrice(item.weiPrice)) >= Number(minPrice);
+      }
+      if (!minPrice && maxPrice) {
+        return Number(getFormattedPrice(item.weiPrice)) <= Number(maxPrice);
+      }
+      if (minPrice && maxPrice) {
+        return (
+          Number(getFormattedPrice(item.weiPrice)) >= Number(minPrice) &&
+          Number(getFormattedPrice(item.weiPrice)) <= Number(maxPrice)
+        );
+      }
+      return true;
+    })
+    .filter((item) => {
+      if (selectedCollections.length === 0) {
+        return true;
+      }
+      return selectedCollections.includes(item.collection._id);
+    })
+    .filter((item) =>
+      selectedOwnership === "All"
+        ? true
+        : selectedOwnership === "Me"
+        ? item.currentOwner.walletAddress === walletAddress
+        : true
+    )
+    .filter((item) =>
+      selectedMediaType === "All"
+        ? true
+        : selectedMediaType === "Image"
+        ? item.fileType.toLowerCase() === "image"
+        : selectedMediaType === "Video"
+        ? item.fileType.toLowerCase() === "video"
+        : true
+    );
+
+  console.log(selectedCollections);
+  console.log(filteredNFTS);
 
   return (
     <>
@@ -439,119 +548,309 @@ function Explore() {
                 >
                   <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                     {/* Filters */}
-                    <div className="hidden lg:block pt-14">
-                      <Disclosure
-                        as="div"
-                        className="border-b border-gray-100 py-5"
-                        defaultOpen={true}
-                      >
-                        {({ open }) => (
-                          <>
-                            <h3 className="-my-3 flow-root p-3 py-0 rounded-xl font-bold hover:bg-gray-100">
-                              <Disclosure.Button className="flex w-full items-center justify-between py-3 hover:text-gray-500">
-                                <span className="font-bold text-gray-800">
-                                  Categories
-                                </span>
-                                <span className="ml-6 flex items-center">
-                                  {open ? (
-                                    <ChevronDownIcon className="w-5 h-5" />
-                                  ) : (
-                                    <ChevronDownIcon className="w-5 h-5 transform rotate-180" />
-                                  )}
-                                </span>
-                              </Disclosure.Button>
-                            </h3>
-                            <Disclosure.Panel className="pt-2">
-                              {categories.map((category, index) => (
-                                <div
-                                  key={index}
-                                  className="flex p-3 gap-4 rounded-xl hover:bg-gray-100  items-center"
-                                >
-                                  <input
-                                    id={`filter-${category.name}-${index}`}
-                                    name={`${category.name}[]`}
-                                    defaultValue={category.name}
-                                    type="checkbox"
-                                    defaultChecked={category.checked}
-                                    onChange={(e) => console.log("object")}
-                                    className="h-5 w-5 accent-nft-primary-light"
-                                  />
-                                  <label
-                                    htmlFor={`filter-${category.name}-${index}`}
-                                    className="cursor-pointer text-gray-600"
-                                  >
-                                    {category.name}
-                                  </label>
-                                </div>
-                              ))}
-                            </Disclosure.Panel>
-                          </>
-                        )}
-                      </Disclosure>
-                      <Disclosure
-                        as="div"
-                        className="border-b border-gray-100 py-5"
-                        defaultOpen={true}
-                      >
-                        {({ open }) => (
-                          <>
-                            <h3 className="-my-3 flow-root p-3 py-0 rounded-xl font-bold hover:bg-gray-100">
-                              <Disclosure.Button className="flex w-full items-center justify-between py-3 hover:text-gray-500">
-                                <span className="font-bold text-gray-800">
-                                  Price Range
-                                </span>
-                                <span className="ml-6 flex items-center">
-                                  {open ? (
-                                    <ChevronDownIcon className="w-5 h-5" />
-                                  ) : (
-                                    <ChevronDownIcon className="w-5 h-5 transform rotate-180" />
-                                  )}
-                                </span>
-                              </Disclosure.Button>
-                            </h3>
-                            <Disclosure.Panel className="pt-2">
-                              <span className="p-3 pb-0 flex items-center gap-2">
-                                <span className="text-sm text-gray-500">
-                                  Currency
-                                </span>
-                                <span>ETH</span>
-                                <img
-                                  src={require("../../nftmarketplace/assets/eth.png")}
-                                  alt=""
-                                  className="w-3"
-                                />
-                              </span>
-                              <div className="flex p-3 gap-2 items-center">
-                                <div className="relative">
-                                  <input
-                                    type="number"
-                                    className="w-full outline-none text-sm placeholder:text-gray-500 placeholder:font-medium font-semibold p-4 focus:ring-2 focus:ring-nft-primary-light focus:bg-white border-gray-200 border rounded-xl bg-white text-center"
-                                    placeholder="Min"
-                                    // value={price}
-                                    min={0}
-                                    // onChange={(e) => setPrice(e.target.value)}
-                                  />
-                                </div>
+                    <div className="hidden lg:block py-4 h-screen overflow-auto custom-scrollbar sticky top-0">
+                      <div className="border-r border-gray-100 sticky top-0">
+                        <div className="h-full">
+                          <Disclosure
+                            as="div"
+                            className="border-b border-gray-100 py-5"
+                            // defaultOpen={true}
+                          >
+                            {({ open }) => (
+                              <>
+                                <h3 className="-my-3 flow-root p-3 py-0 rounded-xl font-bold hover:bg-gray-100">
+                                  <Disclosure.Button className="flex w-full items-center justify-between py-3 hover:text-gray-500">
+                                    <span className="font-bold text-gray-800">
+                                      Categories
+                                    </span>
+                                    <span className="ml-6 flex items-center">
+                                      {open ? (
+                                        <ChevronDownIcon className="w-5 h-5" />
+                                      ) : (
+                                        <ChevronDownIcon className="w-5 h-5 transform rotate-180" />
+                                      )}
+                                    </span>
+                                  </Disclosure.Button>
+                                </h3>
+                                <Disclosure.Panel className="pt-2">
+                                  {categories.map((category, index) => (
+                                    <div
+                                      key={index}
+                                      className="flex p-3 gap-4 rounded-xl hover:bg-gray-100  items-center"
+                                    >
+                                      <input
+                                        id={`category-${category.name}-${index}`}
+                                        name={`${category.name}[]`}
+                                        defaultValue={category.name}
+                                        type="checkbox"
+                                        value={category.name}
+                                        checked={selectedCategories.includes(
+                                          category.name
+                                        )}
+                                        onChange={(e) =>
+                                          handleCategoryChange(e)
+                                        }
+                                        className="h-5 w-5 accent-nft-primary-light"
+                                      />
+                                      <label
+                                        htmlFor={`category-${category.name}-${index}`}
+                                        className="cursor-pointer text-gray-600"
+                                      >
+                                        {category.name}
+                                      </label>
+                                    </div>
+                                  ))}
+                                </Disclosure.Panel>
+                              </>
+                            )}
+                          </Disclosure>
 
-                                <div className="font-semibold text-gray-800">
-                                  to
-                                </div>
+                          <Disclosure
+                            as="div"
+                            className="border-b border-gray-100 py-5"
+                            defaultOpen={true}
+                          >
+                            {({ open }) => (
+                              <>
+                                <h3 className="-my-3 flow-root p-3 py-0 rounded-xl font-bold hover:bg-gray-100">
+                                  <Disclosure.Button className="flex w-full items-center justify-between py-3 hover:text-gray-500">
+                                    <span className="font-bold text-gray-800">
+                                      Price Range
+                                    </span>
+                                    <span className="ml-6 flex items-center">
+                                      {open ? (
+                                        <ChevronDownIcon className="w-5 h-5" />
+                                      ) : (
+                                        <ChevronDownIcon className="w-5 h-5 transform rotate-180" />
+                                      )}
+                                    </span>
+                                  </Disclosure.Button>
+                                </h3>
+                                <Disclosure.Panel className="pt-2">
+                                  <span className="p-3 pb-0 flex items-center gap-2">
+                                    <span className="text-sm text-gray-500">
+                                      Currency
+                                    </span>
+                                    <span>ETH</span>
+                                    <img
+                                      src={require("../../nftmarketplace/assets/eth.png")}
+                                      alt=""
+                                      className="w-3"
+                                    />
+                                  </span>
+                                  <div className="flex p-3 gap-2 items-center">
+                                    <div className="relative">
+                                      <input
+                                        type="number"
+                                        className="w-full outline-none text-sm placeholder:text-gray-500 placeholder:font-medium font-semibold p-3 focus:ring-2 focus:ring-nft-primary-light focus:bg-white border-gray-200 border rounded-xl bg-white text-center"
+                                        placeholder="Min"
+                                        min={0}
+                                        value={minPrice}
+                                        onChange={(e) =>
+                                          setMinPrice(e.target.value)
+                                        }
+                                      />
+                                    </div>
 
-                                <div className="relative">
-                                  <input
-                                    type="number"
-                                    className="w-full outline-none text-sm placeholder:text-gray-500 placeholder:font-medium font-semibold p-4 focus:ring-2 focus:ring-nft-primary-light focus:bg-white border-gray-200 border rounded-xl bg-white text-center"
-                                    placeholder="Max"
-                                    // value={price}
-                                    min={0}
-                                    // onChange={(e) => setPrice(e.target.value)}
-                                  />
-                                </div>
-                              </div>
-                            </Disclosure.Panel>
-                          </>
-                        )}
-                      </Disclosure>
+                                    <div className="font-semibold text-gray-800">
+                                      to
+                                    </div>
+
+                                    <div className="relative">
+                                      <input
+                                        type="number"
+                                        className="w-full outline-none text-sm placeholder:text-gray-500 placeholder:font-medium font-semibold p-3 focus:ring-2 focus:ring-nft-primary-light focus:bg-white border-gray-200 border rounded-xl bg-white text-center"
+                                        placeholder="Max"
+                                        min={0}
+                                        value={maxPrice}
+                                        onChange={(e) =>
+                                          setMaxPrice(e.target.value)
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+                                </Disclosure.Panel>
+                              </>
+                            )}
+                          </Disclosure>
+
+                          <Disclosure
+                            as="div"
+                            className="border-b border-gray-100 py-5"
+                            defaultOpen={true}
+                          >
+                            {({ open }) => (
+                              <>
+                                <h3 className="-my-3 flow-root p-3 py-0 rounded-xl font-bold hover:bg-gray-100">
+                                  <Disclosure.Button className="flex w-full items-center justify-between py-3 hover:text-gray-500">
+                                    <span className="font-bold text-gray-800">
+                                      Collection
+                                    </span>
+                                    <span className="ml-6 flex items-center">
+                                      {open ? (
+                                        <ChevronDownIcon className="w-5 h-5" />
+                                      ) : (
+                                        <ChevronDownIcon className="w-5 h-5 transform rotate-180" />
+                                      )}
+                                    </span>
+                                  </Disclosure.Button>
+                                </h3>
+                                <Disclosure.Panel className="pt-2">
+                                  {FilterCollections.map(
+                                    (collection, index) => (
+                                      <div
+                                        key={index}
+                                        className="flex p-3 gap-4 rounded-xl hover:bg-gray-100  items-center"
+                                      >
+                                        <input
+                                          id={`collection-${collection._id}-${index}`}
+                                          name={`${collection._id}[]`}
+                                          defaultValue={collection._id}
+                                          type="checkbox"
+                                          value={collection._id}
+                                          checked={selectedCollections.includes(
+                                            collection._id
+                                          )}
+                                          onChange={(e) =>
+                                            handleCollectionChange(e)
+                                          }
+                                          className="h-5 w-5 accent-nft-primary-light"
+                                        />
+                                        <label
+                                          htmlFor={`collection-${collection._id}-${index}`}
+                                          className="cursor-pointer text-gray-600"
+                                        >
+                                          <div className="flex items-center gap-2">
+                                            <img
+                                              src={collection.image}
+                                              alt=""
+                                              className="w-11 h-11 rounded-xl"
+                                            />
+                                            <div className="flex flex-col gap-0">
+                                              <span className="text-sm font-medium">
+                                                {collection.name}
+                                              </span>
+                                              <span className="text-xs">
+                                                {collection.totalItems} items
+                                              </span>
+                                            </div>
+                                          </div>
+                                        </label>
+                                      </div>
+                                    )
+                                  )}
+                                </Disclosure.Panel>
+                              </>
+                            )}
+                          </Disclosure>
+
+                          <Disclosure
+                            as="div"
+                            className="border-b border-gray-100 py-5"
+                            defaultOpen={true}
+                          >
+                            {({ open }) => (
+                              <>
+                                <h3 className="-my-3 flow-root p-3 py-0 rounded-xl font-bold hover:bg-gray-100">
+                                  <Disclosure.Button className="flex w-full items-center justify-between py-3 hover:text-gray-500">
+                                    <span className="font-bold text-gray-800">
+                                      Ownership
+                                    </span>
+                                    <span className="ml-6 flex items-center">
+                                      {open ? (
+                                        <ChevronDownIcon className="w-5 h-5" />
+                                      ) : (
+                                        <ChevronDownIcon className="w-5 h-5 transform rotate-180" />
+                                      )}
+                                    </span>
+                                  </Disclosure.Button>
+                                </h3>
+                                <Disclosure.Panel className="pt-2">
+                                  {ownerships.map((ownership, index) => (
+                                    <div
+                                      key={index}
+                                      className="flex p-3 gap-4 rounded-xl hover:bg-gray-100  items-center"
+                                    >
+                                      <input
+                                        id={`ownership-${ownership.name}-${index}`}
+                                        name="ownership"
+                                        type="radio"
+                                        value={ownership.name}
+                                        defaultChecked={
+                                          ownership.name === selectedOwnership
+                                        }
+                                        onChange={(e) =>
+                                          setSelectedOwnership(e.target.value)
+                                        }
+                                        className="h-5 w-5 accent-nft-primary-light"
+                                      />
+                                      <label
+                                        htmlFor={`ownership-${ownership.name}-${index}`}
+                                        className="cursor-pointer text-gray-600"
+                                      >
+                                        {ownership.name}
+                                      </label>
+                                    </div>
+                                  ))}
+                                </Disclosure.Panel>
+                              </>
+                            )}
+                          </Disclosure>
+
+                          <Disclosure
+                            as="div"
+                            className="border-b border-gray-100 py-5"
+                            defaultOpen={true}
+                          >
+                            {({ open }) => (
+                              <>
+                                <h3 className="-my-3 flow-root p-3 py-0 rounded-xl font-bold hover:bg-gray-100">
+                                  <Disclosure.Button className="flex w-full items-center justify-between py-3 hover:text-gray-500">
+                                    <span className="font-bold text-gray-800">
+                                      Media Type
+                                    </span>
+                                    <span className="ml-6 flex items-center">
+                                      {open ? (
+                                        <ChevronDownIcon className="w-5 h-5" />
+                                      ) : (
+                                        <ChevronDownIcon className="w-5 h-5 transform rotate-180" />
+                                      )}
+                                    </span>
+                                  </Disclosure.Button>
+                                </h3>
+                                <Disclosure.Panel className="pt-2">
+                                  {mediatypes.map((media, index) => (
+                                    <div
+                                      key={index}
+                                      className="flex p-3 gap-4 rounded-xl hover:bg-gray-100  items-center"
+                                    >
+                                      <input
+                                        id={`media-${media.name}-${index}`}
+                                        name="media"
+                                        type="radio"
+                                        value={media.name}
+                                        defaultChecked={
+                                          media.name === selectedOwnership
+                                        }
+                                        onChange={(e) =>
+                                          setSelectedMediaType(e.target.value)
+                                        }
+                                        className="h-5 w-5 accent-nft-primary-light"
+                                      />
+                                      <label
+                                        htmlFor={`media-${media.name}-${index}`}
+                                        className="cursor-pointer text-gray-600"
+                                      >
+                                        {media.name}
+                                      </label>
+                                    </div>
+                                  ))}
+                                </Disclosure.Panel>
+                              </>
+                            )}
+                          </Disclosure>
+                        </div>
+                      </div>
                     </div>
 
                     {/* Product grid */}
@@ -569,8 +868,10 @@ function Explore() {
                                     type="text"
                                     className="text-base rounded-xl border-gray-200 shadow-sm focus:border-nft-primary-light pl-9 block w-full p-3 outline-none border ring-purple-700 focus:ring-1 focus:bg-transparent placeholder-gray-500 text-gray-800"
                                     placeholder="Search by item name"
-                                    // value={searchQuery}
-                                    // onChange={(e) => setSearchQuery(e.target.value)}
+                                    value={searchQuery}
+                                    onChange={(e) =>
+                                      setSearchQuery(e.target.value)
+                                    }
                                   />
                                 </div>
                               </div>
@@ -764,7 +1065,7 @@ function Explore() {
                         </div>
                       </div>
 
-                      <div className="results mt-14 relative">
+                      <div className="results mt-10 relative">
                         {isloading && (
                           <div className="flex w-full absolute h-full top-0 z-40 justify-center items-center m-auto gap-1 flex-col bg-white bg-opacity-30">
                             <div className="w-fit bg-white flex items-center flex-col justify-center p-4 rounded-xl">
@@ -777,50 +1078,59 @@ function Explore() {
                         )}
 
                         <div className="mb-4">
-                          <h4 className="font-bold">467458 items</h4>
-                          <div className="filters flex gap-3 items-center mt-5">
-                            <button className="flex items-center justify-between gap-2 bg-gray-100 rounded-xl p-2 text-sm">
-                              <span className="font-semibold">mark</span>
-                              <span>
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 24 24"
-                                  fill="currentColor"
-                                  className="w-5 h-5 font-bold"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
+                          <h4 className="font-bold">
+                            {filteredNFTS.length} items
+                          </h4>
+
+                          <div className="filters flex gap-1 items-center mt-5 font-normal text-sm text-gray-800">
+                            {selectedCategories.map((category, index) => (
+                              <span
+                                key={index}
+                                className="bg-gray-100 p-1 px-1.5 rounded-lg"
+                              >
+                                cat:
+                                <span className="font-medium pl-1">
+                                  {category}
+                                </span>
                               </span>
-                            </button>
-                            <button className="flex items-center justify-between gap-2 bg-gray-100 rounded-xl p-2 text-sm">
-                              <span className="font-semibold">monkey</span>
-                              <span>
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 24 24"
-                                  fill="currentColor"
-                                  className="w-5 h-5 font-bold"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
+                            ))}
+                            {minPrice && (
+                              <span className="bg-gray-100 p-1 px-1.5 rounded-lg">
+                                min:
+                                <span className="font-medium pl-1">
+                                  {minPrice}
+                                </span>
                               </span>
-                            </button>
-                            <button className="flex items-center justify-between gap-2 bg-gray-100 rounded-xl p-2 px-4 text-md hover:bg-gray-200">
-                              <span className="font-semibold">Clear all</span>
-                            </button>
+                            )}
+                            {maxPrice && (
+                              <span className="bg-gray-100 p-1 px-1.5 rounded-lg">
+                                max:
+                                <span className="font-medium pl-1">
+                                  {maxPrice}
+                                </span>
+                              </span>
+                            )}
+                            {selectedOwnership && (
+                              <span className="bg-gray-100 p-1 px-1.5 rounded-lg">
+                                own:
+                                <span className="font-medium pl-1">
+                                  {selectedOwnership}
+                                </span>
+                              </span>
+                            )}
+                            {selectedMediaType && (
+                              <span className="bg-gray-100 p-1 px-1.5 rounded-lg">
+                                media:
+                                <span className="font-medium pl-1">
+                                  {selectedMediaType}
+                                </span>
+                              </span>
+                            )}
                           </div>
                         </div>
 
                         <div className="flex flex-wrap justify-start">
-                          {nfts.map((nft, index) => (
+                          {filteredNFTS.map((nft, index) => (
                             <div
                               className="w-full sm:w-1/2 md:w-1/2 lg:w-1/2 xl:w-1/3 p-2"
                               key={index}
@@ -1000,6 +1310,16 @@ function Explore() {
                               </div>
                             </div>
                           ))}
+
+                          {filteredNFTS.length === 0 && (
+                            <div className="w-full flex justify-center items-center">
+                              <div className="flex flex-col gap-2 items-center">
+                                <span className="text-gray-500 font-normal text-lg">
+                                  No Items Found
+                                </span>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
