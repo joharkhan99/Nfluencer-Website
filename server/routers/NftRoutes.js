@@ -14,6 +14,7 @@ import {
   checkSaveItem,
   deleteSavedItem,
   saveItem,
+  getCollectionItemsCount,
 } from "../controllers/NftController.js";
 import authenticate from "../middleware/authenticate.js";
 
@@ -23,6 +24,7 @@ router.post("/getallnfts", getAllNFTs);
 router.post("/details", nftDetails);
 router.post("/getLikes", getAllNFTLikes);
 router.get("/getNFTLikes/:id", getNFTLikes);
+router.get("/getCollectionItemsCount", getCollectionItemsCount);
 
 router.use(authenticate);
 

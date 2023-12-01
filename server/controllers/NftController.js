@@ -1,3 +1,4 @@
+import { get } from "mongoose";
 import Collection from "../models/Collection.js";
 import Gig from "../models/Gig.js";
 import LikeNFT from "../models/NFTLikes.js";
@@ -80,6 +81,26 @@ const createNft = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error", error: true });
+  }
+};
+
+const getCollectionItemsCount = async (req, res) => {
+  try {
+    const collections = await Collection.find({}).exec();
+    const collectionItems = collections.reduce((acc, collection) => {
+      acc[collection._id] = collection.totalItems;
+      return acc;
+    }, {});
+
+    res.status(200).json({
+      error: false,
+      message: "Collection items fetched successfully.",
+      collectionItems,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
   }
 };
 
@@ -345,4 +366,5 @@ export {
   checkSaveItem,
   deleteSavedItem,
   saveItem,
+  getCollectionItemsCount,
 };

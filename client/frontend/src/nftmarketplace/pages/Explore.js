@@ -28,14 +28,12 @@ import {
   setIsWalletConnected,
   setWaletAddress,
 } from "../../redux/slices/UserSlice";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import Loader from "../../utils/Loader";
 
 function Explore() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [isloading, setIsLoading] = useState(false);
+  const [isNFTLoading, setIsNFTLoading] = useState(false);
 
   const projectId = process.env.REACT_APP_INFURA_API_KEY;
   const projectSecretKey = process.env.REACT_APP_INFURA_API_KEY_SECRET;
@@ -94,6 +92,7 @@ function Explore() {
   };
 
   const fetchNFTs = async () => {
+    setIsNFTLoading(true);
     const provider = new ethers.providers.JsonRpcProvider(
       process.env.REACT_APP_ALCHEMY_SEPOLIA_URL
     );
@@ -132,10 +131,24 @@ function Explore() {
     items.reverse();
     setNFTs(items);
     console.log(items);
+    setIsNFTLoading(false);
+  };
+
+  const [collectionsTotalItems, setCollectionsTotalItems] = useState({});
+  const getCollectionItemsCount = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/nft/getCollectionItemsCount`
+      );
+      setCollectionsTotalItems(response.data.collectionItems);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
     fetchNFTs();
+    getCollectionItemsCount();
   }, []);
 
   const connectingWithSmartContract = async () => {
@@ -489,6 +502,9 @@ function Explore() {
       else return 0;
     });
 
+  if (isNFTLoading) {
+    return <Loader />;
+  }
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />
@@ -762,7 +778,12 @@ function Explore() {
                                                 {collection.name}
                                               </span>
                                               <span className="text-xs">
-                                                {collection.totalItems} items
+                                                {
+                                                  collectionsTotalItems[
+                                                    collection._id
+                                                  ]
+                                                }{" "}
+                                                items
                                               </span>
                                             </div>
                                           </div>
@@ -1000,7 +1021,8 @@ function Explore() {
                                       {collection.name}
                                     </div>
                                     <div className="text-md text-white">
-                                      {collection.totalItems} items
+                                      {collectionsTotalItems[collection._id]}{" "}
+                                      items
                                     </div>
                                   </div>
                                 </Link>
@@ -1186,7 +1208,8 @@ function Explore() {
                                           Collection
                                         </span>
                                         <Link
-                                          to={"s"}
+                                          to={`/marketplace/collection/${nft.collection._id}`}
+                                          target="_blank"
                                           className="text-nft-primary-light font-semibold"
                                         >
                                           <span>{nft.collection.name}</span>

@@ -516,8 +516,21 @@ const Collection = () => {
     }
   };
 
+  const [likes, setLikes] = useState({});
+  const getCollectionItemsCount = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/nft/getCollectionItemsCount`
+      );
+      setLikes(response.data.collectionItems);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchItemSaved(collectionId);
+    getCollectionItemsCount();
   }, [collectionId]);
 
   if (loading) {
@@ -614,7 +627,7 @@ const Collection = () => {
                 <div>
                   <span className="text-gray-500 font-normal">Items</span>
                   <span className="text-gray-800 font-bold pl-2">
-                    {collectionInfo.totalItems}
+                    {likes[collectionId]}
                   </span>
                 </div>
                 <div className="text-gray-500 font-black">·</div>
