@@ -82,318 +82,7 @@ function Explore() {
   const user = useSelector((state) => state.user.user);
   const walletAddress = useSelector((state) => state.user.walletAddress);
 
-  const [nfts, setNFTs] = useState([
-    {
-      name: "Space Walker",
-      description:
-        "Benders is a series of artworks created by street & graffiti artist Bandit (aka Doodle2691).In this series, inspired by intricate waveforms, Bandit harnesses the transformative power of refractions, casting each piece into a mesmerizing realm where movement and fluidity intertwine.The collection is comprised of 869 animated artworks that seamlessly loop every 30 seconds.\nThe Art is the Utility",
-      creator: {
-        name: "Usama",
-        username: "Mohammad",
-        languages: "English, Urdu, Spanish, Chinese",
-        location: "Islamabad, Pakistan",
-        bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
-        avatar:
-          "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
-        jwtToken:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTM3MjA1Njg0OCwiZXhwIjoxNzAxOTc2ODU2fQ.uvnuwDCGTO2oQ_9mf0CsHb_3ec9tMYX8zjWmgEI_UVk",
-        email: "usamamuhammad@mailsac.com",
-        _id: "65674fcc47d92660139b52b6",
-        walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
-      },
-      currentOwner: {
-        name: "Usama",
-        username: "Mohammad",
-        languages: "English, Urdu, Spanish, Chinese",
-        location: "Islamabad, Pakistan",
-        bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
-        avatar:
-          "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
-        jwtToken:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTM3MjA1Njg0OCwiZXhwIjoxNzAxOTc2ODU2fQ.uvnuwDCGTO2oQ_9mf0CsHb_3ec9tMYX8zjWmgEI_UVk",
-        email: "usamamuhammad@mailsac.com",
-        _id: "65674fcc47d92660139b52b6",
-        walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
-      },
-      ownershipHistory: [
-        {
-          name: "Usama",
-          username: "Mohammad",
-          languages: "English, Urdu, Spanish, Chinese",
-          location: "Islamabad, Pakistan",
-          bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
-          avatar:
-            "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
-          jwtToken:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTM3MjA1Njg0OCwiZXhwIjoxNzAxOTc2ODU2fQ.uvnuwDCGTO2oQ_9mf0CsHb_3ec9tMYX8zjWmgEI_UVk",
-          email: "usamamuhammad@mailsac.com",
-          _id: "65674fcc47d92660139b52b6",
-          walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
-        },
-      ],
-      fileUrl:
-        "https://nfluencer.infura-ipfs.io/ipfs/QmUT7XzFKcCSm2QnxMoBpvZntzupX82kGRciShue9nqkS8",
-      fileType: "image",
-      price: "0.0043",
-      currency: "ETH",
-      category: "PFPs",
-      traits: [
-        {
-          traitName: "mix",
-          traitType: "color",
-        },
-        {
-          traitName: "astraunat",
-          traitType: "dress",
-        },
-        {
-          traitName: "space",
-          traitType: "environment",
-        },
-      ],
-      collection: {
-        _id: "656857a8250ab9d8518cdc09",
-        name: "Bored Ape Yacht Club",
-        image:
-          "https://nfluencer.infura-ipfs.io/ipfs/QmfQd2Uvc5pmtijcTvxrbVCN746DzqCcSoqExxCb7Rb1dy",
-        description:
-          "The Bored Ape Yacht Club is a collection of 10,000 unique Bored Ape NFTs— unique digital collectibles living on the Ethereum blockchain. Your Bored Ape doubles as your Yacht Club membership card, and grants access to members-only benefits, the first of which is access to THE BATHROOM, a collaborative graffiti board. Future areas and perks can be unlocked by the community through roadmap activation.",
-        user: "65674fcc47d92660139b52b6",
-        totalItems: 2,
-        createdAt: "2023-11-30T09:36:40.773Z",
-        updatedAt: "2023-11-30T10:57:28.596Z",
-        __v: 0,
-      },
-      royalties: "34.65",
-      createdAt: "2023-11-30T19:23:50.394Z",
-      updatedAt: "2023-11-30T19:23:50.394Z",
-      likes: "0",
-      itemId: 3,
-      weiPrice: {
-        type: "BigNumber",
-        hex: "0x0f46d3c488c000",
-      },
-    },
-    {
-      name: "iuiuiouiouio",
-      description: "jkjasd jkas djk asjkd kasjd",
-      creator: {
-        name: "Usama",
-        username: "Mohammad",
-        languages: "English, Urdu, Spanish, Chinese",
-        location: "Islamabad, Pakistan",
-        bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
-        avatar:
-          "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
-        jwtToken:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTM0MDgxNDE1NywiZXhwIjoxNzAxOTQ1NjE0fQ.5WEgWg_W6S8jL2bV1jbhy4Eis0O6yscTbOpdF0auV1U",
-        email: "usamamuhammad@mailsac.com",
-        _id: "65674fcc47d92660139b52b6",
-        walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
-      },
-      currentOwner: {
-        name: "Ahmed",
-        username: "ali123123",
-        languages: "English",
-        location: "Islamabad",
-        bio: "hi",
-        avatar:
-          "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1697793424/izwfsygozecbxln3pim9.png",
-        jwtToken:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGkxMjMxMjMiLCJpYXQiOjE3MDEzODU3ODcyMDgsImV4cCI6MTcwMTk5MDU4N30.ToskGAen68Sun4wOxerpnLWz4nFQe7twIa_0jvce-Lc",
-        email: "socaje9266@wermink.com",
-        _id: "65324552f86b85fbc7100288",
-        walletAddress: "0x6c542ef8334433072f007244d41f857a2bb684b2",
-      },
-      ownershipHistory: [
-        {
-          name: "Usama",
-          username: "Mohammad",
-          languages: "English, Urdu, Spanish, Chinese",
-          location: "Islamabad, Pakistan",
-          bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
-          avatar:
-            "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
-          jwtToken:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTM0MDgxNDE1NywiZXhwIjoxNzAxOTQ1NjE0fQ.5WEgWg_W6S8jL2bV1jbhy4Eis0O6yscTbOpdF0auV1U",
-          email: "usamamuhammad@mailsac.com",
-          _id: "65674fcc47d92660139b52b6",
-          walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
-        },
-        {
-          name: "Ahmed",
-          username: "ali123123",
-          languages: "English",
-          location: "Islamabad",
-          bio: "hi",
-          avatar:
-            "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1697793424/izwfsygozecbxln3pim9.png",
-          jwtToken:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGkxMjMxMjMiLCJpYXQiOjE3MDEzODU3ODcyMDgsImV4cCI6MTcwMTk5MDU4N30.ToskGAen68Sun4wOxerpnLWz4nFQe7twIa_0jvce-Lc",
-          email: "socaje9266@wermink.com",
-          _id: "65324552f86b85fbc7100288",
-          walletAddress: "0x6c542ef8334433072f007244d41f857a2bb684b2",
-        },
-      ],
-      fileUrl:
-        "https://nfluencer.infura-ipfs.io/ipfs/QmYdwxDBzdZA9DWxu7gwAUJ6bweTDy4D3Y9yEGigvYp5qW",
-      fileType: "image",
-      price: "0.0001",
-      currency: "ETH",
-      category: "Gaming",
-      traits: [
-        {
-          traitName: "ewrwer",
-          traitType: "ssdfsdf",
-        },
-      ],
-      collection: {
-        _id: "656857a8250ab9d8518cdc09",
-        name: "Bored Ape Yacht Club",
-        image:
-          "https://nfluencer.infura-ipfs.io/ipfs/QmfQd2Uvc5pmtijcTvxrbVCN746DzqCcSoqExxCb7Rb1dy",
-        description:
-          "The Bored Ape Yacht Club is a collection of 10,000 unique Bored Ape NFTs— unique digital collectibles living on the Ethereum blockchain. Your Bored Ape doubles as your Yacht Club membership card, and grants access to members-only benefits, the first of which is access to THE BATHROOM, a collaborative graffiti board. Future areas and perks can be unlocked by the community through roadmap activation.",
-        user: "65674fcc47d92660139b52b6",
-        totalItems: 1,
-        createdAt: "2023-11-30T09:36:40.773Z",
-        updatedAt: "2023-11-30T09:37:47.053Z",
-        __v: 0,
-      },
-      royalties: "12.43",
-      createdAt: "2023-11-30T10:57:04.337Z",
-      updatedAt: "2023-11-30T23:11:22.445Z",
-      likes: "0",
-      itemId: 2,
-      weiPrice: {
-        type: "BigNumber",
-        hex: "0xb5e620f48000",
-      },
-    },
-    {
-      name: "kjhkjhkjhk",
-      description: "jkfshdjksdkfjh",
-      creator: {
-        name: "Ahmed",
-        username: "ali123123",
-        languages: "English",
-        location: "Islamabad",
-        bio: "hi",
-        avatar:
-          "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1697793424/izwfsygozecbxln3pim9.png",
-        jwtToken:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGkxMjMxMjMiLCJpYXQiOjE3MDEzMzc1MjM3NDgsImV4cCI6MTcwMTk0MjMyM30.4pyQYAJiUQ4-m9wQrLtPnwWs0VwK2MhKcilO_bu4u4o",
-        email: "socaje9266@wermink.com",
-        _id: "65324552f86b85fbc7100288",
-        walletAddress: "0x6c542ef8334433072f007244d41f857a2bb684b2",
-      },
-      currentOwner: {
-        name: "Usama",
-        username: "Mohammad",
-        languages: "English, Urdu, Spanish, Chinese",
-        location: "Islamabad, Pakistan",
-        bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
-        avatar:
-          "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
-        jwtToken:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTM0MDgxNDE1NywiZXhwIjoxNzAxOTQ1NjE0fQ.5WEgWg_W6S8jL2bV1jbhy4Eis0O6yscTbOpdF0auV1U",
-        email: "usamamuhammad@mailsac.com",
-        _id: "65674fcc47d92660139b52b6",
-        walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
-      },
-      ownershipHistory: [
-        {
-          name: "Ahmed",
-          username: "ali123123",
-          languages: "English",
-          location: "Islamabad",
-          bio: "hi",
-          avatar:
-            "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1697793424/izwfsygozecbxln3pim9.png",
-          jwtToken:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGkxMjMxMjMiLCJpYXQiOjE3MDEzMzk4ODgwODcsImV4cCI6MTcwMTk0NDY4OH0.iRQs5Mc4M6ALdI2UaAisAC5KSRm5vplnDHw5HJPQib0",
-          email: "socaje9266@wermink.com",
-          _id: "65324552f86b85fbc7100288",
-          walletAddress: "0x6c542ef8334433072f007244d41f857a2bb684b2",
-        },
-        {
-          name: "Usama",
-          username: "Mohammad",
-          languages: "English, Urdu, Spanish, Chinese",
-          location: "Islamabad, Pakistan",
-          bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
-          avatar:
-            "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
-          jwtToken:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTMzOTU5NDM1MSwiZXhwIjoxNzAxOTQ0Mzk0fQ.VSvjLUD8N62chyP7voM0GqUPkx8fO6Oa7OAfZ-4SvFs",
-          email: "usamamuhammad@mailsac.com",
-          _id: "65674fcc47d92660139b52b6",
-          walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
-        },
-        {
-          name: "Ahmed",
-          username: "ali123123",
-          languages: "English",
-          location: "Islamabad",
-          bio: "hi",
-          avatar:
-            "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1697793424/izwfsygozecbxln3pim9.png",
-          jwtToken:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGkxMjMxMjMiLCJpYXQiOjE3MDEzMzc1MjM3NDgsImV4cCI6MTcwMTk0MjMyM30.4pyQYAJiUQ4-m9wQrLtPnwWs0VwK2MhKcilO_bu4u4o",
-          email: "socaje9266@wermink.com",
-          _id: "65324552f86b85fbc7100288",
-          walletAddress: "0x6c542ef8334433072f007244d41f857a2bb684b2",
-        },
-        {
-          name: "Usama",
-          username: "Mohammad",
-          languages: "English, Urdu, Spanish, Chinese",
-          location: "Islamabad, Pakistan",
-          bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
-          avatar:
-            "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
-          jwtToken:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTM0MDgxNDE1NywiZXhwIjoxNzAxOTQ1NjE0fQ.5WEgWg_W6S8jL2bV1jbhy4Eis0O6yscTbOpdF0auV1U",
-          email: "usamamuhammad@mailsac.com",
-          _id: "65674fcc47d92660139b52b6",
-          walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
-        },
-      ],
-      fileUrl:
-        "https://nfluencer.infura-ipfs.io/ipfs/QmYpQ3MTTRhGrPhh15jW8gXUwWLQygd3WLdSv9Ne3SXBC8",
-      fileType: "image",
-      price: "0.0001",
-      currency: "ETH",
-      category: "Art",
-      traits: [
-        {
-          traitName: "hjjh",
-          traitType: "hhhg",
-        },
-      ],
-      collection: {
-        _id: "65685efd250ab9d8518cdc38",
-        name: "hhhhhhhhh",
-        image:
-          "https://nfluencer.infura-ipfs.io/ipfs/QmNvZtnStTfe58RsHras6oBwkAB6TQBPGHYsoL9RT2mb7X",
-        description: "jdjdjjdd dd d",
-        user: "65324552f86b85fbc7100288",
-        totalItems: 1,
-        createdAt: "2023-11-30T10:07:57.226Z",
-        updatedAt: "2023-11-30T10:09:27.099Z",
-        __v: 0,
-      },
-      royalties: "12.54",
-      createdAt: "2023-11-30T10:13:07.367Z",
-      updatedAt: "2023-11-30T10:44:22.950Z",
-      likes: "0",
-      itemId: 1,
-      weiPrice: {
-        type: "BigNumber",
-        hex: "0x06651728988000",
-      },
-    },
-  ]);
+  const [nfts, setNFTs] = useState([]);
   const fetchContract = (signerOrProvider) => {
     const marketplaceContract = new ethers.Contract(
       NFTMarketplaceContractAddress,
@@ -446,7 +135,7 @@ function Explore() {
   };
 
   useEffect(() => {
-    // fetchNFTs();
+    fetchNFTs();
   }, []);
 
   const connectingWithSmartContract = async () => {
@@ -764,10 +453,41 @@ function Explore() {
         : selectedMediaType === "Video"
         ? item.fileType.toLowerCase() === "video"
         : true
-    );
+    )
+    .sort((a, b) => {
+      if (selectedSortingOption === "Sort by Oldest")
+        return new Date(a.createdAt) - new Date(b.createdAt);
+      else if (selectedSortingOption === "Sort by Latest")
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      else if (selectedSortingOption === "Price Low to High")
+        return (
+          Number(getFormattedPrice(a.weiPrice)) -
+          Number(getFormattedPrice(b.weiPrice))
+        );
+      else if (selectedSortingOption === "Price High to Low")
+        return (
+          Number(getFormattedPrice(b.weiPrice)) -
+          Number(getFormattedPrice(a.weiPrice))
+        );
+      else return 0;
+    });
 
-  console.log(selectedCollections);
-  console.log(filteredNFTS);
+  const newCollections = FilterCollections.filter((item) => {
+    if (selectedCollections.length === 0) {
+      return true;
+    }
+    return selectedCollections.includes(item._id);
+  })
+    .filter((item) =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (selectedSortingOption === "Sort by Oldest")
+        return new Date(a.createdAt) - new Date(b.createdAt);
+      else if (selectedSortingOption === "Sort by Latest")
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      else return 0;
+    });
 
   return (
     <>
@@ -1035,7 +755,7 @@ function Explore() {
                                             <img
                                               src={collection.image}
                                               alt=""
-                                              className="w-11 h-11 rounded-xl"
+                                              className="w-11 h-11 rounded-xl object-cover"
                                             />
                                             <div className="flex flex-col gap-0">
                                               <span className="text-sm font-medium">
@@ -1166,84 +886,85 @@ function Explore() {
 
                     {/* Product grid */}
                     <div className="lg:col-span-3">
-                      <div className="container mx-auto">
-                        <div className="flex justify-between border-b border-gray-100 py-6 items-center sticky top-0 bg-white z-50 w-full">
-                          <div className="flex items-center">
-                            <div className="flex items-center gap-2">
-                              <div>
-                                <div className="relative">
-                                  <div className="absolute inset-y-0 flex items-center pl-2 text-gray-100">
-                                    <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
-                                  </div>
-                                  <input
-                                    type="text"
-                                    className="text-base rounded-xl border-gray-200 shadow-sm focus:border-nft-primary-light pl-9 block w-full p-3 outline-none border ring-purple-700 focus:ring-1 focus:bg-transparent placeholder-gray-500 text-gray-800"
-                                    placeholder="Search by item name"
-                                    value={searchQuery}
-                                    onChange={(e) =>
-                                      setSearchQuery(e.target.value)
-                                    }
-                                  />
+                      <div className="flex justify-between border-b border-gray-100 py-6 items-center sticky top-0 bg-white z-30 w-full px-2">
+                        <div className="flex items-center">
+                          <div className="flex items-center gap-2">
+                            <div>
+                              <div className="relative">
+                                <div className="absolute inset-y-0 flex items-center pl-2 text-gray-100">
+                                  <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
                                 </div>
+                                <input
+                                  type="text"
+                                  className="text-base rounded-xl border-gray-200 shadow-sm focus:border-nft-primary-light pl-9 block w-full p-3 outline-none border ring-purple-700 focus:ring-1 focus:bg-transparent placeholder-gray-500 text-gray-800"
+                                  placeholder="Search by item name"
+                                  value={searchQuery}
+                                  onChange={(e) =>
+                                    setSearchQuery(e.target.value)
+                                  }
+                                />
                               </div>
                             </div>
                           </div>
-
-                          <div className="flex items-center gap-4">
-                            <Menu
-                              as="div"
-                              className="relative inline-block text-left"
-                            >
-                              <div>
-                                <Menu.Button className="group inline-flex justify-between  text-gray-800 gap-20 items-center border border-gray-200 shadow-sm focus:border-nft-primary-light p-3 rounded-xl font-semibold focus:ring-nft-primary-light focus:ring-1">
-                                  <span>{selectedSortingOption}</span>
-                                  <ChevronDownIcon className="w-5 h-5 text-gray-500" />
-                                </Menu.Button>
-                              </div>
-
-                              <Menu.Items className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-xl bg-white shadow-2xl p-2 focus:outline-none">
-                                {sortingOptions.map((option, index) => (
-                                  <Menu.Item key={index}>
-                                    <button
-                                      onClick={() =>
-                                        setSelectedSortingOption(option.name)
-                                      }
-                                      className="font-medium text-gray-800 hover:bg-gray-100 block p-3 rounded-lg w-full text-left"
-                                    >
-                                      {option.name}
-                                    </button>
-                                  </Menu.Item>
-                                ))}
-                              </Menu.Items>
-                            </Menu>
-
-                            <button
-                              className="flex justify-center items-center gap-3 bg-gray-100 py-3 px-4 font-medium rounded-xl hover:bg-gray-200 sm:ml-6 lg:hidden"
-                              onClick={() => setMobileFiltersOpen(true)}
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                className="w-6 h-6"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm8.25 5.25a.75.75 0 01.75-.75h8.25a.75.75 0 010 1.5H12a.75.75 0 01-.75-.75z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-
-                              <span className="tracking-tight text-gray-900">
-                                Filters
-                              </span>
-                            </button>
-                          </div>
                         </div>
 
+                        <div className="flex items-center gap-4">
+                          <Menu
+                            as="div"
+                            className="relative inline-block text-left"
+                          >
+                            <div>
+                              <Menu.Button className="group inline-flex justify-between  text-gray-800 gap-20 items-center border border-gray-200 shadow-sm focus:border-nft-primary-light p-3 rounded-xl font-semibold focus:ring-nft-primary-light focus:ring-1">
+                                <span>{selectedSortingOption}</span>
+                                <ChevronDownIcon className="w-5 h-5 text-gray-500" />
+                              </Menu.Button>
+                            </div>
+
+                            <Menu.Items className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-xl bg-white shadow-2xl p-2 focus:outline-none">
+                              {sortingOptions.map((option, index) => (
+                                <Menu.Item key={index}>
+                                  <button
+                                    onClick={() =>
+                                      setSelectedSortingOption(option.name)
+                                    }
+                                    className="font-medium text-gray-800 hover:bg-gray-100 block p-3 rounded-lg w-full text-left"
+                                  >
+                                    {option.name}
+                                  </button>
+                                </Menu.Item>
+                              ))}
+                            </Menu.Items>
+                          </Menu>
+
+                          <button
+                            className="flex justify-center items-center gap-3 bg-gray-100 py-3 px-4 font-medium rounded-xl hover:bg-gray-200 sm:ml-6 lg:hidden"
+                            onClick={() => setMobileFiltersOpen(true)}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="currentColor"
+                              className="w-6 h-6"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm8.25 5.25a.75.75 0 01.75-.75h8.25a.75.75 0 010 1.5H12a.75.75 0 01-.75-.75z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+
+                            <span className="tracking-tight text-gray-900">
+                              Filters
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                      <div className="container mx-auto">
                         <div className="mt-10">
                           <div className="text-start mb-5">
-                            <span>Collection results</span>
+                            <h4 className="font-bold">
+                              {newCollections.length} collections
+                            </h4>
                           </div>
                           <Carousel
                             swipeable={true}
@@ -1258,120 +979,33 @@ function Explore() {
                             dotListclassName="custom-dot-list-style"
                             itemclassName="carousel-item-padding-40-px"
                           >
-                            <a
-                              href="#sd"
-                              className="decoration-transparent hover:shadow-xl shadow-lg rounded-xl transition-colors duration-300 p-0 m-2 block pb-1"
-                            >
-                              <div className="relative shadow-sm rounded-xl shadow-gray-100">
-                                <div className="max-w-sm rounded-xl overflow-hidden pb-2">
-                                  <img
-                                    src={require("../assets/nft7.jpeg")}
-                                    alt="Card Imagea"
-                                    className="h-40 w-full object-cover"
-                                  />
-                                  <div className="flex items-center justify-start gap-4 px-3">
-                                    <div
-                                      className="rounded-2xl overflow-hidden -mt-3 border-4 border-white"
-                                      style={{ width: "70px", height: "70px" }}
-                                    >
-                                      <img
-                                        src={require("../assets/user1.jpeg")}
-                                        alt="User Idmage"
-                                        className="w-full h-full object-cover"
-                                      />
-                                    </div>
-                                    <span className="font-bold">
-                                      Julie Bell
-                                    </span>
+                            {newCollections.map((collection, index) => (
+                              <div className="decoration-transparent rounded-xl transition-colors duration-300 p-0 m-2 block h-full relative">
+                                <Link
+                                  to={`/marketplace/collection/${collection._id}`}
+                                  className="relative h-full group block bg-gray-100 rounded-xl"
+                                >
+                                  <div className="max-w-sm rounded-xl overflow-hidden w-full h-full shadow-lg">
+                                    <img
+                                      src={collection.image}
+                                      alt={collection.name}
+                                      className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500"
+                                    />
                                   </div>
-                                </div>
-                              </div>
-                            </a>
-                            <a
-                              href="#sd"
-                              className="decoration-transparent hover:shadow-xl shadow-lg rounded-xl transition-colors duration-300 p-0 m-2 block pb-1"
-                            >
-                              <div className="relative shadow-sm rounded-xl shadow-gray-100">
-                                <div className="max-w-sm rounded-xl overflow-hidden pb-2">
-                                  <img
-                                    src={require("../assets/nft1.jpg")}
-                                    alt="Card Imagea"
-                                    className="h-40 w-full object-cover"
-                                  />
-                                  <div className="flex items-center justify-start gap-4 px-3">
-                                    <div
-                                      className="rounded-2xl overflow-hidden -mt-3 border-4 border-white"
-                                      style={{ width: "70px", height: "70px" }}
-                                    >
-                                      <img
-                                        src={require("../assets/user2.jpeg")}
-                                        alt="User Idmage"
-                                        className="w-full h-full object-cover"
-                                      />
+
+                                  <div className="absolute w-full h-full rounded-xl bg-gradient-to-b from-transparent to-[#000000a6] bottom-0"></div>
+
+                                  <div className="absolute bottom-0 p-3 flex w-full rounded-b-xl flex-col">
+                                    <div className="text-lg font-semibold text-white">
+                                      {collection.name}
                                     </div>
-                                    <span className="font-bold">Mark</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </a>
-                            <a
-                              href="#sd"
-                              className="decoration-transparent hover:shadow-xl shadow-lg rounded-xl transition-colors duration-300 p-0 m-2 block pb-1"
-                            >
-                              <div className="relative shadow-sm rounded-xl shadow-gray-100">
-                                <div className="max-w-sm rounded-xl overflow-hidden pb-2">
-                                  <img
-                                    src={require("../assets/nft17.jpg")}
-                                    alt="Card Imagea"
-                                    className="h-40 w-full object-cover"
-                                  />
-                                  <div className="flex items-center justify-start gap-4 px-3">
-                                    <div
-                                      className="rounded-2xl overflow-hidden -mt-3 border-4 border-white"
-                                      style={{ width: "70px", height: "70px" }}
-                                    >
-                                      <img
-                                        src={require("../assets/user3.webp")}
-                                        alt="User Idmage"
-                                        className="w-full h-full object-cover"
-                                      />
+                                    <div className="text-md text-white">
+                                      {collection.totalItems} items
                                     </div>
-                                    <span className="font-bold">
-                                      Will Smith
-                                    </span>
                                   </div>
-                                </div>
+                                </Link>
                               </div>
-                            </a>
-                            <a
-                              href="#sd"
-                              className="decoration-transparent hover:shadow-xl shadow-lg rounded-xl transition-colors duration-300 p-0 m-2 block pb-1"
-                            >
-                              <div className="relative shadow-sm rounded-xl shadow-gray-100">
-                                <div className="max-w-sm rounded-xl overflow-hidden pb-2">
-                                  <img
-                                    src={require("../assets/nft17.jpg")}
-                                    alt="Card Imagea"
-                                    className="h-40 w-full object-cover"
-                                  />
-                                  <div className="flex items-center justify-start gap-4 px-3">
-                                    <div
-                                      className="rounded-2xl overflow-hidden -mt-3 border-4 border-white"
-                                      style={{ width: "70px", height: "70px" }}
-                                    >
-                                      <img
-                                        src={require("../assets/user3.webp")}
-                                        alt="User Idmage"
-                                        className="w-full h-full object-cover"
-                                      />
-                                    </div>
-                                    <span className="font-bold">
-                                      Will Smith
-                                    </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </a>
+                            ))}
                           </Carousel>
                         </div>
                       </div>

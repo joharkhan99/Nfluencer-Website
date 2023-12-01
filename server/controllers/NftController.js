@@ -18,63 +18,65 @@ async function handleUpload(file) {
 const createNft = async (req, res) => {
   try {
     const {
-      name,
-      description,
-      file,
-      fileType,
-      price,
-      etherPrice,
-      currency,
-      category,
-      traits,
+      // name,
+      // description,
+      // file,
+      // fileType,
+      // price,
+      // etherPrice,
+      // currency,
+      // category,
+      // traits,
       collection,
-      royalties,
-      from,
-      to,
-      tokenId,
-      creator,
-      transactionHash,
-      gasUsed,
-      effectiveGasPrice,
-      blockHash,
-      nftUrl,
-      walletAddress,
-      isRewardItem,
+      // royalties,
+      // from,
+      // to,
+      // tokenId,
+      // creator,
+      // transactionHash,
+      // gasUsed,
+      // effectiveGasPrice,
+      // blockHash,
+      // nftUrl,
+      // walletAddress,
+      // isRewardItem,
     } = req.body;
 
     // Create a new NFT instance
-    const newNFT = new NFT({
-      name,
-      description,
-      file,
-      fileType,
-      price,
-      etherPrice,
-      currency,
-      category,
-      royalties,
-      traits,
-      collectionData: collection,
-      from,
-      to,
-      tokenId,
-      creator,
-      transactionHash,
-      gasUsed,
-      effectiveGasPrice,
-      blockHash,
-      nftUrl,
-      walletAddress,
-      isRewardItem,
-    });
+    // const newNFT = new NFT({
+    //   name,
+    //   description,
+    //   file,
+    //   fileType,
+    //   price,
+    //   etherPrice,
+    //   currency,
+    //   category,
+    //   royalties,
+    //   traits,
+    //   collectionData: collection,
+    //   from,
+    //   to,
+    //   tokenId,
+    //   creator,
+    //   transactionHash,
+    //   gasUsed,
+    //   effectiveGasPrice,
+    //   blockHash,
+    //   nftUrl,
+    //   walletAddress,
+    //   isRewardItem,
+    // });
 
-    const savedNFT = await newNFT.save();
+    // const savedNFT = await newNFT.save();
     await Collection.updateOne(
       { _id: collection },
       { $inc: { totalItems: 1 } }
     );
 
-    res.status(201).json(savedNFT);
+    res.status(201).json({
+      error: false,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error", error: true });

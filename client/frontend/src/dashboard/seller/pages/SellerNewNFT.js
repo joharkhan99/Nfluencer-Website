@@ -82,8 +82,8 @@ const SellerNewNFT = () => {
     },
   });
 
-  const handleCollectionSelect = (name) => {
-    setSelectedCollection(name === selectedCollection ? null : name);
+  const handleCollectionSelect = (id) => {
+    setSelectedCollection(id === selectedCollection ? null : id);
   };
 
   const AddTrait = () => {
@@ -265,38 +265,40 @@ const SellerNewNFT = () => {
       );
 
       if (transactionReceipt) {
-        const logs = transactionReceipt.logs;
-        const tokenId = web3.utils.hexToNumber(logs[0].topics[3]);
-        const from = transaction.from;
-        const to = transaction.to;
+        /*
+          const logs = transactionReceipt.logs;
+          const tokenId = web3.utils.hexToNumber(logs[0].topics[3]);
+          const from = transaction.from;
+          const to = transaction.to;
 
-        const data = {
-          name,
-          description,
-          file: fileUrl,
-          fileType,
-          price: formInputPrice.toString(),
-          etherPrice: web3.utils
-            .fromWei(Number(formInputPrice), "ether")
-            .toString(),
-          currency: "ETH",
-          category: selectedCategory.name,
-          traits,
-          collection: selectedCollection,
-          royalties,
-          from,
-          to,
-          tokenId,
-          creator: user._id,
-          transactionHash,
-          gasUsed: transactionReceipt.gasUsed.toString(),
-          effectiveGasPrice: transactionReceipt.effectiveGasPrice.toString(),
-          blockHash: transactionReceipt.blockHash,
-          nftUrl: url,
-          walletAddress: walletAddress,
-          isRewardItem: false,
-        };
-        await saveNFTData(data);
+          const data = {
+            name,
+            description,
+            file: fileUrl,
+            fileType,
+            price: formInputPrice.toString(),
+            etherPrice: web3.utils
+              .fromWei(Number(formInputPrice), "ether")
+              .toString(),
+            currency: "ETH",
+            category: selectedCategory.name,
+            traits,
+            collection: selectedCollection,
+            royalties,
+            from,
+            to,
+            tokenId,
+            creator: user._id,
+            transactionHash,
+            gasUsed: transactionReceipt.gasUsed.toString(),
+            effectiveGasPrice: transactionReceipt.effectiveGasPrice.toString(),
+            blockHash: transactionReceipt.blockHash,
+            nftUrl: url,
+            walletAddress: walletAddress,
+            isRewardItem: false,
+          };
+        */
+        await saveNFTData(selectedCollection);
       } else {
         setErrors({ message: "Transaction receipt not found" });
       }
@@ -312,7 +314,7 @@ const SellerNewNFT = () => {
     }
   };
 
-  const saveNFTData = async (data) => {
+  const saveNFTData = async (selectedCollection) => {
     setNFTStatusMessage("Saving NFT data...");
     const res = await fetch(`${process.env.REACT_APP_API_URL}/api/nft/`, {
       method: "POST",
@@ -320,16 +322,20 @@ const SellerNewNFT = () => {
         "x-auth-token": user.jwtToken,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({
+        collection: selectedCollection,
+      }),
     });
 
     const responseData = await res.json();
-    if (responseData.error) {
-      setErrors({ message: responseData.message });
-      return;
+    if (responseData) {
+      if (responseData.error) {
+        setErrors({ message: responseData.message });
+        return;
+      }
+      toast.success("NFT created successfully");
+      navigate("/seller/nfts");
     }
-    toast.success("NFT created successfully");
-    navigate("/seller/nfts");
   };
 
   const fetchContract = (signerOrProvider) => {
