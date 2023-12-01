@@ -67,6 +67,7 @@ function NFTDetail() {
       return;
     }
     fetchNFTDetails(itemId);
+    countViews();
   }, [itemId]);
 
   useEffect(() => {
@@ -76,7 +77,7 @@ function NFTDetail() {
     console.log(nftMetaData, itemId);
     if (nftMetaData && nftMetaData.weiPrice) {
       convertEthToDollars(getFormattedPrice(nftMetaData.weiPrice));
-      // fetchCollectionNFTs();
+      fetchCollectionNFTs();
     }
   }, [nftMetaData]);
 
@@ -90,37 +91,61 @@ function NFTDetail() {
     return { marketplaceContract };
   };
 
-  // const fetchCollectionNFTs = async () => {
-  //   const provider = new ethers.providers.JsonRpcProvider(
-  //     process.env.REACT_APP_ALCHEMY_SEPOLIA_URL
-  //   );
-  //   const { marketplaceContract } = fetchContract(provider);
-  //   const fetchedMarketItems = await marketplaceContract.fetchMarketItems();
+  const [views, setViews] = useState(0);
+  const countViews = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/nft/countViews`,
+        {
+          itemId: itemId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-  //   const items = await Promise.all(
-  //     fetchedMarketItems.map(async (i) => {
-  //       const tokenUri = await marketplaceContract.tokenURI(i.itemId);
-  //       const meta = await axios.get(tokenUri);
-  //       if (
-  //         meta.data.collection._id === nftMetaData.collection._id &&
-  //         i.itemId.toString() !== itemId.toString()
-  //       ) {
-  //         return {
-  //           ...meta.data,
-  //           likes: i.likes.toString(),
-  //           itemId: Number(i.itemId),
-  //           weiPrice: i.price,
-  //         };
-  //       }
+      console.log(response.data);
+      if (response.data.error === false) {
+        setViews(response.data.totalViews);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  //       return null;
-  //     })
-  //   );
+  const fetchCollectionNFTs = async () => {
+    const provider = new ethers.providers.JsonRpcProvider(
+      process.env.REACT_APP_ALCHEMY_SEPOLIA_URL
+    );
+    const { marketplaceContract } = fetchContract(provider);
+    const fetchedMarketItems = await marketplaceContract.fetchMarketItems();
 
-  //   let temp = items.filter((x) => x !== null);
-  //   temp.reverse().slice(0, 8);
-  //   setCollectionNFTs(temp);
-  // };
+    const items = await Promise.all(
+      fetchedMarketItems.map(async (i) => {
+        const tokenUri = await marketplaceContract.tokenURI(i.itemId);
+        const meta = await axios.get(tokenUri);
+        if (
+          meta.data.collection._id === nftMetaData.collection._id &&
+          i.itemId.toString() !== itemId.toString()
+        ) {
+          return {
+            ...meta.data,
+            likes: i.likes.toString(),
+            itemId: Number(i.itemId),
+            weiPrice: i.price,
+          };
+        }
+
+        return null;
+      })
+    );
+
+    let temp = items.filter((x) => x !== null);
+    temp.reverse().slice(0, 8);
+    setCollectionNFTs(temp);
+  };
 
   const fetchNFTDetails = async (itemId) => {
     const provider = new ethers.providers.JsonRpcProvider(
@@ -621,7 +646,7 @@ function NFTDetail() {
                   <button className="flex items-center p-3">
                     <EyeIcon className="w-5 h-5" />
                     <span className="pl-2 font-medium text-gray-600 text-sm">
-                      124.6k
+                      {views}
                     </span>
                   </button>
                 </div>
@@ -1186,6 +1211,7 @@ function NFTDetail() {
                           </video>
                         )}
                       </div>
+
                       <div className="p-2">
                         <div className="flex justify-between items-center -mt-8 z-50">
                           <div className="flex -space-x-3">
@@ -1263,7 +1289,10 @@ function NFTDetail() {
                                 Collection
                               </span>
                               <Link
-                                to={"s"}
+                                to={
+                                  "/marketplace/collection/" +
+                                  nft.collection._id
+                                }
                                 className="text-nft-primary-light font-semibold"
                               >
                                 <span>{nft.collection.name}</span>
@@ -1271,11 +1300,29 @@ function NFTDetail() {
                               </Link>
                             </div>
                           </div>
+
+                          <div className="flex items-center text-gray-500 text-sm mt-2 justify-between">
+                            <div>
+                              <span className="block text-xs text-center mb-1">
+                                Traits
+                              </span>
+                              <div className="text-gray-800 font-semibold">
+                                {nft.traits.map((trait, index) => (
+                                  <span
+                                    key={index}
+                                    className="text-gray-800 font-normal bg-gray-100 p-1 rounded-md inline-block mr-1 mb-1 px-1.5"
+                                  >
+                                    {trait.traitType} : {trait.traitName}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
                         </div>
 
                         <div className="flex items-center justify-between gap-1 text-sm mt-4 text-center">
                           <Link
-                            className="bg-gray-200 font-medium p-4 rounded-xl hover:bg-gray-300 w-full text-gray-800"
+                            className="bg-nft-primary-light font-medium p-4 rounded-xl hover:bg-nft-primary-dark w-full text-white"
                             to={`/nft/${nft.itemId}`}
                           >
                             View Details
@@ -1300,13 +1347,17 @@ function NFTDetail() {
                           </div>
                         </div>
                       </div>
-
-                      <button className="rounded-xl p-2 flex gap-1 items-center absolute top-2 right-2 text-sm font-semibold text-nft-primary-light bg-white">
-                        <HeartIcon className="w-5 h-5" />
-                      </button>
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+
+            {collectionNFTs.length === 0 && (
+              <div className="flex justify-center items-center h-64">
+                <span className="text-gray-500">
+                  No More NFTs in this collection
+                </span>
               </div>
             )}
           </div>

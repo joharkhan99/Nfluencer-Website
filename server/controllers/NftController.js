@@ -7,6 +7,7 @@ import Package from "../models/Package.js";
 import SavedItem from "../models/SavedItem.js";
 import User from "../models/User.js";
 import cloudinary from "../utils/cloudinaryConfig.js";
+import NFTView from "../models/NFTViews.js";
 
 async function handleUpload(file) {
   const res = await cloudinary.uploader.upload(file, {
@@ -351,6 +352,28 @@ const deleteSavedItem = async (req, res) => {
   }
 };
 
+const countViews = async (req, res) => {
+  try {
+    const { itemId } = req.body;
+
+    const updatedNFTView = await NFTView.findOneAndUpdate(
+      { nftId: itemId },
+      { $inc: { totalViews: 1 } },
+      { new: true, upsert: true }
+    );
+
+    const nftViews = await NFTView.findOne({ nftId: itemId }).exec();
+
+    res.status(201).json({
+      error: false,
+      totalViews: nftViews.totalViews,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", error: true });
+  }
+};
+
 export {
   createNft,
   fetchUserNFTs,
@@ -367,4 +390,5 @@ export {
   deleteSavedItem,
   saveItem,
   getCollectionItemsCount,
+  countViews,
 };
