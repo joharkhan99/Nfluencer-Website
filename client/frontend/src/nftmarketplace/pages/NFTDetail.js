@@ -717,44 +717,44 @@ function NFTDetail() {
 
               <div className="flex items-center mt-7 justify-evenly w-full text-left">
                 <div className="text-left w-full">
-                  <a href="s" className="block">
+                  <div href="s" className="block">
                     <div className="flex items-center gap-3">
                       <span className="w-14 h-14 rounded-full bg-nft-primary-transparent flex justify-center items-center text-nft-primary-light">
                         <Square3Stack3DIcon className="w-7 h-7" />
                       </span>
                       <div className="flex flex-col items-start">
-                        <button className="font-bold text-gray-900">
+                        <span className="font-bold text-gray-900">
                           Category
-                        </button>
+                        </span>
                         <div className="text-sm text-gray-500">
                           {nftMetaData.category}
                         </div>
                       </div>
                     </div>
-                  </a>
+                  </div>
                 </div>
                 <div className="text-left w-full">
-                  {/* <span className="text-sm mb-4 block">
-                    <span className="text-gray-900 font-semibold">
-                      Collection
-                    </span>
-                  </span> */}
                   <a href="s" className="block">
-                    <div className="flex items-center gap-3">
+                    <Link
+                      to={
+                        "/marketplace/collection/" + nftMetaData.collection._id
+                      }
+                      className="flex items-center gap-3"
+                    >
                       <img
                         src={nftMetaData.collection.image}
                         alt="User Imasge"
                         className="rounded-full h-14 w-14 object-cover"
                       />
                       <div className="flex flex-col items-start">
-                        <button className="font-bold text-gray-900">
+                        <span className="font-bold text-gray-900">
                           Collection
-                        </button>
+                        </span>
                         <div className="text-sm text-gray-500">
                           {nftMetaData.collection.name}
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </a>
                 </div>
               </div>

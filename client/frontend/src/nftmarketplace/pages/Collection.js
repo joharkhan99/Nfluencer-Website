@@ -25,6 +25,8 @@ import {
 } from "../../constants/ContractDetails";
 import toast, { Toaster } from "react-hot-toast";
 import Loader from "../../utils/Loader";
+import Web3Modal from "web3modal";
+import { create as ipfsHttpClient } from "ipfs-http-client";
 
 const Collection = () => {
   const dispatch = useDispatch();
@@ -61,6 +63,7 @@ const Collection = () => {
   const [collectionInfo, setCollectionInfo] = useState({});
   const [collectionCreator, setCollectionCreator] = useState({});
   const [loading, setLoading] = useState(true);
+  const [isBuyingLoading, setIsBuyingLoading] = useState(false);
 
   const fetchContract = (signerOrProvider) => {
     const marketplaceContract = new ethers.Contract(
@@ -264,18 +267,22 @@ const Collection = () => {
     { name: "Sort by Oldest" },
     { name: "Sort by Latest" },
   ];
+  const mediatypes = [{ name: "All" }, { name: "Image" }, { name: "Video" }];
   const ownerships = [{ name: "All" }, { name: "Me" }];
   const [selectedCategory, setSelectedCategory] = useState(categories[0].name);
   const [selectedPriceRange, setSelectedPriceRange] = useState(
     priceRanges[0].name
   );
-  const [selectedOwnership, setSelectedOwnership] = useState(
-    ownerships[0].name
+  const [selectedMediaType, setSelectedMediaType] = useState(
+    mediatypes[0].name
   );
   const [selectedSortingOption, setSelectedSortingOption] = useState(
     sortingOptions[0].name
   );
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedOwnership, setSelectedOwnership] = useState(
+    ownerships[0].name
+  );
 
   const filteredNFTArray = nfts
     .filter((item) =>
@@ -308,7 +315,16 @@ const Collection = () => {
       selectedOwnership === "All"
         ? true
         : selectedOwnership === "Me"
-        ? user && item.currentOwner.walletAddress === walletAddress
+        ? item.currentOwner.walletAddress === walletAddress
+        : true
+    )
+    .filter((item) =>
+      selectedMediaType === "All"
+        ? true
+        : selectedMediaType === "Image"
+        ? item.fileType.toLowerCase() === "image"
+        : selectedMediaType === "Video"
+        ? item.fileType.toLowerCase() === "video"
         : true
     )
     .sort((a, b) => {
@@ -329,9 +345,184 @@ const Collection = () => {
       else return 0;
     });
 
-  // if (loading) {
-  //   return <Loader />;
-  // }
+  const projectId = process.env.REACT_APP_INFURA_API_KEY;
+  const projectSecretKey = process.env.REACT_APP_INFURA_API_KEY_SECRET;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(`${projectId}:${projectSecretKey}`);
+  const auth = `Basic ${btoa(String.fromCharCode.apply(null, data))}`;
+  const client = ipfsHttpClient({
+    host: process.env.REACT_APP_INFURA_HOST,
+    port: 5001,
+    protocol: "https",
+    headers: {
+      authorization: auth,
+    },
+  });
+
+  const connectingWithSmartContract = async () => {
+    try {
+      const w3modal = new Web3Modal();
+      const connection = await w3modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
+      const signer = await provider.getSigner();
+
+      const { marketplaceContract } = fetchContract(signer);
+      return { marketplaceContract };
+    } catch (error) {
+      console.log(`Error connecting with smart contract: ${error}`);
+    }
+  };
+
+  const updateTokenURI = async (marketplaceContract, nft) => {
+    const data = JSON.stringify({
+      name: nft.name,
+      description: nft.description,
+      creator: nft.creator,
+      currentOwner: { ...user, walletAddress },
+      ownershipHistory: [...nft.ownershipHistory, { ...user, walletAddress }],
+      fileUrl: nft.fileUrl,
+      fileType: nft.fileType,
+      price: nft.price,
+      currency: "ETH",
+      category: nft.category,
+      traits: nft.traits,
+      collection: nft.collection,
+      royalties: nft.royalties,
+      createdAt: nft.createdAt,
+      updatedAt: new Date().toISOString(),
+    });
+    const added = await client.add(data);
+    const newUrl = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;
+    await marketplaceContract.updateTokenURI(nft.itemId, newUrl);
+  };
+
+  const buyNFT = async (nft) => {
+    if (!user) {
+      toast.error("Please login and connect your wallet to buy this NFT");
+      return;
+    }
+    setIsBuyingLoading(true);
+    try {
+      const { marketplaceContract } = await connectingWithSmartContract();
+      const price = ethers.utils.parseUnits(nft.weiPrice.toString(), "wei");
+      const transaction = await marketplaceContract.buyMarketItem(nft.itemId, {
+        value: price,
+      });
+
+      await transaction.wait();
+      await updateTokenURI(marketplaceContract, nft);
+      fetchNFTs();
+      toast.success("NFT bought successfully");
+    } catch (error) {
+      if (error.code) {
+        toast.error(error.code);
+      }
+      if (error.code === 4001) {
+        toast.error("Transaction rejected by the user");
+      }
+      console.log(`Error buying NFT: ${error.code}`);
+    }
+    setIsBuyingLoading(false);
+  };
+
+  const [isItemSaved, setIsItemSaved] = useState(null);
+  const [savedItemData, setSavedData] = useState(null);
+
+  const fetchItemSaved = async (itemId) => {
+    if (!user) {
+      setIsItemSaved(false);
+      return;
+    }
+
+    // console.log("Collection fetch", itemId);
+
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/nft/checkSaveItem`,
+        {
+          itemId: itemId,
+          itemType: "collection",
+          userId: user._id,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": user.jwtToken,
+          },
+        }
+      );
+      // console.log(response);
+      if (response.data.error === false && response.data.isSaved === true) {
+        setIsItemSaved(true);
+        setSavedData(response.data.savedItem);
+      } else {
+        setIsItemSaved(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addOrRemoveSavedItem = async (itemId) => {
+    if (!user) {
+      toast.error("Please login to save this NFT");
+      return;
+    }
+    console.log("Collection", itemId);
+
+    try {
+      if (isItemSaved) {
+        const response = await axios.delete(
+          `${process.env.REACT_APP_API_URL}/api/nft/saveItem/${savedItemData._id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": user.jwtToken,
+            },
+          }
+        );
+        console.log(response);
+        if (response.data.error === false) {
+          setIsItemSaved(false);
+          toast.success("Collection removed from saved");
+          setSavedData(null);
+        }
+      } else {
+        // add like
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/api/nft/saveItem`,
+          {
+            itemId: itemId,
+            itemType: "collection",
+            userId: user._id,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": user.jwtToken,
+            },
+          }
+        );
+        console.log(response);
+        if (response.data.error === false) {
+          setIsItemSaved(true);
+          setSavedData(response.data.savedItem);
+          toast.success("Collection saved successfully");
+        }
+      }
+    } catch (error) {
+      toast.error("Error saving Collection");
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchItemSaved(collectionId);
+  }, [collectionId]);
+
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <>
       <Toaster />
@@ -349,10 +540,23 @@ const Collection = () => {
                   className="absolute w-full h-full object-cover rounded-xl"
                 />
                 <div className="flex items-center justify-end p-5 gap-4">
-                  <button className="bg-white rounded-full w-auto h-10 z-10 shadow-lg hover:bg-gray-100 text-gray-700 flex items-center px-4 text-sm gap-2 font-medium">
-                    <HeartIcon className="w-5 h-5 text-nft-primary-light" />
-                    <span>Add to Favorites</span>
-                  </button>
+                  {isItemSaved ? (
+                    <button
+                      className="bg-nft-primary-light rounded-full w-auto h-10 z-10 shadow-lg hover:opacity-80 text-white flex items-center px-4 text-sm gap-2 font-medium"
+                      onClick={() => addOrRemoveSavedItem(collectionId)}
+                    >
+                      <HeartIcon className="w-5 h-5 text-white" />
+                      <span>Collection Saved</span>
+                    </button>
+                  ) : (
+                    <button
+                      className="bg-white rounded-full w-auto h-10 z-10 shadow-lg hover:bg-gray-100 text-gray-700 flex items-center px-4 text-sm gap-2 font-medium"
+                      onClick={() => addOrRemoveSavedItem(collectionId)}
+                    >
+                      <HeartIcon className="w-5 h-5 text-nft-primary-light" />
+                      <span>Add to Favorites</span>
+                    </button>
+                  )}
 
                   <Menu as="div" className="relative text-left">
                     <div>
@@ -444,12 +648,12 @@ const Collection = () => {
                           {collectionCreator.name}
                         </span>
                         <div className="text-sm text-gray-500">
-                          {/* {collectionCreator.walletAddress.substring(0, 7) +
+                          {collectionCreator.walletAddress.substring(0, 7) +
                             "..." +
                             collectionCreator.walletAddress.substring(
                               collectionCreator.walletAddress.length - 7,
                               collectionCreator.walletAddress.length
-                            )} */}
+                            )}
                         </div>
                       </div>
                     </div>
@@ -531,6 +735,36 @@ const Collection = () => {
                       >
                         <div>
                           <span className="block text-xs ml-2 mb-1 text-gray-500">
+                            Media
+                          </span>
+                          <Menu.Button className="group inline-flex justify-between  text-gray-800 gap-20 items-center border border-gray-200 shadow-sm focus:border-nft-primary-light p-3 rounded-xl font-semibold focus:ring-nft-primary-light focus:ring-1">
+                            <span>{selectedMediaType}</span>
+                            <ChevronDownIcon className="w-5 h-5 text-gray-500" />
+                          </Menu.Button>
+                        </div>
+
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-xl bg-white shadow-2xl p-2 focus:outline-none">
+                          {mediatypes.map((ownership, index) => (
+                            <Menu.Item key={index}>
+                              <button
+                                onClick={() =>
+                                  setSelectedMediaType(ownership.name)
+                                }
+                                className="font-medium text-gray-800 hover:bg-gray-100 block p-3 rounded-lg w-full text-left"
+                              >
+                                {ownership.name}
+                              </button>
+                            </Menu.Item>
+                          ))}
+                        </Menu.Items>
+                      </Menu>
+
+                      <Menu
+                        as="div"
+                        className="relative inline-block text-left"
+                      >
+                        <div>
+                          <span className="block text-xs ml-2 mb-1 text-gray-500">
                             Ownership
                           </span>
                           <Menu.Button className="group inline-flex justify-between  text-gray-800 gap-20 items-center border border-gray-200 shadow-sm focus:border-nft-primary-light p-3 rounded-xl font-semibold focus:ring-nft-primary-light focus:ring-1">
@@ -566,7 +800,7 @@ const Collection = () => {
                           <input
                             type="text"
                             className="text-base rounded-xl border-gray-200 shadow-sm focus:border-nft-primary-light pl-9 block w-full p-3 outline-none border ring-purple-700 focus:ring-1 focus:bg-transparent placeholder-gray-500 text-gray-800"
-                            placeholder="Search by name or trait"
+                            placeholder="Search by item name"
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                           />
@@ -618,7 +852,18 @@ const Collection = () => {
                 </div>
               </div>
 
-              <div className="flex flex-wrap justify-start py-10">
+              <div className="flex flex-wrap justify-start py-10 relative">
+                {isBuyingLoading && (
+                  <div className="flex w-full absolute h-full top-0 z-40 justify-center items-center m-auto gap-1 flex-col bg-white bg-opacity-30">
+                    <div className="w-fit bg-white flex items-center flex-col justify-center p-4 rounded-xl">
+                      <div className="border-t-gray-700 border-4 w-10 h-10 flex items-center justify-center rounded-full animate-spin"></div>
+                      <span className="text-sm text-gray-700 font-medium">
+                        processing...
+                      </span>
+                    </div>
+                  </div>
+                )}
+
                 {filteredNFTArray.map((nft, index) => (
                   <div
                     className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
@@ -702,12 +947,13 @@ const Collection = () => {
                           <h3 className="text-xl font-bold tracking-tight text-black">
                             {nft.name}
                           </h3>
+
                           <div className="flex items-center text-gray-500 text-sm mt-2 justify-between">
                             <div>
                               <span className="block text-xs text-center">
                                 Price
                               </span>
-                              <span className="font-bold text-sm text-black">
+                              <span className="font-bold text-sm text-gray-800">
                                 <span className="text-gray-500 pr-1 font-medium">
                                   {getFormattedPrice(nft.weiPrice)}
                                 </span>
@@ -716,15 +962,29 @@ const Collection = () => {
                             </div>
                             <div>
                               <span className="block text-xs text-center">
-                                Collection
+                                Created
                               </span>
-                              <Link
-                                to={"s"}
-                                className="text-nft-primary-light font-semibold"
-                              >
-                                <span>{nft.collection.name}</span>
-                                <ArrowUpRightIcon className="w-4 h-4 inline-block" />
-                              </Link>
+                              <span className="text-gray-800 font-semibold">
+                                {formatDate(nft.collection.createdAt)}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center text-gray-500 text-sm mt-2 justify-between">
+                            <div>
+                              <span className="block text-xs text-center mb-1">
+                                Traits
+                              </span>
+                              <div className="text-gray-800 font-semibold">
+                                {nft.traits.map((trait, index) => (
+                                  <span
+                                    key={index}
+                                    className="text-gray-800 font-normal bg-gray-100 p-1 rounded-md inline-block mr-1 mb-1 px-1.5"
+                                  >
+                                    {trait.traitType} : {trait.traitName}
+                                  </span>
+                                ))}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -735,7 +995,7 @@ const Collection = () => {
                             walletAddress ? null : (
                             <button
                               className="bg-nft-primary-light border-nft-primary-light text-white font-medium p-4 rounded-xl hover:bg-nft-primary-dark w-full"
-                              // onClick={() => buyNFT(nft)}
+                              onClick={() => buyNFT(nft)}
                             >
                               Buy Now
                             </button>
@@ -787,6 +1047,16 @@ const Collection = () => {
                     </div>
                   </div>
                 ))}
+
+                {filteredNFTArray.length === 0 && (
+                  <div className="w-full flex justify-center items-center">
+                    <div className="flex flex-col gap-2 items-center">
+                      <span className="text-gray-500 font-normal text-lg">
+                        No Items Found
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
