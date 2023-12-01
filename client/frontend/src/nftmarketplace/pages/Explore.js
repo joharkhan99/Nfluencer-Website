@@ -554,7 +554,7 @@ function Explore() {
               </Transition.Root>
 
               <main className="mx-auto max-w-7xl px-0">
-                <div className="flex justify-between border-b border-gray-200 pb-6 pt-10 items-center">
+                <div className="flex justify-between border-b border-gray-200 pb-6 pt-10 items-center sticky top-0 bg-white z-50 w-full">
                   <button className="flex justify-center items-center gap-3 bg-gray-100 py-3 px-4 font-medium rounded-xl hover:bg-gray-200">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
