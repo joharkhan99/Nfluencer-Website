@@ -82,7 +82,318 @@ function Explore() {
   const user = useSelector((state) => state.user.user);
   const walletAddress = useSelector((state) => state.user.walletAddress);
 
-  const [nfts, setNFTs] = useState([]);
+  const [nfts, setNFTs] = useState([
+    {
+      name: "Space Walker",
+      description:
+        "Benders is a series of artworks created by street & graffiti artist Bandit (aka Doodle2691).In this series, inspired by intricate waveforms, Bandit harnesses the transformative power of refractions, casting each piece into a mesmerizing realm where movement and fluidity intertwine.The collection is comprised of 869 animated artworks that seamlessly loop every 30 seconds.\nThe Art is the Utility",
+      creator: {
+        name: "Usama",
+        username: "Mohammad",
+        languages: "English, Urdu, Spanish, Chinese",
+        location: "Islamabad, Pakistan",
+        bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
+        avatar:
+          "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
+        jwtToken:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTM3MjA1Njg0OCwiZXhwIjoxNzAxOTc2ODU2fQ.uvnuwDCGTO2oQ_9mf0CsHb_3ec9tMYX8zjWmgEI_UVk",
+        email: "usamamuhammad@mailsac.com",
+        _id: "65674fcc47d92660139b52b6",
+        walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
+      },
+      currentOwner: {
+        name: "Usama",
+        username: "Mohammad",
+        languages: "English, Urdu, Spanish, Chinese",
+        location: "Islamabad, Pakistan",
+        bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
+        avatar:
+          "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
+        jwtToken:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTM3MjA1Njg0OCwiZXhwIjoxNzAxOTc2ODU2fQ.uvnuwDCGTO2oQ_9mf0CsHb_3ec9tMYX8zjWmgEI_UVk",
+        email: "usamamuhammad@mailsac.com",
+        _id: "65674fcc47d92660139b52b6",
+        walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
+      },
+      ownershipHistory: [
+        {
+          name: "Usama",
+          username: "Mohammad",
+          languages: "English, Urdu, Spanish, Chinese",
+          location: "Islamabad, Pakistan",
+          bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
+          avatar:
+            "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
+          jwtToken:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTM3MjA1Njg0OCwiZXhwIjoxNzAxOTc2ODU2fQ.uvnuwDCGTO2oQ_9mf0CsHb_3ec9tMYX8zjWmgEI_UVk",
+          email: "usamamuhammad@mailsac.com",
+          _id: "65674fcc47d92660139b52b6",
+          walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
+        },
+      ],
+      fileUrl:
+        "https://nfluencer.infura-ipfs.io/ipfs/QmUT7XzFKcCSm2QnxMoBpvZntzupX82kGRciShue9nqkS8",
+      fileType: "image",
+      price: "0.0043",
+      currency: "ETH",
+      category: "PFPs",
+      traits: [
+        {
+          traitName: "mix",
+          traitType: "color",
+        },
+        {
+          traitName: "astraunat",
+          traitType: "dress",
+        },
+        {
+          traitName: "space",
+          traitType: "environment",
+        },
+      ],
+      collection: {
+        _id: "656857a8250ab9d8518cdc09",
+        name: "Bored Ape Yacht Club",
+        image:
+          "https://nfluencer.infura-ipfs.io/ipfs/QmfQd2Uvc5pmtijcTvxrbVCN746DzqCcSoqExxCb7Rb1dy",
+        description:
+          "The Bored Ape Yacht Club is a collection of 10,000 unique Bored Ape NFTs— unique digital collectibles living on the Ethereum blockchain. Your Bored Ape doubles as your Yacht Club membership card, and grants access to members-only benefits, the first of which is access to THE BATHROOM, a collaborative graffiti board. Future areas and perks can be unlocked by the community through roadmap activation.",
+        user: "65674fcc47d92660139b52b6",
+        totalItems: 2,
+        createdAt: "2023-11-30T09:36:40.773Z",
+        updatedAt: "2023-11-30T10:57:28.596Z",
+        __v: 0,
+      },
+      royalties: "34.65",
+      createdAt: "2023-11-30T19:23:50.394Z",
+      updatedAt: "2023-11-30T19:23:50.394Z",
+      likes: "0",
+      itemId: 3,
+      weiPrice: {
+        type: "BigNumber",
+        hex: "0x0f46d3c488c000",
+      },
+    },
+    {
+      name: "iuiuiouiouio",
+      description: "jkjasd jkas djk asjkd kasjd",
+      creator: {
+        name: "Usama",
+        username: "Mohammad",
+        languages: "English, Urdu, Spanish, Chinese",
+        location: "Islamabad, Pakistan",
+        bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
+        avatar:
+          "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
+        jwtToken:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTM0MDgxNDE1NywiZXhwIjoxNzAxOTQ1NjE0fQ.5WEgWg_W6S8jL2bV1jbhy4Eis0O6yscTbOpdF0auV1U",
+        email: "usamamuhammad@mailsac.com",
+        _id: "65674fcc47d92660139b52b6",
+        walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
+      },
+      currentOwner: {
+        name: "Ahmed",
+        username: "ali123123",
+        languages: "English",
+        location: "Islamabad",
+        bio: "hi",
+        avatar:
+          "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1697793424/izwfsygozecbxln3pim9.png",
+        jwtToken:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGkxMjMxMjMiLCJpYXQiOjE3MDEzODU3ODcyMDgsImV4cCI6MTcwMTk5MDU4N30.ToskGAen68Sun4wOxerpnLWz4nFQe7twIa_0jvce-Lc",
+        email: "socaje9266@wermink.com",
+        _id: "65324552f86b85fbc7100288",
+        walletAddress: "0x6c542ef8334433072f007244d41f857a2bb684b2",
+      },
+      ownershipHistory: [
+        {
+          name: "Usama",
+          username: "Mohammad",
+          languages: "English, Urdu, Spanish, Chinese",
+          location: "Islamabad, Pakistan",
+          bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
+          avatar:
+            "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
+          jwtToken:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTM0MDgxNDE1NywiZXhwIjoxNzAxOTQ1NjE0fQ.5WEgWg_W6S8jL2bV1jbhy4Eis0O6yscTbOpdF0auV1U",
+          email: "usamamuhammad@mailsac.com",
+          _id: "65674fcc47d92660139b52b6",
+          walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
+        },
+        {
+          name: "Ahmed",
+          username: "ali123123",
+          languages: "English",
+          location: "Islamabad",
+          bio: "hi",
+          avatar:
+            "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1697793424/izwfsygozecbxln3pim9.png",
+          jwtToken:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGkxMjMxMjMiLCJpYXQiOjE3MDEzODU3ODcyMDgsImV4cCI6MTcwMTk5MDU4N30.ToskGAen68Sun4wOxerpnLWz4nFQe7twIa_0jvce-Lc",
+          email: "socaje9266@wermink.com",
+          _id: "65324552f86b85fbc7100288",
+          walletAddress: "0x6c542ef8334433072f007244d41f857a2bb684b2",
+        },
+      ],
+      fileUrl:
+        "https://nfluencer.infura-ipfs.io/ipfs/QmYdwxDBzdZA9DWxu7gwAUJ6bweTDy4D3Y9yEGigvYp5qW",
+      fileType: "image",
+      price: "0.0001",
+      currency: "ETH",
+      category: "Gaming",
+      traits: [
+        {
+          traitName: "ewrwer",
+          traitType: "ssdfsdf",
+        },
+      ],
+      collection: {
+        _id: "656857a8250ab9d8518cdc09",
+        name: "Bored Ape Yacht Club",
+        image:
+          "https://nfluencer.infura-ipfs.io/ipfs/QmfQd2Uvc5pmtijcTvxrbVCN746DzqCcSoqExxCb7Rb1dy",
+        description:
+          "The Bored Ape Yacht Club is a collection of 10,000 unique Bored Ape NFTs— unique digital collectibles living on the Ethereum blockchain. Your Bored Ape doubles as your Yacht Club membership card, and grants access to members-only benefits, the first of which is access to THE BATHROOM, a collaborative graffiti board. Future areas and perks can be unlocked by the community through roadmap activation.",
+        user: "65674fcc47d92660139b52b6",
+        totalItems: 1,
+        createdAt: "2023-11-30T09:36:40.773Z",
+        updatedAt: "2023-11-30T09:37:47.053Z",
+        __v: 0,
+      },
+      royalties: "12.43",
+      createdAt: "2023-11-30T10:57:04.337Z",
+      updatedAt: "2023-11-30T23:11:22.445Z",
+      likes: "0",
+      itemId: 2,
+      weiPrice: {
+        type: "BigNumber",
+        hex: "0xb5e620f48000",
+      },
+    },
+    {
+      name: "kjhkjhkjhk",
+      description: "jkfshdjksdkfjh",
+      creator: {
+        name: "Ahmed",
+        username: "ali123123",
+        languages: "English",
+        location: "Islamabad",
+        bio: "hi",
+        avatar:
+          "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1697793424/izwfsygozecbxln3pim9.png",
+        jwtToken:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGkxMjMxMjMiLCJpYXQiOjE3MDEzMzc1MjM3NDgsImV4cCI6MTcwMTk0MjMyM30.4pyQYAJiUQ4-m9wQrLtPnwWs0VwK2MhKcilO_bu4u4o",
+        email: "socaje9266@wermink.com",
+        _id: "65324552f86b85fbc7100288",
+        walletAddress: "0x6c542ef8334433072f007244d41f857a2bb684b2",
+      },
+      currentOwner: {
+        name: "Usama",
+        username: "Mohammad",
+        languages: "English, Urdu, Spanish, Chinese",
+        location: "Islamabad, Pakistan",
+        bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
+        avatar:
+          "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
+        jwtToken:
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTM0MDgxNDE1NywiZXhwIjoxNzAxOTQ1NjE0fQ.5WEgWg_W6S8jL2bV1jbhy4Eis0O6yscTbOpdF0auV1U",
+        email: "usamamuhammad@mailsac.com",
+        _id: "65674fcc47d92660139b52b6",
+        walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
+      },
+      ownershipHistory: [
+        {
+          name: "Ahmed",
+          username: "ali123123",
+          languages: "English",
+          location: "Islamabad",
+          bio: "hi",
+          avatar:
+            "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1697793424/izwfsygozecbxln3pim9.png",
+          jwtToken:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGkxMjMxMjMiLCJpYXQiOjE3MDEzMzk4ODgwODcsImV4cCI6MTcwMTk0NDY4OH0.iRQs5Mc4M6ALdI2UaAisAC5KSRm5vplnDHw5HJPQib0",
+          email: "socaje9266@wermink.com",
+          _id: "65324552f86b85fbc7100288",
+          walletAddress: "0x6c542ef8334433072f007244d41f857a2bb684b2",
+        },
+        {
+          name: "Usama",
+          username: "Mohammad",
+          languages: "English, Urdu, Spanish, Chinese",
+          location: "Islamabad, Pakistan",
+          bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
+          avatar:
+            "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
+          jwtToken:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTMzOTU5NDM1MSwiZXhwIjoxNzAxOTQ0Mzk0fQ.VSvjLUD8N62chyP7voM0GqUPkx8fO6Oa7OAfZ-4SvFs",
+          email: "usamamuhammad@mailsac.com",
+          _id: "65674fcc47d92660139b52b6",
+          walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
+        },
+        {
+          name: "Ahmed",
+          username: "ali123123",
+          languages: "English",
+          location: "Islamabad",
+          bio: "hi",
+          avatar:
+            "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1697793424/izwfsygozecbxln3pim9.png",
+          jwtToken:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGkxMjMxMjMiLCJpYXQiOjE3MDEzMzc1MjM3NDgsImV4cCI6MTcwMTk0MjMyM30.4pyQYAJiUQ4-m9wQrLtPnwWs0VwK2MhKcilO_bu4u4o",
+          email: "socaje9266@wermink.com",
+          _id: "65324552f86b85fbc7100288",
+          walletAddress: "0x6c542ef8334433072f007244d41f857a2bb684b2",
+        },
+        {
+          name: "Usama",
+          username: "Mohammad",
+          languages: "English, Urdu, Spanish, Chinese",
+          location: "Islamabad, Pakistan",
+          bio: "Usama is a content marketing professional at HubSpot, a CRM platform that helps companies attract visitors, convert leads, and close customers.\r\n\r\nPreviously, Usama worked as a marketing manager for a tech software startup. He graduated with honors from Columbia University with a dual degree in Business Administration and Creative Writing.",
+          avatar:
+            "http://res.cloudinary.com/ds2ss4xmg/image/upload/v1701270433/cjex51cdvuvfsqlhrhax.jpg",
+          jwtToken:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJNb2hhbW1hZCIsImlhdCI6MTcwMTM0MDgxNDE1NywiZXhwIjoxNzAxOTQ1NjE0fQ.5WEgWg_W6S8jL2bV1jbhy4Eis0O6yscTbOpdF0auV1U",
+          email: "usamamuhammad@mailsac.com",
+          _id: "65674fcc47d92660139b52b6",
+          walletAddress: "0x0ecd0ed3894b07ebf0bb60f7ffe77eeba9014f7c",
+        },
+      ],
+      fileUrl:
+        "https://nfluencer.infura-ipfs.io/ipfs/QmYpQ3MTTRhGrPhh15jW8gXUwWLQygd3WLdSv9Ne3SXBC8",
+      fileType: "image",
+      price: "0.0001",
+      currency: "ETH",
+      category: "Art",
+      traits: [
+        {
+          traitName: "hjjh",
+          traitType: "hhhg",
+        },
+      ],
+      collection: {
+        _id: "65685efd250ab9d8518cdc38",
+        name: "hhhhhhhhh",
+        image:
+          "https://nfluencer.infura-ipfs.io/ipfs/QmNvZtnStTfe58RsHras6oBwkAB6TQBPGHYsoL9RT2mb7X",
+        description: "jdjdjjdd dd d",
+        user: "65324552f86b85fbc7100288",
+        totalItems: 1,
+        createdAt: "2023-11-30T10:07:57.226Z",
+        updatedAt: "2023-11-30T10:09:27.099Z",
+        __v: 0,
+      },
+      royalties: "12.54",
+      createdAt: "2023-11-30T10:13:07.367Z",
+      updatedAt: "2023-11-30T10:44:22.950Z",
+      likes: "0",
+      itemId: 1,
+      weiPrice: {
+        type: "BigNumber",
+        hex: "0x06651728988000",
+      },
+    },
+  ]);
   const fetchContract = (signerOrProvider) => {
     const marketplaceContract = new ethers.Contract(
       NFTMarketplaceContractAddress,
@@ -135,7 +446,7 @@ function Explore() {
   };
 
   useEffect(() => {
-    fetchNFTs();
+    // fetchNFTs();
   }, []);
 
   const connectingWithSmartContract = async () => {
