@@ -79,6 +79,15 @@ function Explore() {
 
   const user = useSelector((state) => state.user.user);
   const walletAddress = useSelector((state) => state.user.walletAddress);
+  const userSearchQuery = useSelector((state) => state.nftSearch.searchQuery);
+
+  useEffect(() => {
+    if (userSearchQuery === "" || userSearchQuery === null) {
+      setSearchQuery("");
+      return;
+    }
+    setSearchQuery(userSearchQuery);
+  }, [userSearchQuery]);
 
   const [nfts, setNFTs] = useState([]);
   const fetchContract = (signerOrProvider) => {

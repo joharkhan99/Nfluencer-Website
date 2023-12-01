@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import Cookies from "js-cookie";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setUser } from "../../redux/slices/UserSlice";
@@ -10,6 +10,7 @@ import {
   UserPlusIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
+import { setSearchQuery } from "../../redux/slices/SearchNftSlice";
 
 const Header = ({ transparent = false }) => {
   const user = useSelector((state) => state.user.user);
@@ -28,6 +29,18 @@ const Header = ({ transparent = false }) => {
       window.location.reload();
     });
   }, []);
+
+  const [query, setquery] = useState("");
+  const handleSearch = (e) => {
+    setquery(e);
+    dispatch(setSearchQuery(e));
+  };
+
+  const handlekeywordInputKeyDown = (e) => {
+    if (e.key === "Enter" && e.target.value.trim() !== "") {
+      navigate("/explore");
+    }
+  };
 
   return (
     <>
@@ -62,6 +75,9 @@ const Header = ({ transparent = false }) => {
                     type="text"
                     placeholder="Search items, collections"
                     className="bg-gray-100 p-3 rounded-xl outline-none px-6 pl-10 md:w-96 text-gray-800 placeholder:text-gray-500 focus:ring-2 text-sm focus:shadow-sm focus:ring-nft-primary-light focus:bg-white"
+                    value={query}
+                    onChange={(e) => handleSearch(e.target.value)}
+                    onKeyDown={handlekeywordInputKeyDown}
                   />
                 </div>
               ) : (

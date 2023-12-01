@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/style.css";
 import Header from "../components/Header";
 
@@ -14,6 +14,8 @@ import TopSellingCollections from "../components/home/TopSellingCollections";
 import TrendingNFTs from "../components/home/TrendingNFTs";
 import PopularNFTs from "../components/home/PopularNFTs";
 import BlogResources from "../components/home/BlogResources";
+import { setSearchQuery } from "../../redux/slices/SearchNftSlice";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const dispatch = useDispatch();
@@ -44,6 +46,20 @@ function Home() {
   useEffect(() => {
     checkIfWalletIsConnected();
   }, []);
+
+  const navigate = useNavigate();
+
+  const [query, setquery] = useState("");
+  const handleSearch = (e) => {
+    setquery(e);
+    dispatch(setSearchQuery(e));
+  };
+
+  const handlekeywordInputKeyDown = (e) => {
+    if (e.key === "Enter" && e.target.value.trim() !== "") {
+      navigate("/explore");
+    }
+  };
 
   return (
     <>
@@ -101,10 +117,17 @@ function Home() {
                   <input
                     type="text"
                     className="w-full py-7 font-bold pl-10 placeholder-black rounded-full shadow-2xl focus:outline-none bg-gradient-to-r from-pink-50 to-white backdrop-filter backdrop-blur-3xl focus:ring-2 focus:ring-nft-primary-light focus:bg-white focus:backdrop-filter-none focus:backdrop-blur-none"
+                    value={query}
+                    // onChange={(e) => setquery(e.target.value)}
+                    onChange={(e) => handleSearch(e.target.value)}
+                    onKeyDown={handlekeywordInputKeyDown}
                     placeholder="Search items, collections"
                   />
 
-                  <button className="absolute inset-y-0 right-0 flex items-center justify-center pr-3">
+                  <button
+                    className="absolute inset-y-0 right-0 flex items-center justify-center pr-3"
+                    onClick={() => navigate("/explore")}
+                  >
                     <svg
                       className=" text-white h-11 w-11 bg-nft-primary-light rounded-full"
                       fill="none"
