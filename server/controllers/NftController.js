@@ -8,6 +8,7 @@ import SavedItem from "../models/SavedItem.js";
 import User from "../models/User.js";
 import cloudinary from "../utils/cloudinaryConfig.js";
 import NFTView from "../models/NFTViews.js";
+import NFTSale from "../models/NFTSale.js";
 
 async function handleUpload(file) {
   const res = await cloudinary.uploader.upload(file, {
@@ -408,7 +409,7 @@ const countCollectionViews = async (req, res) => {
 
 const updateCollectionDetails = async (req, res) => {
   const { collectionId } = req.params;
-  const { salePrice } = req.body;
+  const { salePrice, seller, buyer, nftId } = req.body;
   try {
     await Collection.findOneAndUpdate(
       { _id: collectionId },
@@ -417,6 +418,13 @@ const updateCollectionDetails = async (req, res) => {
       },
       { new: true, upsert: true }
     );
+    const sale = new NFTSale({
+      nftId,
+      price: salePrice,
+      seller,
+      buyer,
+    });
+    await sale.save();
 
     return res.status(200).json({
       error: false,
@@ -424,6 +432,129 @@ const updateCollectionDetails = async (req, res) => {
     });
   } catch (error) {
     console.error("Error updating collection:", error);
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+};
+
+const getWalletSales = async (req, res) => {
+  try {
+    const { walletAddress } = req.body;
+
+    const salesByDayOfWeek = await NFTSale.aggregate([
+      {
+        $match: {
+          seller: walletAddress,
+        },
+      },
+      {
+        $group: {
+          _id: { $dayOfWeek: "$createdAt" },
+          totalSales: { $sum: "$price" }, // Assuming your sale documents have a "price" field
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          dayOfWeek: {
+            $switch: {
+              branches: [
+                { case: 1, then: "Sun" },
+                { case: 2, then: "Mon" },
+                { case: 3, then: "Tue" },
+                { case: 4, then: "Wed" },
+                { case: 5, then: "Thu" },
+                { case: 6, then: "Fri" },
+                { case: 7, then: "Sat" },
+              ],
+            },
+          },
+          totalSales: 1,
+        },
+      },
+      {
+        $sort: {
+          dayOfWeek: 1,
+        },
+      },
+    ]).exec();
+
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+    // Fill in the sales array with 0 for days without sales
+    const sales = daysOfWeek.map((day) => {
+      const result = salesByDayOfWeek.find((item) => item.dayOfWeek === day);
+      return result ? result.totalSales : 0;
+    });
+
+    return res.status(200).json({
+      error: false,
+      message: "NFT sales fetched successfully.",
+      daysOfWeek,
+      sales,
+    });
+  } catch (error) {
+    console.error("Error fetching nft sales:", error);
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+};
+
+const getcreatorSales = async (req, res) => {
+  // jus sume all the sales of the creator
+  const { walletAddress } = req.params;
+  try {
+    const sales = await NFTSale.aggregate([
+      {
+        $match: {
+          seller: walletAddress,
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalSales: { $sum: "$price" }, // Assuming your sale documents have a "price" field
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          totalSales: 1,
+        },
+      },
+    ]).exec();
+
+    return res.status(200).json({
+      error: false,
+      message: "NFT sales fetched successfully.",
+      sales,
+    });
+  } catch (error) {
+    console.error("Error fetching nft sales:", error);
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+};
+
+const getAllCreatorsSales = async (req, res) => {
+  try {
+    const nftSales = await NFTSale.find({}).exec();
+    const totalSales = nftSales.reduce((acc, sale) => {
+      acc[sale.seller] = acc[sale.seller]
+        ? acc[sale.seller] + sale.price
+        : sale.price;
+      return acc;
+    }, {});
+
+    res.status(200).json({
+      error: false,
+      message: "Collection items fetched successfully.",
+      totalSales,
+    });
+  } catch (error) {
     return res
       .status(500)
       .json({ error: true, message: "Internal Server Error" });
@@ -450,4 +581,7 @@ export {
   countCollectionViews,
   updateCollectionDetails,
   getAllCollections,
+  getWalletSales,
+  getcreatorSales,
+  getAllCreatorsSales,
 };

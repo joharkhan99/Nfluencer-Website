@@ -502,6 +502,36 @@ function NFTDetail() {
     },
   });
 
+  const updateCollectionDetails = async (
+    collectionId,
+    price,
+    seller,
+    buyer,
+    nftId
+  ) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_API_URL}/api/nft/updateCollectionDetails/${collectionId}`,
+        {
+          salePrice: price,
+          seller,
+          buyer,
+          nftId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": user.jwtToken,
+          },
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      toast.error("Error updating collection details");
+      console.log(error);
+    }
+  };
+
   const updateTokenURI = async (marketplaceContract, nft) => {
     const data = JSON.stringify({
       name: nft.name,
@@ -522,8 +552,13 @@ function NFTDetail() {
     });
     const added = await client.add(data);
     const newUrl = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;
-
-    console.log("Added file: ", added);
+    await updateCollectionDetails(
+      nft.collection._id,
+      nft.price,
+      nft.currentOwner.walletAddress,
+      walletAddress,
+      nft.itemId
+    );
     await marketplaceContract.updateTokenURI(nft.itemId, newUrl);
   };
 

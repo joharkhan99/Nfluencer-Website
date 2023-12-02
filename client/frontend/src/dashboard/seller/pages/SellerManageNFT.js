@@ -8,6 +8,7 @@ import YourNFTs from "../components/nft/YourNFTs";
 import CryptoWalletsConnect from "../components/nft/CryptoWalletsConnect";
 import { useSelector } from "react-redux";
 import PurchasedNFTs from "../components/nft/PurchasedNFTs";
+import NotableDrops from "../../../nftmarketplace/components/home/NotableDrops";
 
 const SellerManageNFT = () => {
   const user = useSelector((state) => state.user.user);
@@ -37,12 +38,12 @@ const SellerManageNFT = () => {
                   Discover, Collect, and sell NFTs
                 </h2>
                 <div className="flex gap-3 items-center mt-10">
-                  <a
-                    href="d"
+                  <Link
+                    to={"/marketplace/explore"}
                     className="block bg-white text-gray-800 font-semibold rounded-full p-4 px-7 text-sm hover:opacity-80"
                   >
                     Discover now
-                  </a>
+                  </Link>
                   <Link
                     to="/seller/newnft"
                     className="block border-transparent border text-white bg-white font-semibold rounded-full p-4 px-7 text-sm bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 hover:opacity-80"
@@ -56,8 +57,8 @@ const SellerManageNFT = () => {
             <div className="lg:w-1/4">
               <div className="bg-white w-full h-full rounded-xl p-0 shadow-xl shadow-gray-200">
                 <div className="flex flex-col justify-between h-full relative">
-                  <div className="text-center pt-4 text-base font-light text-gray-400 absolute w-full">
-                    Balance
+                  <div className="text-center pt-4 text-base font-light text-gray-500 absolute w-full">
+                    Weekly Sales
                   </div>
                   <BalanceChart />
                   <div className="p-4 pt-0">
@@ -72,7 +73,13 @@ const SellerManageNFT = () => {
 
           <div className="lg:flex gap-4 mt-10">
             <div className="lg:w-3/4 p-0 rounded-xl relative">
-              <TrendingNFTs />
+              {/* <TrendingNFTs /> */}
+              <NotableDrops
+                totalItems={3}
+                cardsWidthClasses="w-full md:w-1/2 lg:w-1/3 xl:w-1/3 p-2"
+                imageHeight="200px"
+                parentMarginTopClass="mt-0"
+              />
             </div>
 
             <div className="lg:w-1/4">

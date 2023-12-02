@@ -18,7 +18,12 @@ import toast, { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import Loader from "../../../utils/Loader";
 
-const NotableDrops = () => {
+const NotableDrops = ({
+  totalItems = 4,
+  cardsWidthClasses,
+  imageHeight,
+  parentMarginTopClass,
+}) => {
   const [nfts, setNFTs] = useState([]);
   const [isNFTLoading, setIsNFTLoading] = useState(false);
   const fetchContract = (signerOrProvider) => {
@@ -43,7 +48,7 @@ const NotableDrops = () => {
 
     // fetch only the first 4 items
     const firstFourItems = [...fetchedMarketItems];
-    firstFourItems.splice(4, firstFourItems.length - 4);
+    firstFourItems.splice(totalItems, firstFourItems.length - totalItems);
 
     // console.log(fetchedMarketItems);
 
@@ -200,23 +205,37 @@ const NotableDrops = () => {
     <>
       <Toaster />
       <div className="container mx-auto">
-        <div className="mt-44">
+        <div className={parentMarginTopClass ? parentMarginTopClass : "mt-44"}>
           <div className="text-center">
-            <h1 className="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
-              Selected notable drops
-            </h1>
+            {parentMarginTopClass ? (
+              <h2 className="text-2xl font-extrabold tracking-tight text-gray-800 block text-left mb-2">
+                Trending NFTs
+              </h2>
+            ) : (
+              <h1 className="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
+                Selected notable drops
+              </h1>
+            )}
           </div>
 
-          <div className="flex flex-wrap justify-start mt-16">
+          <div
+            className={`flex flex-wrap justify-start ${
+              !parentMarginTopClass && "mt-16"
+            }`}
+          >
             {nfts.map((nft, index) => (
               <div
-                className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
+                className={`${
+                  cardsWidthClasses
+                    ? cardsWidthClasses
+                    : "w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
+                }`}
                 key={index}
               >
-                <div className="w-full h-full decoration-transparent rounded-xl shadow-xl transition-colors duration-300 relative group">
+                <div className="w-full h-full decoration-transparent rounded-xl shadow-xl transition-colors duration-300 relative group bg-white">
                   <div
                     className="h-auto bg-gray-100 overflow-hidden rounded-xl"
-                    style={{ height: "300px" }}
+                    style={{ height: imageHeight ? imageHeight : "300px" }}
                   >
                     {nft.fileType === "image" ? (
                       <img

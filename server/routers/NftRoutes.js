@@ -19,6 +19,9 @@ import {
   countCollectionViews,
   updateCollectionDetails,
   getAllCollections,
+  getWalletSales,
+  getcreatorSales,
+  getAllCreatorsSales,
 } from "../controllers/NftController.js";
 import authenticate from "../middleware/authenticate.js";
 
@@ -33,9 +36,12 @@ router.post("/countViews", countViews);
 router.post("/countCollectionViews", countCollectionViews);
 router.post("/getCollection", getCollection);
 router.get("/getAllCollections", getAllCollections);
+router.get("/getcreatorSales/:walletAddress", getcreatorSales);
+router.post("/getAllCreatorsSales", getAllCreatorsSales);
 
 router.use(authenticate);
 
+router.post("/getWalletSales", getWalletSales);
 router.post("/user-nfts", fetchUserNFTs);
 router.post("/", createNft);
 router.post("/addCollection", addCollection);
