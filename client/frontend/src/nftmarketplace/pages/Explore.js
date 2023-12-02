@@ -236,12 +236,12 @@ function Explore() {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
       items: 3,
-      slidesToSlide: 3, // optional, default to 1.
+      slidesToSlide: 1, // optional, default to 1.
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
       items: 3,
-      slidesToSlide: 3, // optional, default to 1.
+      slidesToSlide: 1, // optional, default to 1.
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
@@ -1015,12 +1015,12 @@ function Explore() {
                             itemclassName="carousel-item-padding-40-px"
                           >
                             {newCollections.map((collection, index) => (
-                              <div className="decoration-transparent rounded-xl transition-colors duration-300 p-0 m-2 block h-full relative">
+                              <div className="decoration-transparent rounded-xl transition-colors duration-300 p-0 m-2 block h-fit relative">
                                 <Link
                                   to={`/marketplace/collection/${collection._id}`}
-                                  className="relative h-full group block bg-gray-100 rounded-xl"
+                                  className="relative h-fit group block bg-gray-100 rounded-xl"
                                 >
-                                  <div className="max-w-sm rounded-xl overflow-hidden w-full h-full shadow-lg">
+                                  <div className="rounded-xl overflow-hidden w-full h-fit shadow-lg">
                                     <img
                                       src={collection.image}
                                       alt={collection.name}
@@ -1034,7 +1034,7 @@ function Explore() {
                                     <div className="text-lg font-semibold text-white">
                                       {collection.name}
                                     </div>
-                                    <div className="text-md text-white">
+                                    <div className="text-sm text-white">
                                       {collectionsTotalItems[collection._id]}{" "}
                                       items
                                     </div>

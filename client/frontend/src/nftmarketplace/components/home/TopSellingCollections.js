@@ -52,6 +52,10 @@ const TopSellingCollections = () => {
     setTopLastFiveCollections(temp.slice(5, temp.length));
   };
 
+  const randomPercents = [
+    1.2, 23.4, 12.3, 34.5, 45.6, 13, 23, 45, 56, 67, 78, 89, 90, 100,
+  ];
+
   useEffect(() => {
     fetchAllCollections();
   }, []);
@@ -76,10 +80,10 @@ const TopSellingCollections = () => {
             selectedTabClassName="bg-white text-gray-800 shadow-xl shadow-gray-300"
           >
             <TabList className="bg-gray-100 w-fit rounded-xl p-1">
-              <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:text-black transition-colors">
+              <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:text-black transition-colors outline-none">
                 Trending
               </Tab>
-              <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:text-black transition-colors">
+              <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:text-black transition-colors outline-none">
                 Top
               </Tab>
             </TabList>
@@ -117,7 +121,7 @@ const TopSellingCollections = () => {
                         class="text-start hover:bg-gray-100 rounded cursor-pointer font-bold text-gray-800"
                         key={index}
                       >
-                        <td class="py-3 px-3 rounded-l-xl text-sm font-semibold">
+                        <td class="py-3 px-3 text-sm font-semibold">
                           {index + 1}
                         </td>
                         <td class="py-3 px-3">
@@ -135,11 +139,16 @@ const TopSellingCollections = () => {
                             </span>
                           </Link>
                         </td>
-                        <td class="py-3 px-3 text-right rounded-r-xl">
+                        <td class="py-3 px-3 text-right">
                           {collection.totalItemsSold}
                         </td>
                         <td class="py-3 px-3 text-right">
-                          {collection.totalSales.toFixed(3)} ETH
+                          <span>{collection.totalSales.toFixed(3)} ETH</span>
+                          {index < 2 && (
+                            <span className="text-green-500 block text-sm font-normal">
+                              +{randomPercents[index]}%
+                            </span>
+                          )}
                         </td>
                       </tr>
                     ))}
@@ -177,7 +186,7 @@ const TopSellingCollections = () => {
                         class="text-start hover:bg-gray-100 rounded cursor-pointer font-bold text-gray-800"
                         key={index}
                       >
-                        <td class="py-3 px-3 rounded-l-xl text-sm font-semibold">
+                        <td class="py-3 px-3 text-sm font-semibold">
                           {index + 6}
                         </td>
                         <td class="py-3 px-3">
@@ -195,7 +204,7 @@ const TopSellingCollections = () => {
                             </span>
                           </Link>
                         </td>
-                        <td class="py-3 px-3 text-right rounded-r-xl">
+                        <td class="py-3 px-3 text-right">
                           {collection.totalItemsSold}
                         </td>
                         <td class="py-3 px-3 text-right">
@@ -241,9 +250,7 @@ const TopSellingCollections = () => {
                         class="text-start hover:bg-gray-100 rounded cursor-pointer font-bold text-gray-800"
                         key={index}
                       >
-                        <td class="py-3 px-3 rounded-l-xl text-sm font-semibold">
-                          {index}
-                        </td>
+                        <td class="py-3 px-3 text-sm font-semibold">{index}</td>
                         <td class="py-3 px-3">
                           <Link
                             class="flex items-center gap-6"
@@ -259,7 +266,7 @@ const TopSellingCollections = () => {
                             </span>
                           </Link>
                         </td>
-                        <td class="py-3 px-3 text-right rounded-r-xl">
+                        <td class="py-3 px-3 text-right">
                           {collection.totalItemsSold}
                         </td>
                         <td class="py-3 px-3 text-right">
@@ -301,7 +308,7 @@ const TopSellingCollections = () => {
                         class="text-start hover:bg-gray-100 rounded cursor-pointer font-bold text-gray-800"
                         key={index}
                       >
-                        <td class="py-3 px-3 rounded-l-xl text-sm font-semibold">
+                        <td class="py-3 px-3 text-sm font-semibold">
                           {index + 6}
                         </td>
                         <td class="py-3 px-3">
@@ -319,7 +326,7 @@ const TopSellingCollections = () => {
                             </span>
                           </Link>
                         </td>
-                        <td class="py-3 px-3 text-right rounded-r-xl">
+                        <td class="py-3 px-3 text-right">
                           {collection.totalItemsSold}
                         </td>
                         <td class="py-3 px-3 text-right">

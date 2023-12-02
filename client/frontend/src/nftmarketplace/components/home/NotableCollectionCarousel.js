@@ -51,12 +51,12 @@ export const NotableCollectionCarousel = ({ responsive, nfts, title }) => {
                       />
                     </Link>
                     <Link
-                      class="rounded-md text-nft-primary-light bg-white p-1 absolute top-2 right-2 text-sm"
+                      class="rounded-md text-white bg-nft-primary-light p-1 absolute top-2 right-2 text-sm"
                       to={nft.fileUrl}
                       target="_blank"
                       title="View Original Media File"
                     >
-                      <ArrowTopRightOnSquareIcon className="w-5 h-5" />
+                      <ArrowTopRightOnSquareIcon className="w-5 h-5 fill-white" />
                     </Link>
                     <div className="flex justify-between items-center z-50 absolute top-0 p-1">
                       <div className="flex -space-x-3 z-20">
