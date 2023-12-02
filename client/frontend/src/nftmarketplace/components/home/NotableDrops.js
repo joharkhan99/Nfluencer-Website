@@ -43,7 +43,6 @@ const NotableDrops = () => {
 
     // fetch only the first 4 items
     const firstFourItems = [...fetchedMarketItems];
-    // fetchedMarketItems.splice(4, fetchedMarketItems.length - 4);
     firstFourItems.splice(4, firstFourItems.length - 4);
 
     // console.log(fetchedMarketItems);
@@ -52,7 +51,7 @@ const NotableDrops = () => {
       firstFourItems.map(async (i) => {
         const tokenUri = await marketplaceContract.tokenURI(i.itemId);
         const meta = await axios.get(tokenUri);
-        console.log(meta.data);
+        // console.log(meta.data);
         if (meta.data.collection) {
           tempcollections.push(meta.data.collection);
         }
@@ -208,7 +207,7 @@ const NotableDrops = () => {
             </h1>
           </div>
 
-          <div className="flex flex-wrap justify-start gap-6 mt-16">
+          <div className="flex flex-wrap justify-start mt-16">
             {nfts.map((nft, index) => (
               <div
                 className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"

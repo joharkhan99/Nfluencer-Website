@@ -16,7 +16,9 @@ import {
   saveItem,
   getCollectionItemsCount,
   countViews,
+  countCollectionViews,
   updateCollectionDetails,
+  getAllCollections,
 } from "../controllers/NftController.js";
 import authenticate from "../middleware/authenticate.js";
 
@@ -28,7 +30,9 @@ router.post("/getLikes", getAllNFTLikes);
 router.get("/getNFTLikes/:id", getNFTLikes);
 router.get("/getCollectionItemsCount", getCollectionItemsCount);
 router.post("/countViews", countViews);
+router.post("/countCollectionViews", countCollectionViews);
 router.post("/getCollection", getCollection);
+router.get("/getAllCollections", getAllCollections);
 
 router.use(authenticate);
 

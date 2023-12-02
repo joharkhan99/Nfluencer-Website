@@ -190,6 +190,21 @@ const getCollections = async (req, res) => {
   }
 };
 
+const getAllCollections = async (req, res) => {
+  try {
+    const collections = await Collection.find({}).limit(10).exec();
+    return res.status(200).json({
+      error: false,
+      message: "Collections fetched successfully.",
+      collections,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: true, message: "Internal Server Error" });
+  }
+};
+
 const getCollection = async (req, res) => {
   const { collectionId } = req.body;
 
@@ -377,6 +392,20 @@ const countViews = async (req, res) => {
   }
 };
 
+const countCollectionViews = async (req, res) => {
+  try {
+    const { collectionId } = req.body;
+    const updatedNFTView = await Collection.findOneAndUpdate(
+      { _id: collectionId },
+      { $inc: { totalViews: 1 } },
+      { new: true, upsert: true }
+    );
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", error: true });
+  }
+};
+
 const updateCollectionDetails = async (req, res) => {
   const { collectionId } = req.params;
   const { salePrice } = req.body;
@@ -418,5 +447,7 @@ export {
   saveItem,
   getCollectionItemsCount,
   countViews,
+  countCollectionViews,
   updateCollectionDetails,
+  getAllCollections,
 };

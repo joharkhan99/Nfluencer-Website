@@ -139,9 +139,28 @@ const Collection = () => {
     // return responseData;
   };
 
+  const countCollectionViews = async () => {
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/nft/countCollectionViews`,
+        {
+          collectionId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchNFTs(collectionId);
     getCollection(collectionId);
+    countCollectionViews();
   }, [collectionId]);
 
   const handleCopyToClipboard = async (textToCopy) => {
@@ -582,9 +601,9 @@ const Collection = () => {
     getCollectionItemsCount();
   }, [collectionId]);
 
-  // if (loading) {
-  //   return <Loader />;
-  // }
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <>
       <Toaster />
