@@ -16,6 +16,8 @@ import PopularNFTs from "../components/home/PopularNFTs";
 import BlogResources from "../components/home/BlogResources";
 import { setSearchQuery } from "../../redux/slices/SearchNftSlice";
 import { useNavigate } from "react-router-dom";
+import TopCreators from "../components/home/TopCreators";
+import NotableCollectionByCategory from "../components/home/NotableCollectionByCategory";
 
 function Home() {
   const dispatch = useDispatch();
@@ -191,11 +193,15 @@ function Home() {
 
       <TopSellingCollections />
 
-      <TrendingNFTs />
+      <TopCreators />
 
-      <BlogResources />
+      <NotableCollectionByCategory />
 
-      <PopularNFTs />
+      {/* <TrendingNFTs /> */}
+
+      {/* <BlogResources /> */}
+
+      {/* <PopularNFTs /> */}
 
       <Footer />
     </>

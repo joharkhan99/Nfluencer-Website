@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import Loader from "../../../utils/Loader";
 
 const TopSellingCollections = () => {
   const [collections, setCollections] = useState([]);
@@ -11,16 +12,21 @@ const TopSellingCollections = () => {
 
   const [topFiveCollections, setTopFiveCollections] = useState([]);
   const [topLastFiveCollections, setTopLastFiveCollections] = useState([]);
+  const [isloading, setisloading] = useState(null);
 
   // "/getAllCollections"
   const fetchAllCollections = async () => {
+    setisloading(true);
     const response = await axios.get(
       `${process.env.REACT_APP_API_URL}/api/nft/getAllCollections`
     );
     setCollections(response.data.collections);
+    filterTrendingCollections(response.data.collections);
+    filterTopCollections(response.data.collections);
+    setisloading(false);
   };
 
-  const filterTrendingCollections = () => {
+  const filterTrendingCollections = (collections) => {
     const temp = [...collections];
     temp.sort((a, b) => {
       if (b.totalItems !== a.totalItems) {
@@ -29,11 +35,11 @@ const TopSellingCollections = () => {
       return b.totalViews - a.totalViews;
     });
 
-    settrendingFiveCollections(temp.slice(0, 2));
-    settrendingLastFiveCollections(temp.slice(2, temp.length));
+    settrendingFiveCollections(temp.slice(0, 5));
+    settrendingLastFiveCollections(temp.slice(5, temp.length));
   };
 
-  const filterTopCollections = () => {
+  const filterTopCollections = (collections) => {
     const temp = [...collections];
     temp.sort((a, b) => {
       if (b.totalSales !== a.totalSales) {
@@ -48,17 +54,18 @@ const TopSellingCollections = () => {
 
   useEffect(() => {
     fetchAllCollections();
-    filterTrendingCollections();
-    filterTopCollections();
   }, []);
 
+  if (isloading) {
+    return <Loader />;
+  }
   return (
     <div className="container mx-auto">
       <div className="mt-28">
-        <div className="text-center mb-10">
-          <div className="flex items-center justify-center">
+        <div className="text-left mb-10">
+          <div className="flex items-center justify-start">
             <h1 className="text-4xl font-extrabold tracking-tight text-black sm:text-4xl mr-4">
-              Notable Collections
+              Amazing Collections
             </h1>
           </div>
         </div>
@@ -171,7 +178,7 @@ const TopSellingCollections = () => {
                         key={index}
                       >
                         <td class="py-3 px-3 rounded-l-xl text-sm font-semibold">
-                          {trendingFiveCollections.length - index + 1}
+                          {index + 6}
                         </td>
                         <td class="py-3 px-3">
                           <Link
@@ -235,7 +242,7 @@ const TopSellingCollections = () => {
                         key={index}
                       >
                         <td class="py-3 px-3 rounded-l-xl text-sm font-semibold">
-                          {index + 1}
+                          {index}
                         </td>
                         <td class="py-3 px-3">
                           <Link
@@ -295,7 +302,7 @@ const TopSellingCollections = () => {
                         key={index}
                       >
                         <td class="py-3 px-3 rounded-l-xl text-sm font-semibold">
-                          {index + 1}
+                          {index + 6}
                         </td>
                         <td class="py-3 px-3">
                           <Link

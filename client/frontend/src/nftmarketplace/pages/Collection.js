@@ -120,7 +120,6 @@ const Collection = () => {
       {
         method: "POST",
         headers: {
-          "x-auth-token": user.jwtToken,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
@@ -599,6 +598,8 @@ const Collection = () => {
   useEffect(() => {
     fetchItemSaved(collectionId);
     getCollectionItemsCount();
+    console.log(collectionInfo);
+    console.log(collectionCreator);
   }, [collectionId]);
 
   if (loading) {
