@@ -12,7 +12,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { setSearchQuery } from "../../redux/slices/SearchNftSlice";
 
-const Header = ({ transparent = false }) => {
+const Header = ({ transparent = false, shadow = true }) => {
   const user = useSelector((state) => state.user.user);
 
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ const Header = ({ transparent = false }) => {
         <nav
           className={
             transparent
-              ? "bg-white shadow-md shadow-gray-200"
+              ? `bg-white ${shadow && "shadow-md shadow-gray-200"}`
               : "bg-transparent"
           }
         >

@@ -1,308 +1,375 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ethers } from "ethers";
+import {
+  NFTMarketplaceContractABI,
+  NFTMarketplaceContractAddress,
+} from "../../../constants/ContractDetails";
+import axios from "axios";
+import { Menu } from "@headlessui/react";
+import {
+  HeartIcon,
+  ClipboardDocumentListIcon,
+  PhotoIcon,
+  FlagIcon,
+  ArrowUpRightIcon,
+} from "@heroicons/react/24/solid";
+import toast, { Toaster } from "react-hot-toast";
+import { useSelector } from "react-redux";
+import Loader from "../../../utils/Loader";
 
 const NotableDrops = () => {
+  const [nfts, setNFTs] = useState([]);
+  const [isNFTLoading, setIsNFTLoading] = useState(false);
+  const fetchContract = (signerOrProvider) => {
+    const marketplaceContract = new ethers.Contract(
+      NFTMarketplaceContractAddress,
+      NFTMarketplaceContractABI,
+      signerOrProvider
+    );
+
+    return { marketplaceContract };
+  };
+
+  const fetchNFTs = async () => {
+    setIsNFTLoading(true);
+    const provider = new ethers.providers.JsonRpcProvider(
+      process.env.REACT_APP_ALCHEMY_SEPOLIA_URL
+    );
+
+    const { marketplaceContract } = fetchContract(provider);
+    const fetchedMarketItems = await marketplaceContract.fetchMarketItems();
+    const tempcollections = [];
+
+    // fetch only the first 4 items
+    const firstFourItems = [...fetchedMarketItems];
+    // fetchedMarketItems.splice(4, fetchedMarketItems.length - 4);
+    firstFourItems.splice(4, firstFourItems.length - 4);
+
+    // console.log(fetchedMarketItems);
+
+    const items = await Promise.all(
+      firstFourItems.map(async (i) => {
+        const tokenUri = await marketplaceContract.tokenURI(i.itemId);
+        const meta = await axios.get(tokenUri);
+        console.log(meta.data);
+        if (meta.data.collection) {
+          tempcollections.push(meta.data.collection);
+        }
+        return {
+          ...meta.data,
+          likes: i.likes.toString(),
+          itemId: Number(i.itemId),
+          weiPrice: i.price,
+        };
+      })
+    );
+
+    items.reverse();
+    setNFTs(items);
+    console.log(items);
+    setIsNFTLoading(false);
+  };
+
+  useEffect(() => {
+    fetchNFTs();
+  }, []);
+
+  const user = useSelector((state) => state.user.user);
+
+  const handleCopyToClipboard = async (textToCopy) => {
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+    } catch (err) {
+      console.error("Failed to copy to clipboard:", err);
+    }
+  };
+  const getFormattedPrice = (price) => {
+    return ethers.utils.formatEther(price.toString());
+  };
+  const [nftLikes, setNFTLikes] = useState([]);
+
+  const fetchLikes = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/nft/getLikes`,
+        {
+          nftIds: nfts.map((nft) => nft.itemId),
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      setNFTLikes(response.data.totalNFTLikes);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLikes();
+  }, [nfts]);
+
+  const checkIfUserLikedNFT = (nft) => {
+    if (nftLikes.length === 0 || !user) {
+      return false;
+    }
+    const nftLike = nftLikes.filter(
+      (like) =>
+        like.nftId.toString() === nft.itemId.toString() &&
+        like.userId.toString() === user._id.toString()
+    );
+    return nftLike.length > 0;
+  };
+
+  const addOrRemoveLike = async (nft) => {
+    if (!user) {
+      toast.error("Please login to like this NFT");
+      return;
+    }
+
+    try {
+      const nftLike = nftLikes.filter(
+        (like) =>
+          like.nftId.toString() === nft.itemId.toString() &&
+          like.userId.toString() === user._id.toString()
+      );
+
+      if (nftLike.length > 0) {
+        const response = await axios.delete(
+          `${process.env.REACT_APP_API_URL}/api/nft/like/${nftLike[0]._id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": user.jwtToken,
+            },
+          }
+        );
+        if (response.data.error === false) {
+          const newNFTLikes = nftLikes.filter(
+            (like) => like._id.toString() !== nftLike[0]._id.toString()
+          );
+          setNFTLikes(newNFTLikes);
+          toast.success("Like removed successfully");
+        }
+        return;
+      } else {
+        // add like
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/api/nft/like`,
+          {
+            nftId: nft.itemId,
+            userId: user._id,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": user.jwtToken,
+            },
+          }
+        );
+        if (response.data.error === false) {
+          const newNFTLikes = [...nftLikes, response.data.nftLike];
+          setNFTLikes(newNFTLikes);
+          toast.success("NFT liked successfully");
+        }
+      }
+    } catch (error) {
+      toast.error("Error liking NFT");
+      console.log(error);
+    }
+  };
+
+  const countNFTLikes = (nft) => {
+    if (nftLikes.length === 0) {
+      return 0;
+    }
+    const nftLike = nftLikes.filter(
+      (like) => like.nftId.toString() === nft.itemId.toString()
+    );
+    return nftLike.length;
+  };
+
+  if (isNFTLoading) {
+    return <Loader />;
+  }
+
   return (
-    <div className="container mx-auto">
-      <div className="mt-44">
-        <div className="text-center">
-          <h1 className="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
-            Selected notable drops
-          </h1>
-        </div>
-        <div className="flex flex-wrap justify-center gap-6 mt-16">
-          <Link
-            to="/nftdetails"
-            className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300"
-          >
-            <div className="w-64">
-              <div className="flex justify-between items-center mb-5">
-                <div className="bg-nft-primary-transparent rounded-full px-6 py-2 font-semibold text-sm text-nft-primary-light flex justify-center items-center gap-2">
-                  <span className="relative  h-3 w-3 flex">
-                    <span className="animate-ping duration-1000 absolute inline-flex h-full w-full rounded-full bg-nft-primary-light opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-nft-primary-light"></span>
-                  </span>
-                  <span>Live Now</span>
-                </div>
-                <div className="flex items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                    />
-                  </svg>
-                  <span className="pl-1 font-bold text-sm">10</span>
-                </div>
-              </div>
+    <>
+      <Toaster />
+      <div className="container mx-auto">
+        <div className="mt-44">
+          <div className="text-center">
+            <h1 className="text-4xl font-extrabold tracking-tight text-black sm:text-4xl">
+              Selected notable drops
+            </h1>
+          </div>
+
+          <div className="flex flex-wrap justify-start gap-6 mt-16">
+            {nfts.map((nft, index) => (
               <div
-                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
-                style={{ height: "300px" }}
+                className="w-full sm:w-1/2 md:w-1/2 lg:w-1/3 xl:w-1/4 p-2"
+                key={index}
               >
-                <img
-                  src={require("../../assets/nft1.jpg")}
-                  alt="sd"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="py-2 pt-3">
-                <h3 className="text-xl font-bold tracking-tight text-black">
-                  Nyoling
-                </h3>
-                <div className="flex items-center text-gray-500 text-sm mt-2">
-                  <img
-                    src={require("../../assets/eth.png")}
-                    alt="sd"
-                    className="h-5 w-5 object-contain"
-                  />
-                  <span className="pl-2">
-                    from{" "}
-                    <span className="font-bold text-sm text-black">
-                      0.45 ETH
-                    </span>
-                  </span>
-                </div>
-                <div className="flex -space-x-2 mt-5">
-                  <img
-                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                    src={require("../../assets/user1.jpeg")}
-                    alt="User Imageas"
-                  />
-                  <img
-                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                    src={require("../../assets/user2.jpeg")}
-                    alt="User Imageas"
-                  />
-                  <img
-                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                    src={require("../../assets/user3.webp")}
-                    alt="User Imageas"
-                  />
-                </div>
-              </div>
-            </div>
-          </Link>
-          <a
-            href="#sd"
-            className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300"
-          >
-            <div className="w-64">
-              <div className="flex justify-between items-center mb-5">
-                <div className="bg-gray-100 rounded-full px-8 py-2 font-semibold text-sm text-gray-500">
-                  01 Dec 2023
-                </div>
-                <div className="flex items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-4 h-4"
+                <div className="w-full h-full decoration-transparent rounded-xl shadow-xl transition-colors duration-300 relative group">
+                  <div
+                    className="h-auto bg-gray-100 overflow-hidden rounded-xl"
+                    style={{ height: "300px" }}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                    />
-                  </svg>
-                  <span className="pl-1 font-bold text-sm">20</span>
-                </div>
-              </div>
-              <div
-                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
-                style={{ height: "300px" }}
-              >
-                <img
-                  src={require("../../assets/nft3.jpg")}
-                  alt="sd"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="py-2 pt-3">
-                <h3 className="text-xl font-bold tracking-tight text-black">
-                  Angry Ape
-                </h3>
-                <div className="flex items-center text-gray-500 text-sm mt-2">
-                  <img
-                    src={require("../../assets/bitcoin.png")}
-                    alt="sd"
-                    className="h-5 w-5 object-contain"
-                  />
-                  <span className="pl-2">
-                    from{" "}
-                    <span className="font-bold text-sm text-black">
-                      2.51 COINS
-                    </span>
-                  </span>
-                </div>
-                <div className="flex -space-x-2 mt-5">
-                  <img
-                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                    src={require("../../assets/user3.webp")}
-                    alt="User Imageas"
-                  />
-                  <img
-                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                    src={require("../../assets/user1.jpeg")}
-                    alt="User Imageas"
-                  />
-                </div>
-              </div>
-            </div>
-          </a>
-          <a
-            href="#sd"
-            className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300"
-          >
-            <div className="w-64">
-              <div className="flex justify-between items-center mb-5">
-                <div className="bg-nft-primary-transparent rounded-full px-6 py-2 font-semibold text-sm text-nft-primary-light flex justify-center items-center gap-2">
-                  <span className="relative  h-3 w-3 flex">
-                    <span className="animate-ping duration-1000 absolute inline-flex h-full w-full rounded-full bg-nft-primary-light opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-nft-primary-light"></span>
-                  </span>
-                  <span>Live Now</span>
-                </div>
-                <div className="flex items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-4 h-4"
+                    {nft.fileType === "image" ? (
+                      <img
+                        src={nft.fileUrl}
+                        alt={nft.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    ) : (
+                      <video controls width="100%" height="100%">
+                        <source src={nft.fileUrl} type="video/mp4" />
+                        Your browser does not support the video tag.
+                      </video>
+                    )}
+                  </div>
+                  <div className="p-2">
+                    <div className="flex justify-between items-center -mt-8 z-20">
+                      <div className="flex -space-x-3">
+                        {nft.ownershipHistory.map((history, index) => (
+                          <img
+                            key={index}
+                            className="w-12 h-12 rounded-full border-2 object-cover border-white z-20"
+                            src={history.avatar}
+                            alt="User Imageas"
+                          />
+                        ))}
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <Menu as="div" className="relative text-left">
+                          <div>
+                            <Menu.Button className="font-black text-xl bg-white rounded-full w-12 h-12 z-50 shadow-lg hover:bg-gray-100 text-gray-700">
+                              <span>···</span>
+                            </Menu.Button>
+                          </div>
+
+                          <Menu.Items className="absolute right-0 z-10 mt-1 w-40 origin-top-right rounded-xl bg-white shadow-xl focus:outline-none  p-1 border border-gray-50">
+                            <Menu.Item>
+                              <button
+                                className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium"
+                                onClick={() => {
+                                  handleCopyToClipboard(
+                                    `${window.location.origin}/nft/${nft.itemId}`
+                                  );
+                                  toast.success("Link copied to clipboard");
+                                }}
+                              >
+                                <ClipboardDocumentListIcon className="w-5 h-5" />
+                                <span>Copy Link</span>
+                              </button>
+                            </Menu.Item>
+                            <Menu.Item>
+                              <Link
+                                to={nft.fileUrl}
+                                target="_blank"
+                                className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium"
+                              >
+                                <PhotoIcon className="w-5 h-5" />
+                                <span>Open Original</span>
+                              </Link>
+                            </Menu.Item>
+                            <Menu.Item>
+                              <button className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium">
+                                <FlagIcon className="w-5 h-5" />
+                                <span>Report</span>
+                              </button>
+                            </Menu.Item>
+                          </Menu.Items>
+                        </Menu>
+                      </div>
+                    </div>
+
+                    <div className="p-2">
+                      <h3 className="text-xl font-bold tracking-tight text-black">
+                        {nft.name}
+                      </h3>
+                      <div className="flex items-center text-gray-500 text-sm mt-2 justify-between">
+                        <div>
+                          <span className="block text-xs text-center">
+                            Price
+                          </span>
+                          <span className="font-bold text-sm text-black">
+                            <span className="text-gray-500 pr-1 font-medium">
+                              {getFormattedPrice(nft.weiPrice)}
+                            </span>
+                            ETH
+                          </span>
+                        </div>
+                        <div>
+                          <span className="block text-xs text-center">
+                            Collection
+                          </span>
+                          <Link
+                            to={`/marketplace/collection/${nft.collection._id}`}
+                            target="_blank"
+                            className="text-nft-primary-light font-semibold"
+                          >
+                            <span>{nft.collection.name}</span>
+                            <ArrowUpRightIcon className="w-4 h-4 inline-block" />
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between gap-1 text-sm mt-4 text-center">
+                      <Link
+                        className="bg-nft-primary-light border-nft-primary-light text-white font-medium p-4 rounded-xl hover:bg-nft-primary-dark w-full"
+                        to={`/marketplace/nft/${nft.itemId}`}
+                      >
+                        View Details
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="absolute top-2 left-2">
+                    <div className="bg-white rounded-full bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-50 text-black overflow-hidden p-2">
+                      <div>
+                        <div className="flex rounded-2xl justify-evenly items-center">
+                          <div className="flex flex-col gap-1 items-center">
+                            <span className="flex gap-1">
+                              <img
+                                src={require("../../assets/eth.png")}
+                                alt=""
+                                className="w-5 h-5 object-contain"
+                              />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    className={`rounded-xl p-2 flex gap-1 items-center absolute top-2 right-2 text-sm font-semibold ${
+                      checkIfUserLikedNFT(nft)
+                        ? "bg-nft-primary-light text-white"
+                        : "text-nft-primary-light bg-white"
+                    }`}
+                    onClick={() => addOrRemoveLike(nft)}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                    />
-                  </svg>
-                  <span className="pl-1 font-bold text-sm">32</span>
-                </div>
-              </div>
-              <div
-                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
-                style={{ height: "300px" }}
-              >
-                <img
-                  src={require("../../assets/nft2.jpg")}
-                  alt="sd"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="py-2 pt-3">
-                <h3 className="text-xl font-bold tracking-tight text-black">
-                  Boring Smurf
-                </h3>
-                <div className="flex items-center text-gray-500 text-sm mt-2">
-                  <img
-                    src={require("../../assets/uniswap.png")}
-                    alt="sd"
-                    className="h-5 w-5 object-contain"
-                  />
-                  <span className="pl-2">
-                    from{" "}
-                    <span className="font-bold text-sm text-black">
-                      1.98 UNISWAP
+                    <HeartIcon className="w-5 h-5" />
+                    <span
+                      className={!checkIfUserLikedNFT(nft) && "text-gray-700"}
+                    >
+                      {nftLikes && countNFTLikes(nft)}
                     </span>
-                  </span>
-                </div>
-                <div className="flex -space-x-2 mt-5">
-                  <img
-                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                    src={require("../../assets/user2.jpeg")}
-                    alt="User Imageas"
-                  />
+                  </button>
                 </div>
               </div>
-            </div>
-          </a>
-          <a
-            href="#sd"
-            className="decoration-transparent hover:bg-purple-50  rounded-2xl shadow-sm shadow-gray-100 p-3 px-4 border transition-colors duration-300"
-          >
-            <div className="w-64">
-              <div className="flex justify-between items-center mb-5">
-                <div className="bg-gray-100 rounded-full px-8 py-2 font-semibold text-sm text-gray-500">
-                  22 Aug 2023
-                </div>
-                <div className="flex items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                    />
-                  </svg>
-                  <span className="pl-1 font-bold text-sm">46</span>
-                </div>
-              </div>
-              <div
-                className="h-auto rounded-xl bg-gray-200 overflow-hidden"
-                style={{ height: "300px" }}
-              >
-                <img
-                  src={require("../../assets/nft4.jpg")}
-                  alt="sd"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="py-2 pt-3">
-                <h3 className="text-xl font-bold tracking-tight text-black">
-                  Egyptian Myth
-                </h3>
-                <div className="flex items-center text-gray-500 text-sm mt-2">
-                  <img
-                    src={require("../../assets/litecoin.png")}
-                    alt="sd"
-                    className="h-5 w-5 object-contain"
-                  />
-                  <span className="pl-2">
-                    from{" "}
-                    <span className="font-bold text-sm text-black">
-                      7.5 ETH
-                    </span>
-                  </span>
-                </div>
-                <div className="flex -space-x-2 mt-5">
-                  <img
-                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                    src={require("../../assets/user2.jpeg")}
-                    alt="User Imageas"
-                  />
-                  <img
-                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                    src={require("../../assets/user3.webp")}
-                    alt="User Imageas"
-                  />
-                  <img
-                    className="w-8 h-8 rounded-full border-2 object-cover border-white"
-                    src={require("../../assets/user1.jpeg")}
-                    alt="User Imageas"
-                  />
-                </div>
-              </div>
-            </div>
-          </a>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

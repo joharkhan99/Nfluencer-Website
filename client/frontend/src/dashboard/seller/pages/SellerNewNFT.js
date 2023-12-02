@@ -324,6 +324,7 @@ const SellerNewNFT = () => {
       },
       body: JSON.stringify({
         collection: selectedCollection,
+        walletAddress,
       }),
     });
 
@@ -422,6 +423,7 @@ const SellerNewNFT = () => {
               image: fileUrl,
               description: collectionDescription,
               userId: user._id,
+              walletAddress,
             }),
           }
         );

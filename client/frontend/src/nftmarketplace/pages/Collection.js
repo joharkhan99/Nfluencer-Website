@@ -90,8 +90,8 @@ const Collection = () => {
         const meta = await axios.get(tokenUri);
 
         if (meta.data.collection._id === collectionId) {
-          setCollectionInfo(meta.data.collection);
-          setCollectionCreator(meta.data.creator);
+          // setCollectionInfo(meta.data.collection);
+          // setCollectionCreator(meta.data.creator);
           return {
             ...meta.data,
             likes: i.likes.toString(),
@@ -110,11 +110,38 @@ const Collection = () => {
     filteredItems.reverse();
     setNfts(filteredItems);
     console.log(filteredItems);
+    console.log(collectionCreator);
     setLoading(false);
+  };
+
+  const getCollection = async (collectionId) => {
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/nft/getCollection`,
+      {
+        method: "POST",
+        headers: {
+          "x-auth-token": user.jwtToken,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          collectionId,
+        }),
+      }
+    );
+
+    const responseData = await res.json();
+    console.log(responseData);
+    setCollectionInfo(responseData);
+    setCollectionCreator({
+      ...responseData.user,
+      walletAddress: responseData.creatorWalletAddress,
+    });
+    // return responseData;
   };
 
   useEffect(() => {
     fetchNFTs(collectionId);
+    getCollection(collectionId);
   }, [collectionId]);
 
   const handleCopyToClipboard = async (textToCopy) => {
@@ -555,86 +582,173 @@ const Collection = () => {
     getCollectionItemsCount();
   }, [collectionId]);
 
-  if (loading) {
-    return <Loader />;
-  }
+  // if (loading) {
+  //   return <Loader />;
+  // }
   return (
     <>
       <Toaster />
-      <Header transparent={true} />
+      <Header transparent={true} shadow={false} />
       {collectionCreator !== null && collectionInfo && (
-        <div className="mt-8">
-          <div className="container mx-auto">
-            <div className="p-4 h-80 w-full">
-              <div
-                className={`w-full h-full rounded-xl relative bg-gradient-to-r from-blue-600 to-indigo-600 shadow-lg shadow-gray-200 `}
-              >
-                <img
-                  src="https://cdn.dribbble.com/users/2256359/screenshots/15433092/media/311b79dd55ecde91f8096d9e49dc2577.jpg"
-                  alt=""
-                  className="absolute w-full h-full object-cover rounded-xl"
-                />
-                <div className="flex items-center justify-end p-5 gap-4">
-                  {isItemSaved ? (
-                    <button
-                      className="bg-nft-primary-light rounded-full w-auto h-10 z-10 shadow-lg hover:opacity-80 text-white flex items-center px-4 text-sm gap-2 font-medium"
-                      onClick={() => addOrRemoveSavedItem(collectionId)}
-                    >
-                      <HeartIcon className="w-5 h-5 text-white" />
-                      <span>Collection Saved</span>
-                    </button>
-                  ) : (
-                    <button
-                      className="bg-white rounded-full w-auto h-10 z-10 shadow-lg hover:bg-gray-100 text-gray-700 flex items-center px-4 text-sm gap-2 font-medium"
-                      onClick={() => addOrRemoveSavedItem(collectionId)}
-                    >
-                      <HeartIcon className="w-5 h-5 text-nft-primary-light" />
-                      <span>Add to Favorites</span>
-                    </button>
-                  )}
+        <div className="mt-0">
+          <div className="p-0 h-auto w-full">
+            <div
+              className={`w-full h-full relative bg-gradient-to-r from-blue-600 to-indigo-600 `}
+            >
+              <img
+                src={collectionInfo.image}
+                alt=""
+                className="absolute w-full h-full object-cover"
+              />
+              <div className="flex items-center justify-end p-8 gap-4 z-10">
+                {isItemSaved ? (
+                  <button
+                    className="bg-nft-primary-light rounded-full w-auto h-10 z-10 shadow-lg hover:opacity-80 text-white flex items-center px-4 text-sm gap-2 font-medium"
+                    onClick={() => addOrRemoveSavedItem(collectionId)}
+                  >
+                    <HeartIcon className="w-5 h-5 text-white" />
+                    <span>Collection Saved</span>
+                  </button>
+                ) : (
+                  <button
+                    className="bg-white rounded-full w-auto h-10 z-10 shadow-lg hover:bg-gray-100 text-gray-700 flex items-center px-4 text-sm gap-2 font-medium"
+                    onClick={() => addOrRemoveSavedItem(collectionId)}
+                  >
+                    <HeartIcon className="w-5 h-5 text-nft-primary-light" />
+                    <span>Add to Favorites</span>
+                  </button>
+                )}
 
-                  <Menu as="div" className="relative text-left">
-                    <div>
-                      <Menu.Button className="font-black text-xl bg-white rounded-full w-10 h-10 z-50 shadow-lg hover:bg-gray-100 text-gray-700">
-                        <span>···</span>
-                      </Menu.Button>
+                <Menu as="div" className="relative text-left z-50">
+                  <div>
+                    <Menu.Button className="font-black text-xl bg-white rounded-full w-10 h-10 z-50 shadow-lg hover:bg-gray-100 text-gray-700">
+                      <span>···</span>
+                    </Menu.Button>
+                  </div>
+
+                  <Menu.Items className="absolute right-0 z-50 mt-1 w-40 origin-top-right rounded-xl bg-white shadow-xl focus:outline-none  p-1 border border-gray-50">
+                    <Menu.Item>
+                      <button className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium">
+                        <ClipboardDocumentListIcon className="w-5 h-5" />
+                        <span>Copy Link</span>
+                      </button>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <Link
+                        target="_blank"
+                        className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium"
+                      >
+                        <PhotoIcon className="w-5 h-5" />
+                        <span>Open Original</span>
+                      </Link>
+                    </Menu.Item>
+                    <Menu.Item>
+                      <button className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium">
+                        <FlagIcon className="w-5 h-5" />
+                        <span>Report</span>
+                      </button>
+                    </Menu.Item>
+                  </Menu.Items>
+                </Menu>
+              </div>
+
+              <div class="absolute w-full h-full bg-gradient-to-b from-transparent to-[#000000f1] bottom-0"></div>
+
+              {/* ddd */}
+              <div className="flex items-end justify-between gap-7 w-full p-5 py-8">
+                <div className="z-30 flex flex-col gap-0">
+                  <img
+                    src={collectionInfo.image}
+                    alt={collectionInfo.name}
+                    className="w-20 h-20 rounded-xl object-cover mb-3"
+                  />
+                  <h1 className="text-2xl font-bold text-white">
+                    {collectionInfo.name}
+                  </h1>
+                  <div className="text-gray-300 font-normal text-base flex items-center gap-2 mt-2">
+                    <img
+                      src={collectionCreator.avatar}
+                      className="w-10 h-10 rounded-full object-cover"
+                      alt=""
+                    />
+                    <div className="flex flex-col justify-start">
+                      <span className="block text-white">
+                        {collectionCreator.name}
+                      </span>
+                      <span className="block text-xs">
+                        {collectionCreator.walletAddress.substring(0, 7) +
+                          "..." +
+                          collectionCreator.walletAddress.substring(
+                            collectionCreator.walletAddress.length - 7,
+                            collectionCreator.walletAddress.length
+                          )}
+                      </span>
                     </div>
+                  </div>
+                </div>
 
-                    <Menu.Items className="absolute right-0 z-10 mt-1 w-40 origin-top-right rounded-xl bg-white shadow-xl focus:outline-none  p-1 border border-gray-50">
-                      <Menu.Item>
-                        <button className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium">
-                          <ClipboardDocumentListIcon className="w-5 h-5" />
-                          <span>Copy Link</span>
-                        </button>
-                      </Menu.Item>
-                      <Menu.Item>
-                        <Link
-                          target="_blank"
-                          className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium"
-                        >
-                          <PhotoIcon className="w-5 h-5" />
-                          <span>Open Original</span>
-                        </Link>
-                      </Menu.Item>
-                      <Menu.Item>
-                        <button className="text-gray-600 p-3 rounded-xl hover:bg-gray-100 text-sm w-full text-left flex gap-2 items-center font-medium">
-                          <FlagIcon className="w-5 h-5" />
-                          <span>Report</span>
-                        </button>
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Menu>
+                <div className="z-40">
+                  <div className="flex items-center justify-center gap-10 z-50">
+                    <div className="flex flex-col items-start">
+                      <span className="text-white font-medium">
+                        {collectionInfo.totalSales &&
+                          collectionInfo.totalSales.toFixed(4)}
+                      </span>
+                      <span className="text-gray-300 font-normal text-base">
+                        Total Sales
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-start">
+                      <span className="text-white font-medium">
+                        {collectionInfo.totalItemsSold}
+                      </span>
+                      <span className="text-gray-300 font-normal text-base">
+                        Items Sold
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-start">
+                      <span className="text-white font-medium text-center">
+                        {collectionInfo.totalItems}
+                      </span>
+                      <span className="text-gray-300 font-normal text-base">
+                        Items
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-start">
+                      <span className="text-white font-medium">Ethereum</span>
+                      <span className="text-gray-300 font-normal text-base">
+                        Chain
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-start">
+                      <span className="text-white font-medium">
+                        {formatDate(collectionInfo.createdAt)}
+                      </span>
+                      <span className="text-gray-300 font-normal text-base">
+                        Created
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
+          <div className="container mx-auto mt-10">
+            <p className="w-1/2 text-base text-left text-gray-500">
+              {collectionInfo.description}
+            </p>
 
-            <div className="flex items-center justify-center flex-col z-50 -mt-20 gap-4">
+            {/* <div className="flex items-center justify-center flex-col z-50 -mt-20 gap-4">
               <div className="z-50">
                 <img
                   src={collectionInfo.image}
                   alt={collectionInfo.name}
                   className="w-32 h-32 rounded-full border-2 border-white object-cover z-50"
                 />
+              </div>
+
+              <div>
+
               </div>
 
               <h1 className="text-4xl font-extrabold tracking-tight text-gra sm:text-4xl">
@@ -649,7 +763,7 @@ const Collection = () => {
                 <div>
                   <span className="text-gray-500 font-normal">Items</span>
                   <span className="text-gray-800 font-bold pl-2">
-                    {likes[collectionId]}
+                    {collectionInfo.totalItems}
                   </span>
                 </div>
                 <div className="text-gray-500 font-black">·</div>
@@ -664,6 +778,18 @@ const Collection = () => {
                   <span className="text-gray-500 font-normal">Chain</span>
                   <span className="text-gray-800 font-bold pl-2">Ethereum</span>
                 </div>
+                <div>
+                  <span className="text-gray-500 font-normal">Total Sales</span>
+                  <span className="text-gray-800 font-bold pl-2">
+                    {collectionInfo.totalSales.toFixed(4)}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-gray-500 font-normal">Items Sold</span>
+                  <span className="text-gray-800 font-bold pl-2">
+                    {collectionInfo.totalItemsSold}
+                  </span>
+                </div>
               </div>
 
               <div className="w-fit flex flex-col gap-2 items-center justify-center border border-gray-200 p-2 px-4 rounded-xl shadow-md shadow-gray-100 bg-gray-50">
@@ -671,7 +797,7 @@ const Collection = () => {
                   Created by
                 </span>
                 <a href="s" className="block">
-                  {collectionCreator && (
+                  {Object.keys(collectionCreator).length > 0 && (
                     <div className="flex items-center gap-3">
                       <img
                         src={collectionCreator.avatar}
@@ -695,7 +821,7 @@ const Collection = () => {
                   )}
                 </a>
               </div>
-            </div>
+            </div> */}
 
             {/* add here */}
 

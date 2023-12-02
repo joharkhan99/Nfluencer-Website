@@ -135,7 +135,7 @@ const nftDetails = async (req, res) => {
 };
 
 const addCollection = async (req, res) => {
-  const { name, image, userId, description } = req.body;
+  const { name, image, userId, description, walletAddress } = req.body;
 
   if (!name || !image) {
     return res
@@ -149,6 +149,7 @@ const addCollection = async (req, res) => {
       image,
       user: userId,
       description,
+      creatorWalletAddress: walletAddress,
     });
     await newCollection.save();
 
@@ -195,7 +196,9 @@ const getCollection = async (req, res) => {
   try {
     const collection = await Collection.findOne({
       _id: collectionId,
-    }).exec();
+    })
+      .populate("user", "-password")
+      .exec();
 
     return res.status(200).json(collection);
   } catch (error) {
@@ -378,11 +381,10 @@ const updateCollectionDetails = async (req, res) => {
   const { collectionId } = req.params;
   const { salePrice } = req.body;
   try {
-    await NFTView.findOneAndUpdate(
+    await Collection.findOneAndUpdate(
       { _id: collectionId },
       {
-        $inc: { totalItemsSold: 1 },
-        $addToSet: { totalSales: Number(salePrice) },
+        $inc: { totalItemsSold: 1, totalSales: Number(salePrice) },
       },
       { new: true, upsert: true }
     );

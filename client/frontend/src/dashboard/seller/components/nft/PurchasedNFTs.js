@@ -67,6 +67,7 @@ const PurchasedNFTs = ({ user }) => {
 
   useEffect(() => {
     fetchNFTs();
+    // console.log(nfts);
   }, []);
 
   const resellNFT = async (nftItem) => {

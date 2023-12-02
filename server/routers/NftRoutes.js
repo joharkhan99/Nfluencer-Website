@@ -28,6 +28,7 @@ router.post("/getLikes", getAllNFTLikes);
 router.get("/getNFTLikes/:id", getNFTLikes);
 router.get("/getCollectionItemsCount", getCollectionItemsCount);
 router.post("/countViews", countViews);
+router.post("/getCollection", getCollection);
 
 router.use(authenticate);
 
@@ -35,7 +36,6 @@ router.post("/user-nfts", fetchUserNFTs);
 router.post("/", createNft);
 router.post("/addCollection", addCollection);
 router.post("/getCollections", getCollections);
-router.post("/getCollection", getCollection);
 router.post("/like", likeNFT);
 router.delete("/like/:id", deleteLikeNFT);
 router.post("/checkSaveItem", checkSaveItem);
