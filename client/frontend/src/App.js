@@ -25,6 +25,7 @@ import Loader from "./utils/Loader";
 import SellerManageNFT from "./dashboard/seller/pages/SellerManageNFT";
 import SellerInbox from "./dashboard/seller/pages/SellerInbox";
 import Collection from "./nftmarketplace/pages/Collection";
+import MyItems from "./dashboard/seller/pages/MyItems";
 
 function App() {
   const dispatch = useDispatch();
@@ -124,6 +125,7 @@ function App() {
           <Route path="newnft" Component={SellerNewNFT} />
           <Route path="nfts" Component={SellerManageNFT} />
           <Route path="inbox" Component={SellerInbox} />
+          <Route path="my-items" Component={MyItems} />
         </Route>
       </Routes>
     </BrowserRouter>

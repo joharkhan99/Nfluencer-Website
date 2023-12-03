@@ -14,7 +14,8 @@ const upload = multer({ storage });
 router.use("/user", upload.single("avatar"), userRoutes);
 router.use("/chat", chatRoutes);
 router.use("/message", messageRoutes);
-router.use("/gig", upload.single("images"), gigRoutes);
+// router.use("/gig", upload.single("images"), gigRoutes);
+router.use("/gig", gigRoutes);
 router.use("/nft", nftRoutes);
 
 export default router;

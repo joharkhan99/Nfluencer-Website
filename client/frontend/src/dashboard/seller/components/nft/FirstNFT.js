@@ -81,34 +81,36 @@ const FirstNFT = ({ NFT }) => {
           </p>
 
           <div className="flex gap-2">
-            <div className="bg-gray-100 flex p-6 px-3 rounded-xl gap-14 w-1/2 justify-center items-center">
-              <div className="flex flex-col gap-2">
-                <span className="text-sm font-semibold text-gray-500">
-                  Price Starts From
-                </span>
-                <span className="flex gap-2">
-                  <img
-                    src={require("../../../../nftmarketplace/assets/eth.png")}
-                    alt=""
-                    className="w-8 h-8 object-contain"
-                  />
-                  <span className="font-bold text-xl">
-                    {getFormattedPrice(NFT.weiPrice)} ETH
+            <div className="justify-center items-center">
+              <div className="bg-gray-100 p-6 px-3 flex rounded-xl gap-10 w-fit">
+                <div className="flex flex-col gap-2 items-center">
+                  <span className="text-sm font-medium text-gray-500">
+                    Price Starts From
                   </span>
-                </span>
-              </div>
-              <div className="flex flex-col gap-2">
-                <span className="text-sm font-semibold text-gray-500">
-                  Creator Royalty
-                </span>
-                <span className="flex gap-2 items-center">
-                  <TrophyIcon className="w-8 h-8 object-contain text-yellow-500" />
-                  <span className="font-bold text-xl">{NFT.royalties} %</span>
-                </span>
+                  <span className="flex gap-2">
+                    <img
+                      src={require("../../../../nftmarketplace/assets/eth.png")}
+                      alt=""
+                      className="w-8 h-8 object-contain"
+                    />
+                    <span className="font-bold text-xl">
+                      {getFormattedPrice(NFT.weiPrice)} ETH
+                    </span>
+                  </span>
+                </div>
+                <div className="flex flex-col gap-2 items-center">
+                  <span className="text-sm font-medium text-gray-500">
+                    Creator Royalty
+                  </span>
+                  <span className="flex gap-2 items-center">
+                    <TrophyIcon className="w-8 h-8 object-contain text-yellow-500" />
+                    <span className="font-bold text-xl">{NFT.royalties} %</span>
+                  </span>
+                </div>
               </div>
             </div>
 
-            <div className="w-1/2">
+            <div className="">
               <div className=" gap-2 items-center">
                 {NFT.traits.map((trait, index) => (
                   <span
@@ -123,14 +125,14 @@ const FirstNFT = ({ NFT }) => {
           </div>
 
           <div className="flex items-center gap-5 mt-2">
-            <button className="rounded-xl text-nft-primary-light bg-purple-200 p-3 flex gap-3 items-center">
+            {/* <button className="rounded-xl text-nft-primary-light bg-purple-200 p-3 flex gap-3 items-center">
               <HeartIcon className="h-6 w-6 fill-nft-primary-light" />
               <span className="font-semibold">{NFT.likes}</span>
-            </button>
+            </button> */}
 
             <div className="flex items-center gap-4">
               <Link
-                className="bg-nft-primary-light border border-nft-primary-light text-white font-bold p-3 rounded-xl px-10 hover:opacity-80"
+                className="bg-nft-primary-light border border-nft-primary-light text-white font-bold p-4 rounded-xl px-10 hover:opacity-80"
                 to={`/marketplace/nft/${NFT.tokenId}`}
                 target="_blank"
               >

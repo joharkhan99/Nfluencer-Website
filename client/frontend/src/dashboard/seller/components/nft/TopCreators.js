@@ -68,7 +68,7 @@ const TopCreators = () => {
 
     creatorDetailsArray.sort((a, b) => b.count - a.count);
     setTopCreators(creatorDetailsArray.slice(0, 9));
-    console.log("TopCreators: ", creatorDetailsArray);
+    // console.log("TopCreators: ", creatorDetailsArray);
     setIsNFTLoading(false);
   };
 

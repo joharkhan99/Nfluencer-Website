@@ -7,30 +7,79 @@ import {
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { setFormStep } from "../../../../redux/slices/NewGigSlice";
+import axios from "axios";
 
 const GalleryTab = ({ images, setImages, imagePreviews, setImagePreviews }) => {
   const [errors, setErrors] = useState({});
+  const user = useSelector((state) => state.user.user);
+  const [isLoading, setIsLoading] = useState(false);
+  const [video, setVideo] = useState(null);
+  const [document, setDocument] = useState(null);
 
-  const handleImageChange = (e, index) => {
-    const file = e.target.files[0];
+  const handleVideoUpload = async (e) => {
+    const fd = new FormData();
+    fd.append("video", e.target.files[0]);
+    const request = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/gig/uploadVideoToCloudinary`,
+      {
+        method: "POST",
+        headers: {
+          "x-auth-token": user.jwtToken,
+        },
+        body: fd,
+      }
+    );
+
+    const response = await request.json();
+    console.log(response);
+    setVideo(response.result.url);
+  };
+
+  const uploadImagetoCloudinary = async (image, index) => {
+    const fd = new FormData();
+    fd.append("images", image);
+    const request = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/gig/uploadImagetoCloudinary`,
+      {
+        method: "POST",
+        headers: {
+          "x-auth-token": user.jwtToken,
+        },
+        body: fd,
+      }
+    );
+
+    const response = await request.json();
+    console.log(response.response);
+
     const updatedImages = [...images];
-    updatedImages[index] = file;
+    updatedImages[index] = response.response.url;
 
     // Use the state updater function to correctly update the state
     setImages((prevImages) => {
       const newImages = [...prevImages];
-      newImages[index] = file;
+      newImages[index] = response.response.url;
       return newImages;
     });
 
-    // Generate and store a URL for the selected image to display
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const newImagePreviews = [...imagePreviews];
-      newImagePreviews[index] = e.target.result;
-      setImagePreviews(newImagePreviews);
-    };
-    reader.readAsDataURL(file);
+    setImagePreviews((prevImagePreviews) => {
+      const newImagePreviews = [...prevImagePreviews];
+      newImagePreviews[index] = response.response.url;
+      return newImagePreviews;
+    });
+  };
+
+  const uploadDocumentToCloudinary = async (video) => {};
+
+  const handleImageChange = async (e, index) => {
+    setIsLoading(true);
+    if (!e.target.files[0]) {
+      setIsLoading(false);
+      return;
+    }
+    await uploadImagetoCloudinary(e.target.files[0], index);
+    setIsLoading(false);
+    return;
   };
 
   const dispatch = useDispatch();
@@ -79,48 +128,57 @@ const GalleryTab = ({ images, setImages, imagePreviews, setImagePreviews }) => {
             </div>
 
             <div className="flex justify-evenly mt-10 gap-3">
-              {imagePreviews.map((preview, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-center h-52 w-1/3 cursor-pointer text-center relative"
-                >
-                  <input
-                    type="file"
-                    id={`image${index + 1}`}
-                    name={`image${index + 1}`}
-                    className="hidden"
-                    accept="image/*"
-                    onChange={(e) => {
-                      handleImageChange(e, index);
-                    }}
-                  />
-                  <label
-                    for={`image${index + 1}`}
-                    className={`cursor-pointer border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden py-0 px-0 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed gap-0 group`}
-                  >
-                    {preview ? (
-                      <img
-                        src={preview}
-                        alt="Selected"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <PhotoIcon className="w-16 h-16 text-gray-300" />
-                    )}
-                    <p className="text-sm font-semibold block">
-                      {!preview && "Browse a Photo to Upload"}
-                    </p>
-
-                    {preview && (
-                      <div className="absolute top-0 right-0 w-full h-full items-center justify-center bg-black rounded-xl bg-opacity-50 text-white text-sm hidden group-hover:flex">
-                        <span className="bg-gray-800 p-2 rounded-xl">
-                          Change Photo
-                        </span>
-                      </div>
-                    )}
-                  </label>
+              {isLoading ? (
+                <div className="flex w-full h-52 justify-center items-center m-auto gap-1 flex-col z-50">
+                  <div className="border-t-gray-700 border-4 w-10 h-10 flex items-center justify-center rounded-full animate-spin"></div>
+                  <span className="text-sm text-gray-700 font-medium">
+                    Uploading...
+                  </span>
                 </div>
-              ))}
+              ) : (
+                imagePreviews.map((preview, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-center h-52 w-1/3 cursor-pointer text-center relative"
+                  >
+                    <input
+                      type="file"
+                      id={`image${index + 1}`}
+                      name={`image${index + 1}`}
+                      className="hidden"
+                      accept="image/*"
+                      onChange={(e) => {
+                        handleImageChange(e, index);
+                      }}
+                    />
+                    <label
+                      for={`image${index + 1}`}
+                      className={`cursor-pointer border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden py-0 px-0 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed gap-0 group`}
+                    >
+                      {preview ? (
+                        <img
+                          src={preview}
+                          alt="Selected"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <PhotoIcon className="w-16 h-16 text-gray-300" />
+                      )}
+                      <p className="text-sm font-semibold block">
+                        {!preview && "Browse a Photo to Upload"}
+                      </p>
+
+                      {preview && (
+                        <div className="absolute top-0 right-0 w-full h-full items-center justify-center bg-black rounded-xl bg-opacity-50 text-white text-sm hidden group-hover:flex">
+                          <span className="bg-gray-800 p-2 rounded-xl">
+                            Change Photo
+                          </span>
+                        </div>
+                      )}
+                    </label>
+                  </div>
+                ))
+              )}
             </div>
 
             {errors.images && (
@@ -143,21 +201,37 @@ const GalleryTab = ({ images, setImages, imagePreviews, setImagePreviews }) => {
               <div className="flex items-center justify-center h-52 w-1/3 cursor-pointer text-center relative">
                 <input
                   type="file"
-                  id="image"
-                  name="images"
+                  id="video"
+                  name="video"
                   className="hidden"
-                  accept="image/*"
+                  accept="video/*"
+                  onChange={handleVideoUpload}
                   required
                 />
                 <label
-                  for="image"
-                  className="cursor-pointer bg-white border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
+                  className={`cursor-pointer border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden py-0 px-0 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed gap-0 group`}
+                  htmlFor="video"
                 >
-                  <VideoCameraIcon className="w-16 h-16 text-gray-300" />
-                  <p className="text-sm font-semibold">
-                    Browse a Video <br />
-                    to Upload
+                  {video ? (
+                    <video
+                      src={video}
+                      alt="Selected"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <VideoCameraIcon className="w-16 h-16 text-gray-300" />
+                  )}
+                  <p className="text-sm font-semibold block">
+                    {!video && "Browse a Photo to Upload"}
                   </p>
+
+                  {video && (
+                    <div className="absolute top-0 right-0 w-full h-full items-center justify-center bg-black rounded-xl bg-opacity-50 text-white text-sm hidden group-hover:flex">
+                      <span className="bg-gray-800 p-2 rounded-xl">
+                        Change Video
+                      </span>
+                    </div>
+                  )}
                 </label>
               </div>
             </div>
@@ -177,28 +251,6 @@ const GalleryTab = ({ images, setImages, imagePreviews, setImagePreviews }) => {
 
             <div className="flex justify-start mt-10 gap-3">
               <div className="flex items-center justify-center h-52 w-1/3 cursor-pointer text-center relative">
-                <input
-                  type="file"
-                  id="image"
-                  name="images"
-                  className="hidden"
-                  accept="image/*"
-                  required
-                />
-                <label
-                  for="image"
-                  className="cursor-pointer bg-white border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
-                >
-                  <ClipboardDocumentListIcon className="w-16 h-16 text-gray-300" />
-                  <p className="text-sm font-semibold">
-                    Browse a Document <br />
-                    to Upload
-                  </p>
-                </label>
-              </div>
-
-              <div className="flex items-center justify-center h-52 w-1/3 cursor-pointer text-center relative">
-                <div className="w-full h-full absolute bg-gray-100 rounded-lg border-2 border-dashed border-gray-300"></div>
                 <input
                   type="file"
                   id="image"

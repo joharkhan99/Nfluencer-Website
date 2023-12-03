@@ -11,6 +11,43 @@ async function handleUpload(file) {
   return res.url;
 }
 
+const uploadImagetoCloudinary = async (req, res) => {
+  const b64 = Buffer.from(req.file.buffer).toString("base64");
+  let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+  // const image = await handleUpload(dataURI);
+
+  const response = await cloudinary.uploader.upload(dataURI, {
+    resource_type: "auto",
+    folder: "nfluencer-gigs",
+  });
+
+  res.status(200).json({ response });
+};
+
+const uploadVideoToCloudinary = async (req, res) => {
+  try {
+    const result = await cloudinary.v2.uploader
+      .upload_stream(
+        {
+          resource_type: "video",
+        },
+        (error, result) => {
+          if (error) {
+            console.error("Error uploading video to Cloudinary:", error);
+            res.status(500).json({ error: "Failed to upload video" });
+          } else {
+            console.log("Video uploaded to Cloudinary:", result);
+            res.status(200).json({ result });
+          }
+        }
+      )
+      .end(req.file.buffer);
+  } catch (error) {
+    console.error("Error processing video upload:", error);
+    res.status(500).json({ error: "Failed to process video upload" });
+  }
+};
+
 const createGig = async (req, res) => {
   var {
     title,
@@ -191,4 +228,6 @@ export {
   deleteUserGigs,
   getAllGigs,
   gigDetails,
+  uploadImagetoCloudinary,
+  uploadVideoToCloudinary,
 };

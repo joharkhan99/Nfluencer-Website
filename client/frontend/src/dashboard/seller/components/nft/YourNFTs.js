@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { HeartIcon, TrophyIcon, PlusIcon } from "@heroicons/react/24/outline";
+import {
+  HeartIcon,
+  TrophyIcon,
+  PlusIcon,
+  ArrowUpRightIcon,
+  ArrowTopRightOnSquareIcon,
+} from "@heroicons/react/24/outline";
 import FirstNFT from "./FirstNFT";
 import { ethers } from "ethers";
 import axios from "axios";
@@ -84,14 +90,10 @@ const YourNFTs = ({ user }) => {
     <>
       {nfts.length > 0 || firstNFT ? (
         <div className="mt-10">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-extrabold tracking-tight text-gray-800 mb-7">
+          <div className="flex items-center justify-between mb-10">
+            <h2 className="text-2xl font-extrabold tracking-tight text-gray-800">
               Your NFTs
             </h2>
-            <button className="text-nft-primary-light font-medium text-sm block">
-              View All
-            </button>
-            <button onClick={() => likeNFT(firstNFT.tokenId)}>Like</button>
           </div>
 
           {firstNFT && <FirstNFT NFT={firstNFT} />}
@@ -162,8 +164,7 @@ const YourNFTs = ({ user }) => {
                         </div>
 
                         <button className="rounded-xl text-nft-primary-light bg-white p-2 flex gap-1 items-center absolute top-2 right-2 text-sm">
-                          <HeartIcon className="h-5 w-5 fill-nft-primary-light" />
-                          <span className="font-semibold">12</span>
+                          <ArrowTopRightOnSquareIcon className="h-5 w-5" />
                         </button>
                       </div>
 
@@ -196,11 +197,11 @@ const YourNFTs = ({ user }) => {
                       </div>
 
                       <div className="flex items-center justify-between gap-3 text-sm">
-                        <button className="bg-gray-200 font-medium p-3 rounded-xl hover:opacity-80 w-full text-gray-800">
+                        <button className="bg-gray-200 font-medium p-4 rounded-xl hover:opacity-80 w-full text-gray-800">
                           Manage
                         </button>
                         <Link
-                          className="bg-nft-primary-light border border-nft-primary-light text-white font-medium p-3 rounded-xl hover:opacity-80 w-full"
+                          className="bg-nft-primary-light border border-nft-primary-light text-white font-medium p-4 block rounded-xl hover:opacity-80 w-full text-center"
                           to={`/marketplace/nft/${nft.tokenId}`}
                           target="_blank"
                         >
@@ -214,11 +215,11 @@ const YourNFTs = ({ user }) => {
             ))}
           </div>
 
-          <div className="flex items-center gap-4 justify-center">
+          {/* <div className="flex items-center gap-4 justify-center">
             <button className="bg-nft-primary-light border border-nft-primary-light text-white font-bold p-3 rounded-xl px-10 hover:opacity-80">
               View All
             </button>
-          </div>
+          </div> */}
         </div>
       ) : (
         <div className="mt-10">
