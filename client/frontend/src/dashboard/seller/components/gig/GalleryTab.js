@@ -1,22 +1,27 @@
 import React, { useState } from "react";
 import {
-  ClipboardDocumentListIcon,
   LightBulbIcon,
   PhotoIcon,
   VideoCameraIcon,
 } from "@heroicons/react/24/outline";
 import { useDispatch, useSelector } from "react-redux";
 import { setFormStep } from "../../../../redux/slices/NewGigSlice";
-import axios from "axios";
 
-const GalleryTab = ({ images, setImages, imagePreviews, setImagePreviews }) => {
+const GalleryTab = ({
+  images,
+  setImages,
+  imagePreviews,
+  setImagePreviews,
+  video,
+  setVideo,
+}) => {
   const [errors, setErrors] = useState({});
   const user = useSelector((state) => state.user.user);
   const [isLoading, setIsLoading] = useState(false);
-  const [video, setVideo] = useState(null);
-  const [document, setDocument] = useState(null);
+  const [isVideoLoading, setIsVideoLoaing] = useState(false);
 
   const handleVideoUpload = async (e) => {
+    setIsVideoLoaing(true);
     const fd = new FormData();
     fd.append("video", e.target.files[0]);
     const request = await fetch(
@@ -33,6 +38,7 @@ const GalleryTab = ({ images, setImages, imagePreviews, setImagePreviews }) => {
     const response = await request.json();
     console.log(response);
     setVideo(response.result.url);
+    setIsVideoLoaing(false);
   };
 
   const uploadImagetoCloudinary = async (image, index) => {
@@ -68,8 +74,6 @@ const GalleryTab = ({ images, setImages, imagePreviews, setImagePreviews }) => {
       return newImagePreviews;
     });
   };
-
-  const uploadDocumentToCloudinary = async (video) => {};
 
   const handleImageChange = async (e, index) => {
     setIsLoading(true);
@@ -198,78 +202,51 @@ const GalleryTab = ({ images, setImages, imagePreviews, setImagePreviews }) => {
             </div>
 
             <div className="flex justify-start mt-10 gap-3">
-              <div className="flex items-center justify-center h-52 w-1/3 cursor-pointer text-center relative">
-                <input
-                  type="file"
-                  id="video"
-                  name="video"
-                  className="hidden"
-                  accept="video/*"
-                  onChange={handleVideoUpload}
-                  required
-                />
-                <label
-                  className={`cursor-pointer border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden py-0 px-0 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed gap-0 group`}
-                  htmlFor="video"
-                >
-                  {video ? (
-                    <video
-                      src={video}
-                      alt="Selected"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <VideoCameraIcon className="w-16 h-16 text-gray-300" />
-                  )}
-                  <p className="text-sm font-semibold block">
-                    {!video && "Browse a Photo to Upload"}
-                  </p>
+              {isVideoLoading ? (
+                <div className="flex w-full h-52 justify-center items-center m-auto gap-1 flex-col z-50">
+                  <div className="border-t-gray-700 border-4 w-10 h-10 flex items-center justify-center rounded-full animate-spin"></div>
+                  <span className="text-sm text-gray-700 font-medium">
+                    Uploading...
+                  </span>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center h-52 w-1/3 cursor-pointer text-center relative">
+                  <input
+                    type="file"
+                    id="video"
+                    name="video"
+                    className="hidden"
+                    accept="video/*"
+                    onChange={handleVideoUpload}
+                    required
+                  />
+                  <label
+                    className={`cursor-pointer border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden py-0 px-0 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed gap-0 group`}
+                    htmlFor="video"
+                  >
+                    {video ? (
+                      <video
+                        src={video}
+                        alt="Selected"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <VideoCameraIcon className="w-16 h-16 text-gray-300" />
+                    )}
+                    <p className="text-sm font-semibold block">
+                      {!video && "Browse a Photo to Upload"}
+                    </p>
 
-                  {video && (
-                    <div className="absolute top-0 right-0 w-full h-full items-center justify-center bg-black rounded-xl bg-opacity-50 text-white text-sm hidden group-hover:flex">
-                      <span className="bg-gray-800 p-2 rounded-xl">
-                        Change Video
-                      </span>
-                    </div>
-                  )}
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div className="border-b border-gray-100 pb-8">
-            <div className="flex justify-between items-center">
-              <div className="flex gap-3 items-center">
-                <span className="text-xl">Gig Documents</span>
-                <span>
-                  Show some of the best work you created in a document (PDFs
-                  only).
-                </span>
-              </div>
-              <div>(0/2)</div>
-            </div>
-
-            <div className="flex justify-start mt-10 gap-3">
-              <div className="flex items-center justify-center h-52 w-1/3 cursor-pointer text-center relative">
-                <input
-                  type="file"
-                  id="image"
-                  name="images"
-                  className="hidden"
-                  accept="image/*"
-                  required
-                />
-                <label
-                  for="image"
-                  className="cursor-pointer bg-white border-2 border-gray-300 text-gray-600 rounded-lg overflow-hidden p-3 px-5 hover:opacity-80 w-full h-full flex items-center flex-col justify-center border-dashed"
-                >
-                  <ClipboardDocumentListIcon className="w-16 h-16 text-gray-300" />
-                  <p className="text-sm font-semibold">
-                    Browse a Document <br />
-                    to Upload
-                  </p>
-                </label>
-              </div>
+                    {video && (
+                      <div className="absolute top-0 right-0 w-full h-full items-center justify-center bg-black rounded-xl bg-opacity-50 text-white text-sm hidden group-hover:flex">
+                        <span className="bg-gray-800 p-2 rounded-xl">
+                          Change Video
+                        </span>
+                      </div>
+                    )}
+                  </label>
+                </div>
+              )}
             </div>
           </div>
 

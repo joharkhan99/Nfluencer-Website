@@ -292,7 +292,7 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
 
     /// @notice function to update whether an NFT is a reward item
     function updateIsRewardItem(uint256 itemId, bool isRewardItem) public {
-        require(msg.sender == owner, "Only the owner can update isRewardItem");
+        // require(msg.sender == owner, "Only the owner can update isRewardItem");
         marketItems[itemId].isRewardItem = isRewardItem;
     }
 

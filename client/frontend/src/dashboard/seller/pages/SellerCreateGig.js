@@ -92,10 +92,14 @@ const SellerCreateGig = () => {
 
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState(["", "", ""]);
+  const [video, setVideo] = useState(null);
 
   const [requirements, setRequirements] = useState([]);
 
   const [faqs, setFAQs] = useState([]);
+
+  const [offerReward, setOfferReward] = useState(false);
+  const [selectedNFT, setSelectedNFT] = useState(null);
 
   const formSteps = [
     {
@@ -222,8 +226,15 @@ const SellerCreateGig = () => {
       setImages={setImages}
       imagePreviews={imagePreviews}
       setImagePreviews={setImagePreviews}
+      video={video}
+      setVideo={setVideo}
     />,
-    <NFTTab />,
+    <NFTTab
+      offerReward={offerReward}
+      setOfferReward={setOfferReward}
+      selectedNFT={selectedNFT}
+      setSelectedNFT={setSelectedNFT}
+    />,
     <RequirementsTab
       requirements={requirements}
       setRequirements={setRequirements}
@@ -239,6 +250,10 @@ const SellerCreateGig = () => {
 
   const handleGigSubmit = async () => {
     setIsSubmitting(true);
+    // let images = images.filter(img=>img!=="");
+
+    const rewardNFT = selectedNFT ? selectedNFT.tokenId : null;
+
     const gig = {
       title,
       keywords,
@@ -304,30 +319,40 @@ const SellerCreateGig = () => {
           },
         },
       },
-      images: images[0],
+      images: images,
+      hasVideo: video !== null,
+      video: video,
       requirements,
       faqs,
+      offerReward,
+      rewardNFT,
     };
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("keywords", JSON.stringify(keywords));
-    formData.append("category", selectedCategory.name);
-    formData.append("subcategory", selectedSubcategory.name);
-    formData.append("description", description);
-    formData.append("packages", JSON.stringify(gig.packages));
-    formData.append("images", images[0]);
-    formData.append("requirements", JSON.stringify(requirements));
-    formData.append("faqs", JSON.stringify(faqs));
-    formData.append("username", user.username);
-    formData.append("offer3Packages", offer3Packages);
+    // console.log(gig);
 
     const request = await fetch(`${process.env.REACT_APP_API_URL}/api/gig`, {
       method: "POST",
       headers: {
         "x-auth-token": user.jwtToken,
+        "Content-Type": "application/json",
       },
-      body: formData,
+      body: JSON.stringify({
+        title,
+        keywords,
+        selectedCategory: selectedCategory.name,
+        selectedSubcategory: selectedSubcategory.name,
+        description,
+        packages: gig.packages,
+        images,
+        video,
+        hasVideo: video !== null,
+        requirements,
+        faqs,
+        username: user.username,
+        offer3Packages,
+        offerReward,
+        rewardNFT,
+      }),
     });
     const response = await request.json();
 
@@ -354,6 +379,63 @@ const SellerCreateGig = () => {
     dispatch(setFormStep(formStep - 1));
     setError(null);
   };
+
+  useEffect(() => {
+    // remove ths lien
+    // dispatch(setFormStep(5));
+
+    // remove ths lien
+    return () => {
+      dispatch(setFormStep(1));
+      // Reset all state variables to their initial values
+      setTitle("");
+      setKeywords([]);
+      setKeywordInput("");
+      setSelectedCategory(null);
+      setSelectedSubcategory(null);
+      setDescription(null);
+      setPackag1Name(null);
+      setPackag1Desc(null);
+      setPackag1Price(null);
+      setPackag1DeliveryTime(null);
+      setPackag1Revisions(null);
+      setPackag1Support(null);
+      setOffer3Packages(false);
+      setPackag2Name(null);
+      setPackag2Desc(null);
+      setPackag2Price(null);
+      setPackag2DeliveryTime(null);
+      setPackag2Revisions(null);
+      setPackag2Support(null);
+      setPackag3Name(null);
+      setPackag3Desc(null);
+      setPackag3Price(null);
+      setPackag3DeliveryTime(null);
+      setPackag3Revisions(null);
+      setPackag3Support(null);
+      setOfferExtraFastDelivery(false);
+      setExtraBasicDeliveryTime(null);
+      setExtraBasicDeliveryPrice(null);
+      setExtraStandardDeliveryPrice(null);
+      setExtraStandardDeliveryTime(null);
+      setExtraPremiumDeliveryTime(null);
+      setExtraPremiumDeliveryPrice(null);
+      setOfferExtraRevision(false);
+      setExtraBasicRevision(null);
+      setExtraBasicRevisionPrice(null);
+      setExtraStandardRevisionPrice(null);
+      setExtraStandardRevision(null);
+      setExtraPremiumRevisionPrice(null);
+      setExtraPremiumRevision(null);
+      setImages([]);
+      setImagePreviews(["", "", ""]);
+      setVideo(null);
+      setRequirements([]);
+      setFAQs([]);
+      setOfferReward(false);
+      setSelectedNFT(null);
+    };
+  }, []);
 
   return (
     <div className="container mx-auto">

@@ -1,18 +1,168 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setFormStep } from "../../../../redux/slices/NewGigSlice";
 import { LightBulbIcon } from "@heroicons/react/24/outline";
+import {
+  NFTMarketplaceContractABI,
+  NFTMarketplaceContractAddress,
+} from "../../../../constants/ContractDetails";
+import { ethers } from "ethers";
+import axios from "axios";
+import Web3Modal from "web3modal";
 
-const NFTTab = () => {
+const NFTTab = ({
+  offerReward,
+  setOfferReward,
+  selectedNFT,
+  setSelectedNFT,
+}) => {
   const dispatch = useDispatch();
   const formStep = useSelector((state) => state.gig.formStep);
+  const [isLoading, setLoading] = useState(false);
+  const [nfts, setNFTs] = useState([]);
+
+  const [errors, setErrors] = useState({});
+  const [nftProcess, setNFTProcessDone] = useState(false);
+  const [NFTStatusMessage, setNFTStatusMessage] = useState("");
 
   const handlePrev = () => {
     dispatch(setFormStep(formStep - 1));
   };
 
-  const handleSubmit = () => {
-    dispatch(setFormStep(formStep + 1));
+  const validateForm = () => {
+    const errors = {};
+
+    if (nfts.length === 0) {
+      setOfferReward(false);
+      errors.message = "";
+      return;
+    }
+
+    if (offerReward) {
+      if (!selectedNFT) {
+        errors.message = "Please select an NFT reward for your Gig";
+      }
+    }
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const connectingWithSmartContract = async () => {
+    try {
+      const w3modal = new Web3Modal();
+      const connection = await w3modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
+      const signer = await provider.getSigner();
+
+      const { marketplaceContract } = fetchContract(signer);
+      return { marketplaceContract };
+    } catch (error) {
+      console.log(`Error connecting with smart contract: ${error}`);
+    }
+  };
+
+  const updateIsRewradItem = async (marketplaceContract, itemId) => {
+    await marketplaceContract.updateIsRewardItem(itemId, true);
+  };
+
+  const handleSubmit = async () => {
+    setNFTProcessDone(false);
+    setNFTStatusMessage("Please wait while we are processing your request...");
+    if (validateForm()) {
+      try {
+        const { marketplaceContract } = await connectingWithSmartContract();
+        await updateIsRewradItem(marketplaceContract, selectedNFT.tokenId);
+
+        setNFTStatusMessage("");
+        dispatch(setFormStep(formStep + 1));
+      } catch (error) {
+        console.log(`Error updating isRewardItem: ${error}`);
+
+        if (error.code === 4001) {
+          setErrors({
+            message: "You have rejected the transaction",
+          });
+          return;
+        }
+
+        if (error.code) {
+          setErrors({
+            message: error.message.split("(error=")[0],
+          });
+          return;
+        }
+
+        setErrors({
+          message: "Error updating isRewardItem",
+        });
+        setNFTProcessDone(true);
+        setNFTStatusMessage("");
+      }
+    }
+
+    setNFTStatusMessage("");
+    setNFTProcessDone(true);
+  };
+
+  const fetchContract = (signerOrProvider) => {
+    const marketplaceContract = new ethers.Contract(
+      NFTMarketplaceContractAddress,
+      NFTMarketplaceContractABI,
+      signerOrProvider
+    );
+
+    return { marketplaceContract };
+  };
+
+  const fetchNFTs = async () => {
+    setLoading(true);
+    try {
+      const web3Modal = new Web3Modal();
+      const connection = await web3Modal.connect();
+      const provider = new ethers.providers.Web3Provider(connection);
+      const signer = provider.getSigner();
+
+      const { marketplaceContract } = fetchContract(signer);
+      const data = await marketplaceContract.fetchItemsCreated();
+
+      const items = await Promise.all(
+        data.map(async (i) => {
+          const tokenUri = await marketplaceContract.tokenURI(i.itemId);
+          const meta = await axios.get(tokenUri);
+          return {
+            ...meta.data,
+            likes: i.likes.toString(),
+            tokenId: i.itemId.toString(),
+            weiPrice: i.price,
+          };
+        })
+      );
+      console.log(items);
+      items.reverse();
+      setNFTs(items);
+    } catch (error) {
+      console.log(`Error fetching NFTs: ${error}`);
+    }
+    setLoading(false);
+  };
+
+  const handleOfferRewardToggle = async (e) => {
+    setOfferReward(e.target.checked);
+    if (e.target.checked === true) {
+      fetchNFTs();
+    } else {
+      setNFTs([]);
+      setSelectedNFT(null);
+    }
+  };
+
+  const handleNFTSelect = (nft) => {
+    if (selectedNFT && selectedNFT.tokenId === nft.tokenId) {
+      setSelectedNFT(null);
+    } else {
+      setSelectedNFT(nft);
+    }
   };
 
   return (
@@ -23,23 +173,84 @@ const NFTTab = () => {
 
       <div className="flex justify-between">
         <div className="text-gray-600 p-4 md:w-2/3 w-full">
-          <div className="flex flex-col gap-10">
-            <div>
-              <h2 className="text-gray-800 font-semibold mb-3">
-                What is the NFT Reward?
-              </h2>
-              <p className="text-gray-600">
-                The NFT Reward is the NFT you will be giving to the buyer. It is
-                the NFT that will be minted and sent to the buyer when they
-                purchase your gig.
-              </p>
+          <div className="flex justify-between items-center">
+            <div className="font-bold text-sm mb-2 block">
+              Offer NFT Reward with the Gig
+            </div>
+            <div className="flex items-center gap-2 relative">
+              {isLoading && (
+                <div className="absolute w-14 h-10 bg-white right-0 z-50 bg-opacity-60"></div>
+              )}
 
-              <h3 className="my-5 text-gray-500 font-semibold">
-                This feature is currently under development. Please check back
-                later.
-              </h3>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  value=""
+                  className="sr-only peer"
+                  checked={offerReward}
+                  onChange={(e) => handleOfferRewardToggle(e)}
+                  disabled={isLoading}
+                />
+                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-nft-primary-light"></div>
+              </label>
             </div>
           </div>
+
+          {offerReward && nfts && (
+            <>
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-2 w-full">
+                {nfts.map((nft, index) => (
+                  <button
+                    className={`flex gap-2 w-full flex-row border text-gray-800 rounded-xl p-3 text-md font-bold items-center hover:bg-gray-100 ${
+                      selectedNFT && selectedNFT.tokenId === nft.tokenId
+                        ? "bg-nft-primary-transparent ring-2 ring-nft-primary-light"
+                        : ""
+                    }`}
+                    key={index}
+                    onClick={() => handleNFTSelect(nft)}
+                  >
+                    <img
+                      src={nft.fileUrl}
+                      alt={nft.name}
+                      className="w-20 h-20 object-cover rounded-xl"
+                    />
+                    <div className="text-left text-sm flex items-start justify-start flex-col gap-3">
+                      <div>{nft.name}</div>
+                      <div className="flex flex-row gap-2 items-center">
+                        <div className="flex flex-col items-center">
+                          <span className="text-xs text-gray-500 font-normal">
+                            Price
+                          </span>
+                          <span className="text-xs font-medium text-gray-800">
+                            {nft.price} ETH
+                          </span>
+                        </div>
+
+                        <div className="flex flex-col items-center">
+                          <span className="text-xs text-gray-500 font-normal">
+                            Collection
+                          </span>
+                          <span className="text-xs font-medium text-gray-800">
+                            {nft.collection.name}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              {nfts.length === 0 && (
+                <div className="w-full h-full flex justify-center items-center text-sm font-semibold">
+                  No NFTs found in your Crypto Wallet Account.
+                </div>
+              )}
+            </>
+          )}
+
+          {errors.message && (
+            <div className="text-red-500 text-sm mt-2">{errors.message}</div>
+          )}
         </div>
 
         <div className="p-4 md:w-1/3 md:block hidden">
@@ -75,25 +286,35 @@ const NFTTab = () => {
         </div>
       </div>
 
-      <div className="flex w-full justify-between md:w-2/3 p-4 pb-0 mt-5">
-        <div>
-          <button className="rounded-xl px-6 py-3 bg-gray-200 text-gray-800 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors border border-gray-300">
-            Cancel
-          </button>
-        </div>
-        <div className="flex gap-4">
-          <button
-            className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
-            onClick={handlePrev}
-          >
-            Previous
-          </button>
-          <button
-            className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
-            onClick={handleSubmit}
-          >
-            Save and Continue
-          </button>
+      <div className="md:w-2/3 p-4 pb-0">
+        {/* {!nftProcess && (
+          <div className="items-center flex justify-center text-sm w-full text-gray-500">
+            <span className="border-t-gray-100 border-2 animate-spin h-4 w-4 rounded-full border-gray-500"></span>
+            <span className="ml-2">{NFTStatusMessage}</span>
+          </div>
+        )} */}
+
+        <div className="flex w-full justify-between mt-5">
+          <div>
+            <button className="rounded-xl px-6 py-3 bg-gray-200 text-gray-800 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors border border-gray-300">
+              Cancel
+            </button>
+          </div>
+          <div className="flex gap-4">
+            <button
+              className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
+              onClick={handlePrev}
+            >
+              Previous
+            </button>
+            <button
+              className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
+              onClick={handleSubmit}
+              disabled={nftProcess}
+            >
+              Save and Continue
+            </button>
+          </div>
         </div>
       </div>
     </div>

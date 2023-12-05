@@ -60,19 +60,21 @@ const createGig = async (req, res) => {
     faqs,
     username,
     offer3Packages,
+    images,
+    video,
+    hasVideo,
+    offerReward,
+    rewardNFT,
   } = req.body;
 
   try {
-    faqs = JSON.parse(faqs);
-    requirements = JSON.parse(requirements);
-    keywords = JSON.parse(keywords);
-    packages = JSON.parse(packages);
+    // faqs = JSON.parse(faqs);
+    // requirements = JSON.parse(requirements);
+    // keywords = JSON.parse(keywords);
+    // packages = JSON.parse(packages);
+    // images = JSON.parse(images);
 
     const user = await User.findOne({ username: username }).exec();
-
-    const b64 = Buffer.from(req.file.buffer).toString("base64");
-    let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
-    const image = await handleUpload(dataURI);
 
     let basicPackage = null;
     let standardPackage = null;
@@ -157,8 +159,12 @@ const createGig = async (req, res) => {
       },
       requirements: requirements,
       faqs: faqs,
-      images: [image],
+      images: images,
+      video: video,
+      hasVideo: hasVideo,
       offer3Packages: offer3Packages,
+      offerReward: offerReward,
+      rewardNFT: rewardNFT,
     });
 
     await newGig.save();
@@ -169,6 +175,7 @@ const createGig = async (req, res) => {
       res.status(500).json({ error: true, message: "Error creating gig" });
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: true, message: error.message });
   }
 };

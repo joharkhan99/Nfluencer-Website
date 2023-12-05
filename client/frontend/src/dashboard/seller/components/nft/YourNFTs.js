@@ -41,11 +41,13 @@ const YourNFTs = ({ user }) => {
 
       const { marketplaceContract } = fetchContract(signer);
       const data = await marketplaceContract.fetchItemsCreated();
+      console.log(data);
 
       const items = await Promise.all(
         data.map(async (i) => {
           const tokenUri = await marketplaceContract.tokenURI(i.itemId);
           const meta = await axios.get(tokenUri);
+          // console.log(meta);
           return {
             ...meta.data,
             likes: i.likes.toString(),

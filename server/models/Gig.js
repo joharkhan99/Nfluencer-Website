@@ -36,6 +36,12 @@ const gigSchema = new mongoose.Schema(
     images: {
       type: Array,
     },
+    video: {
+      type: String,
+    },
+    hasVideo: {
+      type: Boolean,
+    },
     requirements: {
       type: Array,
     },
@@ -44,6 +50,12 @@ const gigSchema = new mongoose.Schema(
     },
     offer3Packages: {
       type: Boolean,
+    },
+    offerReward: {
+      type: Boolean,
+    },
+    rewardNFT: {
+      type: String,
     },
   },
   {
