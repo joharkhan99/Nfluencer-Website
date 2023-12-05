@@ -46,28 +46,35 @@ const NotableDrops = ({
     const fetchedMarketItems = await marketplaceContract.fetchMarketItems();
     const tempcollections = [];
 
+    console.log("NotableDrops fetchedMarketItems", fetchedMarketItems);
+
     // fetch only the first 4 items
     const firstFourItems = [...fetchedMarketItems];
     firstFourItems.splice(totalItems, firstFourItems.length - totalItems);
 
     // console.log(fetchedMarketItems);
 
-    const items = await Promise.all(
+    let items = await Promise.all(
       firstFourItems.map(async (i) => {
         const tokenUri = await marketplaceContract.tokenURI(i.itemId);
         const meta = await axios.get(tokenUri);
-        // console.log(meta.data);
-        if (meta.data.collection) {
-          tempcollections.push(meta.data.collection);
+        if (meta.data.isRewardItem === false) {
+          if (meta.data.collection) {
+            tempcollections.push(meta.data.collection);
+          }
+          return {
+            ...meta.data,
+            likes: i.likes.toString(),
+            itemId: Number(i.itemId),
+            weiPrice: i.price,
+          };
         }
-        return {
-          ...meta.data,
-          likes: i.likes.toString(),
-          itemId: Number(i.itemId),
-          weiPrice: i.price,
-        };
+
+        return null;
       })
     );
+
+    items = items.filter((item) => item !== null);
 
     items.reverse();
     setNFTs(items);

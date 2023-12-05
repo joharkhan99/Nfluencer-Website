@@ -74,6 +74,8 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         bool isListed
     );
 
+    event RewardItemStatusUpdated(uint256 indexed tokenId, bool isRewardItem);
+
     constructor() ERC721("Nfluencer-Marketplace", "NFMP") {
         owner = payable(msg.sender);
     }
@@ -159,7 +161,10 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
 
         MarketItem[] memory items = new MarketItem[](unsoldItemCount);
         for (uint256 i = 0; i < itemCount; i++) {
-            if (marketItems[i + 1].owner == address(this)) {
+            if (
+                marketItems[i + 1].owner == address(this) &&
+                marketItems[i + 1].isRewardItem == false
+            ) {
                 uint256 currentId = i + 1;
                 MarketItem storage currentItem = marketItems[currentId];
                 items[currentIndex] = currentItem;
@@ -199,14 +204,20 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         uint256 currentIndex = 0;
 
         for (uint256 i = 0; i < totalItemCount; i++) {
-            if (marketItems[i + 1].owner == msg.sender) {
+            if (
+                marketItems[i + 1].owner == msg.sender &&
+                marketItems[i + 1].isRewardItem == false
+            ) {
                 itemCount += 1;
             }
         }
 
         MarketItem[] memory items = new MarketItem[](itemCount);
         for (uint256 i = 0; i < totalItemCount; i++) {
-            if (marketItems[i + 1].owner == msg.sender) {
+            if (
+                marketItems[i + 1].owner == msg.sender &&
+                marketItems[i + 1].isRewardItem == false
+            ) {
                 uint256 currentId = i + 1;
                 MarketItem storage currentItem = marketItems[currentId];
                 items[currentIndex] = currentItem;
@@ -223,14 +234,54 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
         uint256 currentIndex = 0;
 
         for (uint256 i = 0; i < totalItemCount; i++) {
-            if (marketItems[i + 1].seller == msg.sender) {
+            if (
+                marketItems[i + 1].seller == msg.sender &&
+                marketItems[i + 1].isRewardItem == false
+            ) {
                 itemCount += 1;
             }
         }
 
         MarketItem[] memory items = new MarketItem[](itemCount);
         for (uint256 i = 0; i < totalItemCount; i++) {
-            if (marketItems[i + 1].seller == msg.sender) {
+            if (
+                marketItems[i + 1].seller == msg.sender &&
+                marketItems[i + 1].isRewardItem == false
+            ) {
+                uint256 currentId = i + 1;
+                MarketItem storage currentItem = marketItems[currentId];
+                items[currentIndex] = currentItem;
+                currentIndex += 1;
+            }
+        }
+        return items;
+    }
+
+    /// @notice fetch list of NFTS created by user and are reward items
+    function fetchRewardItemsCreated()
+        public
+        view
+        returns (MarketItem[] memory)
+    {
+        uint256 totalItemCount = _itemIds.current();
+        uint256 itemCount = 0;
+        uint256 currentIndex = 0;
+
+        for (uint256 i = 0; i < totalItemCount; i++) {
+            if (
+                marketItems[i + 1].seller == msg.sender &&
+                marketItems[i + 1].isRewardItem == true
+            ) {
+                itemCount += 1;
+            }
+        }
+
+        MarketItem[] memory items = new MarketItem[](itemCount);
+        for (uint256 i = 0; i < totalItemCount; i++) {
+            if (
+                marketItems[i + 1].seller == msg.sender &&
+                marketItems[i + 1].isRewardItem == true
+            ) {
                 uint256 currentId = i + 1;
                 MarketItem storage currentItem = marketItems[currentId];
                 items[currentIndex] = currentItem;
@@ -294,6 +345,9 @@ contract Marketplace is ERC721URIStorage, ReentrancyGuard {
     function updateIsRewardItem(uint256 itemId, bool isRewardItem) public {
         // require(msg.sender == owner, "Only the owner can update isRewardItem");
         marketItems[itemId].isRewardItem = isRewardItem;
+        marketItems[itemId].isListed = isRewardItem ? false : true;
+
+        emit RewardItemStatusUpdated(itemId, isRewardItem);
     }
 
     /// @notice function to get NFT details by TokenId/ItemId

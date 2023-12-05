@@ -9,6 +9,8 @@ import {
 import { ethers } from "ethers";
 import axios from "axios";
 import Web3Modal from "web3modal";
+import Web3 from "web3";
+import { create as ipfsHttpClient } from "ipfs-http-client";
 
 const NFTTab = ({
   offerReward,
@@ -22,8 +24,23 @@ const NFTTab = ({
   const [nfts, setNFTs] = useState([]);
 
   const [errors, setErrors] = useState({});
-  const [nftProcess, setNFTProcessDone] = useState(false);
+  const [isProcessLoading, setIsProcessLoading] = useState(false);
   const [NFTStatusMessage, setNFTStatusMessage] = useState("");
+
+  const projectId = process.env.REACT_APP_INFURA_API_KEY;
+  const projectSecretKey = process.env.REACT_APP_INFURA_API_KEY_SECRET;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(`${projectId}:${projectSecretKey}`);
+  const auth = `Basic ${btoa(String.fromCharCode.apply(null, data))}`;
+
+  const client = ipfsHttpClient({
+    host: process.env.REACT_APP_INFURA_HOST,
+    port: 5001,
+    protocol: "https",
+    headers: {
+      authorization: auth,
+    },
+  });
 
   const handlePrev = () => {
     dispatch(setFormStep(formStep - 1));
@@ -64,17 +81,42 @@ const NFTTab = ({
 
   const updateIsRewradItem = async (marketplaceContract, itemId) => {
     await marketplaceContract.updateIsRewardItem(itemId, true);
+    updateTokenURI(marketplaceContract, selectedNFT);
+  };
+
+  const updateTokenURI = async (marketplaceContract, nft) => {
+    const data = JSON.stringify({
+      name: nft.name,
+      description: nft.description,
+      creator: nft.creator,
+      currentOwner: nft.currentOwner,
+      ownershipHistory: nft.ownershipHistory,
+      fileUrl: nft.fileUrl,
+      fileType: nft.fileType,
+      price: nft.price,
+      currency: "ETH",
+      category: nft.category,
+      traits: nft.traits,
+      collection: nft.collection,
+      royalties: nft.royalties,
+      createdAt: nft.createdAt,
+      updatedAt: new Date().toISOString(),
+      isRewardItem: true,
+    });
+    const added = await client.add(data);
+    const newUrl = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;
+    await marketplaceContract.updateTokenURI(nft.tokenId, newUrl);
   };
 
   const handleSubmit = async () => {
-    setNFTProcessDone(false);
+    setIsProcessLoading(true);
     setNFTStatusMessage("Please wait while we are processing your request...");
     if (validateForm()) {
       try {
         const { marketplaceContract } = await connectingWithSmartContract();
-        await updateIsRewradItem(marketplaceContract, selectedNFT.tokenId);
+        await updateTokenURI(marketplaceContract, selectedNFT);
 
-        setNFTStatusMessage("");
+        // await updateIsRewradItem(marketplaceContract, selectedNFT.tokenId);
         dispatch(setFormStep(formStep + 1));
       } catch (error) {
         console.log(`Error updating isRewardItem: ${error}`);
@@ -96,13 +138,11 @@ const NFTTab = ({
         setErrors({
           message: "Error updating isRewardItem",
         });
-        setNFTProcessDone(true);
-        setNFTStatusMessage("");
       }
     }
 
     setNFTStatusMessage("");
-    setNFTProcessDone(true);
+    setIsProcessLoading(false);
   };
 
   const fetchContract = (signerOrProvider) => {
@@ -126,18 +166,23 @@ const NFTTab = ({
       const { marketplaceContract } = fetchContract(signer);
       const data = await marketplaceContract.fetchItemsCreated();
 
-      const items = await Promise.all(
+      let items = await Promise.all(
         data.map(async (i) => {
           const tokenUri = await marketplaceContract.tokenURI(i.itemId);
           const meta = await axios.get(tokenUri);
-          return {
-            ...meta.data,
-            likes: i.likes.toString(),
-            tokenId: i.itemId.toString(),
-            weiPrice: i.price,
-          };
+          if (meta.data.isRewardItem === false) {
+            return {
+              ...meta.data,
+              likes: i.likes.toString(),
+              tokenId: i.itemId.toString(),
+              weiPrice: i.price,
+            };
+          }
+          return null;
         })
       );
+
+      items = items.filter((i) => i !== null);
       console.log(items);
       items.reverse();
       setNFTs(items);
@@ -287,7 +332,7 @@ const NFTTab = ({
       </div>
 
       <div className="md:w-2/3 p-4 pb-0">
-        {/* {!nftProcess && (
+        {/* {!isProcessLoading && (
           <div className="items-center flex justify-center text-sm w-full text-gray-500">
             <span className="border-t-gray-100 border-2 animate-spin h-4 w-4 rounded-full border-gray-500"></span>
             <span className="ml-2">{NFTStatusMessage}</span>
@@ -310,7 +355,7 @@ const NFTTab = ({
             <button
               className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
               onClick={handleSubmit}
-              disabled={nftProcess}
+              disabled={isProcessLoading}
             >
               Save and Continue
             </button>

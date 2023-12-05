@@ -227,6 +227,7 @@ const SellerNewNFT = () => {
         royalties,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
+        isRewardItem: false,
       });
 
       const added = await client.add(data);

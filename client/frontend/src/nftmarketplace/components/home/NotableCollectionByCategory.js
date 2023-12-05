@@ -68,48 +68,50 @@ const NotableCollectionByCategory = () => {
         const tokenUri = await marketplaceContract.tokenURI(i.itemId);
         const meta = await axios.get(tokenUri);
         console.log(meta);
-        if (meta.data.category.toLowerCase() === "art") {
-          artNFTs.push({
-            ...meta.data,
-            likes: i.likes.toString(),
-            itemId: Number(i.itemId),
-            weiPrice: i.price,
-          });
-        } else if (meta.data.category.toLowerCase() === "gaming") {
-          gamingNFTs.push({
-            ...meta.data,
-            likes: i.likes.toString(),
-            itemId: Number(i.itemId),
-            weiPrice: i.price,
-          });
-        } else if (meta.data.category.toLowerCase() === "memberships") {
-          membershipsNFTs.push({
-            ...meta.data,
-            likes: i.likes.toString(),
-            itemId: Number(i.itemId),
-            weiPrice: i.price,
-          });
-        } else if (meta.data.category.toLowerCase() === "music") {
-          musicNFTs.push({
-            ...meta.data,
-            likes: i.likes.toString(),
-            itemId: Number(i.itemId),
-            weiPrice: i.price,
-          });
-        } else if (meta.data.category.toLowerCase() === "pfps") {
-          pfpNFTs.push({
-            ...meta.data,
-            likes: i.likes.toString(),
-            itemId: Number(i.itemId),
-            weiPrice: i.price,
-          });
-        } else if (meta.data.category.toLowerCase() === "photography") {
-          photographyNFTs.push({
-            ...meta.data,
-            likes: i.likes.toString(),
-            itemId: Number(i.itemId),
-            weiPrice: i.price,
-          });
+        if (meta.data.isRewardItem === false) {
+          if (meta.data.category.toLowerCase() === "art") {
+            artNFTs.push({
+              ...meta.data,
+              likes: i.likes.toString(),
+              itemId: Number(i.itemId),
+              weiPrice: i.price,
+            });
+          } else if (meta.data.category.toLowerCase() === "gaming") {
+            gamingNFTs.push({
+              ...meta.data,
+              likes: i.likes.toString(),
+              itemId: Number(i.itemId),
+              weiPrice: i.price,
+            });
+          } else if (meta.data.category.toLowerCase() === "memberships") {
+            membershipsNFTs.push({
+              ...meta.data,
+              likes: i.likes.toString(),
+              itemId: Number(i.itemId),
+              weiPrice: i.price,
+            });
+          } else if (meta.data.category.toLowerCase() === "music") {
+            musicNFTs.push({
+              ...meta.data,
+              likes: i.likes.toString(),
+              itemId: Number(i.itemId),
+              weiPrice: i.price,
+            });
+          } else if (meta.data.category.toLowerCase() === "pfps") {
+            pfpNFTs.push({
+              ...meta.data,
+              likes: i.likes.toString(),
+              itemId: Number(i.itemId),
+              weiPrice: i.price,
+            });
+          } else if (meta.data.category.toLowerCase() === "photography") {
+            photographyNFTs.push({
+              ...meta.data,
+              likes: i.likes.toString(),
+              itemId: Number(i.itemId),
+              weiPrice: i.price,
+            });
+          }
         }
 
         // return {

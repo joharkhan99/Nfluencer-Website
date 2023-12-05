@@ -41,21 +41,29 @@ const YourNFTs = ({ user }) => {
 
       const { marketplaceContract } = fetchContract(signer);
       const data = await marketplaceContract.fetchItemsCreated();
-      console.log(data);
+      console.log("Your", data);
 
-      const items = await Promise.all(
+      let items = await Promise.all(
         data.map(async (i) => {
           const tokenUri = await marketplaceContract.tokenURI(i.itemId);
           const meta = await axios.get(tokenUri);
-          // console.log(meta);
-          return {
-            ...meta.data,
-            likes: i.likes.toString(),
-            tokenId: i.itemId.toString(),
-            weiPrice: i.price,
-          };
+
+          console.log("object", meta, meta.data.isRewardItem);
+          if (meta.data.isRewardItem === false) {
+            return {
+              ...meta.data,
+              likes: i.likes.toString(),
+              tokenId: i.itemId.toString(),
+              weiPrice: i.price,
+              isRewardItem: i.isRewardItem,
+            };
+          }
+          return null;
         })
       );
+
+      items = items.filter((item) => item !== null);
+
       items.reverse();
 
       if (items.length > 0) {

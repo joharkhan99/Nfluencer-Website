@@ -31,7 +31,7 @@ const TopCreators = () => {
     const fetchedMarketItems = await marketplaceContract.fetchMarketItems();
     const tempcollections = [];
 
-    const items = await Promise.all(
+    let items = await Promise.all(
       fetchedMarketItems.map(async (i) => {
         const tokenUri = await marketplaceContract.tokenURI(i.itemId);
         const meta = await axios.get(tokenUri);

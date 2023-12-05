@@ -88,17 +88,18 @@ const Collection = () => {
       fetchedMarketItems.map(async (i) => {
         const tokenUri = await marketplaceContract.tokenURI(i.itemId);
         const meta = await axios.get(tokenUri);
-
-        if (meta.data.collection._id === collectionId) {
-          // setCollectionInfo(meta.data.collection);
-          // setCollectionCreator(meta.data.creator);
-          return {
-            ...meta.data,
-            likes: i.likes.toString(),
-            itemId: Number(i.itemId),
-            weiPrice: i.price,
-          };
-        } else return;
+        if (meta.data.isRewardItem === false) {
+          if (meta.data.collection._id === collectionId) {
+            // setCollectionInfo(meta.data.collection);
+            // setCollectionCreator(meta.data.creator);
+            return {
+              ...meta.data,
+              likes: i.likes.toString(),
+              itemId: Number(i.itemId),
+              weiPrice: i.price,
+            };
+          } else return;
+        }
       })
     );
 
@@ -465,6 +466,7 @@ const Collection = () => {
       royalties: nft.royalties,
       createdAt: nft.createdAt,
       updatedAt: new Date().toISOString(),
+      isRewardItem: false,
     });
     const added = await client.add(data);
     const newUrl = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;

@@ -115,24 +115,31 @@ function Explore() {
     const fetchedMarketItems = await marketplaceContract.fetchMarketItems();
     const tempcollections = [];
 
-    console.log(fetchedMarketItems);
+    console.log("Explore", fetchedMarketItems);
 
-    const items = await Promise.all(
+    let items = await Promise.all(
       fetchedMarketItems.map(async (i) => {
         const tokenUri = await marketplaceContract.tokenURI(i.itemId);
         const meta = await axios.get(tokenUri);
-        console.log(meta.data);
-        if (meta.data.collection) {
-          tempcollections.push(meta.data.collection);
+        if (meta.data.isRewardItem === false) {
+          console.log(meta.data);
+          if (meta.data.collection) {
+            tempcollections.push(meta.data.collection);
+          }
+          return {
+            ...meta.data,
+            likes: i.likes.toString(),
+            itemId: Number(i.itemId),
+            weiPrice: i.price,
+          };
         }
-        return {
-          ...meta.data,
-          likes: i.likes.toString(),
-          itemId: Number(i.itemId),
-          weiPrice: i.price,
-        };
+
+        return null;
       })
     );
+
+    // remove null values from items
+    items = items.filter((item) => item !== null);
 
     // remove duplicate collections from tempcollections by using _id
     const collections = tempcollections.filter(
@@ -256,6 +263,7 @@ function Explore() {
       royalties: nft.royalties,
       createdAt: nft.createdAt,
       updatedAt: new Date().toISOString(),
+      isRewardItem: nft.isRewardItem,
     });
     const added = await client.add(data);
     const newUrl = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;
