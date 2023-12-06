@@ -9,6 +9,7 @@ import CryptoWalletsConnect from "../components/nft/CryptoWalletsConnect";
 import { useSelector } from "react-redux";
 import PurchasedNFTs from "../components/nft/PurchasedNFTs";
 import NotableDrops from "../../../nftmarketplace/components/home/NotableDrops";
+import IncentiveNFTs from "../components/nft/IncentiveNFTs";
 
 const SellerManageNFT = () => {
   const user = useSelector((state) => state.user.user);
@@ -91,12 +92,14 @@ const SellerManageNFT = () => {
 
           <PurchasedNFTs user={user} />
 
-          <Link
+          <IncentiveNFTs user={user} />
+
+          {/* <Link
             to="/seller/my-items"
             className="bg-nft-primary-light text-white font-medium text-base block p-5 rounded-xl max-w-sm w-full text-center mx-auto mt-10 hover:opacity-80"
           >
             Manage Your NFTs
-          </Link>
+          </Link> */}
         </div>
       ) : (
         <CryptoWalletsConnect user={user} />

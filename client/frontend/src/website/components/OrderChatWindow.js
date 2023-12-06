@@ -204,7 +204,10 @@ const OrderChatWindow = ({ orderChatUser }) => {
               </div>
             </div>
 
-            <form className="w-full z-50 bg-white p-3 " onSubmit={sendMessage}>
+            <form
+              className="w-full bg-white p-3 relative"
+              onSubmit={sendMessage}
+            >
               <div className="relative w-full">
                 <textarea
                   type="text"

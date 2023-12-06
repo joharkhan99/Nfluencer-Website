@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -8,7 +8,16 @@ import OrderChatWindow from "../components/OrderChatWindow";
 import {
   InformationCircleIcon,
   ClipboardDocumentListIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
+import {
+  NFTMarketplaceContractABI,
+  NFTMarketplaceContractAddress,
+} from "../../constants/ContractDetails";
+import { ethers } from "ethers";
+import axios from "axios";
+import { create as ipfsHttpClient } from "ipfs-http-client";
+import Web3Modal from "web3modal";
 
 const Order = () => {
   const { orderId } = useParams();
@@ -18,6 +27,15 @@ const Order = () => {
   const [orderDetails, setOrderDetails] = useState({});
   const [orderActivity, setOrderActivity] = useState([]);
   const [requirements, setRequirements] = useState([]);
+  const [resellModalOpen, setresellModalOpen] = useState(false);
+
+  const [deliveryDescription, setDeliveryDescription] = useState("");
+  const [deliveryFile, setDeliveryFile] = useState([]);
+
+  const [reviewText, setReviewText] = useState("");
+  const [rating, setRating] = useState(null);
+  const [isFormSUbmitting, setIsFormSubmitting] = useState(false);
+  const [deliveryDetails, setDeliveryDetails] = useState({});
 
   const fetchOrderDetails = async () => {
     setIsLoading(true);
@@ -54,7 +72,7 @@ const Order = () => {
     setOrderActivity(res.orderActivity);
     setSubmittedRequirements({ ...res.order[0].requirements });
     setRequirements(res.requirements[0].requirements);
-    // console.log(res.requirements[0].requirements);
+    setDeliveryDetails(res.delivery[0]);
   };
 
   useEffect(() => {
@@ -137,6 +155,240 @@ const Order = () => {
     }
   };
 
+  const [timeLeft, setTimeLeft] = useState(
+    calculateTimeLeft(orderDetails.orderEndDate)
+  );
+
+  useEffect(() => {
+    const timerInterval = setInterval(() => {
+      setTimeLeft(calculateTimeLeft(orderDetails.orderEndDate));
+    }, 1000);
+
+    // Cleanup the interval when the component unmounts
+    return () => clearInterval(timerInterval);
+  }, [orderDetails]);
+
+  function calculateTimeLeft(endDate) {
+    const now = new Date();
+    const end = new Date(endDate);
+    const difference = end - now;
+
+    if (difference <= 0) {
+      // If the order end date has passed, return 0 for all fields
+      return {
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        isExpired: true,
+      };
+    }
+
+    // Calculate days, hours, minutes, and seconds
+    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(
+      (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+    return {
+      days,
+      hours,
+      minutes,
+      seconds,
+      isExpired: false,
+    };
+  }
+
+  const uploadFiletoCloudinary = async (file) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    const request = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/gig/uploadDeliveryZiptoCloudinary`,
+      {
+        method: "POST",
+        headers: {
+          "x-auth-token": user.jwtToken,
+        },
+        body: fd,
+      }
+    );
+
+    const response = await request.json();
+    console.log(response);
+    return response.url;
+  };
+
+  const handleDeliveryFileUpload = async (e) => {
+    setIsFormSubmitting(true);
+    const file = e.target.files[0];
+    console.log(e.target.files);
+    console.log(file);
+    if (file) {
+      const fileUrl = await uploadFiletoCloudinary(file);
+      setDeliveryFile(fileUrl);
+      setIsFormSubmitting(false);
+      return;
+    }
+    setIsFormSubmitting(false);
+    setDeliveryFile("");
+  };
+
+  const handleSubmit = async () => {
+    setIsFormSubmitting(true);
+    if (deliveryDescription) {
+      const req = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/gig/submitDelivery`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": user.jwtToken,
+          },
+          body: JSON.stringify({
+            orderId: orderId,
+            buyerId: orderDetails.buyer._id,
+            sellerId: orderDetails.seller._id,
+            deliveryDescription,
+            deliveryFile: deliveryFile,
+            gigId: orderDetails.gig._id,
+          }),
+        }
+      );
+
+      const res = await req.json();
+
+      if (res.error) {
+        alert(res.error);
+        return;
+      }
+
+      setresellModalOpen(false);
+      window.location.reload();
+    }
+    setIsFormSubmitting(false);
+  };
+
+  // NFT
+  const projectId = process.env.REACT_APP_INFURA_API_KEY;
+  const projectSecretKey = process.env.REACT_APP_INFURA_API_KEY_SECRET;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(`${projectId}:${projectSecretKey}`);
+  const auth = `Basic ${btoa(String.fromCharCode.apply(null, data))}`;
+
+  const client = ipfsHttpClient({
+    host: process.env.REACT_APP_INFURA_HOST,
+    port: 5001,
+    protocol: "https",
+    headers: {
+      authorization: auth,
+    },
+  });
+
+  const fetchContract = (signerOrProvider) => {
+    const marketplaceContract = new ethers.Contract(
+      NFTMarketplaceContractAddress,
+      NFTMarketplaceContractABI,
+      signerOrProvider
+    );
+
+    return { marketplaceContract };
+  };
+  const updateTokenURI = async (marketplaceContract, nft) => {
+    const data = JSON.stringify({
+      name: nft.name,
+      description: nft.description,
+      creator: nft.creator,
+      currentOwner: orderDetails.buyer,
+      ownershipHistory: nft.ownershipHistory,
+      fileUrl: nft.fileUrl,
+      fileType: nft.fileType,
+      price: nft.price,
+      currency: "ETH",
+      category: nft.category,
+      traits: nft.traits,
+      collection: nft.collection,
+      royalties: nft.royalties,
+      createdAt: nft.createdAt,
+      updatedAt: new Date().toISOString(),
+      isRewardItem: true,
+    });
+
+    const added = await client.add(data);
+    const newUrl = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;
+    console.log(newUrl, nft);
+    await marketplaceContract.updateTokenURI(nft.itemId, newUrl);
+  };
+
+  const updateNFTDetails = async (itemId) => {
+    const w3modal = new Web3Modal();
+    const connection = await w3modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = await provider.getSigner();
+    const { marketplaceContract } = fetchContract(signer);
+
+    const fetchedNFT = await marketplaceContract.getNFTDetails(itemId);
+    const tokenUri = await marketplaceContract.tokenURI(fetchedNFT.itemId);
+    const meta = await axios.get(tokenUri);
+    console.log(fetchedNFT);
+    console.log(meta);
+    await updateTokenURI(marketplaceContract, {
+      ...meta.data,
+      itemId: fetchedNFT.itemId,
+    });
+  };
+  // NFT
+  const handleReviewSubmit = async () => {
+    // Assuming you have an API endpoint to handle review submission
+    try {
+      if (!reviewText) {
+        alert("Please enter a review");
+        return;
+      }
+      if (!rating) {
+        alert("Please enter a rating");
+        return;
+      }
+
+      const hasNFTReward = orderDetails.gig.offerReward;
+
+      if (hasNFTReward === true) {
+        console.log("NFT REWARD");
+        const itemId = orderDetails.gig.rewardNFT;
+        console.log("ITEM ID", itemId);
+        await updateNFTDetails(itemId);
+      }
+
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/gig/submitReview`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": user.jwtToken,
+          },
+          body: JSON.stringify({
+            orderId: orderDetails._id,
+            gigId: orderDetails.gig._id,
+            sellerId: orderDetails.seller._id,
+            buyerId: orderDetails.buyer._id,
+            reviewText,
+            rating,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        window.location.reload();
+      } else {
+        console.error("Error submitting review");
+      }
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    }
+  };
+
   if (isLoading) {
     return <Loader />;
   }
@@ -151,6 +403,69 @@ const Order = () => {
           <h1 className="text-xl border-b font-semibold pb-3 text-nft-primary-light">
             Activity
           </h1>
+
+          <div className="mt-5">
+            {orderDetails.seller._id !== user._id &&
+              isRequirementSent &&
+              orderDetails.isDeliverySubmitted &&
+              !orderDetails.isDeliveryAccepted && (
+                <div className="p-5 bg-white rounded-xl">
+                  <h2 className="text-lg mb-3">
+                    Seller has submitted the delivery. Please review and accept
+                  </h2>
+                  <div className="flex justify-between items-center gap-2">
+                    <div className="flex flex-col gap-2 flex-1 break-all">
+                      <div>
+                        <span className="font-semibold">
+                          Delivery description
+                        </span>
+                        <p className="text-sm text-gray-500">
+                          {deliveryDetails.deliveryDescription}
+                        </p>
+                      </div>
+                      <div>
+                        <span className="font-semibold ">File</span>
+                        <Link to={deliveryDetails.deliveryFile} target="_blank">
+                          <p className="text-sm text-nft-primary-light">
+                            {deliveryDetails.deliveryFile}
+                          </p>
+                        </Link>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-2 flex-1">
+                      <div>
+                        <textarea
+                          placeholder="Write your review..."
+                          value={reviewText}
+                          className=" border-2 p-3 h-40 rounded-xl w-full"
+                          onChange={(e) => setReviewText(e.target.value)}
+                        />
+                        <div className="flex flex-row justify-between gap-4">
+                          <div className="w-full">
+                            <input
+                              type="number"
+                              min="1"
+                              max="5"
+                              placeholder="Rating (1-5)"
+                              className="border-2 rounded-xl p-3 w-full"
+                              value={rating}
+                              onChange={(e) => setRating(e.target.value)}
+                            />
+                            <button
+                              onClick={handleReviewSubmit}
+                              className="bg-nft-primary-light p-3 text-center text-white rounded-xl mt-3 hover:opacity-80"
+                            >
+                              Submit Review
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+          </div>
 
           {orderDetails.seller._id !== user._id && !isRequirementSent && (
             <div className="my-10 py-5 border-b p-5 bg-white text-gray-800 rounded-lg">
@@ -223,7 +538,10 @@ const Order = () => {
               })}
           </div>
 
-          <div className="my-5 bg-white p-3 py-4 shadow-lg">
+          <div className="my-5 bg-white p-3 py-4 shadow-lg relative">
+            {orderDetails.isDeliveryAccepted && (
+              <div className="absolute w-full h-full bg-white bg-opacity-70 z-50"></div>
+            )}
             <h3 className="text-nft-primary-light text-base font-semibold mb-2">
               Chat with{" "}
               {orderDetails.buyer._id !== user._id ? (
@@ -242,7 +560,7 @@ const Order = () => {
 
         <div className="w-1/3">
           <div className="md:sticky relative top-0">
-            <div className="w-full">
+            <div className="w-full pt-3">
               <div className="bg-white shadow-lg rounded-xl p-3">
                 <h1 className="text-xl font-medium border-b pb-3 text-gray-800">
                   Order Details
@@ -303,6 +621,22 @@ const Order = () => {
                     </span>
                   </div>
 
+                  {!orderDetails.isDeliveryAccepted && (
+                    <div className="flex flex-row justify-between gap-1 text-gray-500 font-medium text-sm">
+                      <span>Time Left</span>
+                      <span className="font-semibold text-gray-800">
+                        {timeLeft.isExpired ? (
+                          <span>Order Expired</span>
+                        ) : (
+                          <span className="text-nft-primary-light">
+                            {timeLeft.days}d {timeLeft.hours}h{" "}
+                            {timeLeft.minutes}m {timeLeft.seconds}s
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                  )}
+
                   <div>
                     <h4 className="font-semibold text-sm text-gray-800 my-5">
                       Track Order
@@ -315,7 +649,6 @@ const Order = () => {
                       </div>
 
                       <span className="h-4 border-l-2 border-green-500 ml-2 -my-1"></span>
-
                       <div className="flex gap-2 items-center">
                         {isRequirementSent ? (
                           <span className="h-4 w-4 ml-[1px] rounded-full bg-green-500"></span>
@@ -329,18 +662,94 @@ const Order = () => {
                             : "Submit Requirements"}
                         </span>
                       </div>
+
+                      <span className="h-4 border-l-2 border-green-500 ml-2 -my-1"></span>
+                      <div className="flex gap-2 items-center">
+                        {orderDetails.isDeliverySubmitted ? (
+                          <span className="h-4 w-4 ml-[1px] rounded-full bg-green-500"></span>
+                        ) : (
+                          <span className="h-4 w-4 ml-[1px] rounded-full border-green-500 border-2"></span>
+                        )}
+
+                        <span className="text-sm">Delivery Submitted</span>
+                      </div>
+
+                      <span className="h-4 border-l-2 border-green-500 ml-2 -my-1"></span>
+                      <div className="flex gap-2 items-center">
+                        {orderDetails.isDeliveryAccepted ? (
+                          <span className="h-4 w-4 ml-[1px] rounded-full bg-green-500"></span>
+                        ) : (
+                          <span className="h-4 w-4 ml-[1px] rounded-full border-green-500 border-2"></span>
+                        )}
+
+                        <span className="text-sm">Delivery Accepted</span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {isRequirementSent && orderDetails.seller._id === user._id && (
-                  <button className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-4">
-                    <span>Deliver Now</span>
-                  </button>
-                )}
+                {isRequirementSent &&
+                  orderDetails.seller._id === user._id &&
+                  !orderDetails.isDeliveryAccepted && (
+                    <button
+                      className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-4"
+                      onClick={() => setresellModalOpen(true)}
+                    >
+                      <span>Deliver Now</span>
+                    </button>
+                  )}
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div
+        className={`fixed top-0 right-0 justify-center z-50 w-full h-full bg-black bg-opacity-70 ${
+          resellModalOpen ? "flex" : "hidden"
+        }`}
+      >
+        <div className="w-2/3 bg-white p-7 rounded-xl shadow-xl h-fit mt-16 relative">
+          <h2 className="block font-bold text-xl text-gray-800 mb-3">
+            Deliver Order
+          </h2>
+          <button
+            className="text-gray-500 hover:text-gray-700 absolute right-2 top-2"
+            onClick={() => setresellModalOpen(false)}
+          >
+            <XMarkIcon className="w-6 h-6" />
+          </button>
+          <div className="relative">
+            <textarea
+              type="number"
+              className="w-full outline-none text-base placeholder:text-gray-400 placeholder:font-medium font-medium p-4 focus:ring-2 focus:ring-nft-primary-light focus:bg-white border-gray-200 border-2 rounded-xl h-52"
+              placeholder="Enter New Price"
+              value={deliveryDescription}
+              // value={newPrice}
+              min={0}
+              onChange={(e) => setDeliveryDescription(e.target.value)}
+              // onChange={(e) => setNewPrice(e.target.value)}
+            ></textarea>
+
+            <div className="flex flex-col gap-3 p-3 my-3">
+              <label className="font-semibold">Attach file</label>
+              <input
+                type="file"
+                className="cursor-pointer"
+                accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,text/plain, application/pdf, image/*, video/*"
+                onChange={handleDeliveryFileUpload}
+              />
+            </div>
+          </div>
+          {/* <div className="text-red-500 text-sm mt-2">{resellError}</div> */}
+
+          <button
+            className="w-fit px-10 font-semibold bg-nft-primary-light text-white p-3 mt-5 rounded-xl hover:opacity-80"
+            onClick={() => handleSubmit()}
+            disabled={isFormSUbmitting}
+          >
+            {isFormSUbmitting ? "processing..." : "Submit Delivery"}
+          </button>
         </div>
       </div>
 

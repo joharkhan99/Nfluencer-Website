@@ -13,6 +13,9 @@ import {
   fetchOrderDetails,
   submitRequirements,
   getOrderActivity,
+  uploadDeliveryZiptoCloudinary,
+  submitDelivery,
+  submitReview,
 } from "../controllers/GigController.js";
 import multer from "multer";
 import authenticate from "../middleware/authenticate.js";
@@ -35,7 +38,11 @@ router.post("/createOrder", createOrder);
 router.post("/submitRequirements", submitRequirements);
 router.post("/user-gigs", fetchUserGigs);
 router.delete("/delete-gig", deleteUserGigs);
+
 router.post("/", createGig);
+router.post("/submitDelivery", submitDelivery);
+router.post("/submitReview", submitReview);
+
 router.post(
   "/uploadImagetoCloudinary",
   upload.single("images"),
@@ -46,6 +53,12 @@ router.post(
   "/uploadVideoToCloudinary",
   upload.single("video"),
   uploadVideoToCloudinary
+);
+
+router.post(
+  "/uploadDeliveryZiptoCloudinary",
+  upload.single("file"),
+  uploadDeliveryZiptoCloudinary
 );
 
 // router.use("/uploadImagetoCloudinary", upload.single("images"), gigRoutes);

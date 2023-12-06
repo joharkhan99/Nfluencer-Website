@@ -6,6 +6,8 @@ import User from "../models/User.js";
 import cloudinary from "../utils/cloudinaryConfig.js";
 import OrderActivity from "../models/OrderActivity.js";
 import Stripe from "stripe";
+import Delivery from "../models/Delivery.js";
+import Review from "../models/Review.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -16,6 +18,29 @@ async function handleUpload(file) {
   });
   return res.url;
 }
+
+const uploadDeliveryZiptoCloudinary = async (req, res) => {
+  const file = req.file.buffer;
+  const type = req.file.mimetype;
+
+  // Upload file to Cloudinary
+  cloudinary.v2.uploader
+    .upload_stream({ resource_type: "auto" }, (err, result) => {
+      if (err) {
+        console.error(err);
+        return res
+          .status(500)
+          .json({ error: true, message: "Error uploading file to Cloudinary" });
+      }
+
+      // Remove the temporary file from the server (if needed)
+      // fs.unlinkSync(req.file.path);
+
+      // Return Cloudinary URL
+      res.json(result);
+    })
+    .end(file);
+};
 
 const uploadImagetoCloudinary = async (req, res) => {
   const b64 = Buffer.from(req.file.buffer).toString("base64");
@@ -337,7 +362,13 @@ const fetchOrderDetails = async (req, res) => {
   const requirements = await Requirement.find({
     order: orderId,
   }).exec();
-  res.status(200).json({ order, orderActivity, requirements });
+
+  // get the delivery details
+  const delivery = await Delivery.find({
+    order: orderId,
+  }).exec();
+
+  res.status(200).json({ order, orderActivity, requirements, delivery });
 };
 
 const submitRequirements = async (req, res) => {
@@ -401,6 +432,106 @@ const getOrderActivity = async (req, res) => {
   res.status(200).json(orderActivity);
 };
 
+const submitDelivery = async (req, res) => {
+  const {
+    orderId,
+    buyerId,
+    sellerId,
+    deliveryDescription,
+    deliveryFile,
+    gigId,
+  } = req.body;
+
+  try {
+    const delivery = new Delivery({
+      order: orderId,
+      buyer: buyerId,
+      seller: sellerId,
+      gig: gigId,
+      deliveryDescription: deliveryDescription,
+      deliveryFile: deliveryFile,
+    });
+
+    await delivery.save();
+
+    // update the order status to requirements submitted
+    const order = await Order.findById(orderId).exec();
+    order.isDeliverySubmitted = true;
+    await order.save();
+
+    // Create order activity for requirements submission
+    const orderActivity = new OrderActivity({
+      order: orderId,
+      activity: [
+        {
+          text: "Order Delivery Submitted",
+          date: new Date(),
+        },
+      ],
+      gig: gigId,
+    });
+    await orderActivity.save();
+
+    res.status(201).json(delivery);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: true, message: error.message });
+  }
+};
+
+const submitReview = async (req, res) => {
+  const { orderId, gigId, sellerId, buyerId, reviewText, rating } = req.body;
+
+  try {
+    const review = new Review({
+      order: orderId,
+      buyer: buyerId,
+      seller: sellerId,
+      gig: gigId,
+      reviewText: reviewText,
+      rating: rating,
+    });
+
+    await review.save();
+
+    // update the order status to requirements submitted
+    const order = await Order.findById(orderId).exec();
+    order.isDeliveryAccepted = true;
+    await order.save();
+
+    // Create order activity for requirements submission
+    const orderActivity = new OrderActivity({
+      order: orderId,
+      activity: [
+        {
+          text: "Order Reviewed by Buyer",
+          date: new Date(),
+        },
+      ],
+      gig: gigId,
+    });
+    await orderActivity.save();
+
+    res.status(201).json(review);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: true, message: error.message });
+  }
+};
+
+const getGigReviews = async (req, res) => {
+  const { gigId } = req.body;
+  const reviews = await Review.find({
+    gig: gigId,
+  })
+    .populate("order")
+    .populate("buyer")
+    .populate("seller")
+    .populate("gig")
+    .exec();
+  res.status(200).json(reviews);
+};
+
 export {
   createGig,
   fetchGig,
@@ -415,4 +546,8 @@ export {
   fetchOrderDetails,
   submitRequirements,
   getOrderActivity,
+  uploadDeliveryZiptoCloudinary,
+  submitDelivery,
+  submitReview,
+  getGigReviews,
 };

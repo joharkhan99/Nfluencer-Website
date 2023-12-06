@@ -66,6 +66,14 @@ const orderSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isDeliverySubmitted: {
+      type: Boolean,
+      default: false,
+    },
+    isDeliveryAccepted: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

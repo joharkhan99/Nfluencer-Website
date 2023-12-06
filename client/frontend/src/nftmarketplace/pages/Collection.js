@@ -90,8 +90,6 @@ const Collection = () => {
         const meta = await axios.get(tokenUri);
         if (meta.data.isRewardItem === false) {
           if (meta.data.collection._id === collectionId) {
-            // setCollectionInfo(meta.data.collection);
-            // setCollectionCreator(meta.data.creator);
             return {
               ...meta.data,
               likes: i.likes.toString(),
@@ -130,7 +128,7 @@ const Collection = () => {
     );
 
     const responseData = await res.json();
-    console.log(responseData);
+    console.log("collect", responseData);
     setCollectionInfo(responseData);
     setCollectionCreator({
       ...responseData.user,
@@ -713,12 +711,13 @@ const Collection = () => {
                         {collectionCreator.name}
                       </span>
                       <span className="block text-xs">
-                        {collectionCreator.walletAddress.substring(0, 7) +
-                          "..." +
-                          collectionCreator.walletAddress.substring(
-                            collectionCreator.walletAddress.length - 7,
-                            collectionCreator.walletAddress.length
-                          )}
+                        {collectionCreator.walletAddress &&
+                          collectionCreator.walletAddress.substring(0, 7) +
+                            "..." +
+                            collectionCreator.walletAddress.substring(
+                              collectionCreator.walletAddress.length - 7,
+                              collectionCreator.walletAddress.length
+                            )}
                       </span>
                     </div>
                   </div>

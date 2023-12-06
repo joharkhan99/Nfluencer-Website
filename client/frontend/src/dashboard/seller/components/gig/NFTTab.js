@@ -72,6 +72,9 @@ const NFTTab = ({
       const provider = new ethers.providers.Web3Provider(connection);
       const signer = await provider.getSigner();
 
+      // et the crypto wallet address
+      // const address = await signer.getAddress();
+
       const { marketplaceContract } = fetchContract(signer);
       return { marketplaceContract };
     } catch (error) {

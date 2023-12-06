@@ -49,8 +49,9 @@ const NotableDrops = ({
     console.log("NotableDrops fetchedMarketItems", fetchedMarketItems);
 
     // fetch only the first 4 items
-    const firstFourItems = [...fetchedMarketItems];
-    firstFourItems.splice(totalItems, firstFourItems.length - totalItems);
+    let firstFourItems = [...fetchedMarketItems];
+    // firstFourItems.splice(0, totalItems);
+    firstFourItems = firstFourItems.slice(0, totalItems + 1);
 
     // console.log(fetchedMarketItems);
 
@@ -58,6 +59,7 @@ const NotableDrops = ({
       firstFourItems.map(async (i) => {
         const tokenUri = await marketplaceContract.tokenURI(i.itemId);
         const meta = await axios.get(tokenUri);
+        // console.log(meta);
         if (meta.data.isRewardItem === false) {
           if (meta.data.collection) {
             tempcollections.push(meta.data.collection);

@@ -25,10 +25,13 @@ import {
 } from "@heroicons/react/24/outline";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Loader from "../../utils/Loader";
+import { useSelector } from "react-redux";
+
 function GigDetails() {
   let { gigtitle, gigId } = useParams();
   const navigate = useNavigate();
   const [gig, setGig] = useState(null);
+  const user = useSelector((state) => state.user.user);
 
   const fetchGigDetails = async () => {
     const req = await fetch(
@@ -942,12 +945,14 @@ function GigDetails() {
                               </div>
                             </div>
 
-                            <Link
-                              to={`/gig/order/checkout/${gigId}/${gig.packages.basic._id}`}
-                              className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10 block text-center"
-                            >
-                              <span>Buy This Package</span>
-                            </Link>
+                            {user && user._id !== gig.user._id && (
+                              <Link
+                                to={`/gig/order/checkout/${gigId}/${gig.packages.basic._id}`}
+                                className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10 block text-center"
+                              >
+                                <span>Buy This Package</span>
+                              </Link>
+                            )}
                           </div>
                         </TabPanel>
 
@@ -983,12 +988,14 @@ function GigDetails() {
                                 </div>
                               </div>
 
-                              <Link
-                                to={`/gig/order/checkout/${gigId}/${gig.packages.standard._id}`}
-                                className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10 block text-center"
-                              >
-                                <span>Buy This Package</span>
-                              </Link>
+                              {user && user._id !== gig.user._id && (
+                                <Link
+                                  to={`/gig/order/checkout/${gigId}/${gig.packages.standard._id}`}
+                                  className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10 block text-center"
+                                >
+                                  <span>Buy This Package</span>
+                                </Link>
+                              )}
                             </div>
                           </TabPanel>
                         )}
@@ -1025,12 +1032,14 @@ function GigDetails() {
                                 </div>
                               </div>
 
-                              <Link
-                                to={`/gig/order/checkout/${gigId}/${gig.packages.premium._id}`}
-                                className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10 block text-center"
-                              >
-                                <span>Buy This Package</span>
-                              </Link>
+                              {user && user._id !== gig.user._id && (
+                                <Link
+                                  to={`/gig/order/checkout/${gigId}/${gig.packages.premium._id}`}
+                                  className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10 block text-center"
+                                >
+                                  <span>Buy This Package</span>
+                                </Link>
+                              )}
                             </div>
                           </TabPanel>
                         )}
