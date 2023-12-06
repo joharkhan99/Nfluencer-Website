@@ -50,10 +50,13 @@ const PurchasedNFTs = ({ user }) => {
       const { marketplaceContract } = fetchContract(signer);
       const data = await marketplaceContract.fetchPurchasedNFTs();
 
+      console.log("purchased", data);
+
       let items = await Promise.all(
         data.map(async (i) => {
           const tokenUri = await marketplaceContract.tokenURI(i.itemId);
           const meta = await axios.get(tokenUri);
+          console.log("meta", meta.data);
           if (meta.data.isRewardItem === false) {
             return {
               ...meta.data,
@@ -67,6 +70,8 @@ const PurchasedNFTs = ({ user }) => {
       );
 
       items = items.filter((item) => item !== null);
+
+      console.log("purchased", items);
 
       items.reverse();
       setNFTs(items);

@@ -265,6 +265,7 @@ function Explore() {
       updatedAt: new Date().toISOString(),
       isRewardItem: nft.isRewardItem,
     });
+
     const added = await client.add(data);
     const newUrl = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;
     await updateCollectionDetails(

@@ -50,10 +50,7 @@ const OrderConfirm = () => {
       }
     );
     const res = await req.json();
-
-    console.log(res);
-
-    // navigate(`/gig/order/confirm/${gigId}/${packageId}`);
+    return res;
   };
 
   const fetchGigDetails = async () => {
@@ -70,10 +67,7 @@ const OrderConfirm = () => {
       }
     );
     const res = await req.json();
-    console.log(res);
-
     if (res.error) {
-      navigate("/404");
       return;
     }
 
@@ -86,7 +80,7 @@ const OrderConfirm = () => {
       }
     }
 
-    await createOrder(
+    const order = await createOrder(
       res[0].user._id,
       user._id,
       res[0]._id,
@@ -98,6 +92,10 @@ const OrderConfirm = () => {
       "pending",
       _package.deliveryTime
     );
+
+    if (order) {
+      navigate(`/gig/orders/${order._id}`);
+    }
   };
 
   useEffect(() => {

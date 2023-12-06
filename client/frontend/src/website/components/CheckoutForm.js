@@ -47,7 +47,14 @@ function CheckoutForm({ gigDetails }) {
         className="w-full block bg-nft-primary-light p-3 text-white rounded-xl mt-4 hover:bg-nft-primary-dark"
       >
         <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
+          {isLoading ? (
+            <div
+              className="h-6 w-6 border-2 border-gray-600 border-t-gray-50 animate-spin rounded-full mx-auto"
+              id="spinner"
+            ></div>
+          ) : (
+            "Pay now"
+          )}
         </span>
       </button>
       {message && <div id="payment-message">{message}</div>}

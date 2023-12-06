@@ -28,6 +28,7 @@ import Collection from "./nftmarketplace/pages/Collection";
 import MyItems from "./dashboard/seller/pages/MyItems";
 import OrderCheckout from "./website/pages/OrderCheckout";
 import OrderConfirm from "./website/components/OrderConfirm";
+import Order from "./website/pages/Order";
 
 function App() {
   const dispatch = useDispatch();
@@ -108,6 +109,8 @@ function App() {
           path="/gig/order/confirm/:gigId/:packageId"
           Component={OrderConfirm}
         />
+
+        <Route path="/gig/orders/:orderId" Component={Order} />
 
         {/* marketplace */}
         <Route path="/marketplace" Component={Home} />

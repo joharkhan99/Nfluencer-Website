@@ -13,7 +13,7 @@ import {
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
 
-function Header({ transparent = false }) {
+function Header({ transparent = false, showCategoriesBar = false }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const logout = () => {
@@ -506,46 +506,48 @@ function Header({ transparent = false }) {
           </div>
         </nav>
 
-        <div
-          className={`relative flex items-center bg-white justify-center shadow-md p-0 w-full ${
-            transparent ? "" : "hidden"
-          }`}
-        >
-          <div className="w-full overflow-x-auto px-3 custom-scrollbar scrollbar-thin">
-            <div className="flex space-x-6 w-screen justify-center">
-              <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
-                Graphics & Design
-              </button>
-              <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
-                Digital Marketing
-              </button>
-              <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
-                Writing & Translation
-              </button>
-              <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
-                Video & Animation
-              </button>
-              <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
-                Music & Audio
-              </button>
-              <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
-                Programming & Tech
-              </button>
-              <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
-                Business
-              </button>
-              <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
-                AI & Data
-              </button>
-              <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
-                Lifestyle
-              </button>
-              <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
-                Advertising
-              </button>
+        {showCategoriesBar && (
+          <div
+            className={`relative flex items-center bg-white justify-center shadow-md p-0 w-full ${
+              transparent ? "" : "hidden"
+            }`}
+          >
+            <div className="w-full overflow-x-auto px-3 custom-scrollbar scrollbar-thin">
+              <div className="flex space-x-6 w-screen justify-center">
+                <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                  Graphics & Design
+                </button>
+                <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                  Digital Marketing
+                </button>
+                <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                  Writing & Translation
+                </button>
+                <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                  Video & Animation
+                </button>
+                <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                  Music & Audio
+                </button>
+                <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                  Programming & Tech
+                </button>
+                <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                  Business
+                </button>
+                <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                  AI & Data
+                </button>
+                <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                  Lifestyle
+                </button>
+                <button className="text-gray-800 hover:opacity-80 text-base hover:border-nft-primary-light border-b-2 border-transparent pt-3 py-2 block text-center whitespace-nowrap">
+                  Advertising
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </header>
     </>
   );

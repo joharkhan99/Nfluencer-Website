@@ -12,17 +12,34 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User", // Assuming you have a User model for buyers
     },
-    gigId: {
+    gig: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Gig", // Assuming you have a Gig model
     },
-    packageId: {
+    package: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Package", // Assuming you have a GigPackage model
     },
     totalPrice: {
       type: Number,
     },
+
+    // I want to track the order status and the dates when the order status changes
+    // So I will create an array of objects with the following fields:
+    // status: String
+    // date: Date
+    // The status will be one of the following:
+    // "Order Placed"
+    // "Order Accepted"
+    // "Order Rejected"
+    // "Order Completed"
+    // "Order Cancelled"
+    // "Order Delivered"
+    // "Order Refunded"
+    // "Order Revision Requested"
+    // "Order Revision Submitted"
+    // "Order Revision Accepted"
+    // "Order Revision Rejected"
     status: {
       type: String,
     },
@@ -44,6 +61,10 @@ const orderSchema = new mongoose.Schema(
     },
     orderEndDate: {
       type: Date,
+    },
+    isRequirementSent: {
+      type: Boolean,
+      default: false,
     },
   },
   {

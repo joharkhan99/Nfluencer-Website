@@ -1,8 +1,10 @@
 import Gig from "../models/Gig.js";
 import Order from "../models/Order.js";
 import Package from "../models/Package.js";
+import Requirement from "../models/Requirements.js";
 import User from "../models/User.js";
 import cloudinary from "../utils/cloudinaryConfig.js";
+import OrderActivity from "../models/OrderActivity.js";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -197,8 +199,6 @@ const getAllGigs = async (req, res) => {
   res.status(200).json(gigs);
 };
 
-// getAllGigs();
-
 const gigDetails = async (req, res) => {
   const { gigId } = req.body;
   const gig = await Gig.find({
@@ -262,18 +262,6 @@ const createPaymentIntent = async (req, res) => {
   });
 };
 
-/*
-seller: seller,
-          buyer: buyer,
-          gigId: gigId,
-          packageId: packageId,
-          totalPrice: totalPrice,
-          status: status,
-          paymentIntent: paymentIntent,
-          paymentIntentClientSecret: paymentIntentClientSecret,
-          paymentStatus: paymentStatus,
-          deliveryDays: deliveryDays,
-*/
 const createOrder = async (req, res) => {
   var {
     seller,
@@ -298,8 +286,8 @@ const createOrder = async (req, res) => {
     const newOrder = new Order({
       seller: seller,
       buyer: buyer,
-      gigId: gigId,
-      packageId: packageId,
+      gig: gigId,
+      package: packageId,
       totalPrice: totalPrice,
       status: status,
       paymentIntent: paymentIntent,
@@ -311,11 +299,106 @@ const createOrder = async (req, res) => {
 
     await newOrder.save();
 
+    // create order activity
+    const orderActivities = [{ text: "Order Placed", date: new Date() }];
+
+    const newOrderActivity = new OrderActivity({
+      order: newOrder._id,
+      activity: orderActivities,
+      gig: gigId,
+    });
+
+    await newOrderActivity.save();
     res.status(201).json(newOrder);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: true, message: error.message });
   }
+};
+
+const fetchOrderDetails = async (req, res) => {
+  const { orderId } = req.body;
+  const order = await Order.find({
+    _id: orderId,
+  })
+    .populate("seller", "-password")
+    .populate("buyer", "-password")
+    .populate("gig")
+    .populate("package")
+    .exec();
+
+  const orderActivity = await OrderActivity.find({
+    order: orderId,
+  })
+    .populate("order")
+    .exec();
+
+  // get the requirements
+  const requirements = await Requirement.find({
+    order: orderId,
+  }).exec();
+  res.status(200).json({ order, orderActivity, requirements });
+};
+
+const submitRequirements = async (req, res) => {
+  const { orderId, buyerId, sellerId, gigId, requirements } = req.body;
+
+  try {
+    const requirement = new Requirement({
+      order: orderId,
+      buyer: buyerId,
+      seller: sellerId,
+      gig: gigId,
+      requirements: requirements,
+    });
+
+    await requirement.save();
+
+    // update the order status to requirements submitted
+    const order = await Order.findById(orderId).exec();
+    order.isRequirementSent = true;
+    await order.save();
+
+    // Create order activity for requirements submission
+    const orderActivity1 = new OrderActivity({
+      order: orderId,
+      activity: [
+        {
+          text: "Requirements Submitted",
+          date: new Date(),
+        },
+      ],
+      gig: gigId,
+    });
+    await orderActivity1.save();
+
+    const orderActivity2 = new OrderActivity({
+      order: orderId,
+      activity: [
+        {
+          text: "Order Started",
+          date: new Date(),
+        },
+      ],
+      gig: gigId,
+    });
+    await orderActivity2.save();
+
+    res.status(201).json(requirement);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: true, message: error.message });
+  }
+};
+
+const getOrderActivity = async (req, res) => {
+  const { orderId } = req.body;
+  const orderActivity = await OrderActivity.find({
+    order: orderId,
+  })
+    .populate("order")
+    .exec();
+  res.status(200).json(orderActivity);
 };
 
 export {
@@ -329,4 +412,7 @@ export {
   uploadVideoToCloudinary,
   createPaymentIntent,
   createOrder,
+  fetchOrderDetails,
+  submitRequirements,
+  getOrderActivity,
 };

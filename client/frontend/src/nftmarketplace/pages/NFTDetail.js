@@ -158,6 +158,7 @@ function NFTDetail() {
     setFilteredNftActivity(act_res);
     const tokenUri = await marketplaceContract.tokenURI(fetchedNFT.itemId);
     const meta = await axios.get(tokenUri);
+    // console.log("META NEW", meta);
     setNftMetaData({
       ...meta.data,
       seller: fetchedNFT.seller,
@@ -549,6 +550,7 @@ function NFTDetail() {
       royalties: nft.royalties,
       createdAt: nft.createdAt,
       updatedAt: new Date().toISOString(),
+      isRewardItem: nft.isRewardItem,
     });
     const added = await client.add(data);
     const newUrl = `https://nfluencer.infura-ipfs.io/ipfs/${added.path}`;
