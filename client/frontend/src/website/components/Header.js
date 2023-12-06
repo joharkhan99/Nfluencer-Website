@@ -357,12 +357,12 @@ function Header({ transparent = false }) {
                 </li>
                 <li>
                   <Link
-                    to="/signup"
+                    to="/services"
                     className={`text-sm px-4 py-2 hover:opacity-80 ${
                       transparent ? "text-gray-800" : "text-white"
                     }`}
                   >
-                    Become a Seller
+                    Find Services
                   </Link>
                 </li>
                 {user === null ? (

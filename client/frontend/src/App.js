@@ -26,6 +26,8 @@ import SellerManageNFT from "./dashboard/seller/pages/SellerManageNFT";
 import SellerInbox from "./dashboard/seller/pages/SellerInbox";
 import Collection from "./nftmarketplace/pages/Collection";
 import MyItems from "./dashboard/seller/pages/MyItems";
+import OrderCheckout from "./website/pages/OrderCheckout";
+import OrderConfirm from "./website/components/OrderConfirm";
 
 function App() {
   const dispatch = useDispatch();
@@ -98,6 +100,14 @@ function App() {
         <Route path="/" Component={LandingPage} />
         <Route path="/services" Component={Services} />
         <Route path="/gigdetails/:gigtitle/:gigId" Component={GigDetails} />
+        <Route
+          path="/gig/order/checkout/:gigId/:packageId"
+          Component={OrderCheckout}
+        />
+        <Route
+          path="/gig/order/confirm/:gigId/:packageId"
+          Component={OrderConfirm}
+        />
 
         {/* marketplace */}
         <Route path="/marketplace" Component={Home} />

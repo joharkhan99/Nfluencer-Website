@@ -1,7 +1,11 @@
 import Gig from "../models/Gig.js";
+import Order from "../models/Order.js";
 import Package from "../models/Package.js";
 import User from "../models/User.js";
 import cloudinary from "../utils/cloudinaryConfig.js";
+import Stripe from "stripe";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 async function handleUpload(file) {
   const res = await cloudinary.uploader.upload(file, {
@@ -228,6 +232,92 @@ const deleteUserGigs = async (req, res) => {
   }
 };
 
+const createPaymentIntent = async (req, res) => {
+  const { items, gigDetails } = req.body;
+
+  console.log(gigDetails);
+
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: Number(gigDetails.price) * 100,
+    currency: "usd",
+    automatic_payment_methods: {
+      enabled: true,
+    },
+    metadata: {
+      title: gigDetails.title,
+      gigId: gigDetails.gigId,
+      image: gigDetails.image,
+      package: gigDetails.package.packageId,
+      revisions: gigDetails.package.revisions,
+      deliveryTime: gigDetails.package.deliveryTime,
+      price: gigDetails.price,
+      buyer: gigDetails.buyer,
+      seller: gigDetails.seller,
+    },
+  });
+
+  res.send({
+    clientSecret: paymentIntent.client_secret,
+  });
+};
+
+/*
+seller: seller,
+          buyer: buyer,
+          gigId: gigId,
+          packageId: packageId,
+          totalPrice: totalPrice,
+          status: status,
+          paymentIntent: paymentIntent,
+          paymentIntentClientSecret: paymentIntentClientSecret,
+          paymentStatus: paymentStatus,
+          deliveryDays: deliveryDays,
+*/
+const createOrder = async (req, res) => {
+  var {
+    seller,
+    buyer,
+    gigId,
+    packageId,
+    totalPrice,
+    status,
+    paymentIntent,
+    paymentIntentClientSecret,
+    paymentStatus,
+    deliveryDays,
+  } = req.body;
+
+  try {
+    const currentDate = new Date();
+    deliveryDays = deliveryDays || 0;
+    let orderEndDate = new Date(
+      currentDate.setDate(currentDate.getDate() + deliveryDays)
+    );
+
+    const newOrder = new Order({
+      seller: seller,
+      buyer: buyer,
+      gigId: gigId,
+      packageId: packageId,
+      totalPrice: totalPrice,
+      status: status,
+      paymentIntent: paymentIntent,
+      paymentIntentClientSecret: paymentIntentClientSecret,
+      paymentStatus: paymentStatus,
+      deliveryDays: deliveryDays,
+      orderEndDate: orderEndDate,
+    });
+
+    await newOrder.save();
+
+    res.status(201).json(newOrder);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: true, message: error.message });
+  }
+};
+
 export {
   createGig,
   fetchGig,
@@ -237,4 +327,6 @@ export {
   gigDetails,
   uploadImagetoCloudinary,
   uploadVideoToCloudinary,
+  createPaymentIntent,
+  createOrder,
 };

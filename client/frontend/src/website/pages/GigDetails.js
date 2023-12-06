@@ -942,9 +942,12 @@ function GigDetails() {
                               </div>
                             </div>
 
-                            <button className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10">
+                            <Link
+                              to={`/gig/order/checkout/${gigId}/${gig.packages.basic._id}`}
+                              className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10 block text-center"
+                            >
                               <span>Buy This Package</span>
-                            </button>
+                            </Link>
                           </div>
                         </TabPanel>
 
@@ -980,9 +983,12 @@ function GigDetails() {
                                 </div>
                               </div>
 
-                              <button className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10">
+                              <Link
+                                to={`/gig/order/checkout/${gigId}/${gig.packages.standard._id}`}
+                                className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10 block text-center"
+                              >
                                 <span>Buy This Package</span>
-                              </button>
+                              </Link>
                             </div>
                           </TabPanel>
                         )}
@@ -1019,9 +1025,12 @@ function GigDetails() {
                                 </div>
                               </div>
 
-                              <button className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10">
+                              <Link
+                                to={`/gig/order/checkout/${gigId}/${gig.packages.premium._id}`}
+                                className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-10 block text-center"
+                              >
                                 <span>Buy This Package</span>
-                              </button>
+                              </Link>
                             </div>
                           </TabPanel>
                         )}
