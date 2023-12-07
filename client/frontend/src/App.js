@@ -30,6 +30,11 @@ import OrderCheckout from "./website/pages/OrderCheckout";
 import OrderConfirm from "./website/components/OrderConfirm";
 import Order from "./website/pages/Order";
 import Orders from "./dashboard/seller/pages/Orders";
+import AdminHome from "./dashboard/admin/AdminHome";
+import AdminLogin from "./dashboard/admin/AdminLogin";
+import AdminGigs from "./dashboard/admin/AdminGigs";
+import AdminTickets from "./dashboard/admin/AdminTickets";
+import AdminUsers from "./dashboard/admin/AdminUsers";
 
 function App() {
   const dispatch = useDispatch();
@@ -110,8 +115,14 @@ function App() {
           path="/gig/order/confirm/:gigId/:packageId"
           Component={OrderConfirm}
         />
-
         <Route path="/gig/orders/:orderId" Component={Order} />
+
+        {/* admin */}
+        <Route path="/admin" Component={AdminHome} />
+        <Route path="/admin-login" Component={AdminLogin} />
+        <Route path="/admin-gigs" Component={AdminGigs} />
+        <Route path="/admin-tickets" Component={AdminTickets} />
+        <Route path="/admin-users" Component={AdminUsers} />
 
         {/* marketplace */}
         <Route path="/marketplace" Component={Home} />

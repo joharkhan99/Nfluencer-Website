@@ -8,6 +8,7 @@ import OrderActivity from "../models/OrderActivity.js";
 import Stripe from "stripe";
 import Delivery from "../models/Delivery.js";
 import Review from "../models/Review.js";
+import GigView from "../models/GigView.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -520,7 +521,7 @@ const submitReview = async (req, res) => {
 };
 
 const getGigReviews = async (req, res) => {
-  const { gigId } = req.body;
+  const { gigId } = req.params;
   const reviews = await Review.find({
     gig: gigId,
   })
@@ -558,6 +559,38 @@ const getUserOrdersAsBuyer = async (req, res) => {
   res.status(200).json(orders);
 };
 
+const countViews = async (req, res) => {
+  try {
+    const { gigId } = req.body;
+    await GigView.findOneAndUpdate(
+      { gigId: gigId },
+      { $inc: { totalViews: 1 } },
+      { new: true, upsert: true }
+    );
+
+    res.status(201).json({
+      error: false,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", error: true });
+  }
+};
+
+const getUserGigsViews = async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const gigs = await Gig.find({ user: userId }).exec();
+    const gigIds = gigs.map((gig) => gig._id);
+
+    const gigViews = await GigView.find({ gigId: { $in: gigIds } }).exec();
+    res.status(200).json({ gigViews });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error", error: true });
+  }
+};
+
 export {
   createGig,
   fetchGig,
@@ -578,4 +611,6 @@ export {
   getGigReviews,
   getUserOrdersAsSeller,
   getUserOrdersAsBuyer,
+  countViews,
+  getUserGigsViews,
 };

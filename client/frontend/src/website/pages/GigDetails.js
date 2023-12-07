@@ -26,6 +26,7 @@ import {
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Loader from "../../utils/Loader";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 function GigDetails() {
   let { gigtitle, gigId } = useParams();
@@ -73,6 +74,56 @@ function GigDetails() {
       date.getFullYear()
     );
   };
+
+  const countViews = async () => {
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/gig/countViews`,
+        {
+          gigId: gigId,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (gig) {
+      countViews();
+    }
+  }, [gigId]);
+
+  const [gigReviews, setGigReviews] = useState([]);
+  const getGigReviews = async () => {
+    try {
+      const req = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/gig/getGigReviews/${gigId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const res = await req.json();
+      setGigReviews(res);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (gigId) {
+      getGigReviews();
+    }
+  }, [gigId]);
 
   if (!gig) {
     <Loader />;
@@ -573,7 +624,6 @@ function GigDetails() {
                           ))}
                         </div>
                       </div>
-                      {/*  */}
                     </div>
                   </div>
 
@@ -739,126 +789,45 @@ function GigDetails() {
                     </div>
 
                     <div className="container mx-auto py-8">
-                      <div className="grid grid-cols-1 gap-4 mb-3">
-                        <div className="bg-white rounded-lg p-4 px-0">
-                          <div className="flex items-center mb-4">
-                            <img
-                              src={require("../assets/man.jpg")}
-                              alt="User"
-                              className="rounded-full h-12 w-12 mr-4 object-cover"
-                            />
-                            <div>
-                              <h3 className="font-medium text-sm">John Doe</h3>
-                              <div className="flex flex-row gap-3 items-center">
-                                <div className="flex flex-row items-center gap-1">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                    className="w-4 h-4 fill-yellow-500"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                  <span>4.0</span>
+                      {gigReviews.map((review, index) => (
+                        <div className="grid grid-cols-1 gap-4 mb-3">
+                          <div className="bg-white rounded-lg p-4 px-0">
+                            <div className="flex items-center mb-4">
+                              <img
+                                src={review.buyer.avatar}
+                                alt="User"
+                                className="rounded-full h-12 w-12 mr-4 object-cover"
+                              />
+                              <div>
+                                <h3 className="font-medium text-sm">
+                                  {review.buyer.name}
+                                </h3>
+                                <div className="flex flex-row gap-3 items-center">
+                                  <div className="flex flex-row items-center gap-1">
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                      fill="currentColor"
+                                      className="w-4 h-4 fill-yellow-500"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                    <span>{review.rating}</span>
+                                  </div>
+                                  <p className="text-gray-500 text-sm">
+                                    {formatDate(review.createdAt)}
+                                  </p>
                                 </div>
-                                <p className="text-gray-500 text-sm">
-                                  May 15, 2023
-                                </p>
                               </div>
                             </div>
+                            <p className="text-gray-800">{review.reviewText}</p>
                           </div>
-                          <p className="text-gray-800">
-                            Aliquam hendrerit sollicitudin purus, quis rutrum mi
-                            accumsan nec. Quisque bibendum orci ac nibh
-                            facilisis, at malesuada orci congue. Nullam tempus
-                            sollicitudin cursus.
-                          </p>
                         </div>
-                      </div>
-                      <div className="grid grid-cols-1 gap-4 mb-3">
-                        <div className="bg-white rounded-lg p-4 px-0">
-                          <div className="flex items-center mb-4">
-                            <img
-                              src={require("../assets/man.jpg")}
-                              alt="User"
-                              className="rounded-full h-12 w-12 mr-4 object-cover"
-                            />
-                            <div>
-                              <h3 className="font-medium text-sm">John Doe</h3>
-                              <div className="flex flex-row gap-3 items-center">
-                                <div className="flex flex-row items-center gap-1">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                    className="w-4 h-4 fill-yellow-500"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                  <span>4.0</span>
-                                </div>
-                                <p className="text-gray-500 text-sm">
-                                  May 15, 2023
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                          <p className="text-gray-800">
-                            Aliquam hendrerit sollicitudin purus, quis rutrum mi
-                            accumsan nec. Quisque bibendum orci ac nibh
-                            facilisis, at malesuada orci congue. Nullam tempus
-                            sollicitudin cursus.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-1 gap-4 mb-3">
-                        <div className="bg-white rounded-lg p-4 px-0">
-                          <div className="flex items-center mb-4">
-                            <img
-                              src={require("../assets/man.jpg")}
-                              alt="User"
-                              className="rounded-full h-12 w-12 mr-4 object-cover"
-                            />
-                            <div>
-                              <h3 className="font-medium text-sm">John Doe</h3>
-                              <div className="flex flex-row gap-3 items-center">
-                                <div className="flex flex-row items-center gap-1">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                    className="w-4 h-4 fill-yellow-500"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                  <span>4.0</span>
-                                </div>
-                                <p className="text-gray-500 text-sm">
-                                  May 15, 2023
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                          <p className="text-gray-800">
-                            Aliquam hendrerit sollicitudin purus, quis rutrum mi
-                            accumsan nec. Quisque bibendum orci ac nibh
-                            facilisis, at malesuada orci congue. Nullam tempus
-                            sollicitudin cursus.
-                          </p>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
 

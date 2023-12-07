@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Chart from "react-apexcharts";
 
-const EarningChart = () => {
+const EarningChart = ({ series }) => {
   const [options, setOptions] = useState({
     chart: {
       id: "basic-area",
@@ -18,6 +18,9 @@ const EarningChart = () => {
         "Jul",
         "Aug",
         "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
       ],
     },
     fill: {
@@ -52,12 +55,12 @@ const EarningChart = () => {
     },
   });
 
-  const [series, setSeries] = useState([
-    {
-      name: "series-1",
-      data: [900, 400, 200, 300, 600, 700, 300, 91],
-    },
-  ]);
+  // const [series, setSeries] = useState([
+  //   {
+  //     name: "series-1",
+  //     data: [900, 400, 200, 300, 600, 700, 300, 91],
+  //   },
+  // ]);
 
   return (
     <div className="bg-white">

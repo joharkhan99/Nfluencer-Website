@@ -3,10 +3,37 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 import { CubeIcon } from "@heroicons/react/24/solid";
-import { HeartIcon, StarIcon } from "@heroicons/react/24/outline";
+import {
+  HeartIcon,
+  StarIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { Menu } from "@headlessui/react";
+
+const categories = [
+  { name: "All" },
+  { name: "Influencer Services" },
+  { name: "Live Streaming" },
+  { name: "Music Services" },
+  { name: "Art Services" },
+  { name: "Consulting Services" },
+  { name: "Coaching Services" },
+];
+
+const sortingOptions = [{ name: "Sort by Latest" }, { name: "Sort by Oldest" }];
 
 const Services = () => {
   const [gigs, setGigs] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState(["All"]);
+  const [inputQuery, setInputQuery] = useState("");
+  const nftStatuses = [{ name: "All" }, { name: "hasNFTReward" }];
+  const [selectedNFTStatus, setselectedNFTStatus] = useState(
+    nftStatuses[0].name
+  );
+  const [selectedSortingOption, setSelectedSortingOption] = useState(
+    sortingOptions[0].name
+  );
 
   const fetchGigs = async () => {
     try {
@@ -28,6 +55,46 @@ const Services = () => {
   useEffect(() => {
     fetchGigs();
   }, []);
+
+  const handleCategoryChange = (e) => {
+    const { value } = e.target;
+    if (selectedCategories.includes(value)) {
+      const newSelectedCategories = selectedCategories.filter(
+        (category) => category !== value
+      );
+      setSelectedCategories(newSelectedCategories);
+    } else {
+      setSelectedCategories([...selectedCategories, value]);
+    }
+  };
+
+  const filteredGigs = gigs
+    .filter((item) =>
+      item.title.toLowerCase().includes(inputQuery.toLowerCase())
+    )
+    .filter((item) => {
+      if (
+        selectedCategories.includes("All") ||
+        selectedCategories.length === 0
+      ) {
+        return true;
+      }
+      return selectedCategories.includes(item.category);
+    })
+    .filter((item) =>
+      selectedNFTStatus === "All"
+        ? true
+        : selectedNFTStatus === "hasNFTReward"
+        ? item.offerReward && item.offerReward === true
+        : true
+    )
+    .sort((a, b) => {
+      if (selectedSortingOption === "Sort by Oldest")
+        return new Date(a.createdAt) - new Date(b.createdAt);
+      else if (selectedSortingOption === "Sort by Latest")
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      else return 0;
+    });
 
   return (
     <>
@@ -59,194 +126,75 @@ const Services = () => {
               <div className="p-4 mb-5 bg-white shadow-md shadow-gray-100 rounded-xl border border-gray-100">
                 <div className="font-semibold text-md mb-3">Categories</div>
                 <ul className="list-none">
-                  <li className="mb-4">
-                    <label className="flex gap-3 cursor-pointer items-center">
+                  {categories.map((category, index) => (
+                    <div
+                      key={index}
+                      className="flex p-3 gap-4 rounded-xl hover:bg-gray-100  items-center"
+                    >
                       <input
+                        id={`category-${category.name}-${index}`}
+                        name={`${category.name}[]`}
+                        defaultValue={category.name}
                         type="checkbox"
-                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
+                        value={category.name}
+                        checked={selectedCategories.includes(category.name)}
+                        onChange={(e) => handleCategoryChange(e)}
+                        className="h-5 w-5 accent-nft-primary-light"
                       />
-                      <span className="text-sm">Design & Creative</span>
-                    </label>
-                  </li>
-                  <li className="mb-4">
-                    <label className="flex gap-3 cursor-pointer items-center">
-                      <input
-                        type="checkbox"
-                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
-                      />
-                      <span className="text-sm">Development & IT</span>
-                    </label>
-                  </li>
-                  <li className="mb-4">
-                    <label className="flex gap-3 cursor-pointer items-center">
-                      <input
-                        type="checkbox"
-                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
-                      />
-                      <span className="text-sm">Digital Marketing</span>
-                    </label>
-                  </li>
-                  <li className="mb-4">
-                    <label className="flex gap-3 cursor-pointer items-center">
-                      <input
-                        type="checkbox"
-                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
-                      />
-                      <span className="text-sm">Finance & Accounting</span>
-                    </label>
-                  </li>
-                  <li className="mb-4">
-                    <label className="flex gap-3 cursor-pointer items-center">
-                      <input
-                        type="checkbox"
-                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
-                      />
-                      <span className="text-sm">Lifestyle</span>
-                    </label>
-                  </li>
-                  <li>
-                    <label className="flex gap-3 cursor-pointer items-center">
-                      <input
-                        type="checkbox"
-                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
-                      />
-                      <span className="text-sm">Video & Animation</span>
-                    </label>
-                  </li>
+                      <label
+                        htmlFor={`category-${category.name}-${index}`}
+                        className="cursor-pointer text-gray-600"
+                      >
+                        {category.name}
+                      </label>
+                    </div>
+                  ))}
                 </ul>
               </div>
 
               <div className="p-4 mb-5 bg-white shadow-md shadow-gray-100 rounded-xl border border-gray-100">
-                <div className="font-semibold text-md mb-3">Date Posted</div>
-                <ul className="list-none">
-                  <li className="mb-4">
-                    <label className="flex gap-3 cursor-pointer items-center">
-                      <input
-                        type="checkbox"
-                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
-                      />
-                      <span className="text-sm">Last Hour</span>
+                {nftStatuses.map((status, index) => (
+                  <div
+                    key={index}
+                    className="flex p-3 gap-4 rounded-xl hover:bg-gray-100  items-center"
+                  >
+                    <input
+                      id={`status-${status.name}-${index}`}
+                      name="status"
+                      type="radio"
+                      value={status.name}
+                      defaultChecked={status.name === selectedNFTStatus}
+                      onChange={(e) => setselectedNFTStatus(e.target.value)}
+                      className="h-5 w-5 accent-nft-primary-light"
+                    />
+                    <label
+                      htmlFor={`status-${status.name}-${index}`}
+                      className="cursor-pointer text-gray-600"
+                    >
+                      {status.name}
                     </label>
-                  </li>
-                  <li className="mb-4">
-                    <label className="flex gap-3 cursor-pointer items-center">
-                      <input
-                        type="checkbox"
-                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
-                      />
-                      <span className="text-sm">Last 24 hours</span>
-                    </label>
-                  </li>
-                  <li className="mb-4">
-                    <label className="flex gap-3 cursor-pointer items-center">
-                      <input
-                        type="checkbox"
-                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
-                      />
-                      <span className="text-sm">Last 7 days</span>
-                    </label>
-                  </li>
-                  <li className="mb-4">
-                    <label className="flex gap-3 cursor-pointer items-center">
-                      <input
-                        type="checkbox"
-                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
-                      />
-                      <span className="text-sm">Last 14 days</span>
-                    </label>
-                  </li>
-                  <li className="mb-4">
-                    <label className="flex gap-3 cursor-pointer items-center">
-                      <input
-                        type="checkbox"
-                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
-                      />
-                      <span className="text-sm">Last 30 days</span>
-                    </label>
-                  </li>
-                  <li>
-                    <label className="flex gap-3 cursor-pointer items-center">
-                      <input
-                        type="checkbox"
-                        className="w-5 h-5 appearance-none checked:bg-nft-primary-light border rounded-md border-gray-300 checked:border-nft-primary-light cursor-pointer"
-                      />
-                      <span className="text-sm">All</span>
-                    </label>
-                  </li>
-                </ul>
+                  </div>
+                ))}
               </div>
 
               <div className="p-4 mb-5 bg-white shadow-md shadow-gray-100 rounded-xl border border-gray-100">
-                <div className="font-semibold text-md mb-3">Response Time</div>
-                <select className="mt-0 border w-full p-5 rounded-xl text-gray-500 outline-none focus:border-nft-primary-light">
-                  <option>Response Time</option>
-                  <option>1 Hour</option>
-                  <option>2 Hours</option>
-                  <option>3 Hours</option>
-                  <option>4 Hours</option>
-                  <option>5 Hours</option>
-                </select>
-              </div>
-
-              <div className="p-4 mb-5 bg-white shadow-md shadow-gray-100 rounded-xl border border-gray-100">
-                <div className="font-semibold text-md mb-3">Delivery Time</div>
-                <select className="mt-0 border w-full p-5 rounded-xl text-gray-500 outline-none focus:border-nft-primary-light">
-                  <option>Delivery Time</option>
-                  <option>1 Day</option>
-                  <option>2 Days</option>
-                  <option>3 Days</option>
-                  <option>4 Days</option>
-                  <option>5 Days</option>
-                </select>
-              </div>
-
-              <div className="p-4 mb-5 bg-white shadow-md shadow-gray-100 rounded-xl border border-gray-100">
-                <div className="font-semibold text-md mb-3">Budget</div>
+                <div className="font-semibold text-md mb-3">Price</div>
                 <div>
-                  <div className="mt-0 border w-full p-5 rounded-xl text-gray-500 outline-none focus:border-nft-primary-light">
-                    <input type="range" className="w-full" />
+                  <div className="mt-0 border w-full p-5 rounded-xl text-gray-500 outline-none focus:border-nft-primary-light flex justify-between">
+                    <input
+                      type="number"
+                      min={0}
+                      className="flex-1 w-full"
+                      placeholder="Min"
+                    />
+                    <input
+                      type="number"
+                      min={0}
+                      className="flex-1 w-full"
+                      placeholder="Max"
+                    />
                   </div>
                 </div>
-              </div>
-
-              <div className="p-4 mb-5 bg-white shadow-md shadow-gray-100 rounded-xl border border-gray-100">
-                <div className="font-semibold text-md mb-3">English Level</div>
-                <select className="mt-0 border w-full p-5 rounded-xl text-gray-500 outline-none focus:border-nft-primary-light">
-                  <option>English Level</option>
-                  <option>Intermediate</option>
-                  <option>Beginner</option>
-                  <option>Expert</option>
-                </select>
-              </div>
-
-              <div className="p-4 mb-5 bg-white shadow-md shadow-gray-100 rounded-xl border border-gray-100">
-                <div className="font-semibold text-md mb-3">Regions</div>
-                <select className="mt-0 border w-full p-5 rounded-xl text-gray-500 outline-none focus:border-nft-primary-light">
-                  <option>Regions</option>
-                  <option>Asia</option>
-                  <option>Australia</option>
-                  <option>Middle East</option>
-                </select>
-              </div>
-
-              <div className="mt-12">
-                <button className="bg-nft-primary-light h-full py-5 px-10 rounded-xl font-semibold text-white hover:bg-nft-primary-dark transition-colors text-sm w-full">
-                  <span>Filter Services</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-6 h-6 inline-block stroke-1 ml-2"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"
-                    />
-                  </svg>
-                </button>
               </div>
             </div>
 
@@ -255,48 +203,45 @@ const Services = () => {
               <div className="flex justify-between items-center mb-6">
                 {/* <!-- Total Result Text --> */}
                 <div>
-                  <div className="text-gray-700 text-sm mb-3">
-                    Your Selected
-                  </div>
-                  <div className="flex gap-3">
-                    <div className="flex gap-3">
-                      <button className="bg-web-secondary-light p-1 px-2 rounded text-sm">
-                        <span className="text-red-500 mr-2">x</span>
-                        <span>All</span>
-                      </button>
+                  <div className="relative">
+                    <div className="absolute inset-y-0 flex items-center pl-2 text-gray-100">
+                      <MagnifyingGlassIcon className="w-5 h-5 text-gray-400" />
                     </div>
-                    <div className="flex gap-3">
-                      <button className="bg-web-secondary-light p-1 px-2 rounded text-sm">
-                        <span className="text-red-500 mr-2">x</span>
-                        <span>1 Hour</span>
-                      </button>
-                    </div>
+                    <input
+                      type="text"
+                      className="text-base rounded-xl border-gray-200 shadow-sm focus:border-nft-primary-light pl-9 block w-full p-3 outline-none border ring-purple-700 focus:ring-1 focus:bg-transparent placeholder-gray-500 text-gray-800"
+                      placeholder="Search by item name"
+                      value={inputQuery}
+                      onChange={(e) => setInputQuery(e.target.value)}
+                    />
                   </div>
                 </div>
+                <Menu as="div" className="relative inline-block text-left">
+                  <div>
+                    <Menu.Button className="group inline-flex justify-between  text-gray-800 gap-20 items-center border border-gray-200 shadow-sm focus:border-nft-primary-light p-3 rounded-xl font-semibold focus:ring-nft-primary-light focus:ring-1">
+                      <span>{selectedSortingOption}</span>
+                      <ChevronDownIcon className="w-5 h-5 text-gray-500" />
+                    </Menu.Button>
+                  </div>
 
-                {/* <!-- Sort Select --> */}
-                <button className="px-4 rounded text-red-500 font-semibold text-sm">
-                  Clear all
-                </button>
-              </div>
-
-              <div className="flex justify-between items-center mb-4">
-                {/* <!-- Total Result Text --> */}
-                <p className="text-gray-700 text-sm">
-                  Showing 1 – 8 of 12 results
-                </p>
-
-                {/* <!-- Sort Select --> */}
-                <select className="px-4 rounded p-3 border border-gray-200 text-sm">
-                  <option value="sort1">Sort by (Default)</option>
-                  <option value="sort2">Sort by Price low to high</option>
-                  <option value="sort3">Sort by Date Added</option>
-                </select>
+                  <Menu.Items className="absolute right-0 z-10 mt-2 w-full origin-top-right rounded-xl bg-white shadow-2xl p-2 focus:outline-none">
+                    {sortingOptions.map((option, index) => (
+                      <Menu.Item key={index}>
+                        <button
+                          onClick={() => setSelectedSortingOption(option.name)}
+                          className="font-medium text-gray-800 hover:bg-gray-100 block p-3 rounded-lg w-full text-left"
+                        >
+                          {option.name}
+                        </button>
+                      </Menu.Item>
+                    ))}
+                  </Menu.Items>
+                </Menu>
               </div>
 
               {/* <!-- Grid Layout (Cards) --> */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {gigs.map((gig, index) => (
+                {filteredGigs.map((gig, index) => (
                   <div
                     className="decoration-transparent shadow-sm shadow-gray-50 rounded-xl transition-all duration-300 p-0 m-2 block hover:scale-105 transform"
                     key={index}
@@ -364,14 +309,16 @@ const Services = () => {
                               </div>
                             </div>
 
-                            <div className="flex items-center gap-2">
-                              <div>
-                                <CubeIcon className="w-4 h-4 text-nft-primary-dark" />
+                            {gig.offerReward && gig.offerReward === true && (
+                              <div className="flex items-center gap-2">
+                                <div>
+                                  <CubeIcon className="w-4 h-4 text-nft-primary-dark" />
+                                </div>
+                                <div className="text-md font-semibold text-sm text-gray-700">
+                                  NFT
+                                </div>
                               </div>
-                              <div className="text-md font-semibold text-sm text-gray-700">
-                                NFT
-                              </div>
-                            </div>
+                            )}
                           </div>
 
                           <div className="flex items-center justify-between">

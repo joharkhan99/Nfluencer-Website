@@ -8,6 +8,10 @@ import {
   storeWallet,
   removeWallet,
   getUsers,
+  fetchAllUsers,
+  deleteUser,
+  fetchAllGigs,
+  deleteGig,
 } from "../controllers/UserController.js";
 import authenticate from "../middleware/authenticate.js";
 const router = Router();
@@ -17,6 +21,12 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.post("/verifyemail", verifyEmail);
 router.post("/userdetails", userDetails);
+
+router.delete("/admin-delete-user", deleteUser);
+router.delete("/admin-delete-gig", deleteGig);
+
+router.get("/admin-users", fetchAllUsers);
+router.get("/admin-gigs", fetchAllGigs);
 
 router.use(authenticate);
 router.post("/getuser", getUser);

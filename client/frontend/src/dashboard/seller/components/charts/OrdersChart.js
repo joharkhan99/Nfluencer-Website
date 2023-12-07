@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Chart from "react-apexcharts";
 
-const OrderChart = () => {
+const OrderChart = ({ series }) => {
   const [options, setOptions] = useState({
     chart: {
       id: "grouped-bar",
@@ -51,16 +51,16 @@ const OrderChart = () => {
     },
   });
 
-  const [series, setSeries] = useState([
-    {
-      name: "Completed",
-      data: [200, 190, 230, 180, 200, 220, 250, 280, 300, 320, 350, 380],
-    },
-    {
-      name: "Canceled",
-      data: [80, 60, 100, 120, 100, 200, 50, 155, 140, 100, 120, 100],
-    },
-  ]);
+  // const [series, setSeries] = useState([
+  //   {
+  //     name: "Completed",
+  //     data: [200, 190, 230, 180, 200, 220, 250, 280, 300, 320, 350, 380],
+  //   },
+  //   {
+  //     name: "Canceled",
+  //     data: [80, 60, 100, 120, 100, 200, 50, 155, 140, 100, 120, 100],
+  //   },
+  // ]);
 
   return (
     <div className="w-full">

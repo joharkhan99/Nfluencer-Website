@@ -18,6 +18,9 @@ import {
   submitReview,
   getUserOrdersAsSeller,
   getUserOrdersAsBuyer,
+  countViews,
+  getUserGigsViews,
+  getGigReviews,
 } from "../controllers/GigController.js";
 import multer from "multer";
 import authenticate from "../middleware/authenticate.js";
@@ -28,12 +31,16 @@ const upload = multer({ storage });
 
 // Define your routes and middleware
 router.get("/:gigId", fetchGig);
+router.post("/countViews", countViews);
+
 router.post("/getallgigs", getAllGigs);
 router.post("/details", gigDetails);
+router.get("/getGigReviews/:gigId", getGigReviews);
 
 router.post("/create-payment-intent", createPaymentIntent);
 router.use(authenticate);
 
+router.post("/getUserGigsViews", getUserGigsViews);
 router.post("/orderdetails", fetchOrderDetails);
 router.post("/getUserOrdersAsSeller", getUserOrdersAsSeller);
 router.post("/getUserOrdersAsBuyer", getUserOrdersAsBuyer);

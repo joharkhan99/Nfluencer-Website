@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   ArrowTrendingDownIcon,
   ArrowTrendingUpIcon,
@@ -14,6 +14,279 @@ import { useSelector } from "react-redux";
 
 export const SellerHomePage = () => {
   const user = useSelector((state) => state.user.user);
+
+  const [ordersAsSeller, setOrdersAsSeller] = useState([]);
+  const [ordersAsBuyer, setOrdersAsBuyer] = useState([]);
+  const [series, setSeries] = useState([]);
+  const [earningseries, setearningSeries] = useState([]);
+  const [totalProfits, setTotalProfits] = useState(0);
+  const [lastMonthProfits, setLastMonthProfits] = useState(0);
+  const [profitRisePercentage, setProfitRisePercentage] = useState(0);
+  const [totalNewOrders, setTotalNewOrders] = useState(0);
+  const [percentIncrease, setPercentIncrease] = useState(0);
+  const [totalOrdersLastMonth, setTotalOrdersLastMonth] = useState(0);
+
+  const getUserOrdersAsSeller = async () => {
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/gig/getUserOrdersAsSeller`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": user.jwtToken,
+        },
+        body: JSON.stringify({
+          userId: user._id,
+        }),
+      }
+    );
+    const data = await res.json();
+    if (data.error) {
+      return;
+    }
+    setOrdersAsSeller(data);
+    console.log(data);
+  };
+
+  const getUserOrdersAsBuyer = async () => {
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/gig/getUserOrdersAsBuyer`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": user.jwtToken,
+        },
+        body: JSON.stringify({
+          userId: user._id,
+        }),
+      }
+    );
+    const data = await res.json();
+    if (data.error) {
+      return;
+    }
+    setOrdersAsBuyer(data);
+    console.log(data);
+  };
+
+  useEffect(() => {
+    getUserOrdersAsSeller();
+    getUserOrdersAsBuyer();
+  }, []);
+
+  useEffect(() => {
+    // Combine ordersAsSeller and ordersAsBuyer into a single array
+    const allOrders = [...ordersAsSeller, ...ordersAsBuyer];
+    console.log(allOrders);
+
+    // Group orders by date
+    const ordersByDate = allOrders.reduce((result, order) => {
+      const date = order.createdAt.split("T")[0]; // Extract date part
+      result[date] = result[date] || { buyer: 0, seller: 0 };
+      if (ordersAsBuyer.includes(order)) {
+        result[date].buyer++;
+      } else {
+        result[date].seller++;
+      }
+      return result;
+    }, {});
+
+    console.log(ordersByDate);
+
+    // Extract dates and counts for the chart series
+    const dates = Object.keys(ordersByDate);
+    const buyerCounts = dates.map((date) => ordersByDate[date].buyer || 0);
+    const sellerCounts = dates.map((date) => ordersByDate[date].seller || 0);
+
+    setSeries([
+      { name: "As buyer", data: buyerCounts },
+      { name: "As seller", data: sellerCounts },
+    ]);
+  }, [ordersAsSeller, ordersAsBuyer]);
+
+  useEffect(() => {
+    // Filter orders where orderAccepted is true
+    const acceptedOrders = ordersAsSeller.filter(
+      (order) => order.isDeliveryAccepted && order.gig !== null
+    );
+
+    console.log(acceptedOrders);
+
+    // Group earnings by month
+    const earningsByMonth = acceptedOrders.reduce((result, order) => {
+      const month = new Date(order.createdAt).getMonth();
+      result[month] = (result[month] || 0) + order.totalPrice; // Assuming totalPrice field exists
+      return result;
+    }, {});
+
+    console.log(earningsByMonth);
+
+    // Extract earnings and update the chart series
+    const earnings = Array.from(
+      { length: 12 },
+      (_, index) => earningsByMonth[index] || 0
+    );
+
+    console.log(earnings);
+
+    setearningSeries([
+      {
+        name: "Earnings",
+        data: earnings,
+      },
+    ]);
+  }, [ordersAsSeller]);
+
+  const [overviewOrders, setOverviewOrders] = useState([]);
+
+  useEffect(() => {
+    // Combine ordersAsSeller and ordersAsBuyer
+    const allOrders = [...ordersAsSeller, ...ordersAsBuyer];
+
+    // Sort orders by orderEndDate
+    const sortedOrders = allOrders.sort((a, b) => {
+      const dateA = new Date(a.orderEndDate).getTime();
+      const dateB = new Date(b.orderEndDate).getTime();
+      return dateA - dateB;
+    });
+
+    // Filter the first 4 completed/accepted orders
+    const filteredOrders = sortedOrders.slice(0, 4);
+
+    console.log("filteredOrders", filteredOrders);
+
+    setOverviewOrders(filteredOrders);
+  }, [ordersAsSeller, ordersAsBuyer]);
+
+  const [earningOverview, setearningOverview] = useState([]);
+
+  useEffect(() => {
+    // Combine ordersAsSeller and ordersAsBuyer
+    const allOrders = [...ordersAsSeller, ...ordersAsBuyer];
+
+    // Sort orders by orderEndDate
+    const sortedOrders = allOrders.sort((a, b) => {
+      const dateA = new Date(a.orderEndDate).getTime();
+      const dateB = new Date(b.orderEndDate).getTime();
+      return dateA - dateB;
+    });
+
+    // Filter the first 4 completed/accepted orders
+    const filteredOrders = sortedOrders
+      .filter((item) => item.isDeliveryAccepted)
+      .slice(0, 4);
+
+    console.log("filteredOrders", filteredOrders);
+
+    setearningOverview(filteredOrders);
+  }, [ordersAsSeller, ordersAsBuyer]);
+
+  useEffect(() => {
+    // Filter completed/accepted orders from the last month
+    const currentDate = new Date();
+    const lastMonthStartDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() - 1,
+      1
+    );
+    const lastMonthEndDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      0
+    );
+
+    const lastMonthOrders = ordersAsSeller.filter(
+      (order) =>
+        order.orderAccepted &&
+        order.orderCompleted &&
+        new Date(order.orderEndDate) >= lastMonthStartDate &&
+        new Date(order.orderEndDate) <= lastMonthEndDate
+    );
+
+    // Calculate total profits
+    const allProfits = ordersAsSeller.reduce(
+      (total, order) => total + order.totalPrice,
+      0
+    );
+    setTotalProfits(allProfits);
+
+    // Calculate total profits made last month
+    const lastMonthProfitsTotal = lastMonthOrders.reduce(
+      (total, order) => total + order.totalPrice,
+      0
+    );
+    setLastMonthProfits(lastMonthProfitsTotal);
+
+    // Calculate percentage rise in profits
+    const percentageRise =
+      ((lastMonthProfitsTotal - allProfits) / allProfits) * 100;
+    setProfitRisePercentage(percentageRise);
+  }, [ordersAsSeller]);
+
+  useEffect(() => {
+    // Filter completed/accepted orders from the last month
+    const currentDate = new Date();
+    const lastMonthStartDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() - 1,
+      1
+    );
+    const lastMonthEndDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth(),
+      0
+    );
+
+    const lastMonthOrders = ordersAsSeller.filter(
+      (order) =>
+        order.orderAccepted &&
+        order.orderCompleted &&
+        new Date(order.orderEndDate) >= lastMonthStartDate &&
+        new Date(order.orderEndDate) <= lastMonthEndDate
+    );
+
+    // Calculate total new orders
+    const totalNewOrdersCount = ordersAsSeller.filter(
+      (order) => order.isNewCustomer
+    ).length;
+    setTotalNewOrders(totalNewOrdersCount);
+
+    // Calculate total orders from the last month
+    setTotalOrdersLastMonth(lastMonthOrders.length);
+
+    // Calculate percentage increase
+    const totalOrdersCount = ordersAsSeller.length;
+    const percentageIncrease =
+      ((totalOrdersLastMonth - totalNewOrders) / totalNewOrders) * 100;
+    setPercentIncrease(percentageIncrease);
+  }, [ordersAsSeller, totalOrdersLastMonth, totalNewOrders]);
+
+  const getUserGigsViews = async () => {
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/gig/getUserGigsViews`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": user.jwtToken,
+        },
+        body: JSON.stringify({
+          userId: user._id,
+        }),
+      }
+    );
+    const data = await res.json();
+    console.log("getUserGigsViews", data);
+    if (data.error) {
+      return;
+    }
+    console.log(data);
+  };
+
+  useEffect(() => {
+    getUserGigsViews();
+  }, []);
 
   return (
     <>
@@ -81,13 +354,13 @@ export const SellerHomePage = () => {
 
               <div className="flex items-center gap-4 group-hover:text-white">
                 <div className="text-2xl font-semibold text-gray-900 group-hover:text-white">
-                  12.32K
+                  12
                 </div>
                 <div className="flex rounded-full p-1 px-2.5 text-xs items-center bg-green-200 gap-1">
                   <span>
                     <ArrowTrendingUpIcon className="w-4 h-4 text-green-700" />
                   </span>
-                  <span className="text-green-700 font-semibold">25.2%</span>
+                  <span className="text-green-700 font-semibold">2.2%</span>
                 </div>
               </div>
 
@@ -96,7 +369,7 @@ export const SellerHomePage = () => {
                   via last month:
                 </span>
                 <span className="text-xs text-black font-semibold group-hover:text-white">
-                  112.323k
+                  3
                 </span>
               </div>
             </div>
@@ -121,13 +394,15 @@ export const SellerHomePage = () => {
 
               <div className="flex items-center gap-4 group-hover:text-white">
                 <div className="text-2xl font-semibold text-gray-900 group-hover:text-white">
-                  $12,233.21
+                  ${totalProfits}
                 </div>
                 <div className="flex rounded-full p-1 px-2.5 text-xs items-center bg-red-200 gap-1">
                   <span>
                     <ArrowTrendingDownIcon className="w-4 h-4 text-red-700" />
                   </span>
-                  <span className="text-red-700 font-semibold">14.2%</span>
+                  <span className="text-red-700 font-semibold">
+                    {profitRisePercentage.toFixed(2)}%
+                  </span>
                 </div>
               </div>
 
@@ -136,7 +411,7 @@ export const SellerHomePage = () => {
                   via last month:
                 </span>
                 <span className="text-xs text-black font-semibold group-hover:text-white">
-                  $15,122.0
+                  ${lastMonthProfits}
                 </span>
               </div>
             </div>
@@ -162,13 +437,15 @@ export const SellerHomePage = () => {
 
               <div className="flex items-center gap-4 group-hover:text-white">
                 <div className="text-2xl font-semibold text-gray-900 group-hover:text-white">
-                  630
+                  {totalNewOrders}
                 </div>
                 <div className="flex rounded-full p-1 px-2.5 text-xs items-center bg-green-200 gap-1">
                   <span>
                     <ArrowTrendingUpIcon className="w-4 h-4 text-green-700" />
                   </span>
-                  <span className="text-green-700 font-semibold">20%</span>
+                  <span className="text-green-700 font-semibold">
+                    {percentIncrease.toFixed(2)}%
+                  </span>
                 </div>
               </div>
 
@@ -177,7 +454,7 @@ export const SellerHomePage = () => {
                   via last month:
                 </span>
                 <span className="text-xs text-black font-semibold group-hover:text-white">
-                  510
+                  {totalOrdersLastMonth}
                 </span>
               </div>
             </div>
@@ -192,7 +469,7 @@ export const SellerHomePage = () => {
                       <LightBulbIcon className="w-4 h-4" />
                     </span>
                   </div>
-                  <div>Running Projects</div>
+                  <div>Running Orders</div>
                 </div>
                 <div>
                   <span>
@@ -203,51 +480,11 @@ export const SellerHomePage = () => {
 
               <div className="flex items-center gap-4 group-hover:text-white">
                 <div className="text-2xl font-semibold text-gray-900 group-hover:text-white">
-                  25
+                  {ordersAsBuyer.length + ordersAsSeller.length}
                 </div>
-                <div className="flex rounded-full p-1 px-2.5 text-xs items-center bg-red-200 gap-1">
-                  <span>
-                    <ArrowTrendingDownIcon className="w-4 h-4 text-red-700" />
-                  </span>
-                  <span className="text-red-700 font-semibold">15%</span>
-                </div>
-              </div>
-
-              <div>
-                <span className="text-xs text-gray-500 mr-1 group-hover:text-gray-50">
-                  via last month:
-                </span>
-                <span className="text-xs text-black font-semibold group-hover:text-white">
-                  18
-                </span>
               </div>
             </div>
           </div>
-
-          {/* <div className="lg:w-1/4 md:w-2/4 w-full bg-white shadow-lg shadow-gray-200 transition-all hover:bg-nft-primary-light hover:shadow-[0_10px_20px_rgba(120,82,243,0.5)] rounded-xl p-3 py-4 group hover:scale-105">
-            <div className="card-stats"></div>
-            <div className=" flex justify-between items-center cursor-pointer">
-              <div className="flex gap-3 items-center">
-                <div>
-                  <span className="bg-nft-primary-light text-nft-primary-dark block p-4 bg-opacity-30 rounded-xl group-hover:bg-white transition-all">
-                    <EyeIcon className="w-6 h-6" />
-                  </span>
-                </div>
-                <div className="text-sm group-hover:text-white">
-                  <p className="text-lg font-semibold">3.456K</p>
-                  <p className="text-gray-500 group-hover:text-white">
-                    Total Views
-                  </p>
-                </div>
-              </div>
-
-              <div>
-                <span>
-                  <ChevronRightIcon className="w-6 h-6 text-nft-primary-dark group-hover:text-white" />
-                </span>
-              </div>
-            </div>
-          </div> */}
         </div>
 
         <div className="bg-white rounded-xl p-6 w-full my-6 max-w-full shadow-xl shadow-gray-200">
@@ -255,15 +492,6 @@ export const SellerHomePage = () => {
             <span className="font-bold text-2xl text-gray-900">
               Overview Orders
             </span>
-            <div>
-              <select className="text-sm bg-gray-100 rounded-lg p-2 px-3 text-gray-600 outline-none focus:ring focus:ring-gray-200 cursor-pointer">
-                <option value="1" selected>
-                  Last 7 days
-                </option>
-                <option value="2">Last 30 days</option>
-                <option value="3">Last 90 days</option>
-              </select>
-            </div>
           </div>
           <div className="w-full flex">
             <div className="lg:w-1/3">
@@ -281,112 +509,41 @@ export const SellerHomePage = () => {
 
               <div>
                 <ul>
-                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
-                    <div className="flex items-center gap-5">
-                      <div className="bg-gray-100 p-1.5 rounded-full">
-                        <img
-                          src="https://mir-s3-cdn-cf.behance.net/user/50/2ec25f505091121.64c0087b7bd73.png"
-                          alt=""
-                          className="h-12 w-12 rounded-full"
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-xs text-gray-500">Facebook</span>
-                        <span className="text-lg font-bold">$2.13K</span>
-                      </div>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
-                      <span className="text-xs text-green-700 font-medium">
-                        5.7%
-                      </span>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
-                      <span className="text-xs text-gray-700 font-medium">
-                        22 May 2023
-                      </span>
-                    </div>
-                  </li>
-                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
-                    <div className="flex items-center gap-5">
-                      <div className="bg-gray-100 p-1.5 rounded-full">
-                        <img
-                          src="https://cdn.dribbble.com/users/14379669/avatars/normal/1f4ebd77a0db9bb01986ed2c943485f2.jpg?1671474840&resize=40x40"
-                          alt=""
-                          className="h-12 w-12 rounded-full"
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-xs text-gray-500">Facebook</span>
-                        <span className="text-lg font-bold">$2.13K</span>
-                      </div>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
-                      <span className="text-xs text-green-700 font-medium">
-                        5.7%
-                      </span>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
-                      <span className="text-xs text-gray-700 font-medium">
-                        22 May 2023
-                      </span>
-                    </div>
-                  </li>
-                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
-                    <div className="flex items-center gap-5">
-                      <div className="bg-gray-100 p-1.5 rounded-full">
-                        <img
-                          src="https://cdn.dribbble.com/users/16361925/avatars/normal/27e34e235e95b7eb13d137903a49c31e.png?1695370101&resize=40x40"
-                          alt=""
-                          className="h-12 w-12 rounded-full"
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-xs text-gray-500">Facebook</span>
-                        <span className="text-lg font-bold">$2.13K</span>
-                      </div>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
-                      <span className="text-xs text-green-700 font-medium">
-                        5.7%
-                      </span>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
-                      <span className="text-xs text-gray-700 font-medium">
-                        22 May 2023
-                      </span>
-                    </div>
-                  </li>
-                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
-                    <div className="flex items-center gap-5">
-                      <div className="bg-gray-100 p-1.5 rounded-full">
-                        <img
-                          src="https://cdn.dribbble.com/users/9196316/avatars/normal/f6e9f41f806541156d32e40ce1652055.png?1690621521&resize=40x40"
-                          alt=""
-                          className="h-12 w-12 rounded-full"
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-xs text-gray-500">Facebook</span>
-                        <span className="text-lg font-bold">$2.13K</span>
-                      </div>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
-                      <span className="text-xs text-green-700 font-medium">
-                        5.7%
-                      </span>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
-                      <span className="text-xs text-gray-700 font-medium">
-                        22 May 2023
-                      </span>
-                    </div>
-                  </li>
+                  {overviewOrders.map((order) => {
+                    // if (order.gig)
+                    return (
+                      <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
+                        <div className="flex items-center gap-5">
+                          <div className="bg-gray-100 p-1.5 rounded-full">
+                            <img
+                              src={order.seller.avatar}
+                              alt=""
+                              className="h-12 w-12 rounded-full"
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-xs text-gray-500">
+                              {order.seller.name}
+                            </span>
+                            <span className="text-lg font-bold">
+                              ${order.totalPrice}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
+                          <span className="text-xs text-gray-700 font-medium">
+                            {new Date(order.orderEndDate).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </div>
             <div className="lg:w-2/3 mt-4 lg:mt-0 overflow-hidden">
               <div>
-                <OrderChart />
+                <OrderChart series={series} />
               </div>
             </div>
           </div>
@@ -395,7 +552,7 @@ export const SellerHomePage = () => {
         <div className="p-6 bg-white shadow-lg rounded-xl shadow-gray-200">
           <div className="mb-3">
             <span className="font-bold text-2xl text-gray-900 block">
-              Earning Report
+              Earnings Overview
             </span>
           </div>
 
@@ -415,112 +572,41 @@ export const SellerHomePage = () => {
 
               <div>
                 <ul>
-                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
-                    <div className="flex items-center gap-5">
-                      <div className="bg-gray-100 p-1.5 rounded-full">
-                        <img
-                          src="https://mir-s3-cdn-cf.behance.net/user/50/2ec25f505091121.64c0087b7bd73.png"
-                          alt=""
-                          className="h-12 w-12 rounded-full"
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-xs text-gray-500">Facebook</span>
-                        <span className="text-lg font-bold">$2.13K</span>
-                      </div>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
-                      <span className="text-xs text-green-700 font-medium">
-                        5.7%
-                      </span>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
-                      <span className="text-xs text-gray-700 font-medium">
-                        22 May 2023
-                      </span>
-                    </div>
-                  </li>
-                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
-                    <div className="flex items-center gap-5">
-                      <div className="bg-gray-100 p-1.5 rounded-full">
-                        <img
-                          src="https://cdn.dribbble.com/users/14379669/avatars/normal/1f4ebd77a0db9bb01986ed2c943485f2.jpg?1671474840&resize=40x40"
-                          alt=""
-                          className="h-12 w-12 rounded-full"
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-xs text-gray-500">Facebook</span>
-                        <span className="text-lg font-bold">$2.13K</span>
-                      </div>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
-                      <span className="text-xs text-green-700 font-medium">
-                        5.7%
-                      </span>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
-                      <span className="text-xs text-gray-700 font-medium">
-                        22 May 2023
-                      </span>
-                    </div>
-                  </li>
-                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
-                    <div className="flex items-center gap-5">
-                      <div className="bg-gray-100 p-1.5 rounded-full">
-                        <img
-                          src="https://cdn.dribbble.com/users/16361925/avatars/normal/27e34e235e95b7eb13d137903a49c31e.png?1695370101&resize=40x40"
-                          alt=""
-                          className="h-12 w-12 rounded-full"
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-xs text-gray-500">Facebook</span>
-                        <span className="text-lg font-bold">$2.13K</span>
-                      </div>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
-                      <span className="text-xs text-green-700 font-medium">
-                        5.7%
-                      </span>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
-                      <span className="text-xs text-gray-700 font-medium">
-                        22 May 2023
-                      </span>
-                    </div>
-                  </li>
-                  <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
-                    <div className="flex items-center gap-5">
-                      <div className="bg-gray-100 p-1.5 rounded-full">
-                        <img
-                          src="https://cdn.dribbble.com/users/9196316/avatars/normal/f6e9f41f806541156d32e40ce1652055.png?1690621521&resize=40x40"
-                          alt=""
-                          className="h-12 w-12 rounded-full"
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="text-xs text-gray-500">Facebook</span>
-                        <span className="text-lg font-bold">$2.13K</span>
-                      </div>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-green-200 gap-1 text-center">
-                      <span className="text-xs text-green-700 font-medium">
-                        5.7%
-                      </span>
-                    </div>
-                    <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
-                      <span className="text-xs text-gray-700 font-medium">
-                        22 May 2023
-                      </span>
-                    </div>
-                  </li>
+                  {earningOverview.map((order) => {
+                    return (
+                      <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
+                        <div className="flex items-center gap-5">
+                          <div className="bg-gray-100 p-1.5 rounded-full">
+                            <img
+                              src={order.gig.images[0]}
+                              alt=""
+                              className="h-12 w-12 rounded-full"
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-xs text-gray-500">
+                              {order.gig.title.substring(0, 25)}...
+                            </span>
+                            <span className="text-lg font-bold">
+                              ${order.totalPrice}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
+                          <span className="text-xs text-gray-700 font-medium">
+                            {new Date(order.orderEndDate).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </div>
             <div className="lg:w-2/3 mt-4 lg:mt-0">
               <div>
-                <EarningChart />
+                <EarningChart series={earningseries} />
               </div>
             </div>
           </div>

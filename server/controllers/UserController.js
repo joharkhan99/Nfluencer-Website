@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import generateToken from "../utils/tokenGenerator.js";
 import transporter from "../utils/emailConfig.js";
 import cloudinary from "../utils/cloudinaryConfig.js";
+import Gig from "../models/Gig.js";
 
 const encryptPassword = (password) => {
   const salt = bcrypt.genSaltSync(10);
@@ -350,6 +351,81 @@ const getUsers = async (req, res) => {
   });
 };
 
+const fetchAllUsers = async (req, res) => {
+  const users = await User.find({}, { password: 0 });
+
+  if (!users) {
+    return res.status(404).json({
+      error: true,
+      message: "Users not found",
+    });
+  }
+
+  return res.status(200).json({
+    error: false,
+    message: "Users found",
+    users,
+  });
+};
+
+const deleteUser = async (req, res) => {
+  const { userId } = req.body;
+
+  try {
+    const user = await User.findByIdAndDelete(userId);
+    if (!user) {
+      return res.status(404).json({
+        error: true,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      error: false,
+      message: "User deleted",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      error: true,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+const fetchAllGigs = async (req, res) => {
+  const gigs = await Gig.find({})
+    .populate("user", "-password")
+    .populate("packages.basic packages.standard packages.premium")
+    .exec();
+  res.status(200).json(gigs);
+};
+
+const deleteGig = async (req, res) => {
+  const { gigId } = req.body;
+
+  try {
+    const gig = await Gig.findByIdAndDelete(gigId);
+    if (!gig) {
+      return res.status(404).json({
+        error: true,
+        message: "Gig not found",
+      });
+    }
+
+    return res.status(200).json({
+      error: false,
+      message: "Gig deleted",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      error: true,
+      message: "Internal Server Error",
+    });
+  }
+};
+
 export {
   registerUser,
   loginUser,
@@ -359,4 +435,8 @@ export {
   storeWallet,
   removeWallet,
   getUsers,
+  fetchAllUsers,
+  deleteUser,
+  fetchAllGigs,
+  deleteGig,
 };
