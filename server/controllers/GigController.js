@@ -532,6 +532,32 @@ const getGigReviews = async (req, res) => {
   res.status(200).json(reviews);
 };
 
+const getUserOrdersAsSeller = async (req, res) => {
+  const { userId } = req.body;
+  const orders = await Order.find({
+    seller: userId,
+  })
+    .populate("seller")
+    .populate("buyer")
+    .populate("gig")
+    .populate("package")
+    .exec();
+  res.status(200).json(orders);
+};
+
+const getUserOrdersAsBuyer = async (req, res) => {
+  const { userId } = req.body;
+  const orders = await Order.find({
+    buyer: userId,
+  })
+    .populate("seller")
+    .populate("buyer")
+    .populate("gig")
+    .populate("package")
+    .exec();
+  res.status(200).json(orders);
+};
+
 export {
   createGig,
   fetchGig,
@@ -550,4 +576,6 @@ export {
   submitDelivery,
   submitReview,
   getGigReviews,
+  getUserOrdersAsSeller,
+  getUserOrdersAsBuyer,
 };

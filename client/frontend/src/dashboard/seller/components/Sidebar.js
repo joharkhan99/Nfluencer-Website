@@ -103,6 +103,31 @@ const Sidebar = () => {
               </li>
 
               <li
+                className={`rounded-md p-2 cursor-pointer text-sm mb-2 ${
+                  activeLink === "/seller/my-orders" ||
+                  activeLink === "/seller/my-orders"
+                    ? "bg-nft-primary-light shadow-lg shadow-gray-200 text-white"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
+              >
+                <Link
+                  to="/seller/my-orders"
+                  className={`flex items-center gap-x-4 ${
+                    !sideBarOpen && "justify-center"
+                  }`}
+                >
+                  <ClipboardDocumentListIcon className="w-6 h-6" />
+                  <span
+                    className={`${
+                      !sideBarOpen && "hidden"
+                    } origin-left duration-200 font-semibold`}
+                  >
+                    {sideBarOpen && <span>Manage Orders</span>}
+                  </span>
+                </Link>
+              </li>
+
+              {/* <li
                 className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-2`}
               >
                 <ClipboardDocumentListIcon className="w-6 h-6" />
@@ -113,7 +138,7 @@ const Sidebar = () => {
                 >
                   {sideBarOpen && <span>Manage Orders</span>}
                 </span>
-              </li>
+              </li> */}
 
               <li
                 className={`rounded-md p-2 cursor-pointer text-sm mb-2 ${

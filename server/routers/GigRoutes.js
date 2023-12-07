@@ -16,6 +16,8 @@ import {
   uploadDeliveryZiptoCloudinary,
   submitDelivery,
   submitReview,
+  getUserOrdersAsSeller,
+  getUserOrdersAsBuyer,
 } from "../controllers/GigController.js";
 import multer from "multer";
 import authenticate from "../middleware/authenticate.js";
@@ -33,6 +35,8 @@ router.post("/create-payment-intent", createPaymentIntent);
 router.use(authenticate);
 
 router.post("/orderdetails", fetchOrderDetails);
+router.post("/getUserOrdersAsSeller", getUserOrdersAsSeller);
+router.post("/getUserOrdersAsBuyer", getUserOrdersAsBuyer);
 router.post("/getOrderActivity", getOrderActivity);
 router.post("/createOrder", createOrder);
 router.post("/submitRequirements", submitRequirements);

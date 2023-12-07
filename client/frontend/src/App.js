@@ -29,6 +29,7 @@ import MyItems from "./dashboard/seller/pages/MyItems";
 import OrderCheckout from "./website/pages/OrderCheckout";
 import OrderConfirm from "./website/components/OrderConfirm";
 import Order from "./website/pages/Order";
+import Orders from "./dashboard/seller/pages/Orders";
 
 function App() {
   const dispatch = useDispatch();
@@ -139,6 +140,7 @@ function App() {
           <Route path="nfts" Component={SellerManageNFT} />
           <Route path="inbox" Component={SellerInbox} />
           <Route path="my-items" Component={MyItems} />
+          <Route path="my-orders" Component={Orders} />
         </Route>
       </Routes>
     </BrowserRouter>
