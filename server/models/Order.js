@@ -6,40 +6,23 @@ const orderSchema = new mongoose.Schema(
   {
     seller: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Assuming you have a User model for sellers
+      ref: "User",
     },
     buyer: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Assuming you have a User model for buyers
+      ref: "User",
     },
     gig: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Gig", // Assuming you have a Gig model
+      ref: "Gig",
     },
     package: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Package", // Assuming you have a GigPackage model
+      ref: "Package",
     },
     totalPrice: {
       type: Number,
     },
-
-    // I want to track the order status and the dates when the order status changes
-    // So I will create an array of objects with the following fields:
-    // status: String
-    // date: Date
-    // The status will be one of the following:
-    // "Order Placed"
-    // "Order Accepted"
-    // "Order Rejected"
-    // "Order Completed"
-    // "Order Cancelled"
-    // "Order Delivered"
-    // "Order Refunded"
-    // "Order Revision Requested"
-    // "Order Revision Submitted"
-    // "Order Revision Accepted"
-    // "Order Revision Rejected"
     status: {
       type: String,
     },

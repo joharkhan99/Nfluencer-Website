@@ -10,20 +10,32 @@ const socketSetup = (server, clientURL) => {
   });
 
   const saveMessage = async (data) => {
-    const message = new Message({
-      sender: data.sender,
-      receiver: data.receiver,
-      text: data.text,
-      chat: data.chatId,
-    });
+    if (data.chatType === "order") {
+      const message = new Message({
+        sender: data.sender,
+        receiver: data.receiver,
+        text: data.text,
+        chat: data.chatId,
+        chatType: data.chatType,
+      });
 
-    await message.save();
-    return message;
+      await message.save();
+      return message;
+    } else {
+      const message = new Message({
+        sender: data.sender,
+        receiver: data.receiver,
+        text: data.text,
+        chat: data.chatId,
+        chatType: "single",
+      });
+
+      await message.save();
+      return message;
+    }
   };
 
   io.on("connection", (socket) => {
-    console.log(`⚡: ${socket.id} user just connected!`);
-
     socket.on("message", async (data) => {
       try {
         const message = await saveMessage(data);

@@ -257,64 +257,66 @@ const ChatWindow = () => {
                 >
                   <div className="flex-1 h-full">
                     {messages.map((message, index) => {
-                      if (user._id === message.receiver) {
-                        // Messages sent by another user
-                        return (
-                          <div
-                            className="flex justify-start w-full mb-1"
-                            key={index}
-                          >
-                            <div className="w-1/2 flex justify-start">
-                              <div>
+                      if (message.chatType === "single") {
+                        if (user._id === message.receiver) {
+                          // Messages sent by another user
+                          return (
+                            <div
+                              className="flex justify-start w-full mb-1"
+                              key={index}
+                            >
+                              <div className="w-1/2 flex justify-start">
+                                <div>
+                                  <div className="flex gap-3">
+                                    <img
+                                      src={message.sender.avatar}
+                                      alt=""
+                                      className="w-7 h-7 rounded-full object-cover"
+                                    />
+                                    <div className="flex flex-col items-start">
+                                      <span className="font-semibold">
+                                        {message.sender.name}
+                                      </span>
+                                      <div className="bg-nft-primary-light w-fit text-white p-2 rounded-lg">
+                                        {message.text}
+                                      </div>
+                                      <span className="text-xs text-gray-500">
+                                        {formatDate(message.createdAt)}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        } else {
+                          // Messages received by you
+                          return (
+                            <div
+                              className="flex justify-end w-full mb-3"
+                              key={index}
+                            >
+                              <div className="w-1/2 flex justify-end">
                                 <div className="flex gap-3">
-                                  <img
-                                    src={message.sender.avatar}
-                                    alt=""
-                                    className="w-7 h-7 rounded-full object-cover"
-                                  />
-                                  <div className="flex flex-col items-start">
-                                    <span className="font-semibold">
-                                      {message.sender.name}
-                                    </span>
-                                    <div className="bg-nft-primary-light w-fit text-white p-2 rounded-lg">
+                                  <div className="flex flex-col items-end">
+                                    <span className="font-semibold">Me</span>
+                                    <div className="bg-gray-100 w-fit text-gray-800 p-2 rounded-lg">
                                       {message.text}
                                     </div>
                                     <span className="text-xs text-gray-500">
                                       {formatDate(message.createdAt)}
                                     </span>
                                   </div>
+                                  <img
+                                    src={user.avatar}
+                                    alt=""
+                                    className="w-7 h-7 rounded-full object-cover"
+                                  />
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        );
-                      } else {
-                        // Messages received by you
-                        return (
-                          <div
-                            className="flex justify-end w-full mb-3"
-                            key={index}
-                          >
-                            <div className="w-1/2 flex justify-end">
-                              <div className="flex gap-3">
-                                <div className="flex flex-col items-end">
-                                  <span className="font-semibold">Me</span>
-                                  <div className="bg-gray-100 w-fit text-gray-800 p-2 rounded-lg">
-                                    {message.text}
-                                  </div>
-                                  <span className="text-xs text-gray-500">
-                                    {formatDate(message.createdAt)}
-                                  </span>
-                                </div>
-                                <img
-                                  src={user.avatar}
-                                  alt=""
-                                  className="w-7 h-7 rounded-full object-cover"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        );
+                          );
+                        }
                       }
                     })}
                   </div>

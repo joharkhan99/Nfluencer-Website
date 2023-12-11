@@ -20,7 +20,6 @@ const OrderChatWindow = ({ orderChatUser }) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
     socket.on("user-disconnected", async (disconnectedUserId) => {
-      console.log("User disconnected:", disconnectedUserId);
       fetchChatId(user._id, selectedUser._id)
         .then(async (data) => {
           setSelectedChatId(data);
@@ -46,11 +45,11 @@ const OrderChatWindow = ({ orderChatUser }) => {
             sender: user._id,
             receiver: selectedUser._id,
             chatId,
+            chatType: "order",
           }),
         }
       );
       const data = await response.json();
-      console.log("DIS", data.messages);
       if (data.error) {
         setMessages([]);
         return;
@@ -103,8 +102,6 @@ const OrderChatWindow = ({ orderChatUser }) => {
 
   const sendMessage = (e) => {
     e.preventDefault();
-    console.log(user);
-
     socket.emit("message", {
       text: newMessage,
       sender: user._id,
@@ -112,6 +109,7 @@ const OrderChatWindow = ({ orderChatUser }) => {
       chatId: selectedChatId,
       socketId: socket.id,
       avatar: user.avatar,
+      chatType: "order",
     });
 
     setNewMessage("");
@@ -129,14 +127,6 @@ const OrderChatWindow = ({ orderChatUser }) => {
     return formattedDate;
   }
 
-  useEffect(() => {
-    // Scroll to the bottom of the chat container when messages change
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
-    }
-  }, [messages]);
-
   return (
     <div className="bg-white rounded-xl w-full h-full overflow-y-auto">
       <>
@@ -152,52 +142,54 @@ const OrderChatWindow = ({ orderChatUser }) => {
                 <div className="flex-1 h-full flex-col">
                   {messages.map((message, index) => {
                     return (
-                      <div
-                        className={`flex justify-start w-full py-5 border-b border-gray-100 p-3 ${
-                          user._id !== message.sender._id && "bg-gray-100"
-                        }`}
-                        key={index}
-                      >
-                        <div className="w-full flex justify-start">
-                          <div>
-                            <div className="flex gap-3">
-                              <img
-                                src={
-                                  user._id === message.receiver
-                                    ? selectedUser.avatar
-                                    : user.avatar
-                                }
-                                alt=""
-                                className="w-10 h-10 rounded-full object-cover bg-gray-100"
-                              />
-                              <div className="flex flex-col items-start gap-4">
-                                <div className="flex flex-col items-start">
-                                  {user._id === message.receiver ? (
-                                    <span className="font-semibold">
-                                      <span className="text-nft-primary-light">
-                                        {selectedUser.username}
-                                      </span>{" "}
-                                      sent a message
-                                    </span>
-                                  ) : (
-                                    <span className="font-semibold">
-                                      You sent a message
-                                    </span>
-                                  )}
+                      message.chatType === "order" && (
+                        <div
+                          className={`flex justify-start w-full py-5 border-b border-gray-100 p-3 ${
+                            user._id !== message.sender._id && "bg-gray-100"
+                          }`}
+                          key={index}
+                        >
+                          <div className="w-full flex justify-start">
+                            <div>
+                              <div className="flex gap-3">
+                                <img
+                                  src={
+                                    user._id === message.receiver
+                                      ? selectedUser.avatar
+                                      : user.avatar
+                                  }
+                                  alt=""
+                                  className="w-10 h-10 rounded-full object-cover bg-gray-100"
+                                />
+                                <div className="flex flex-col items-start gap-4">
+                                  <div className="flex flex-col items-start">
+                                    {user._id === message.receiver ? (
+                                      <span className="font-semibold">
+                                        <span className="text-nft-primary-light">
+                                          {selectedUser.username}
+                                        </span>{" "}
+                                        sent a message
+                                      </span>
+                                    ) : (
+                                      <span className="font-semibold">
+                                        You sent a message
+                                      </span>
+                                    )}
 
-                                  <span className="text-xs text-gray-500">
-                                    {formatDate(message.createdAt)}
-                                  </span>
-                                </div>
+                                    <span className="text-xs text-gray-500">
+                                      {formatDate(message.createdAt)}
+                                    </span>
+                                  </div>
 
-                                <div className="w-fit text-black">
-                                  {message.text}
+                                  <div className="w-fit text-black">
+                                    {message.text}
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
+                      )
                     );
                   })}
                 </div>

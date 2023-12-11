@@ -51,22 +51,23 @@ const sendMessage = async (req, res) => {
 
 const chatHistory = async (req, res) => {
   try {
-    // Get the sender and receiver user IDs from the request body
-    const { sender, receiver, chatId } = req.body;
-
-    // Find the chat by chatId
+    const { sender, receiver, chatId, chatType } = req.body;
     const chat = await Chat.findById(chatId);
-
     if (!chat) {
       return res.status(404).json({ error: true, message: "Chat not found" });
     }
 
-    // Find all messages in the chat
-    const messages = await Message.find({ chat: chat._id })
-      .sort({ createdAt: 1 }) // Sort by message creation date
-      .populate("sender"); // Populate sender details
+    if (chatType === "order") {
+      const messages = await Message.find({ chat: chat._id, chatType: "order" })
+        .sort({ createdAt: 1 })
+        .populate("sender");
 
-    // console.log(messages);
+      return res.status(200).json({ messages });
+    }
+
+    const messages = await Message.find({ chat: chat._id, chatType: "single" })
+      .sort({ createdAt: 1 })
+      .populate("sender");
 
     return res.status(200).json({ messages });
   } catch (error) {
@@ -86,7 +87,6 @@ const fetchChatId = async (req, res) => {
       users: { $all: [senderId, receiverId] },
     });
 
-    console.log("Existing chat:", existingChat);
     if (existingChat) {
       return res.json({ chatId: existingChat._id });
     }
@@ -98,8 +98,6 @@ const fetchChatId = async (req, res) => {
 
     // Save the new chat to the database
     await newChat.save();
-
-    console.log("New chat created:", newChat);
 
     res.json({ chatId: newChat._id });
   } catch (error) {

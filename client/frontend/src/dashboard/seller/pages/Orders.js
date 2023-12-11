@@ -71,13 +71,8 @@ const Orders = () => {
     }
   }, [user]);
 
-  // if (!ordersAsBuyer && !ordersAsSeller) {
-  //   return <Loader />;
-  // }
-
   const formatDate = (date) => {
     const originalDate = new Date(date);
-
     const options = {
       day: "numeric",
       month: "short",
@@ -86,11 +81,37 @@ const Orders = () => {
       hour12: false,
       timeZone: "UTC",
     };
-
     const formattedDate = originalDate.toLocaleDateString("en-US", options);
-
     return formattedDate;
   };
+
+  const getAllSellerOrders = async (seller) => {
+    const res = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/gig/getAllSellerOrders`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": seller.jwtToken,
+        },
+        body: JSON.stringify({
+          userId: seller._id,
+        }),
+      }
+    );
+    const data = await res.json();
+    if (data.error) {
+      return;
+    }
+    // setOrdersAsSeller(data);
+    console.log(data);
+  };
+
+  useEffect(() => {
+    if (user) {
+      getAllSellerOrders(user);
+    }
+  }, [user]);
 
   return (
     <div className="w-full">
@@ -103,26 +124,26 @@ const Orders = () => {
           <div className="bg-white rounded-xl shadow-lg shadow-gray-200">
             <Tabs
               className="w-full"
-              selectedTabClassName="bg-nft-primary-light text-white shadow-lg shadow-purple-200"
+              selectedTabClassName="bg-nft-primary-light text-white"
             >
               <div className="flex justify-between items-center">
-                <TabList className="border-b border-gray-100 p-4">
-                  <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors outline-none">
-                    Your Orders as Seller
+                <TabList className="p-4 flex gap-2">
+                  <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm">
+                    Active
                   </Tab>
-                  <Tab className="list-none rounded-xl px-6 py-3 text-gray-500 font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors outline-none">
-                    Your Orders as Buyer
+                  <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm">
+                    Late
+                  </Tab>
+                  <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm">
+                    Delivered
+                  </Tab>
+                  <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm">
+                    Completed
+                  </Tab>
+                  <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm">
+                    Cancelled
                   </Tab>
                 </TabList>
-
-                <div className="text-right p-4">
-                  <Link
-                    to="/seller/newgig"
-                    className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
-                  >
-                    Explore Gigs
-                  </Link>
-                </div>
               </div>
 
               <TabPanel>
@@ -130,24 +151,21 @@ const Orders = () => {
                   <div className="relative w-full h-full rounded-xl shadow-lg shadow-gray-50">
                     <table className="w-full text-sm text-left text-gray-700">
                       <thead className="text-xs text-gray-500 uppercase border-b">
-                        <tr>
-                          <th scope="col" className="p-3">
-                            Image
-                          </th>
-                          <th scope="col" className="p-3">
-                            Gig Title
-                          </th>
+                        <tr className="uppercase">
                           <th scope="col" className="p-3">
                             Buyer
                           </th>
                           <th scope="col" className="p-3">
-                            Total Price
+                            Gig
                           </th>
                           <th scope="col" className="p-3">
-                            Order Date
+                            Due On
                           </th>
                           <th scope="col" className="p-3">
-                            Delivery Date
+                            Price
+                          </th>
+                          <th scope="col" className="p-3">
+                            Due on
                           </th>
                         </tr>
                       </thead>
@@ -167,7 +185,6 @@ const Orders = () => {
                                       alt={order.gig.title}
                                       className="h-14 w-20 object-cover rounded-lg"
                                     />
-                                    {/* <p>{gig.title}</p> */}
                                   </div>
                                 </td>
                                 <td className="p-3 py-5">{order.gig.title}</td>

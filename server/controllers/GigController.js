@@ -608,6 +608,60 @@ const getUserGigsViews = async (req, res) => {
   }
 };
 
+const getAllSellerOrders = async (req, res) => {
+  const { userId } = req.body;
+  const sellerId = userId;
+
+  const activeOrders = await Order.find({
+    seller: sellerId,
+    isRequirementSent: true,
+    isDeliveryAccepted: false,
+  })
+    .populate("seller")
+    .populate("buyer")
+    .populate("gig")
+    .populate("package")
+    .exec();
+
+  const currentDate = new Date();
+  const lateOrders = await Order.find({
+    seller: sellerId,
+    isDeliveryAccepted: false, // Assuming you only want late orders that are not delivered
+    orderEndDate: { $lt: currentDate },
+  })
+    .populate("seller") // If you need to populate any references (e.g., seller, buyer, gig, package)
+    .populate("buyer")
+    .populate("gig")
+    .populate("package")
+    .exec();
+
+  const deliveredOrders = await Order.find({
+    seller: sellerId,
+    isDeliveryAccepted: false,
+    isDeliverySubmitted: true,
+  })
+    .populate("seller") // If you need to populate any references (e.g., seller, buyer, gig, package)
+    .populate("buyer")
+    .populate("gig")
+    .populate("package")
+    .exec();
+
+  const completedOrders = await Order.find({
+    seller: sellerId,
+    isDeliveryAccepted: true,
+    isDeliverySubmitted: true,
+  })
+    .populate("seller") // If you need to populate any references (e.g., seller, buyer, gig, package)
+    .populate("buyer")
+    .populate("gig")
+    .populate("package")
+    .exec();
+
+  res
+    .status(200)
+    .json({ activeOrders, lateOrders, deliveredOrders, completedOrders });
+};
+
 export {
   createGig,
   fetchGig,
@@ -630,4 +684,5 @@ export {
   getUserOrdersAsBuyer,
   countViews,
   getUserGigsViews,
+  getAllSellerOrders,
 };

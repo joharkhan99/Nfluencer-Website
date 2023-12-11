@@ -88,9 +88,16 @@ const Order = () => {
   }, [orderDetails]);
 
   useEffect(() => {
-    console.log(user);
     if (!user) {
       window.location.href = "/";
+    }
+    if (orderDetails.buyer && orderDetails.seller) {
+      if (
+        user._id !== orderDetails.buyer._id &&
+        user._id !== orderDetails.seller._id
+      ) {
+        window.location.href = "/";
+      }
     }
   }, [user, orderDetails]);
 
@@ -166,7 +173,6 @@ const Order = () => {
       setTimeLeft(calculateTimeLeft(orderDetails.orderEndDate));
     }, 1000);
 
-    // Cleanup the interval when the component unmounts
     return () => clearInterval(timerInterval);
   }, [orderDetails]);
 
