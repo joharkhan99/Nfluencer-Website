@@ -28,8 +28,12 @@ const Services = () => {
   const [selectedCategories, setSelectedCategories] = useState(["All"]);
   const [inputQuery, setInputQuery] = useState("");
   const nftStatuses = [{ name: "All" }, { name: "hasNFTReward" }];
+  const packagesOffer = [{ name: "All" }, { name: "Yes" }];
   const [selectedNFTStatus, setselectedNFTStatus] = useState(
     nftStatuses[0].name
+  );
+  const [selectedPackageOffer, setselectedPackageOffer] = useState(
+    packagesOffer[0].name
   );
   const [selectedSortingOption, setSelectedSortingOption] = useState(
     sortingOptions[0].name
@@ -92,6 +96,13 @@ const Services = () => {
         ? true
         : selectedNFTStatus === "hasNFTReward"
         ? item.offerReward && item.offerReward === true
+        : true
+    )
+    .filter((item) =>
+      selectedPackageOffer === "All"
+        ? true
+        : selectedPackageOffer === "Yes"
+        ? item.offer3Packages && item.offer3Packages === true
         : true
     )
     .sort((a, b) => {
@@ -159,6 +170,33 @@ const Services = () => {
               </div>
 
               <div className="p-4 mb-5 bg-white shadow-md shadow-gray-100 rounded-xl border border-gray-100">
+                <div className="font-semibold text-md mb-3">Offer Packages</div>
+                {packagesOffer.map((offer, index) => (
+                  <div
+                    key={index}
+                    className="flex p-3 gap-4 rounded-xl hover:bg-gray-100  items-center"
+                  >
+                    <input
+                      id={`offer-${offer.name}-${index}`}
+                      name="offer"
+                      type="radio"
+                      value={offer.name}
+                      defaultChecked={offer.name === selectedPackageOffer}
+                      onChange={(e) => setselectedPackageOffer(e.target.value)}
+                      className="h-5 w-5 accent-nft-primary-light"
+                    />
+                    <label
+                      htmlFor={`offer-${offer.name}-${index}`}
+                      className="cursor-pointer text-gray-600"
+                    >
+                      {offer.name}
+                    </label>
+                  </div>
+                ))}
+              </div>
+
+              <div className="p-4 mb-5 bg-white shadow-md shadow-gray-100 rounded-xl border border-gray-100">
+                <div className="font-semibold text-md mb-3">NFT Status</div>
                 {nftStatuses.map((status, index) => (
                   <div
                     key={index}

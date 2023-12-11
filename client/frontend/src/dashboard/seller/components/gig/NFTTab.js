@@ -114,15 +114,16 @@ const NFTTab = ({
 
   const handleSubmit = async () => {
     setIsProcessLoading(true);
-    setNFTStatusMessage("Please wait while we are processing your request...");
     if (validateForm()) {
       try {
         const { marketplaceContract } = await connectingWithSmartContract();
         await updateTokenURI(marketplaceContract, selectedNFT);
+        setIsProcessLoading(false);
 
         // await updateIsRewradItem(marketplaceContract, selectedNFT.tokenId);
         dispatch(setFormStep(formStep + 1));
       } catch (error) {
+        setIsProcessLoading(false);
         console.log(`Error updating isRewardItem: ${error}`);
 
         if (error.code === 4001) {
@@ -144,8 +145,6 @@ const NFTTab = ({
         });
       }
     }
-
-    setNFTStatusMessage("");
     setIsProcessLoading(false);
   };
 
@@ -359,9 +358,16 @@ const NFTTab = ({
             <button
               className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
               onClick={handleSubmit}
-              // disabled={isProcessLoading}
+              disabled={isProcessLoading}
             >
-              Save and Continue
+              {isProcessLoading ? (
+                <div className="flex items-center gap-2">
+                  <span className="border-t-gray-100 border-2 animate-spin h-4 w-4 rounded-full border-gray-500"></span>
+                  <span>Processing...</span>
+                </div>
+              ) : (
+                "Save and Continue"
+              )}
             </button>
           </div>
         </div>

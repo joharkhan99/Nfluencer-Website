@@ -218,7 +218,7 @@ const OverviewTab = ({
                     value={selectedCategory}
                     onChange={(newCategory) => {
                       setSelectedCategory(newCategory);
-                      setSelectedSubcategory(null);
+                      // setSelectedSubcategory(null);
                     }}
                   >
                     <div className="relative">
@@ -289,7 +289,9 @@ const OverviewTab = ({
                   <div>
                     <Listbox
                       value={selectedSubcategory}
-                      onChange={setSelectedSubcategory}
+                      onChange={(newSubcategory) => {
+                        setSelectedSubcategory(newSubcategory);
+                      }}
                     >
                       <div className="relative">
                         <Listbox.Button className="relative w-full cursor-pointer rounded-xl text-left font-medium hover:bg-gray-200 bg-gray-100 py-3 px-6 focus:ring-2 focus:ring-nft-primary-light text-sm">

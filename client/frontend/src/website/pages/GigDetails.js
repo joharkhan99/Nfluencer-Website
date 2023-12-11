@@ -267,7 +267,13 @@ function GigDetails() {
 
             <div className="flex justify-between gap-20 w-full text-gray-800 mb-20">
               <div className="md:w-2/3 w-full">
-                <div>
+                <div className="mb-8">
+                  <div className="mb-2 text-sm text-gray-500 flex gap-2">
+                    <span>{gig.category}</span>
+                    <span>/</span>
+                    <span>{gig.subcategory}</span>
+                  </div>
+
                   <h1 className="text-4xl font-bold mb-7">{gig.title}</h1>
                   <div className="flex items-center gap-10 justify-between">
                     <div className="flex items-center gap-2 text-md font-semibold">
@@ -278,47 +284,23 @@ function GigDetails() {
                       />
                       <span className="flex flex-col gap-1">
                         <span className="text-md">{gig.user.name}</span>
-                        <span className="text-sm text-gray-400 font-normal">
+                        <span className="text-sm text-gray-500 font-normal">
                           @{gig.user.username}
                         </span>
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 text-md">
-                      <span>
-                        <ChartBarIcon className="w-6 h-6 text-gray-400" />
-                      </span>
-                      <span className="font-semibold">Level 1</span>
-                    </div>
+
                     <div className="flex items-center gap-2 text-md">
                       <span>
                         <StarIcon className="w-6 h-6 fill-yellow-500" />
                       </span>
                       <span className="font-semibold">4.7</span>
-                      <span className="text-gray-400">(3 Reviews)</span>
+                      <span className="text-gray-500">(3 Reviews)</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="block bg-transparent">
-                  <div className="flex justify-between my-10 bg-gray-100 p-4 rounded-xl">
-                    <div>
-                      <div className="font-semibold">Delivery Time</div>
-                      <div className="text-sm text-gray-600">4 Days</div>
-                    </div>
-                    <div>
-                      <div className="font-semibold">English level</div>
-                      <div className="text-sm text-gray-600">
-                        Conversational
-                      </div>
-                    </div>
-                    <div>
-                      <div className="font-semibold">Location</div>
-                      <div className="text-sm text-gray-600">
-                        {gig.user.location}
-                      </div>
-                    </div>
-                  </div>
-
                   <div className="mb-6 w-full">
                     <Tabs
                       className="w-full"
@@ -470,7 +452,7 @@ function GigDetails() {
                                       className={`w-5 h-5 ${
                                         gig.packages.basic.support
                                           ? "text-gray-800"
-                                          : "text-gray-400"
+                                          : "text-gray-500"
                                       } `}
                                     />
                                   </div>
@@ -483,7 +465,7 @@ function GigDetails() {
                                         className={`w-5 h-5 ${
                                           gig.packages.standard.support
                                             ? "text-gray-800"
-                                            : "text-gray-400"
+                                            : "text-gray-500"
                                         } `}
                                       />
                                     </div>
@@ -497,7 +479,7 @@ function GigDetails() {
                                         className={`w-5 h-5 ${
                                           gig.packages.premium.support
                                             ? "text-gray-800"
-                                            : "text-gray-400"
+                                            : "text-gray-500"
                                         } `}
                                       />
                                     </div>
@@ -724,7 +706,7 @@ function GigDetails() {
                         <div className="flex justify-between mt-10 w-full">
                           <div className="relative max-w-xl">
                             <div className="absolute inset-y-0 flex items-center pl-2 text-gray-100">
-                              <MagnifyingGlassIcon className="w-4 h-4 text-gray-400" />
+                              <MagnifyingGlassIcon className="w-4 h-4 text-gray-500" />
                             </div>
                             <input
                               type="text"

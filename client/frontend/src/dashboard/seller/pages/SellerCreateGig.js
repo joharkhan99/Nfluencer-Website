@@ -339,8 +339,8 @@ const SellerCreateGig = () => {
       body: JSON.stringify({
         title,
         keywords,
-        selectedCategory: selectedCategory.name,
-        selectedSubcategory: selectedSubcategory.name,
+        category: selectedCategory.name,
+        subcategory: selectedSubcategory.name,
         description,
         packages: gig.packages,
         images,
