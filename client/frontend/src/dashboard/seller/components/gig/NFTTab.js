@@ -52,6 +52,7 @@ const NFTTab = ({
     if (nfts.length === 0) {
       setOfferReward(false);
       errors.message = "";
+      dispatch(setFormStep(formStep + 1));
       return;
     }
 
@@ -358,7 +359,7 @@ const NFTTab = ({
             <button
               className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
               onClick={handleSubmit}
-              disabled={isProcessLoading}
+              // disabled={isProcessLoading}
             >
               Save and Continue
             </button>

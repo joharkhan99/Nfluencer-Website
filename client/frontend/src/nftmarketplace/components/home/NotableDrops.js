@@ -50,8 +50,10 @@ const NotableDrops = ({
 
     // fetch only the first 4 items
     let firstFourItems = [...fetchedMarketItems];
-    // firstFourItems.splice(0, totalItems);
-    firstFourItems = firstFourItems.slice(0, totalItems + 1);
+    firstFourItems.reverse();
+    firstFourItems = firstFourItems.slice(0, totalItems);
+    console.log("NotableDrops firstFourItems", firstFourItems);
+    // firstFourItems = firstFourItems.slice(0, totalItems + 1);
 
     // console.log(fetchedMarketItems);
 

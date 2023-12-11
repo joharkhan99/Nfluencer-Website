@@ -34,6 +34,7 @@ const Services = () => {
   const [selectedSortingOption, setSelectedSortingOption] = useState(
     sortingOptions[0].name
   );
+  const [ratings, setRatings] = useState({});
 
   const fetchGigs = async () => {
     try {
@@ -44,9 +45,12 @@ const Services = () => {
           headers: { "Content-Type": "application/json" },
         }
       );
-      const data = await response.json();
+      let data = await response.json();
       console.log(data);
-      setGigs(data);
+      const gigs = data.gigs.filter((item) => item.user !== null);
+      setGigs(gigs);
+      console.log(data.averageRatings);
+      setRatings(data.averageRatings);
     } catch (error) {
       console.error(error);
     }
@@ -69,8 +73,10 @@ const Services = () => {
   };
 
   const filteredGigs = gigs
-    .filter((item) =>
-      item.title.toLowerCase().includes(inputQuery.toLowerCase())
+    .filter(
+      (item) =>
+        item.title.toLowerCase().includes(inputQuery.toLowerCase()) ||
+        item.keywords.includes(inputQuery.toLowerCase())
     )
     .filter((item) => {
       if (
@@ -184,13 +190,13 @@ const Services = () => {
                     <input
                       type="number"
                       min={0}
-                      className="flex-1 w-full"
+                      className="flex-1 w-full outline-none text-center"
                       placeholder="Min"
                     />
                     <input
                       type="number"
                       min={0}
-                      className="flex-1 w-full"
+                      className="flex-1 w-full outline-none text-center"
                       placeholder="Max"
                     />
                   </div>
@@ -240,7 +246,7 @@ const Services = () => {
               </div>
 
               {/* <!-- Grid Layout (Cards) --> */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-0">
                 {filteredGigs.map((gig, index) => (
                   <div
                     className="decoration-transparent shadow-sm shadow-gray-50 rounded-xl transition-all duration-300 p-0 m-2 block hover:scale-105 transform"
@@ -248,11 +254,12 @@ const Services = () => {
                   >
                     <div className="relative shadow-lg rounded-md shadow-gray-200">
                       <div className="max-w-sm rounded-md overflow-hidden pb-2">
-                        <div className="absolute top-2 right-2">
-                          <button className="p-2 bg-white hover:bg-nft-primary-light text-gray-500 rounded-full group">
-                            <HeartIcon className="w-5 h-5 group-hover:stroke-white group-hover:fill-white" />
-                          </button>
-                        </div>
+                        <button
+                          className={`rounded-xl p-2 flex gap-1 items-center absolute top-2 right-2 text-sm font-semibold text-nft-primary-light bg-white`}
+                        >
+                          <HeartIcon className="w-5 h-5 fill-nft-primary-light" />
+                          <span className="text-gray-800">1.2k</span>
+                        </button>
 
                         <img
                           src={gig.images[0]}
@@ -266,15 +273,10 @@ const Services = () => {
                               <img
                                 src={gig.user.avatar}
                                 alt="s"
-                                className="w-8 h-8 rounded-full"
+                                className="w-8 h-8 rounded-full object-cover"
                               />
                               <span className="text-sm font-semibold text-gray-800">
                                 {gig.user.name}
-                              </span>
-                            </div>
-                            <div>
-                              <span className="text-sm text-gray-800 font-semibold">
-                                Level 2
                               </span>
                             </div>
                           </div>
@@ -291,42 +293,57 @@ const Services = () => {
                             to={`/gigdetails/${gig.title.replace(/ /g, "-")}/${
                               gig._id
                             }`}
-                            className="mb-4 font-semibold text-lg text-gray-800 block hover:text-nft-primary-light hover:underline"
+                            className="mb-0 font-semibold text-lg text-gray-800 block hover:text-nft-primary-light hover:underline"
                           >
                             {gig.title}
                           </Link>
 
-                          <div className="flex justify-between items-center border-b pb-3 mb-3">
-                            <div className="flex items-center gap-2">
-                              <div>
-                                <StarIcon className="w-5 h-5 fill-yellow-400 stroke-yellow-400" />
+                          <div className="flex justify-between items-center border-b p-2 mb-3">
+                            <div className="flex items-center gap-2 p-2 px-0">
+                              <StarIcon className="w-4 h-4 fill-yellow-400 stroke-yellow-400" />
+                              <div className="font-semibold text-sm">
+                                {(ratings[gig._id] &&
+                                  ratings[gig._id].rating) ||
+                                  0}
                               </div>
-                              <div className="text-md font-semibold text-sm">
-                                4.7
-                              </div>
-                              <div className="text-gray-500 text-sm">
-                                (3 Reviews)
+                              <div className="text-gray-500 text-xs">
+                                (
+                                {(ratings[gig._id] && ratings[gig._id].total) ||
+                                  0}{" "}
+                                reviews)
                               </div>
                             </div>
 
                             {gig.offerReward && gig.offerReward === true && (
-                              <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-2 text-nft-primary-light p-2 rounded-lg bg-nft-primary-transparent">
                                 <div>
-                                  <CubeIcon className="w-4 h-4 text-nft-primary-dark" />
+                                  <CubeIcon className="w-4 h-4" />
                                 </div>
-                                <div className="text-md font-semibold text-sm text-gray-700">
-                                  NFT
+                                <div className="font-semibold text-xs">
+                                  NFT Reward
                                 </div>
                               </div>
                             )}
                           </div>
 
-                          <div className="flex items-center justify-between">
+                          <div className="flex items-center justify-between gap-2">
                             <div className="flex gap-2 items-center text-sm text-gray-500">
                               Starting at:
                               <span className="text-lg text-gray-800 font-bold">
                                 ${gig.packages.basic.price}
                               </span>
+                            </div>
+
+                            <div className="flex-1 justify-end flex">
+                              <Link
+                                to={`/gigdetails/${gig.title.replace(
+                                  / /g,
+                                  "-"
+                                )}/${gig._id}`}
+                                className="text-sm text-white block bg-nft-primary-light hover:bg-nft-primary-dark rounded-xl py-2 font-semibold w-fit text-center px-8"
+                              >
+                                View
+                              </Link>
                             </div>
                           </div>
                         </div>
@@ -334,36 +351,6 @@ const Services = () => {
                     </div>
                   </div>
                 ))}
-              </div>
-
-              {/* <!-- Pagination --> */}
-              <div className="flex justify-center my-14">
-                <ul className="pagination flex justify-center items-center gap-4">
-                  <li className="h-10 w-10 text-center text-white rounded-xl bg-nft-primary-light p-2">
-                    <span>1</span>
-                  </li>
-                  <li className="h-10 w-10 text-center text-gray-800 hover:text-white rounded-xl hover:bg-nft-primary-light p-2">
-                    <span>2</span>
-                  </li>
-                  <li className="h-12 w-12 text-center text-gray-800 rounded-xl border border-gray-300 p-3">
-                    <a className="next page-numbers" href="ds">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6 text-gray-500"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                        />
-                      </svg>
-                    </a>
-                  </li>
-                </ul>
               </div>
             </div>
           </div>

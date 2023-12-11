@@ -222,7 +222,23 @@ const getAllGigs = async (req, res) => {
     .populate("user", "-password")
     .populate("packages.basic packages.standard packages.premium")
     .exec();
-  res.status(200).json(gigs);
+
+  const averageRatings = await Review.aggregate([
+    {
+      $group: {
+        _id: "$gig",
+        rating: { $avg: "$rating" },
+        total: { $sum: 1 },
+      },
+    },
+  ]).exec();
+
+  const result = averageRatings.reduce((acc, item) => {
+    acc[item._id] = item;
+    return acc;
+  }, {});
+
+  res.status(200).json({ gigs, averageRatings: result });
 };
 
 const gigDetails = async (req, res) => {

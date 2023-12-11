@@ -30,7 +30,7 @@ const Order = () => {
   const [resellModalOpen, setresellModalOpen] = useState(false);
 
   const [deliveryDescription, setDeliveryDescription] = useState("");
-  const [deliveryFile, setDeliveryFile] = useState([]);
+  const [deliveryFile, setDeliveryFile] = useState("");
 
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(null);
