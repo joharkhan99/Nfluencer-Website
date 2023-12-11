@@ -205,13 +205,13 @@ const OrderChatWindow = ({ orderChatUser }) => {
             </div>
 
             <form
-              className="w-full bg-white p-3 relative"
+              className="w-full bg-white border-t pt-6 mt-6 relative px-1"
               onSubmit={sendMessage}
             >
               <div className="relative w-full">
                 <textarea
                   type="text"
-                  className="text-sm rounded-xl block bg-gray-50 w-full p-3  outline-none border ring-purple-700 focus:ring-2 focus:bg-transparent hover:bg-gray-200 hover:bg-opacity-70 resize-none h-40"
+                  className="text-base rounded-xl block w-full p-3 outline-none border-2 ring-purple-700 focus:ring-2 focus:bg-transparent hover:bg-gray-200 hover:bg-opacity-70 resize-none h-48 border-gray-200"
                   placeholder="Send a message..."
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}

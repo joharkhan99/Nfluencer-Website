@@ -192,10 +192,15 @@ export default function OrderCheckout() {
           </div>
 
           <div>
-            {clientSecret && (
+            {clientSecret ? (
               <Elements options={options} stripe={stripePromise}>
                 <CheckoutForm gigDetails={gigDetails} />
               </Elements>
+            ) : (
+              <div
+                className="h-6 w-6 border-2 border-gray-600 border-t-gray-50 animate-spin rounded-full mx-auto"
+                id="spinner"
+              ></div>
             )}
           </div>
         </div>

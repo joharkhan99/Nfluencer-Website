@@ -9,6 +9,8 @@ import {
   InformationCircleIcon,
   ClipboardDocumentListIcon,
   XMarkIcon,
+  ArrowUpRightIcon,
+  ArrowTopRightOnSquareIcon,
 } from "@heroicons/react/24/outline";
 import {
   NFTMarketplaceContractABI,
@@ -389,6 +391,29 @@ const Order = () => {
     }
   };
 
+  const [nftMetaData, setNftMetaData] = useState(null);
+  const fetchNFTDetails = async (itemId) => {
+    const provider = new ethers.providers.JsonRpcProvider(
+      process.env.REACT_APP_ALCHEMY_SEPOLIA_URL
+    );
+    const { marketplaceContract } = fetchContract(provider);
+    const fetchedNFT = await marketplaceContract.getNFTDetails(itemId);
+    const tokenUri = await marketplaceContract.tokenURI(fetchedNFT.itemId);
+    const meta = await axios.get(tokenUri);
+    setNftMetaData({
+      ...meta.data,
+      seller: fetchedNFT.seller,
+      weiPrice: fetchedNFT.price,
+      itemId: Number(fetchedNFT.itemId),
+    });
+  };
+
+  useEffect(() => {
+    if (orderDetails.gig && orderDetails.gig.offerReward) {
+      fetchNFTDetails(orderDetails.gig.rewardNFT);
+    }
+  }, [orderDetails]);
+
   if (isLoading) {
     return <Loader />;
   }
@@ -520,6 +545,9 @@ const Order = () => {
           </div>
 
           <div className="mt-5 bg-white rounded-xl shadow-lg shadow-gray-300">
+            <h1 className="text-base font-semibold border-b pb-3 text-nft-primary-light p-5">
+              Requirements
+            </h1>
             {requirements &&
               Object.keys(requirements).map(function (key) {
                 return (
@@ -538,11 +566,11 @@ const Order = () => {
               })}
           </div>
 
-          <div className="my-5 bg-white p-3 py-4 shadow-lg relative">
+          <div className="my-5 bg-white p-3 py-4 shadow-lg relative rounded-xl">
             {orderDetails.isDeliveryAccepted && (
               <div className="absolute w-full h-full bg-white bg-opacity-70 z-50"></div>
             )}
-            <h3 className="text-nft-primary-light text-base font-semibold mb-2">
+            <h3 className="text-base font-semibold border-b pb-3 text-nft-primary-light p-3">
               Chat with{" "}
               {orderDetails.buyer._id !== user._id ? (
                 <span>{orderDetails.buyer.name}</span>
@@ -698,6 +726,89 @@ const Order = () => {
                       <span>Deliver Now</span>
                     </button>
                   )}
+
+                {orderDetails.gig.offerReward && nftMetaData && (
+                  <div className="my-5 mt-0">
+                    <h3 className="text-sm text-gray-500 px-2 mb-1">
+                      Reward NFT
+                    </h3>
+                    <div className="flex items-center shadow-md shadow-gray-200 border border-gray-100 rounded-xl gap-4 w-fit pr-10 transform hover:scale-105 transition-transform duration-300">
+                      <div className="flex h-full relative">
+                        <img
+                          src={nftMetaData.fileUrl}
+                          alt=""
+                          className="w-28 h-32 rounded-l-xl object-cover"
+                        />
+
+                        <Link
+                          class="rounded-md text-nft-primary-light bg-white p-0.5 absolute top-2 right-2 text-sm"
+                          to={nftMetaData.fileUrl}
+                          target="_blank"
+                          title="View Original Media File"
+                        >
+                          <ArrowTopRightOnSquareIcon className="w-4 h-4" />
+                        </Link>
+                      </div>
+                      <div className="flex-1 py-2">
+                        <Link
+                          className="text-lg text-gray-800 font-bold flex items-center gap-1"
+                          to={`/marketplace/nft/${nftMetaData.itemId}`}
+                          target="_blank"
+                        >
+                          <span>{nftMetaData.name}</span>
+                          <ArrowUpRightIcon className="w-4 h-4 text-gray-500" />
+                        </Link>
+
+                        <div className="flex gap-1 items-baseline text-gray-800 mb-2">
+                          <span className="font-semibold text-base">
+                            {nftMetaData.price}
+                          </span>
+                          <span className="font-normal text-gray-500 text-xs">
+                            ETH
+                          </span>
+                        </div>
+
+                        <div class="flex items-center justify-evenly w-full gap-4">
+                          <div class="flex flex-col gap-1 w-full">
+                            <div class="flex items-center gap-3">
+                              <img
+                                src="http://res.cloudinary.com/ds2ss4xmg/image/upload/v1697793424/izwfsygozecbxln3pim9.png"
+                                alt="User Imasge"
+                                class="rounded-full h-9 w-9 object-cover"
+                              />
+                              <div class="flex flex-col items-start">
+                                <button class="font-bold text-gray-800 text-xs">
+                                  Category
+                                </button>
+                                <div class="text-xs text-gray-500">
+                                  {nftMetaData.category}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="flex flex-col gap-1 w-full">
+                            <div class="flex items-center gap-3">
+                              <img
+                                src={nftMetaData.collection.image}
+                                alt="User Imasge"
+                                class="rounded-full h-9 w-9 object-cover"
+                              />
+                              <div class="flex flex-col items-start">
+                                <button class="font-bold text-gray-800 text-xs">
+                                  Collection
+                                </button>
+                                <div class="text-xs text-gray-500">
+                                  {nftMetaData.collection.name}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

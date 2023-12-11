@@ -249,6 +249,7 @@ const gigDetails = async (req, res) => {
     .populate("user", "-password")
     .populate("packages.basic packages.standard packages.premium")
     .exec();
+
   res.status(200).json(gig);
 };
 

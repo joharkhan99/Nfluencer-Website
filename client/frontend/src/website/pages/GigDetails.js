@@ -22,11 +22,18 @@ import {
   ArrowPathIcon,
   PaperAirplaneIcon,
   XMarkIcon,
+  ArrowUpRightIcon,
+  ArrowTopRightOnSquareIcon,
 } from "@heroicons/react/24/outline";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Loader from "../../utils/Loader";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { ethers } from "ethers";
+import {
+  NFTMarketplaceContractABI,
+  NFTMarketplaceContractAddress,
+} from "../../constants/ContractDetails";
 
 function GigDetails() {
   let { gigtitle, gigId } = useParams();
@@ -100,6 +107,9 @@ function GigDetails() {
   }, [gigId]);
 
   const [gigReviews, setGigReviews] = useState([]);
+  const [gigAverage, setGigAverage] = useState(0);
+  const [gigReviewsCount, setGigReviewsCount] = useState(0);
+
   const getGigReviews = async () => {
     try {
       const req = await fetch(
@@ -114,6 +124,12 @@ function GigDetails() {
       const res = await req.json();
       setGigReviews(res);
       console.log(res);
+      let sum = 0;
+      res.forEach((review) => {
+        sum += review.rating;
+      });
+      setGigAverage(sum / res.length);
+      setGigReviewsCount(res.length);
     } catch (error) {
       console.log(error);
     }
@@ -124,6 +140,62 @@ function GigDetails() {
       getGigReviews();
     }
   }, [gigId]);
+
+  const [nftMetaData, setNftMetaData] = useState(null);
+  const fetchContract = (signerOrProvider) => {
+    const marketplaceContract = new ethers.Contract(
+      NFTMarketplaceContractAddress,
+      NFTMarketplaceContractABI,
+      signerOrProvider
+    );
+
+    return { marketplaceContract };
+  };
+
+  const fetchNFTDetails = async (itemId) => {
+    const provider = new ethers.providers.JsonRpcProvider(
+      process.env.REACT_APP_ALCHEMY_SEPOLIA_URL
+    );
+    const { marketplaceContract } = fetchContract(provider);
+    const fetchedNFT = await marketplaceContract.getNFTDetails(itemId);
+    const tokenUri = await marketplaceContract.tokenURI(fetchedNFT.itemId);
+    const meta = await axios.get(tokenUri);
+    setNftMetaData({
+      ...meta.data,
+      seller: fetchedNFT.seller,
+      weiPrice: fetchedNFT.price,
+      itemId: Number(fetchedNFT.itemId),
+    });
+  };
+
+  useEffect(() => {
+    if (gig && gig.offerReward) {
+      fetchNFTDetails(gig.rewardNFT);
+      console.log(nftMetaData);
+    }
+  }, [gig]);
+
+  const [reviewInput, setReviewInput] = useState("");
+  const sortingOptions = [
+    {
+      name: "Most Recent",
+    },
+    {
+      name: "Oldest",
+    },
+  ];
+  const [selectedSortingOption, setSelectedSortingOption] = useState(
+    sortingOptions[0].name
+  );
+  const filteredReviews = gigReviews
+    .filter((review) => review.reviewText.includes(reviewInput))
+    .sort((a, b) => {
+      if (selectedSortingOption === "Oldest")
+        return new Date(a.createdAt) - new Date(b.createdAt);
+      else if (selectedSortingOption === "Most Recent")
+        return new Date(b.createdAt) - new Date(a.createdAt);
+      else return 0;
+    });
 
   if (!gig) {
     <Loader />;
@@ -221,6 +293,7 @@ function GigDetails() {
         {/* messaging */}
         <div className="pt-0">
           <div className="p-10 pt-0">
+            {/* message */}
             <div className="flex justify-end my-8 gap-4 text-sm items-center text-gray-800">
               <button className="flex items-center border rounded-xl hover:bg-gray-50 p-2 gap-2">
                 <HeartIcon className="w-5 h-5 text-gray-300" />
@@ -267,7 +340,7 @@ function GigDetails() {
 
             <div className="flex justify-between gap-20 w-full text-gray-800 mb-20">
               <div className="md:w-2/3 w-full">
-                <div className="mb-8">
+                <div className="mb-10 border-b pb-6 border-gray-100">
                   <div className="mb-2 text-sm text-gray-500 flex gap-2">
                     <span>{gig.category}</span>
                     <span>/</span>
@@ -275,6 +348,7 @@ function GigDetails() {
                   </div>
 
                   <h1 className="text-4xl font-bold mb-7">{gig.title}</h1>
+
                   <div className="flex items-center gap-10 justify-between">
                     <div className="flex items-center gap-2 text-md font-semibold">
                       <img
@@ -294,10 +368,95 @@ function GigDetails() {
                       <span>
                         <StarIcon className="w-6 h-6 fill-yellow-500" />
                       </span>
-                      <span className="font-semibold">4.7</span>
-                      <span className="text-gray-500">(3 Reviews)</span>
+                      <span className="font-semibold">{gigAverage || 0}</span>
+                      <span className="text-gray-500">
+                        ({gigReviewsCount} Reviews)
+                      </span>
                     </div>
                   </div>
+
+                  {gig.offerReward && nftMetaData && (
+                    <div className="my-5">
+                      <h3 className="text-sm text-gray-500 px-2 mb-1">
+                        Reward NFT
+                      </h3>
+                      <div className="flex items-center shadow-md shadow-gray-200 border border-gray-100 rounded-xl gap-4 w-fit pr-10 transform hover:scale-105 transition-transform duration-300">
+                        <div className="flex h-full relative">
+                          <img
+                            src={nftMetaData.fileUrl}
+                            alt=""
+                            className="w-28 h-32 rounded-l-xl object-cover"
+                          />
+
+                          <Link
+                            class="rounded-md text-nft-primary-light bg-white p-0.5 absolute top-2 right-2 text-sm"
+                            to={nftMetaData.fileUrl}
+                            target="_blank"
+                            title="View Original Media File"
+                          >
+                            <ArrowTopRightOnSquareIcon className="w-4 h-4" />
+                          </Link>
+                        </div>
+                        <div className="flex-1 py-2">
+                          <Link
+                            className="text-lg text-gray-800 font-bold flex items-center gap-1"
+                            to={`/marketplace/nft/${nftMetaData.itemId}`}
+                            target="_blank"
+                          >
+                            <span>{nftMetaData.name}</span>
+                            <ArrowUpRightIcon className="w-4 h-4 text-gray-500" />
+                          </Link>
+
+                          <div className="flex gap-1 items-baseline text-gray-800 mb-2">
+                            <span className="font-semibold text-base">
+                              {nftMetaData.price}
+                            </span>
+                            <span className="font-normal text-gray-500 text-xs">
+                              ETH
+                            </span>
+                          </div>
+
+                          <div class="flex items-center justify-evenly w-full gap-4">
+                            <div class="flex flex-col gap-1 w-full">
+                              <div class="flex items-center gap-3">
+                                <img
+                                  src="http://res.cloudinary.com/ds2ss4xmg/image/upload/v1697793424/izwfsygozecbxln3pim9.png"
+                                  alt="User Imasge"
+                                  class="rounded-full h-9 w-9 object-cover"
+                                />
+                                <div class="flex flex-col items-start">
+                                  <button class="font-bold text-gray-800 text-xs">
+                                    Category
+                                  </button>
+                                  <div class="text-xs text-gray-500">
+                                    {nftMetaData.category}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="flex flex-col gap-1 w-full">
+                              <div class="flex items-center gap-3">
+                                <img
+                                  src={nftMetaData.collection.image}
+                                  alt="User Imasge"
+                                  class="rounded-full h-9 w-9 object-cover"
+                                />
+                                <div class="flex flex-col items-start">
+                                  <button class="font-bold text-gray-800 text-xs">
+                                    Collection
+                                  </button>
+                                  <div class="text-xs text-gray-500">
+                                    {nftMetaData.collection.name}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="block bg-transparent">
@@ -550,29 +709,7 @@ function GigDetails() {
                     </div>
                   </div>
 
-                  <div className="flex justify-between my-14 bg-gray-100 p-4 py-6 rounded-xl">
-                    <div>
-                      <div className="font-semibold">App type</div>
-                      <div className="text-sm text-gray-600">
-                        Business, Food & drink, Graphics & design
-                      </div>
-                    </div>
-                    <div>
-                      <div className="font-semibold">Design tool</div>
-                      <div className="text-sm text-gray-600">
-                        Adobe XD, Figma, Adobe Photoshop
-                      </div>
-                    </div>
-                    <div>
-                      <div className="font-semibold">Device</div>
-                      <div className="text-sm text-gray-600">
-                        Mobile, Desktop
-                      </div>
-                    </div>
-                  </div>
-
                   <h3 className="font-semibold text-xl my-5 mt-10">FAQs</h3>
-
                   <div className="flex flex-col my-7 gap-5">
                     <div>
                       {/*  */}
@@ -616,10 +753,10 @@ function GigDetails() {
 
                     <div>
                       <div className="flex flex-row gap-10 items-center font-bold">
-                        <div>230 reviews for this Gig</div>
+                        <div>{gigReviewsCount} reviews for this Gig</div>
                         <div className="flex gap-1 items-center">
                           <StarIcon className="w-5 h-5 fill-yellow-500" />
-                          <span>4.5</span>
+                          <span>{gigAverage || 0}</span>
                         </div>
                       </div>
 
@@ -633,11 +770,32 @@ function GigDetails() {
                               <div className="w-full bg-gray-200 rounded-full h-2.5">
                                 <div
                                   className="bg-nft-primary-light h-2.5 rounded-full"
-                                  style={{ width: "45%" }}
+                                  // style={{ width: "45%" }}
+
+                                  style={{
+                                    width:
+                                      gigReviews.filter(
+                                        (review) => review.rating === 5
+                                      ).length === 0
+                                        ? "0%"
+                                        : `${
+                                            (gigReviews.filter(
+                                              (review) => review.rating === 5
+                                            ).length /
+                                              gigReviews.length) *
+                                            100
+                                          }%`,
+                                  }}
                                 ></div>
                               </div>
                               <div className="whitespace-nowrap text-gray-800 text-sm font-medium">
-                                (1,252)
+                                (
+                                {
+                                  gigReviews.filter(
+                                    (review) => review.rating === 5
+                                  ).length
+                                }
+                                )
                               </div>
                             </button>
 
@@ -648,11 +806,37 @@ function GigDetails() {
                               <div className="w-full bg-gray-200 rounded-full h-2.5">
                                 <div
                                   className="bg-nft-primary-light h-2.5 rounded-full"
-                                  style={{ width: "20%" }}
+                                  // style={{ width: "20%" }}
+
+                                  style={{
+                                    width:
+                                      gigReviews.filter(
+                                        (review) =>
+                                          review.rating >= 4 &&
+                                          review.rating < 5
+                                      ).length === 0
+                                        ? "0%"
+                                        : `${
+                                            (gigReviews.filter(
+                                              (review) =>
+                                                review.rating >= 4 &&
+                                                review.rating < 5
+                                            ).length /
+                                              gigReviews.length) *
+                                            100
+                                          }%`,
+                                  }}
                                 ></div>
                               </div>
                               <div className="whitespace-nowrap text-gray-800 text-sm font-medium">
-                                (200)
+                                (
+                                {
+                                  gigReviews.filter(
+                                    (review) =>
+                                      review.rating >= 4 && review.rating < 5
+                                  ).length
+                                }
+                                )
                               </div>
                             </button>
 
@@ -663,11 +847,36 @@ function GigDetails() {
                               <div className="w-full bg-gray-200 rounded-full h-2.5">
                                 <div
                                   className="bg-nft-primary-light h-2.5 rounded-full"
-                                  style={{ width: "60%" }}
+                                  // style={{ width: "60%" }}
+                                  style={{
+                                    width:
+                                      gigReviews.filter(
+                                        (review) =>
+                                          review.rating >= 3 &&
+                                          review.rating < 4
+                                      ).length === 0
+                                        ? "0%"
+                                        : `${
+                                            (gigReviews.filter(
+                                              (review) =>
+                                                review.rating >= 3 &&
+                                                review.rating < 4
+                                            ).length /
+                                              gigReviews.length) *
+                                            100
+                                          }%`,
+                                  }}
                                 ></div>
                               </div>
                               <div className="whitespace-nowrap text-gray-800 text-sm font-medium">
-                                (340)
+                                (
+                                {
+                                  gigReviews.filter(
+                                    (review) =>
+                                      review.rating >= 3 && review.rating < 4
+                                  ).length
+                                }
+                                )
                               </div>
                             </button>
 
@@ -678,11 +887,36 @@ function GigDetails() {
                               <div className="w-full bg-gray-200 rounded-full h-2.5">
                                 <div
                                   className="bg-nft-primary-light h-2.5 rounded-full"
-                                  style={{ width: "10%" }}
+                                  // style={{ width: "10%" }}
+                                  style={{
+                                    width:
+                                      gigReviews.filter(
+                                        (review) =>
+                                          review.rating >= 2 &&
+                                          review.rating < 3
+                                      ).length === 0
+                                        ? "0%"
+                                        : `${
+                                            (gigReviews.filter(
+                                              (review) =>
+                                                review.rating >= 2 &&
+                                                review.rating < 3
+                                            ).length /
+                                              gigReviews.length) *
+                                            100
+                                          }%`,
+                                  }}
                                 ></div>
                               </div>
                               <div className="whitespace-nowrap text-gray-800 text-sm font-medium">
-                                (12)
+                                (
+                                {
+                                  gigReviews.filter(
+                                    (review) =>
+                                      review.rating >= 2 && review.rating < 3
+                                  ).length
+                                }
+                                )
                               </div>
                             </button>
 
@@ -693,11 +927,31 @@ function GigDetails() {
                               <div className="w-full bg-gray-200 rounded-full h-2.5">
                                 <div
                                   className="bg-nft-primary-light h-2.5 rounded-full"
-                                  style={{ width: "5%" }}
+                                  // style={{ width: "5%" }}
+                                  style={{
+                                    width:
+                                      gigReviews.filter(
+                                        (review) => review.rating < 2
+                                      ).length === 0
+                                        ? "0%"
+                                        : `${
+                                            (gigReviews.filter(
+                                              (review) => review.rating < 2
+                                            ).length /
+                                              gigReviews.length) *
+                                            100
+                                          }%`,
+                                  }}
                                 ></div>
                               </div>
                               <div className="whitespace-nowrap text-gray-800 text-sm font-medium">
-                                (6)
+                                (
+                                {
+                                  gigReviews.filter(
+                                    (review) => review.rating < 2
+                                  ).length
+                                }
+                                )
                               </div>
                             </button>
                           </div>
@@ -712,7 +966,8 @@ function GigDetails() {
                               type="text"
                               className="text-sm rounded-lg pl-8 block w-full p-2.5 bg-gray-100 outline-none border ring-purple-700 focus:ring-2 focus:bg-transparent hover:bg-gray-200 hover:bg-opacity-70"
                               placeholder="Search Reviews..."
-                              required
+                              value={reviewInput}
+                              onChange={(e) => setReviewInput(e.target.value)}
                             />
                           </div>
 
@@ -721,49 +976,24 @@ function GigDetails() {
                               <div className="flex gap-3 items-center text-gray-800">
                                 <span className="text-sm">Sort By</span>
                                 <Menu.Button className="border rounded-xl hover:bg-gray-50 px-3 flex items-center gap-2 text-sm p-2.5 font-semibold">
-                                  <span>Date Ascending</span>
-                                  <span>
-                                    <ArrowSmallUpIcon className="w-4 h-4" />
-                                  </span>
+                                  <span>{selectedSortingOption}</span>
                                 </Menu.Button>
                               </div>
 
-                              <Transition
-                                as={Fragment}
-                                enter="transition ease-out duration-100"
-                                enterFrom="transform opacity-0 scale-95"
-                                enterTo="transform opacity-100 scale-100"
-                                leave="transition ease-in duration-75"
-                                leaveFrom="transform opacity-100 scale-100"
-                                leaveTo="transform opacity-0 scale-95"
-                              >
-                                <Menu.Items className="absolute right-0 z-10 mt-1 w-auto origin-top-right rounded-md bg-white shadow-lg focus:outline-none p-0 overflow-hidden border text-sm">
-                                  <div>
-                                    <Menu.Item>
-                                      <a
-                                        href="{option.href}"
-                                        className="text-gray-700 p-2.5 hover:bg-gray-100 flex gap-2 items-center"
-                                      >
-                                        <span>
-                                          <ArrowSmallUpIcon className="h-4 w-4 text-gray-700" />
-                                        </span>
-                                        <span>Date Ascending</span>
-                                      </a>
-                                    </Menu.Item>
-                                    <Menu.Item>
-                                      <a
-                                        href="{option.href}"
-                                        className="text-gray-700 p-2.5 hover:bg-gray-100 flex gap-2 items-center"
-                                      >
-                                        <span>
-                                          <ArrowSmallDownIcon className="h-4 w-4 text-gray-700" />
-                                        </span>
-                                        <span>Date Descending</span>
-                                      </a>
-                                    </Menu.Item>
-                                  </div>
-                                </Menu.Items>
-                              </Transition>
+                              <Menu.Items className="absolute right-0 z-10 mt-1 w-auto origin-top-right rounded-md bg-white shadow-lg focus:outline-none p-0 overflow-hidden border text-sm">
+                                {sortingOptions.map((option, index) => (
+                                  <Menu.Item>
+                                    <button
+                                      className="text-gray-700 p-2.5 hover:bg-gray-100 flex gap-2 items-center w-full"
+                                      onClick={() =>
+                                        setSelectedSortingOption(option.name)
+                                      }
+                                    >
+                                      <span>{option.name}</span>
+                                    </button>
+                                  </Menu.Item>
+                                ))}
+                              </Menu.Items>
                             </Menu>
                           </div>
                         </div>
@@ -771,7 +1001,7 @@ function GigDetails() {
                     </div>
 
                     <div className="container mx-auto py-8">
-                      {gigReviews.map((review, index) => (
+                      {filteredReviews.map((review, index) => (
                         <div className="grid grid-cols-1 gap-4 mb-3">
                           <div className="bg-white rounded-lg p-4 px-0">
                             <div className="flex items-center mb-4">
@@ -786,18 +1016,7 @@ function GigDetails() {
                                 </h3>
                                 <div className="flex flex-row gap-3 items-center">
                                   <div className="flex flex-row items-center gap-1">
-                                    <svg
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 24 24"
-                                      fill="currentColor"
-                                      className="w-4 h-4 fill-yellow-500"
-                                    >
-                                      <path
-                                        fillRule="evenodd"
-                                        d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                                        clipRule="evenodd"
-                                      />
-                                    </svg>
+                                    <StarIcon className="w-4 h-4 fill-yellow-500" />
                                     <span>{review.rating}</span>
                                   </div>
                                   <p className="text-gray-500 text-sm">
@@ -890,6 +1109,17 @@ function GigDetails() {
                                 </span>
                               </div>
                             </div>
+
+                            {gig.offerReward && gig.offerReward === true && (
+                              <div className="flex items-center gap-2 p-2 w-fit mt-2 px-0">
+                                <div>
+                                  <CubeIcon className="w-6 h-6 text-nft-primary-light" />
+                                </div>
+                                <div className="font-semibold text-sm text-gray-800">
+                                  NFT Reward
+                                </div>
+                              </div>
+                            )}
 
                             {user && user._id !== gig.user._id && (
                               <Link
@@ -1010,14 +1240,8 @@ function GigDetails() {
                             <h3 className="font-medium text-lg">
                               {gig.user.name}
                             </h3>
-                            <div className="flex flex-row gap-3 items-center">
-                              <div className="flex flex-row items-center gap-1">
-                                <StarIcon className="w-5 h-5 fill-yellow-500" />
-                                <span>4.0</span>
-                              </div>
-                              <p className="text-gray-500 text-sm">
-                                (4 reviews)
-                              </p>
+                            <div className="flex flex-row gap-3 items-center text-sm text-gray-500">
+                              @{gig.user.username}
                             </div>
                           </div>
                         </div>
