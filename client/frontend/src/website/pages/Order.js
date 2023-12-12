@@ -12,6 +12,10 @@ import {
   ArrowUpRightIcon,
   ArrowTopRightOnSquareIcon,
   StarIcon,
+  DocumentCheckIcon,
+  CheckIcon,
+  XCircleIcon,
+  CheckCircleIcon,
 } from "@heroicons/react/24/outline";
 import {
   NFTMarketplaceContractABI,
@@ -30,16 +34,21 @@ const Order = () => {
   const [orderDetails, setOrderDetails] = useState({});
   const [orderActivity, setOrderActivity] = useState([]);
   const [requirements, setRequirements] = useState([]);
-  const [resellModalOpen, setresellModalOpen] = useState(false);
+  const [deliveryModalOpen, setdeliveryModalOpen] = useState(false);
+  const [cancellationModalOpen, setcancellationModalOpen] = useState(false);
 
   const [deliveryDescription, setDeliveryDescription] = useState("");
   const [deliveryFile, setDeliveryFile] = useState("");
+  const [cancelReason, setcancelReason] = useState("");
 
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(null);
   const [isFormSUbmitting, setIsFormSubmitting] = useState(false);
   const [deliveryDetails, setDeliveryDetails] = useState({});
   const [deliveryReview, setDeliveryReview] = useState({});
+  const [orderCancellationRequests, setOrderCancellationRequests] = useState(
+    []
+  );
 
   const fetchOrderDetails = async () => {
     setIsLoading(true);
@@ -78,6 +87,7 @@ const Order = () => {
     setRequirements(res.requirements[0].requirements);
     setDeliveryDetails(res.delivery[0]);
     setDeliveryReview(res.review[0]);
+    setOrderCancellationRequests(res.cancelRequests);
   };
 
   useEffect(() => {
@@ -275,7 +285,7 @@ const Order = () => {
         return;
       }
 
-      setresellModalOpen(false);
+      setdeliveryModalOpen(false);
       window.location.reload();
     }
     setIsFormSubmitting(false);
@@ -401,6 +411,35 @@ const Order = () => {
     }
   };
 
+  const handleCancellationSubmit = async () => {
+    if (!cancelReason || cancelReason.trim() === "") {
+      alert("Please enter a reason for cancellation");
+      return;
+    }
+
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/gig/cancelOrder`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": user.jwtToken,
+        },
+        body: JSON.stringify({
+          order: orderDetails._id,
+          gig: orderDetails.gig._id,
+          seller: orderDetails.seller._id,
+          buyer: orderDetails.buyer._id,
+          package: orderDetails.package._id,
+          requestInitiator: user._id,
+          cancelReason,
+        }),
+      }
+    );
+
+    window.location.reload();
+  };
+
   const [nftMetaData, setNftMetaData] = useState(null);
   const fetchNFTDetails = async (itemId) => {
     const provider = new ethers.providers.JsonRpcProvider(
@@ -424,6 +463,40 @@ const Order = () => {
     }
   }, [orderDetails]);
 
+  const RejectAcceptCancelRequest = async (type, requestId) => {
+    if (
+      window.confirm(
+        "Are you sure you want this request to be " + type + "?"
+      ) === false
+    ) {
+      return;
+    }
+
+    if (!type) {
+      alert("Please enter a type");
+      return;
+    }
+
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/gig/updateCancelRequestStatus`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": user.jwtToken,
+        },
+        body: JSON.stringify({
+          requestId,
+          type,
+        }),
+      }
+    );
+
+    // if (response.error === false) {
+    window.location.reload();
+    // }
+  };
+
   if (isLoading) {
     return <Loader />;
   }
@@ -439,8 +512,98 @@ const Order = () => {
             Activity
           </h1>
 
+          {orderCancellationRequests.length > 0 && (
+            <div className="mt-5">
+              {orderCancellationRequests.map((request, index) => (
+                <div
+                  className="bg-white rounded-xl shadow-lg shadow-gray-300 p-5 mb-4"
+                  key={index}
+                >
+                  <div className="flex items-center gap-2">
+                    {request.cancelStatus === "pending" && (
+                      <DocumentCheckIcon className="w-12 h-12 bg-gray-200 text-gray-500 p-2 rounded-full" />
+                    )}
+
+                    {request.cancelStatus === "approved" && (
+                      <CheckCircleIcon className="w-12 h-12 bg-green-200 text-green-500 p-2 rounded-full" />
+                    )}
+
+                    {request.cancelStatus === "rejected" && (
+                      <XCircleIcon className="w-12 h-12 bg-red-200 text-red-500 p-2 rounded-full" />
+                    )}
+
+                    <h2>
+                      <span className="font-semibold text-gray-800">
+                        {request.requestInitiator.name}
+                      </span>{" "}
+                      has requested to cancel the order.
+                    </h2>
+                    <span className="text-sm text-gray-500">
+                      {formatDate(request.createdAt)}
+                    </span>
+                  </div>
+
+                  <div className="flex items-start gap-2 mt-3 flex-col">
+                    <span className="text-gray-800 text-base font-semibold">
+                      Reason
+                    </span>
+                    <span className="text-sm text-gray-500">
+                      {request.cancelReason}
+                    </span>
+                  </div>
+
+                  <div className="flex items-start gap-2 mt-3 flex-col">
+                    <span className="text-gray-800 text-base font-semibold">
+                      Status
+                    </span>
+
+                    {request.cancelStatus === "pending" && (
+                      <span className="text-sm font-medium text-gray-700 bg-gray-300 p-2 rounded-md">
+                        Pending Approval
+                      </span>
+                    )}
+                    {request.cancelStatus === "approved" && (
+                      <span className="text-sm font-medium text-green-700 bg-green-300 p-2 rounded-md">
+                        Approved
+                      </span>
+                    )}
+                    {request.cancelStatus === "rejected" && (
+                      <span className="text-sm font-medium text-red-700 bg-red-300 p-2 rounded-md">
+                        Rejected
+                      </span>
+                    )}
+                  </div>
+
+                  {request.cancelStatus === "pending" &&
+                    request.requestInitiator._id !== user._id && (
+                      <div className="flex items-center justify-start gap-2 mt-4">
+                        <button
+                          className="bg-red-500 text-white p-3 py-2 text-sm rounded-lg hover:opacity-80 flex gap-1 items-center"
+                          onClick={() =>
+                            RejectAcceptCancelRequest("rejected", request._id)
+                          }
+                        >
+                          <XMarkIcon className="w-5 h-5" />
+                          <span>Reject</span>
+                        </button>
+                        <button
+                          className="bg-green-500 text-white p-3 py-2 text-sm rounded-lg hover:opacity-80 flex gap-1 items-center"
+                          onClick={() =>
+                            RejectAcceptCancelRequest("approved", request._id)
+                          }
+                        >
+                          <CheckIcon className="w-5 h-5" />
+                          <span>Accept</span>
+                        </button>
+                      </div>
+                    )}
+                </div>
+              ))}
+            </div>
+          )}
+
           {orderDetails.isDeliveryAccepted && (
-            <div className="mt-5 w-fit mx-auto">
+            <div className="mt-5 w-full">
               <div className="p-5 bg-nft-primary-light rounded-xl text-white">
                 <>
                   <h2 className="text-lg mb-3">Buyer left a review.</h2>
@@ -702,7 +865,8 @@ const Order = () => {
           </div>
 
           <div className="my-5 bg-white p-3 py-4 shadow-lg relative rounded-xl">
-            {orderDetails.isDeliveryAccepted && (
+            {(orderDetails.isDeliveryAccepted ||
+              orderDetails.isOrderCancelled) && (
               <div className="absolute w-full h-full bg-white bg-opacity-70 z-50"></div>
             )}
             <h3 className="text-base font-semibold border-b pb-3 text-nft-primary-light p-3">
@@ -737,8 +901,23 @@ const Order = () => {
                       className="w-20 h-20 object-cover rounded-xl"
                     />
                   )}
-                  <h3 className="text-sm font-medium text-gray-800">
-                    {orderDetails.gig.title}
+                  <h3 className="text-sm font-medium text-gray-800 flex flex-col items-start">
+                    <span>{orderDetails.gig.title}</span>
+                    <span className="text-xs font-normal text-gray-500">
+                      {orderDetails.package.name}
+                    </span>
+
+                    {orderDetails.isDeliveryAccepted && (
+                      <span className="text-xs bg-green-200 text-green-600 p-1 font-medium rounded-md mt-2">
+                        Completed
+                      </span>
+                    )}
+
+                    {orderDetails.isOrderCancelled && (
+                      <span className="text-xs bg-gray-300 p-1 font-medium rounded-md mt-2">
+                        Cancelled
+                      </span>
+                    )}
                   </h3>
                 </div>
 
@@ -784,23 +963,27 @@ const Order = () => {
                     </span>
                   </div>
 
-                  {!orderDetails.isDeliveryAccepted && (
-                    <div className="flex flex-row justify-between gap-1 text-gray-500 font-medium text-sm">
-                      <span>Time Left</span>
-                      <span className="font-semibold text-gray-800">
-                        {timeLeft.isExpired ? (
-                          <span className="text-red-500">
-                            {timeLeft.days}d {timeLeft.hours}h{" "}
-                            {timeLeft.minutes}m {timeLeft.seconds}s
+                  {!orderDetails.isOrderCancelled && (
+                    <>
+                      {!orderDetails.isDeliveryAccepted && (
+                        <div className="flex flex-row justify-between gap-1 text-gray-500 font-medium text-sm">
+                          <span>Time Left</span>
+                          <span className="font-semibold text-gray-800">
+                            {timeLeft.isExpired ? (
+                              <span className="text-red-500">
+                                {timeLeft.days}d {timeLeft.hours}h{" "}
+                                {timeLeft.minutes}m {timeLeft.seconds}s
+                              </span>
+                            ) : (
+                              <span className="text-nft-primary-light">
+                                {timeLeft.days}d {timeLeft.hours}h{" "}
+                                {timeLeft.minutes}m {timeLeft.seconds}s
+                              </span>
+                            )}
                           </span>
-                        ) : (
-                          <span className="text-nft-primary-light">
-                            {timeLeft.days}d {timeLeft.hours}h{" "}
-                            {timeLeft.minutes}m {timeLeft.seconds}s
-                          </span>
-                        )}
-                      </span>
-                    </div>
+                        </div>
+                      )}
+                    </>
                   )}
 
                   <div>
@@ -850,6 +1033,17 @@ const Order = () => {
 
                         <span className="text-sm">Delivery Accepted</span>
                       </div>
+
+                      {orderDetails.isOrderCancelled && (
+                        <>
+                          <span className="h-4 border-l-2 border-gray-400 ml-2 -my-1"></span>
+                          <div className="flex gap-2 items-center">
+                            <span className="h-4 w-4 ml-[1px] rounded-full bg-gray-400"></span>
+
+                            <span className="text-sm">Order Cancelled</span>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -859,7 +1053,7 @@ const Order = () => {
                   !orderDetails.isDeliveryAccepted && (
                     <button
                       className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-4"
-                      onClick={() => setresellModalOpen(true)}
+                      onClick={() => setdeliveryModalOpen(true)}
                     >
                       <span>Deliver Now</span>
                     </button>
@@ -948,6 +1142,22 @@ const Order = () => {
                   </div>
                 )}
               </div>
+
+              {!orderDetails.isOrderCancelled && (
+                <div className="bg-white shadow-lg rounded-xl p-3 mt-3">
+                  <h1 className="text-xl font-medium border-b pb-3 text-gray-800">
+                    Resolution center
+                  </h1>
+                  <div className="mt-3">
+                    <button
+                      className="bg-gray-900 h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full"
+                      onClick={() => setcancellationModalOpen(true)}
+                    >
+                      Cancel This Order
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -955,7 +1165,42 @@ const Order = () => {
 
       <div
         className={`fixed top-0 right-0 justify-center z-50 w-full h-full bg-black bg-opacity-70 ${
-          resellModalOpen ? "flex" : "hidden"
+          cancellationModalOpen ? "flex" : "hidden"
+        }`}
+      >
+        <div className="w-1/3 bg-white p-7 rounded-xl shadow-xl h-fit mt-16 relative">
+          <h2 className="block font-bold text-xl text-gray-800 mb-3">
+            Cancel Order
+          </h2>
+          <button
+            className="text-gray-500 hover:text-gray-700 absolute right-2 top-2"
+            onClick={() => setcancellationModalOpen(false)}
+          >
+            <XMarkIcon className="w-6 h-6" />
+          </button>
+          <div className="relative">
+            <textarea
+              type="number"
+              className="w-full outline-none text-base placeholder:text-gray-400 placeholder:font-medium font-medium p-4 focus:ring-2 focus:ring-nft-primary-light focus:bg-white border-gray-200 border-2 rounded-xl h-52"
+              placeholder="Enter your cancellation reason here..."
+              value={cancelReason}
+              min={0}
+              onChange={(e) => setcancelReason(e.target.value)}
+            ></textarea>
+          </div>
+
+          <button
+            className="w-fit px-7 font-semibold bg-nft-primary-light text-white p-3 mt-5 rounded-xl hover:opacity-80"
+            onClick={() => handleCancellationSubmit()}
+          >
+            Submit Request
+          </button>
+        </div>
+      </div>
+
+      <div
+        className={`fixed top-0 right-0 justify-center z-50 w-full h-full bg-black bg-opacity-70 ${
+          deliveryModalOpen ? "flex" : "hidden"
         }`}
       >
         <div className="w-2/3 bg-white p-7 rounded-xl shadow-xl h-fit mt-16 relative">
@@ -964,7 +1209,7 @@ const Order = () => {
           </h2>
           <button
             className="text-gray-500 hover:text-gray-700 absolute right-2 top-2"
-            onClick={() => setresellModalOpen(false)}
+            onClick={() => setdeliveryModalOpen(false)}
           >
             <XMarkIcon className="w-6 h-6" />
           </button>

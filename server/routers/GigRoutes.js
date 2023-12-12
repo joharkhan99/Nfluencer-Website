@@ -22,6 +22,8 @@ import {
   getUserGigsViews,
   getGigReviews,
   getAllSellerOrders,
+  cancelOrder,
+  updateCancelRequestStatus,
 } from "../controllers/GigController.js";
 import multer from "multer";
 import authenticate from "../middleware/authenticate.js";
@@ -57,6 +59,8 @@ router.delete("/delete-gig", deleteUserGigs);
 router.post("/", createGig);
 router.post("/submitDelivery", submitDelivery);
 router.post("/submitReview", submitReview);
+router.post("/cancelOrder", cancelOrder);
+router.post("/updateCancelRequestStatus", updateCancelRequestStatus);
 
 router.post(
   "/uploadImagetoCloudinary",

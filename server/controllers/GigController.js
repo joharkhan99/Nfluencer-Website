@@ -9,6 +9,7 @@ import Stripe from "stripe";
 import Delivery from "../models/Delivery.js";
 import Review from "../models/Review.js";
 import GigView from "../models/GigView.js";
+import OrderCancel from "../models/OrderCancellation.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -391,9 +392,23 @@ const fetchOrderDetails = async (req, res) => {
     order: orderId,
   }).exec();
 
-  res
-    .status(200)
-    .json({ order, orderActivity, requirements, delivery, review });
+  const cancelRequests = await OrderCancel.find({
+    order: orderId,
+  })
+    .populate("buyer")
+    .populate("seller")
+    .populate("requestInitiator")
+    .sort({ createdAt: -1 })
+    .exec();
+
+  res.status(200).json({
+    order,
+    orderActivity,
+    requirements,
+    delivery,
+    review,
+    cancelRequests,
+  });
 };
 
 const submitRequirements = async (req, res) => {
@@ -664,9 +679,82 @@ const getAllSellerOrders = async (req, res) => {
     .populate("package")
     .exec();
 
+  const cancelledOrders = await Order.find({
+    seller: sellerId,
+    isOrderCancelled: true,
+  })
+    .populate("seller") // If you need to populate any references (e.g., seller, buyer, gig, package)
+    .populate("buyer")
+    .populate("gig")
+    .populate("package")
+    .exec();
+
   res
     .status(200)
-    .json({ activeOrders, lateOrders, deliveredOrders, completedOrders });
+    .json({
+      activeOrders,
+      lateOrders,
+      deliveredOrders,
+      completedOrders,
+      cancelledOrders,
+    });
+};
+
+const cancelOrder = async (req, res) => {
+  const {
+    order,
+    gig,
+    seller,
+    buyer,
+    package: packageId,
+    requestInitiator,
+    cancelReason,
+  } = req.body;
+
+  const newCancelOrder = new OrderCancel({
+    order,
+    gig,
+    seller,
+    buyer,
+    requestInitiator,
+    package: packageId,
+    cancelReason,
+  });
+
+  await newCancelOrder.save();
+  return res.status(201).json({ error: false, message: "Order Cancelled" });
+};
+
+const updateCancelRequestStatus = async (req, res) => {
+  const { requestId, type } = req.body;
+
+  const cancelRequest = await OrderCancel.findOne({
+    _id: requestId,
+  }).exec();
+
+  if (type === "approved") {
+    cancelRequest.cancelStatus = "approved";
+
+    const order = await Order.findById(cancelRequest.order).exec();
+    order.isOrderCancelled = true;
+    await order.save();
+
+    const orderActivity = new OrderActivity({
+      order: order._id,
+      activity: [
+        {
+          text: "Order Cancelled",
+          date: new Date(),
+        },
+      ],
+      gig: order.gig,
+    });
+    await orderActivity.save();
+  } else if (type === "rejected") {
+    cancelRequest.cancelStatus = "rejected";
+  }
+  await cancelRequest.save();
+  return res.status(201).json({ error: false, message: "Request Updated" });
 };
 
 export {
@@ -692,4 +780,6 @@ export {
   countViews,
   getUserGigsViews,
   getAllSellerOrders,
+  cancelOrder,
+  updateCancelRequestStatus,
 };

@@ -57,6 +57,10 @@ const orderSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isOrderCancelled: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

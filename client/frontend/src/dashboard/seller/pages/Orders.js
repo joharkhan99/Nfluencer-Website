@@ -737,15 +737,15 @@ const Orders = () => {
                                     </span>
                                   )}
                                 </td>
-                                <td className="p-3 py-5 text-red-500">
+                                <td className="p-3 py-5 text-gray-500">
                                   {formatDate(order.orderEndDate)}
                                 </td>
                                 <td className="p-3 py-5">
                                   ${order.totalPrice}
                                 </td>
                                 <td className="p-3 py-5">
-                                  <span className="p-1 bg-red-500 rounded-md text-white text-sm">
-                                    Late
+                                  <span className="p-1 bg-gray-500 rounded-md text-white text-sm">
+                                    Cancelled
                                   </span>
                                 </td>
                                 <td className="p-3 py-5">
