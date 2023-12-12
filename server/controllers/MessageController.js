@@ -82,7 +82,6 @@ const fetchChatId = async (req, res) => {
   try {
     const { senderId, receiverId } = req.body;
 
-    // First, check if a chat already exists between the users
     const existingChat = await Chat.findOne({
       users: { $all: [senderId, receiverId] },
     });
@@ -91,12 +90,9 @@ const fetchChatId = async (req, res) => {
       return res.json({ chatId: existingChat._id });
     }
 
-    // If no existing chat, create a new chat
     const newChat = new Chat({
       users: [senderId, receiverId],
     });
-
-    // Save the new chat to the database
     await newChat.save();
 
     res.json({ chatId: newChat._id });
@@ -108,4 +104,34 @@ const fetchChatId = async (req, res) => {
   }
 };
 
-export { allMessages, sendMessage, chatHistory, fetchChatId };
+const fetchOrderChatId = async (req, res) => {
+  try {
+    const { senderId, receiverId, type, order } = req.body;
+
+    const existingChat = await Chat.findOne({
+      users: { $all: [senderId, receiverId] },
+      type,
+      order: order,
+    });
+
+    if (existingChat) {
+      return res.json({ chatId: existingChat._id });
+    }
+
+    const newChat = new Chat({
+      users: [senderId, receiverId],
+      type,
+      order: order,
+    });
+    await newChat.save();
+
+    res.json({ chatId: newChat._id });
+  } catch (error) {
+    res.status(500).json({
+      error: true,
+      message: "An error occurred while fetching chat ID.",
+    });
+  }
+};
+
+export { allMessages, sendMessage, chatHistory, fetchChatId, fetchOrderChatId };

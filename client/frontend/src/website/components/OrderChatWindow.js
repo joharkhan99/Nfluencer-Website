@@ -3,7 +3,7 @@ import React, { Fragment, useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
 
-const OrderChatWindow = ({ orderChatUser }) => {
+const OrderChatWindow = ({ orderChatUser, orderId }) => {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [newMessage, setNewMessage] = useState("");
@@ -65,7 +65,7 @@ const OrderChatWindow = ({ orderChatUser }) => {
   const fetchChatId = async (senderId, receiverId) => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/message/fetch-chat-id`,
+        `${process.env.REACT_APP_API_URL}/api/message/fetchOrderChatId`,
         {
           method: "POST",
           headers: {
@@ -75,6 +75,8 @@ const OrderChatWindow = ({ orderChatUser }) => {
           body: JSON.stringify({
             senderId,
             receiverId,
+            type: "order",
+            order: orderId,
           }),
         }
       );

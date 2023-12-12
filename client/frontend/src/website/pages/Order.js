@@ -878,9 +878,15 @@ const Order = () => {
               )}{" "}
             </h3>
             {orderDetails.buyer._id !== user._id ? (
-              <OrderChatWindow orderChatUser={orderDetails.buyer} />
+              <OrderChatWindow
+                orderChatUser={orderDetails.buyer}
+                orderId={orderDetails._id}
+              />
             ) : (
-              <OrderChatWindow orderChatUser={orderDetails.seller} />
+              <OrderChatWindow
+                orderChatUser={orderDetails.seller}
+                orderId={orderDetails._id}
+              />
             )}
           </div>
         </div>

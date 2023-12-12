@@ -8,6 +8,15 @@ const chatSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Message",
     },
+    type: {
+      type: String,
+      default: "single",
+    },
+    order: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
+      default: null,
+    },
   },
   {
     timestamps: true,
