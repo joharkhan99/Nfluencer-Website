@@ -11,6 +11,7 @@ import {
   XMarkIcon,
   ArrowUpRightIcon,
   ArrowTopRightOnSquareIcon,
+  StarIcon,
 } from "@heroicons/react/24/outline";
 import {
   NFTMarketplaceContractABI,
@@ -38,6 +39,7 @@ const Order = () => {
   const [rating, setRating] = useState(null);
   const [isFormSUbmitting, setIsFormSubmitting] = useState(false);
   const [deliveryDetails, setDeliveryDetails] = useState({});
+  const [deliveryReview, setDeliveryReview] = useState({});
 
   const fetchOrderDetails = async () => {
     setIsLoading(true);
@@ -75,6 +77,7 @@ const Order = () => {
     setSubmittedRequirements({ ...res.order[0].requirements });
     setRequirements(res.requirements[0].requirements);
     setDeliveryDetails(res.delivery[0]);
+    setDeliveryReview(res.review[0]);
   };
 
   useEffect(() => {
@@ -339,13 +342,12 @@ const Order = () => {
     const fetchedNFT = await marketplaceContract.getNFTDetails(itemId);
     const tokenUri = await marketplaceContract.tokenURI(fetchedNFT.itemId);
     const meta = await axios.get(tokenUri);
-    console.log(fetchedNFT);
-    console.log(meta);
     await updateTokenURI(marketplaceContract, {
       ...meta.data,
       itemId: fetchedNFT.itemId,
     });
   };
+
   // NFT
   const handleReviewSubmit = async () => {
     // Assuming you have an API endpoint to handle review submission
@@ -358,13 +360,15 @@ const Order = () => {
         alert("Please enter a rating");
         return;
       }
+      if (rating < 1 || rating > 5) {
+        alert("Please enter a rating between 1 and 5");
+        return;
+      }
 
       const hasNFTReward = orderDetails.gig.offerReward;
 
       if (hasNFTReward === true) {
-        console.log("NFT REWARD");
         const itemId = orderDetails.gig.rewardNFT;
-        console.log("ITEM ID", itemId);
         await updateNFTDetails(itemId);
       }
 
@@ -435,68 +439,193 @@ const Order = () => {
             Activity
           </h1>
 
-          <div className="mt-5">
-            {orderDetails.seller._id !== user._id &&
-              isRequirementSent &&
-              orderDetails.isDeliverySubmitted &&
-              !orderDetails.isDeliveryAccepted && (
-                <div className="p-5 bg-white rounded-xl">
-                  <h2 className="text-lg mb-3">
-                    Seller has submitted the delivery. Please review and accept
-                  </h2>
-                  <div className="flex justify-between items-center gap-2">
+          {orderDetails.isDeliveryAccepted && (
+            <div className="mt-5 w-fit mx-auto">
+              <div className="p-5 bg-nft-primary-light rounded-xl text-white">
+                <>
+                  <h2 className="text-lg mb-3">Buyer left a review.</h2>
+                  <div className="flex justify-between items-start gap-2">
                     <div className="flex flex-col gap-2 flex-1 break-all">
                       <div>
-                        <span className="font-semibold">
-                          Delivery description
-                        </span>
-                        <p className="text-sm text-gray-500">
-                          {deliveryDetails.deliveryDescription}
+                        <span className="font-semibold">Review</span>
+                        <p className="text-sm text-white">
+                          {deliveryReview.reviewText}
                         </p>
                       </div>
                       <div>
-                        <span className="font-semibold ">File</span>
-                        <Link to={deliveryDetails.deliveryFile} target="_blank">
-                          <p className="text-sm text-nft-primary-light">
-                            {deliveryDetails.deliveryFile}
-                          </p>
-                        </Link>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-2 flex-1">
-                      <div>
-                        <textarea
-                          placeholder="Write your review..."
-                          value={reviewText}
-                          className=" border-2 p-3 h-40 rounded-xl w-full"
-                          onChange={(e) => setReviewText(e.target.value)}
-                        />
-                        <div className="flex flex-row justify-between gap-4">
-                          <div className="w-full">
-                            <input
-                              type="number"
-                              min="1"
-                              max="5"
-                              placeholder="Rating (1-5)"
-                              className="border-2 rounded-xl p-3 w-full"
-                              value={rating}
-                              onChange={(e) => setRating(e.target.value)}
-                            />
-                            <button
-                              onClick={handleReviewSubmit}
-                              className="bg-nft-primary-light p-3 text-center text-white rounded-xl mt-3 hover:opacity-80"
-                            >
-                              Submit Review
-                            </button>
-                          </div>
-                        </div>
+                        <span className="font-semibold ">Rating</span>
+                        <p className="text-sm text-white flex items-center gap-2">
+                          <StarIcon className="w-4 h-4 fill-yellow-400 inline-block text-yellow-400" />
+                          <span>{deliveryReview.rating}</span>
+                        </p>
                       </div>
                     </div>
                   </div>
+                </>
+              </div>
+            </div>
+          )}
+
+          {orderDetails.isDeliverySubmitted && (
+            <div className="mt-5">
+              <div className="p-5 bg-white rounded-xl">
+                {orderDetails.seller._id !== user._id &&
+                isRequirementSent &&
+                orderDetails.isDeliverySubmitted &&
+                !orderDetails.isDeliveryAccepted ? (
+                  <h2 className="text-lg mb-3">
+                    Seller has submitted the delivery. Please review and accept
+                  </h2>
+                ) : (
+                  <h2 className="text-lg mb-3">Submitted delivery.</h2>
+                )}
+
+                <div className="flex justify-between items-start gap-2">
+                  <div className="flex flex-col gap-2 flex-1 break-all">
+                    <div>
+                      <span className="font-semibold">
+                        Delivery description
+                      </span>
+                      <p className="text-sm text-gray-500">
+                        {deliveryDetails.deliveryDescription}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="font-semibold ">File</span>
+                      <Link to={deliveryDetails.deliveryFile} target="_blank">
+                        <p className="text-sm text-nft-primary-light">
+                          {deliveryDetails.deliveryFile}
+                        </p>
+                      </Link>
+                    </div>
+
+                    {orderDetails.seller._id !== user._id &&
+                      isRequirementSent &&
+                      orderDetails.isDeliverySubmitted &&
+                      !orderDetails.isDeliveryAccepted &&
+                      orderDetails.gig.offerReward &&
+                      nftMetaData && (
+                        <>
+                          <span className="font-semibold">Reward NFT</span>
+                          <div className="my-5 mt-0">
+                            <div className="flex items-center shadow-md shadow-gray-200 border border-gray-100 rounded-xl gap-4 w-full pr-2">
+                              <div className="flex h-full relative">
+                                <img
+                                  src={nftMetaData.fileUrl}
+                                  alt=""
+                                  className="w-24 h-32 rounded-l-xl object-cover"
+                                />
+
+                                <Link
+                                  class="rounded-md text-nft-primary-light bg-white p-0.5 absolute top-2 right-2 text-sm"
+                                  to={nftMetaData.fileUrl}
+                                  target="_blank"
+                                  title="View Original Media File"
+                                >
+                                  <ArrowTopRightOnSquareIcon className="w-4 h-4" />
+                                </Link>
+                              </div>
+                              <div className="flex-1 py-2">
+                                <Link
+                                  className="text-sm text-gray-800 font-bold flex items-center gap-1"
+                                  to={`/marketplace/nft/${nftMetaData.itemId}`}
+                                  target="_blank"
+                                >
+                                  <span>{nftMetaData.name}</span>
+                                  <ArrowUpRightIcon className="w-3 h-3 text-gray-500" />
+                                </Link>
+
+                                <div className="flex gap-1 items-baseline text-gray-800 mb-2">
+                                  <span className="font-semibold text-sm">
+                                    {nftMetaData.price}
+                                  </span>
+                                  <span className="font-normal text-gray-500 text-xs">
+                                    ETH
+                                  </span>
+                                </div>
+
+                                <div class="flex items-center justify-evenly w-full gap-1">
+                                  <div class="flex flex-col gap-0 w-full">
+                                    <div class="flex items-center gap-2">
+                                      <img
+                                        src="http://res.cloudinary.com/ds2ss4xmg/image/upload/v1697793424/izwfsygozecbxln3pim9.png"
+                                        alt="User Imasge"
+                                        class="rounded-full h-7 w-7 object-cover"
+                                      />
+                                      <div class="flex flex-col items-start">
+                                        <button class="font-bold text-gray-800 text-xs">
+                                          Category
+                                        </button>
+                                        <div class="text-xs text-gray-500">
+                                          {nftMetaData.category}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="flex flex-col gap-0 w-full">
+                                    <div class="flex items-center gap-2">
+                                      <img
+                                        src={nftMetaData.collection.image}
+                                        alt="User Imasge"
+                                        class="rounded-full h-7 w-7 object-cover"
+                                      />
+                                      <div class="flex flex-col items-start">
+                                        <button class="font-bold text-gray-800 text-xs">
+                                          Collection
+                                        </button>
+                                        <div class="text-xs text-gray-500">
+                                          {nftMetaData.collection.name}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                  </div>
+
+                  {orderDetails.seller._id !== user._id &&
+                    isRequirementSent &&
+                    orderDetails.isDeliverySubmitted &&
+                    !orderDetails.isDeliveryAccepted && (
+                      <div className="flex flex-col gap-2 flex-1">
+                        <div>
+                          <textarea
+                            placeholder="Write your review..."
+                            value={reviewText}
+                            className=" border-2 p-3 h-40 rounded-xl w-full"
+                            onChange={(e) => setReviewText(e.target.value)}
+                          />
+                          <div className="flex flex-row justify-between gap-4">
+                            <div className="w-full">
+                              <input
+                                type="number"
+                                min="1"
+                                max="5"
+                                placeholder="Rating (1-5)"
+                                className="border-2 rounded-xl p-3 w-full"
+                                value={rating}
+                                onChange={(e) => setRating(e.target.value)}
+                              />
+                              <button
+                                onClick={handleReviewSubmit}
+                                className="bg-nft-primary-light p-3 text-center text-white rounded-xl mt-3 hover:opacity-80"
+                              >
+                                Submit Review
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                 </div>
-              )}
-          </div>
+              </div>
+            </div>
+          )}
 
           {orderDetails.seller._id !== user._id && !isRequirementSent && (
             <div className="my-10 py-5 border-b p-5 bg-white text-gray-800 rounded-lg">
@@ -660,7 +789,10 @@ const Order = () => {
                       <span>Time Left</span>
                       <span className="font-semibold text-gray-800">
                         {timeLeft.isExpired ? (
-                          <span>Order Expired</span>
+                          <span className="text-red-500">
+                            {timeLeft.days}d {timeLeft.hours}h{" "}
+                            {timeLeft.minutes}m {timeLeft.seconds}s
+                          </span>
                         ) : (
                           <span className="text-nft-primary-light">
                             {timeLeft.days}d {timeLeft.hours}h{" "}
@@ -840,7 +972,7 @@ const Order = () => {
             <textarea
               type="number"
               className="w-full outline-none text-base placeholder:text-gray-400 placeholder:font-medium font-medium p-4 focus:ring-2 focus:ring-nft-primary-light focus:bg-white border-gray-200 border-2 rounded-xl h-52"
-              placeholder="Enter New Price"
+              placeholder="Enter your delivery description here..."
               value={deliveryDescription}
               // value={newPrice}
               min={0}

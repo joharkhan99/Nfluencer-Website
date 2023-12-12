@@ -19,6 +19,7 @@ const Orders = () => {
 
   const [ordersAsSeller, setOrdersAsSeller] = useState([]);
   const [ordersAsBuyer, setOrdersAsBuyer] = useState([]);
+  const [rewardNFTIds, setRewardNFTIds] = useState({});
 
   const getUserOrdersAsSeller = async () => {
     const res = await fetch(
@@ -110,6 +111,7 @@ const Orders = () => {
     if (data.error) {
       return;
     }
+
     setSellerOrders(data);
     console.log(data);
   };
@@ -161,20 +163,40 @@ const Orders = () => {
             >
               <div className="flex justify-between items-center">
                 <TabList className="p-4 flex gap-2">
-                  <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm">
-                    Active
+                  <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm ">
+                    <span>Active</span>
+                    <span className="ml-1 bg-white rounded-sm text-nft-primary-light h-5 w-fit text-center text-sm px-0.5">
+                      {sellerOrders.activeOrders &&
+                        sellerOrders.activeOrders.length}
+                    </span>
                   </Tab>
                   <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm">
-                    Late
+                    <span>Late</span>
+                    <span className="ml-1 bg-white rounded-sm text-nft-primary-light h-5 w-fit text-center text-sm px-0.5">
+                      {sellerOrders.lateOrders &&
+                        sellerOrders.lateOrders.length}
+                    </span>
                   </Tab>
                   <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm">
-                    Delivered
+                    <span>Delivered</span>
+                    <span className="ml-1 bg-white rounded-sm text-nft-primary-light h-5 w-fit text-center text-sm px-0.5">
+                      {sellerOrders.deliveredOrders &&
+                        sellerOrders.deliveredOrders.length}
+                    </span>
                   </Tab>
                   <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm">
-                    Completed
+                    <span>Completed</span>
+                    <span className="ml-1 bg-white rounded-sm text-nft-primary-light h-5 w-fit text-center text-sm px-0.5">
+                      {sellerOrders.completedOrders &&
+                        sellerOrders.completedOrders.length}
+                    </span>
                   </Tab>
                   <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm">
-                    Cancelled
+                    <span>Cancelled</span>
+                    <span className="ml-1 bg-white rounded-sm text-nft-primary-light h-5 w-fit text-center text-sm px-0.5">
+                      {sellerOrders.cancelledOrders &&
+                        sellerOrders.cancelledOrders.length}
+                    </span>
                   </Tab>
                 </TabList>
               </div>
@@ -209,13 +231,6 @@ const Orders = () => {
                       <tbody>
                         {sellerOrders.activeOrders &&
                           sellerOrders.activeOrders.map((order, index) => {
-                            let nft = {};
-                            if (order.gig.offerReward) {
-                              nft = fetchNFTDetails(order.gig.rewardNFT);
-                            }
-
-                            console.log(nft);
-
                             return (
                               <tr
                                 className="hover:bg-gray-50 transition-colors"
@@ -256,15 +271,14 @@ const Orders = () => {
                                   </div>
                                 </td>
                                 <td className="p-3 py-5">
-                                  {nft && order.gig.offerReward ? (
-                                    <span className="flex flex-row items-center gap-1">
-                                      <img
-                                        src={nft.fileUrl}
-                                        className="w-8 h-8"
-                                        alt=""
-                                      />
-                                      <span>{nft.name}</span>
-                                    </span>
+                                  {order.gig.offerReward ? (
+                                    <Link
+                                      to={`/marketplace/nft/${order.gig.rewardNFT}`}
+                                      target="_blank"
+                                      className="bg-nft-primary-transparent text-nft-primary-light p-1 rounded-md text-sm hover:opacity-80"
+                                    >
+                                      Reward NFT : {order.gig.rewardNFT}
+                                    </Link>
                                   ) : (
                                     <span className="text-gray-400">
                                       No NFT
@@ -278,7 +292,7 @@ const Orders = () => {
                                   ${order.totalPrice}
                                 </td>
                                 <td className="p-3 py-5">
-                                  <span className="p-1 bg-green-500 rounded-md text-white text-sm">
+                                  <span className="p-1 bg-blue-500 rounded-md text-white text-sm">
                                     Active
                                   </span>
                                 </td>
@@ -299,102 +313,455 @@ const Orders = () => {
                   </div>
                 </div>
               </TabPanel>
+
               <TabPanel>
                 <div className="p-4">
                   <div className="relative w-full h-full rounded-xl shadow-lg shadow-gray-50">
                     <table className="w-full text-sm text-left text-gray-700">
                       <thead className="text-xs text-gray-500 uppercase border-b">
-                        <tr>
+                        <tr className="uppercase">
                           <th scope="col" className="p-3">
-                            Image
+                            Buyer
                           </th>
                           <th scope="col" className="p-3">
-                            Gig Title
+                            Gig
                           </th>
                           <th scope="col" className="p-3">
-                            Seller
+                            NFT
                           </th>
                           <th scope="col" className="p-3">
-                            Total Price
+                            Due On
                           </th>
                           <th scope="col" className="p-3">
-                            Order Date
+                            Price
                           </th>
                           <th scope="col" className="p-3">
-                            Delivery Date
+                            Status
                           </th>
                         </tr>
                       </thead>
 
                       <tbody>
-                        {ordersAsBuyer &&
-                          ordersAsBuyer.map((order, index) => {
-                            if (order.gig)
-                              return (
-                                <tr
-                                  className="hover:bg-gray-50 transition-colors"
-                                  key={index}
-                                >
-                                  <td className="p-3 py-5">
-                                    <div className="flex items-center gap-3">
-                                      <img
-                                        src={order.gig.images[0]}
-                                        alt={order.gig.title}
-                                        className="h-14 w-20 object-cover rounded-lg"
-                                      />
-                                      {/* <p>{gig.title}</p> */}
+                        {sellerOrders.lateOrders &&
+                          sellerOrders.lateOrders.map((order, index) => {
+                            return (
+                              <tr
+                                className="hover:bg-gray-50 transition-colors"
+                                key={index}
+                              >
+                                <td className="p-3 py-5 text-gray-800">
+                                  <div className="flex items-center gap-2">
+                                    <img
+                                      src={order.buyer.avatar}
+                                      alt=""
+                                      className="w-11 h-11 rounded-full object-cover"
+                                    />
+                                    <span>{order.buyer.name}</span>
+                                  </div>
+                                </td>
+                                <td className="p-3 py-5 text-gray-800">
+                                  <div className="flex items-center gap-2 flex-row">
+                                    <img
+                                      src={order.gig.images[0]}
+                                      alt=""
+                                      className="w-12 h-12 rounded-md object-cover"
+                                    />
+                                    <div className="flex flex-col">
+                                      <Link
+                                        to={`/gigdetails/${order.gig.title.replace(
+                                          / /g,
+                                          "-"
+                                        )}/${order.gig._id}`}
+                                        target="_blank"
+                                        className="hover:text-nft-primary-light"
+                                      >
+                                        {order.gig.title}
+                                      </Link>
+                                      <span className="text-gray-400">
+                                        {order.package.name}
+                                      </span>
                                     </div>
-                                  </td>
-                                  <td className="p-3 py-5">
-                                    {order.gig.title}
-                                  </td>
-                                  <td className="p-3 py-5 text-nft-primary-light">
-                                    {order.buyer.username}
-                                  </td>
-                                  <td className="p-3 py-5">
-                                    ${order.totalPrice}
-                                  </td>
-                                  <td className="p-3 py-5">
-                                    {formatDate(order.createdAt)}
-                                  </td>
-                                  <td className="p-3 py-5">
-                                    {formatDate(order.orderEndDate)}
-                                  </td>
-                                  <td className="p-3 py-5">
+                                  </div>
+                                </td>
+                                <td className="p-3 py-5">
+                                  {order.gig.offerReward ? (
                                     <Link
+                                      to={`/marketplace/nft/${order.gig.rewardNFT}`}
                                       target="_blank"
-                                      to={`/gig/orders/${order._id}`}
-                                      className="p-2 bg-nft-primary-light text-white rounded-xl px-4"
+                                      className="bg-nft-primary-transparent text-nft-primary-light p-1 rounded-md text-sm hover:opacity-80"
                                     >
-                                      View
+                                      Reward NFT : {order.gig.rewardNFT}
                                     </Link>
-                                  </td>
-                                </tr>
-                              );
+                                  ) : (
+                                    <span className="text-gray-400">
+                                      No NFT
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="p-3 py-5 text-red-500">
+                                  {formatDate(order.orderEndDate)}
+                                </td>
+                                <td className="p-3 py-5">
+                                  ${order.totalPrice}
+                                </td>
+                                <td className="p-3 py-5">
+                                  <span className="p-1 bg-red-500 rounded-md text-white text-sm">
+                                    Late
+                                  </span>
+                                </td>
+                                <td className="p-3 py-5">
+                                  <Link
+                                    target="_blank"
+                                    to={`/gig/orders/${order._id}`}
+                                    className="p-2 bg-nft-primary-light text-white rounded-md px-4"
+                                  >
+                                    View
+                                  </Link>
+                                </td>
+                              </tr>
+                            );
                           })}
                       </tbody>
                     </table>
                   </div>
                 </div>
               </TabPanel>
+
               <TabPanel>
                 <div className="p-4">
-                  <div className="text-sm mb-5 pl-4 text-gray-400">
-                    Draft Gigs
+                  <div className="relative w-full h-full rounded-xl shadow-lg shadow-gray-50">
+                    <table className="w-full text-sm text-left text-gray-700">
+                      <thead className="text-xs text-gray-500 uppercase border-b">
+                        <tr className="uppercase">
+                          <th scope="col" className="p-3">
+                            Buyer
+                          </th>
+                          <th scope="col" className="p-3">
+                            Gig
+                          </th>
+                          <th scope="col" className="p-3">
+                            NFT
+                          </th>
+                          <th scope="col" className="p-3">
+                            Due On
+                          </th>
+                          <th scope="col" className="p-3">
+                            Price
+                          </th>
+                          <th scope="col" className="p-3">
+                            Status
+                          </th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {sellerOrders.deliveredOrders &&
+                          sellerOrders.deliveredOrders.map((order, index) => {
+                            return (
+                              <tr
+                                className="hover:bg-gray-50 transition-colors"
+                                key={index}
+                              >
+                                <td className="p-3 py-5 text-gray-800">
+                                  <div className="flex items-center gap-2">
+                                    <img
+                                      src={order.buyer.avatar}
+                                      alt=""
+                                      className="w-11 h-11 rounded-full object-cover"
+                                    />
+                                    <span>{order.buyer.name}</span>
+                                  </div>
+                                </td>
+                                <td className="p-3 py-5 text-gray-800">
+                                  <div className="flex items-center gap-2 flex-row">
+                                    <img
+                                      src={order.gig.images[0]}
+                                      alt=""
+                                      className="w-12 h-12 rounded-md object-cover"
+                                    />
+                                    <div className="flex flex-col">
+                                      <Link
+                                        to={`/gigdetails/${order.gig.title.replace(
+                                          / /g,
+                                          "-"
+                                        )}/${order.gig._id}`}
+                                        target="_blank"
+                                        className="hover:text-nft-primary-light"
+                                      >
+                                        {order.gig.title}
+                                      </Link>
+                                      <span className="text-gray-400">
+                                        {order.package.name}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="p-3 py-5">
+                                  {order.gig.offerReward ? (
+                                    <Link
+                                      to={`/marketplace/nft/${order.gig.rewardNFT}`}
+                                      target="_blank"
+                                      className="bg-nft-primary-transparent text-nft-primary-light p-1 rounded-md text-sm hover:opacity-80"
+                                    >
+                                      Reward NFT : {order.gig.rewardNFT}
+                                    </Link>
+                                  ) : (
+                                    <span className="text-gray-400">
+                                      No NFT
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="p-3 py-5 text-red-500">
+                                  {formatDate(order.orderEndDate)}
+                                </td>
+                                <td className="p-3 py-5">
+                                  ${order.totalPrice}
+                                </td>
+                                <td className="p-3 py-5">
+                                  <span className="p-1 bg-red-500 rounded-md text-white text-sm">
+                                    Late
+                                  </span>
+                                </td>
+                                <td className="p-3 py-5">
+                                  <Link
+                                    target="_blank"
+                                    to={`/gig/orders/${order._id}`}
+                                    className="p-2 bg-nft-primary-light text-white rounded-md px-4"
+                                  >
+                                    View
+                                  </Link>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </TabPanel>
+
               <TabPanel>
                 <div className="p-4">
-                  <div className="text-sm mb-5 pl-4 text-gray-400">
-                    Denied Gigs
+                  <div className="relative w-full h-full rounded-xl shadow-lg shadow-gray-50">
+                    <table className="w-full text-sm text-left text-gray-700">
+                      <thead className="text-xs text-gray-500 uppercase border-b">
+                        <tr className="uppercase">
+                          <th scope="col" className="p-3">
+                            Buyer
+                          </th>
+                          <th scope="col" className="p-3">
+                            Gig
+                          </th>
+                          <th scope="col" className="p-3">
+                            NFT
+                          </th>
+                          <th scope="col" className="p-3">
+                            Due On
+                          </th>
+                          <th scope="col" className="p-3">
+                            Price
+                          </th>
+                          <th scope="col" className="p-3">
+                            Status
+                          </th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {sellerOrders.completedOrders &&
+                          sellerOrders.completedOrders.map((order, index) => {
+                            return (
+                              <tr
+                                className="hover:bg-gray-50 transition-colors"
+                                key={index}
+                              >
+                                <td className="p-3 py-5 text-gray-800">
+                                  <div className="flex items-center gap-2">
+                                    <img
+                                      src={order.buyer.avatar}
+                                      alt=""
+                                      className="w-11 h-11 rounded-full object-cover"
+                                    />
+                                    <span>{order.buyer.name}</span>
+                                  </div>
+                                </td>
+                                <td className="p-3 py-5 text-gray-800">
+                                  <div className="flex items-center gap-2 flex-row">
+                                    <img
+                                      src={order.gig.images[0]}
+                                      alt=""
+                                      className="w-12 h-12 rounded-md object-cover"
+                                    />
+                                    <div className="flex flex-col">
+                                      <Link
+                                        to={`/gigdetails/${order.gig.title.replace(
+                                          / /g,
+                                          "-"
+                                        )}/${order.gig._id}`}
+                                        target="_blank"
+                                        className="hover:text-nft-primary-light"
+                                      >
+                                        {order.gig.title}
+                                      </Link>
+                                      <span className="text-gray-400">
+                                        {order.package.name}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="p-3 py-5">
+                                  {order.gig.offerReward ? (
+                                    <Link
+                                      to={`/marketplace/nft/${order.gig.rewardNFT}`}
+                                      target="_blank"
+                                      className="bg-nft-primary-transparent text-nft-primary-light p-1 rounded-md text-sm hover:opacity-80"
+                                    >
+                                      Reward NFT : {order.gig.rewardNFT}
+                                    </Link>
+                                  ) : (
+                                    <span className="text-gray-400">
+                                      No NFT
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="p-3 py-5 text-gray-500">
+                                  {formatDate(order.orderEndDate)}
+                                </td>
+                                <td className="p-3 py-5">
+                                  ${order.totalPrice}
+                                </td>
+                                <td className="p-3 py-5">
+                                  <span className="p-1 bg-green-500 rounded-md text-white text-sm">
+                                    Completed
+                                  </span>
+                                </td>
+                                <td className="p-3 py-5">
+                                  <Link
+                                    target="_blank"
+                                    to={`/gig/orders/${order._id}`}
+                                    className="p-2 bg-nft-primary-light text-white rounded-md px-4"
+                                  >
+                                    View
+                                  </Link>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </TabPanel>
+
               <TabPanel>
                 <div className="p-4">
-                  <div className="text-sm mb-5 pl-4 text-gray-400">
-                    Paused Gigs
+                  <div className="relative w-full h-full rounded-xl shadow-lg shadow-gray-50">
+                    <table className="w-full text-sm text-left text-gray-700">
+                      <thead className="text-xs text-gray-500 uppercase border-b">
+                        <tr className="uppercase">
+                          <th scope="col" className="p-3">
+                            Buyer
+                          </th>
+                          <th scope="col" className="p-3">
+                            Gig
+                          </th>
+                          <th scope="col" className="p-3">
+                            NFT
+                          </th>
+                          <th scope="col" className="p-3">
+                            Due On
+                          </th>
+                          <th scope="col" className="p-3">
+                            Price
+                          </th>
+                          <th scope="col" className="p-3">
+                            Status
+                          </th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {sellerOrders.cancelledOrders &&
+                          sellerOrders.cancelledOrders.map((order, index) => {
+                            return (
+                              <tr
+                                className="hover:bg-gray-50 transition-colors"
+                                key={index}
+                              >
+                                <td className="p-3 py-5 text-gray-800">
+                                  <div className="flex items-center gap-2">
+                                    <img
+                                      src={order.buyer.avatar}
+                                      alt=""
+                                      className="w-11 h-11 rounded-full object-cover"
+                                    />
+                                    <span>{order.buyer.name}</span>
+                                  </div>
+                                </td>
+                                <td className="p-3 py-5 text-gray-800">
+                                  <div className="flex items-center gap-2 flex-row">
+                                    <img
+                                      src={order.gig.images[0]}
+                                      alt=""
+                                      className="w-12 h-12 rounded-md object-cover"
+                                    />
+                                    <div className="flex flex-col">
+                                      <Link
+                                        to={`/gigdetails/${order.gig.title.replace(
+                                          / /g,
+                                          "-"
+                                        )}/${order.gig._id}`}
+                                        target="_blank"
+                                        className="hover:text-nft-primary-light"
+                                      >
+                                        {order.gig.title}
+                                      </Link>
+                                      <span className="text-gray-400">
+                                        {order.package.name}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td className="p-3 py-5">
+                                  {order.gig.offerReward ? (
+                                    <Link
+                                      to={`/marketplace/nft/${order.gig.rewardNFT}`}
+                                      target="_blank"
+                                      className="bg-nft-primary-transparent text-nft-primary-light p-1 rounded-md text-sm hover:opacity-80"
+                                    >
+                                      Reward NFT : {order.gig.rewardNFT}
+                                    </Link>
+                                  ) : (
+                                    <span className="text-gray-400">
+                                      No NFT
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="p-3 py-5 text-red-500">
+                                  {formatDate(order.orderEndDate)}
+                                </td>
+                                <td className="p-3 py-5">
+                                  ${order.totalPrice}
+                                </td>
+                                <td className="p-3 py-5">
+                                  <span className="p-1 bg-red-500 rounded-md text-white text-sm">
+                                    Late
+                                  </span>
+                                </td>
+                                <td className="p-3 py-5">
+                                  <Link
+                                    target="_blank"
+                                    to={`/gig/orders/${order._id}`}
+                                    className="p-2 bg-nft-primary-light text-white rounded-md px-4"
+                                  >
+                                    View
+                                  </Link>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </TabPanel>

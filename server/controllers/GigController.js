@@ -386,7 +386,14 @@ const fetchOrderDetails = async (req, res) => {
     order: orderId,
   }).exec();
 
-  res.status(200).json({ order, orderActivity, requirements, delivery });
+  // fetch order review
+  const review = await Review.find({
+    order: orderId,
+  }).exec();
+
+  res
+    .status(200)
+    .json({ order, orderActivity, requirements, delivery, review });
 };
 
 const submitRequirements = async (req, res) => {

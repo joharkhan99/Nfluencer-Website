@@ -733,15 +733,17 @@ function NFTDetail() {
                           {nftMetaData.currentOwner.name}
                         </button>
                         <div className="text-sm text-gray-500">
-                          {nftMetaData.currentOwner.walletAddress.substring(
-                            0,
-                            10
-                          ) +
-                            "..." +
+                          {nftMetaData.currentOwner.walletAddress &&
                             nftMetaData.currentOwner.walletAddress.substring(
-                              nftMetaData.currentOwner.walletAddress.length - 4,
-                              nftMetaData.currentOwner.walletAddress.length
-                            )}
+                              0,
+                              10
+                            ) +
+                              "..." +
+                              nftMetaData.currentOwner.walletAddress.substring(
+                                nftMetaData.currentOwner.walletAddress.length -
+                                  4,
+                                nftMetaData.currentOwner.walletAddress.length
+                              )}
                         </div>
                       </div>
                     </div>
