@@ -4,6 +4,12 @@ import { useSelector } from "react-redux";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { Link } from "react-router-dom";
 import Loader from "../../../utils/Loader";
+import {
+  NFTMarketplaceContractABI,
+  NFTMarketplaceContractAddress,
+} from "../../../constants/ContractDetails";
+import { ethers } from "ethers";
+import axios from "axios";
 
 const Orders = () => {
   const user = useSelector((state) => state.user.user);
@@ -85,6 +91,7 @@ const Orders = () => {
     return formattedDate;
   };
 
+  const [sellerOrders, setSellerOrders] = useState({});
   const getAllSellerOrders = async (seller) => {
     const res = await fetch(
       `${process.env.REACT_APP_API_URL}/api/gig/getAllSellerOrders`,
@@ -103,7 +110,7 @@ const Orders = () => {
     if (data.error) {
       return;
     }
-    // setOrdersAsSeller(data);
+    setSellerOrders(data);
     console.log(data);
   };
 
@@ -112,6 +119,32 @@ const Orders = () => {
       getAllSellerOrders(user);
     }
   }, [user]);
+
+  const fetchContract = (signerOrProvider) => {
+    const marketplaceContract = new ethers.Contract(
+      NFTMarketplaceContractAddress,
+      NFTMarketplaceContractABI,
+      signerOrProvider
+    );
+
+    return { marketplaceContract };
+  };
+
+  const fetchNFTDetails = async (itemId) => {
+    const provider = new ethers.providers.JsonRpcProvider(
+      process.env.REACT_APP_ALCHEMY_SEPOLIA_URL
+    );
+    const { marketplaceContract } = fetchContract(provider);
+    const fetchedNFT = await marketplaceContract.getNFTDetails(itemId);
+    const tokenUri = await marketplaceContract.tokenURI(fetchedNFT.itemId);
+    const meta = await axios.get(tokenUri);
+    return {
+      ...meta.data,
+      seller: fetchedNFT.seller,
+      weiPrice: fetchedNFT.price,
+      itemId: Number(fetchedNFT.itemId),
+    };
+  };
 
   return (
     <div className="w-full">
@@ -159,52 +192,101 @@ const Orders = () => {
                             Gig
                           </th>
                           <th scope="col" className="p-3">
+                            NFT
+                          </th>
+                          <th scope="col" className="p-3">
                             Due On
                           </th>
                           <th scope="col" className="p-3">
                             Price
                           </th>
                           <th scope="col" className="p-3">
-                            Due on
+                            Status
                           </th>
                         </tr>
                       </thead>
 
                       <tbody>
-                        {ordersAsSeller &&
-                          ordersAsSeller.map((order, index) => {
+                        {sellerOrders.activeOrders &&
+                          sellerOrders.activeOrders.map((order, index) => {
+                            let nft = {};
+                            if (order.gig.offerReward) {
+                              nft = fetchNFTDetails(order.gig.rewardNFT);
+                            }
+
+                            console.log(nft);
+
                             return (
                               <tr
                                 className="hover:bg-gray-50 transition-colors"
                                 key={index}
                               >
-                                <td className="p-3 py-5">
-                                  <div className="flex items-center gap-3">
+                                <td className="p-3 py-5 text-gray-800">
+                                  <div className="flex items-center gap-2">
                                     <img
-                                      src={order.gig.images[0]}
-                                      alt={order.gig.title}
-                                      className="h-14 w-20 object-cover rounded-lg"
+                                      src={order.buyer.avatar}
+                                      alt=""
+                                      className="w-11 h-11 rounded-full object-cover"
                                     />
+                                    <span>{order.buyer.name}</span>
                                   </div>
                                 </td>
-                                <td className="p-3 py-5">{order.gig.title}</td>
-                                <td className="p-3 py-5 text-nft-primary-light">
-                                  {order.buyer.username}
+                                <td className="p-3 py-5 text-gray-800">
+                                  <div className="flex items-center gap-2 flex-row">
+                                    <img
+                                      src={order.gig.images[0]}
+                                      alt=""
+                                      className="w-12 h-12 rounded-md object-cover"
+                                    />
+                                    <div className="flex flex-col">
+                                      <Link
+                                        to={`/gigdetails/${order.gig.title.replace(
+                                          / /g,
+                                          "-"
+                                        )}/${order.gig._id}`}
+                                        target="_blank"
+                                        className="hover:text-nft-primary-light"
+                                      >
+                                        {order.gig.title}
+                                      </Link>
+                                      <span className="text-gray-400">
+                                        {order.package.name}
+                                      </span>
+                                    </div>
+                                  </div>
                                 </td>
                                 <td className="p-3 py-5">
-                                  ${order.totalPrice}
-                                </td>
-                                <td className="p-3 py-5">
-                                  {formatDate(order.createdAt)}
+                                  {nft && order.gig.offerReward ? (
+                                    <span className="flex flex-row items-center gap-1">
+                                      <img
+                                        src={nft.fileUrl}
+                                        className="w-8 h-8"
+                                        alt=""
+                                      />
+                                      <span>{nft.name}</span>
+                                    </span>
+                                  ) : (
+                                    <span className="text-gray-400">
+                                      No NFT
+                                    </span>
+                                  )}
                                 </td>
                                 <td className="p-3 py-5">
                                   {formatDate(order.orderEndDate)}
                                 </td>
                                 <td className="p-3 py-5">
+                                  ${order.totalPrice}
+                                </td>
+                                <td className="p-3 py-5">
+                                  <span className="p-1 bg-green-500 rounded-md text-white text-sm">
+                                    Active
+                                  </span>
+                                </td>
+                                <td className="p-3 py-5">
                                   <Link
                                     target="_blank"
                                     to={`/gig/orders/${order._id}`}
-                                    className="p-2 bg-nft-primary-light text-white rounded-xl px-4"
+                                    className="p-2 bg-nft-primary-light text-white rounded-md px-4"
                                   >
                                     View
                                   </Link>
