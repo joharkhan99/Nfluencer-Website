@@ -35,6 +35,7 @@ import AdminLogin from "./dashboard/admin/AdminLogin";
 import AdminGigs from "./dashboard/admin/AdminGigs";
 import AdminTickets from "./dashboard/admin/AdminTickets";
 import AdminUsers from "./dashboard/admin/AdminUsers";
+import Dispute from "./website/pages/Dispute";
 
 function App() {
   const dispatch = useDispatch();
@@ -116,6 +117,7 @@ function App() {
           Component={OrderConfirm}
         />
         <Route path="/gig/orders/:orderId" Component={Order} />
+        <Route path="/order/:disputeId/dispute" Component={Dispute} />
 
         {/* admin */}
         <Route path="/admin" Component={AdminHome} />

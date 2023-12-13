@@ -24,6 +24,11 @@ import {
   getAllSellerOrders,
   cancelOrder,
   updateCancelRequestStatus,
+  submitDispute,
+  getDispute,
+  submitDisputeResponse,
+  adminCancelOrder,
+  adminRestartOrder,
 } from "../controllers/GigController.js";
 import multer from "multer";
 import authenticate from "../middleware/authenticate.js";
@@ -41,6 +46,10 @@ router.post("/details", gigDetails);
 router.get("/getGigReviews/:gigId", getGigReviews);
 
 router.post("/create-payment-intent", createPaymentIntent);
+router.post("/getDispute", getDispute);
+router.post("/adminCancelOrder", adminCancelOrder);
+router.post("/adminRestartOrder", adminRestartOrder);
+
 router.use(authenticate);
 
 router.post("/getUserGigsViews", getUserGigsViews);
@@ -61,6 +70,8 @@ router.post("/submitDelivery", submitDelivery);
 router.post("/submitReview", submitReview);
 router.post("/cancelOrder", cancelOrder);
 router.post("/updateCancelRequestStatus", updateCancelRequestStatus);
+router.post("/submitDispute", submitDispute);
+router.post("/submitDisputeResponse", submitDisputeResponse);
 
 router.post(
   "/uploadImagetoCloudinary",

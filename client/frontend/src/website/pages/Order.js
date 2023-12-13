@@ -37,6 +37,10 @@ const Order = () => {
   const [deliveryModalOpen, setdeliveryModalOpen] = useState(false);
   const [cancellationModalOpen, setcancellationModalOpen] = useState(false);
 
+  const [disputeModalOpen, setdisputeModalOpen] = useState(false);
+  const [disputeSubject, setdisputeSubject] = useState("");
+  const [disputeDescription, setdisputeDescription] = useState("");
+
   const [deliveryDescription, setDeliveryDescription] = useState("");
   const [deliveryFile, setDeliveryFile] = useState("");
   const [cancelReason, setcancelReason] = useState("");
@@ -49,6 +53,7 @@ const Order = () => {
   const [orderCancellationRequests, setOrderCancellationRequests] = useState(
     []
   );
+  const [dispute, setDispute] = useState({});
 
   const fetchOrderDetails = async () => {
     setIsLoading(true);
@@ -88,6 +93,7 @@ const Order = () => {
     setDeliveryDetails(res.delivery[0]);
     setDeliveryReview(res.review[0]);
     setOrderCancellationRequests(res.cancelRequests);
+    setDispute(res.dispute[0]);
   };
 
   useEffect(() => {
@@ -497,6 +503,41 @@ const Order = () => {
     // }
   };
 
+  const handleDisputeSubmit = async () => {
+    if (!disputeSubject || disputeSubject.trim() === "") {
+      alert("Please enter a subject");
+      return;
+    }
+
+    if (!disputeDescription || disputeDescription.trim() === "") {
+      alert("Please enter a description");
+      return;
+    }
+
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/gig/submitDispute`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": user.jwtToken,
+        },
+        body: JSON.stringify({
+          orderId: orderDetails._id,
+          gigId: orderDetails.gig._id,
+          sellerId: orderDetails.seller._id,
+          buyerId: orderDetails.buyer._id,
+          disputeInitiator: user._id,
+          packageId: orderDetails.package._id,
+          disputeSubject,
+          disputeDescription,
+        }),
+      }
+    );
+
+    window.location.reload();
+  };
+
   if (isLoading) {
     return <Loader />;
   }
@@ -511,6 +552,32 @@ const Order = () => {
           <h1 className="text-xl border-b font-semibold pb-3 text-nft-primary-light">
             Activity
           </h1>
+
+          {orderDetails.isDisputeOpened && (
+            <div className="mt-5 w-full">
+              <div className="p-5 bg-red-500 rounded-xl text-white">
+                <>
+                  <h2 className="text-lg mb-3">
+                    Dispute has been opened by {dispute.disputeInitiator.name}
+                    <span className="block text-sm font-normal">
+                      Dispute Opened at {formatDate(dispute.createdAt)}
+                    </span>
+                  </h2>
+                  <div className="flex justify-between items-start gap-2">
+                    <div className="flex flex-col gap-2 flex-1 break-all">
+                      <Link
+                        to={`/order/${dispute._id}/dispute`}
+                        className="bg-white text-red-500 p-3 rounded-xl mt-3 hover:opacity-80 w-fit"
+                        target="_blank"
+                      >
+                        View Dispute
+                      </Link>
+                    </div>
+                  </div>
+                </>
+              </div>
+            </div>
+          )}
 
           {orderCancellationRequests.length > 0 && (
             <div className="mt-5">
@@ -866,7 +933,8 @@ const Order = () => {
 
           <div className="my-5 bg-white p-3 py-4 shadow-lg relative rounded-xl">
             {(orderDetails.isDeliveryAccepted ||
-              orderDetails.isOrderCancelled) && (
+              orderDetails.isOrderCancelled ||
+              orderDetails.isDisputeOpened) && (
               <div className="absolute w-full h-full bg-white bg-opacity-70 z-50"></div>
             )}
             <h3 className="text-base font-semibold border-b pb-3 text-nft-primary-light p-3">
@@ -1056,7 +1124,9 @@ const Order = () => {
 
                 {isRequirementSent &&
                   orderDetails.seller._id === user._id &&
-                  !orderDetails.isDeliveryAccepted && (
+                  !orderDetails.isDeliveryAccepted &&
+                  !orderDetails.isOrderCancelled &&
+                  !orderDetails.isDisputeOpened && (
                     <button
                       className="bg-nft-primary-light h-full py-4 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full mt-4"
                       onClick={() => setdeliveryModalOpen(true)}
@@ -1150,7 +1220,11 @@ const Order = () => {
               </div>
 
               {!orderDetails.isOrderCancelled && (
-                <div className="bg-white shadow-lg rounded-xl p-3 mt-3">
+                <div className="bg-white shadow-lg rounded-xl p-3 mt-3 relative">
+                  {orderDetails.isDisputeOpened && (
+                    <div className="absolute w-full h-full bg-white bg-opacity-70 z-50"></div>
+                  )}
+
                   <h1 className="text-xl font-medium border-b pb-3 text-gray-800">
                     Resolution center
                   </h1>
@@ -1161,11 +1235,60 @@ const Order = () => {
                     >
                       Cancel This Order
                     </button>
+                    <button
+                      className="bg-gray-300 h-full py-4 rounded-xl font-semibold text-gray-700 hover:opacity-80 transition-colors text-sm w-full mt-2"
+                      onClick={() => setdisputeModalOpen(true)}
+                    >
+                      Raise a Dispute
+                    </button>
                   </div>
                 </div>
               )}
             </div>
           </div>
+        </div>
+      </div>
+
+      <div
+        className={`fixed top-0 right-0 justify-center z-50 w-full h-full bg-black bg-opacity-70 ${
+          disputeModalOpen ? "flex" : "hidden"
+        }`}
+      >
+        <div className="w-1/3 bg-white p-7 rounded-xl shadow-xl h-fit mt-16 relative">
+          <h2 className="block font-bold text-xl text-gray-800 mb-3">
+            Raise a Dispute
+          </h2>
+          <button
+            className="text-gray-500 hover:text-gray-700 absolute right-2 top-2"
+            onClick={() => setdisputeModalOpen(false)}
+          >
+            <XMarkIcon className="w-6 h-6" />
+          </button>
+          <div className="relative">
+            <input
+              type="text"
+              className="w-full outline-none text-base placeholder:text-gray-400 placeholder:font-medium font-medium p-4 focus:ring-2 focus:ring-nft-primary-light focus:bg-white border-gray-200 border-2 rounded-xl mb-3"
+              placeholder="Enter your dispute subject"
+              value={disputeSubject}
+              onChange={(e) => setdisputeSubject(e.target.value)}
+            />
+
+            <textarea
+              type="number"
+              className="w-full outline-none text-base placeholder:text-gray-400 placeholder:font-medium font-medium p-4 focus:ring-2 focus:ring-nft-primary-light focus:bg-white border-gray-200 border-2 rounded-xl h-52"
+              placeholder="Enter your dispute description here..."
+              value={disputeDescription}
+              min={0}
+              onChange={(e) => setdisputeDescription(e.target.value)}
+            ></textarea>
+          </div>
+
+          <button
+            className="w-fit px-7 font-semibold bg-nft-primary-light text-white p-3 mt-5 rounded-xl hover:opacity-80"
+            onClick={() => handleDisputeSubmit()}
+          >
+            Submit Request
+          </button>
         </div>
       </div>
 

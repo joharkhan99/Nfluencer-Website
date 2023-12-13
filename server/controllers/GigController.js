@@ -10,6 +10,9 @@ import Delivery from "../models/Delivery.js";
 import Review from "../models/Review.js";
 import GigView from "../models/GigView.js";
 import OrderCancel from "../models/OrderCancellation.js";
+import Conflict from "../models/Conflict.js";
+import Chat from "../models/Chat.js";
+import Message from "../models/Message.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -401,6 +404,15 @@ const fetchOrderDetails = async (req, res) => {
     .sort({ createdAt: -1 })
     .exec();
 
+  const dispute = await Conflict.find({
+    order: orderId,
+  })
+    .populate("buyer")
+    .populate("seller")
+    .populate("disputeInitiator")
+    .sort({ createdAt: -1 })
+    .exec();
+
   res.status(200).json({
     order,
     orderActivity,
@@ -408,6 +420,7 @@ const fetchOrderDetails = async (req, res) => {
     delivery,
     review,
     cancelRequests,
+    dispute,
   });
 };
 
@@ -689,15 +702,13 @@ const getAllSellerOrders = async (req, res) => {
     .populate("package")
     .exec();
 
-  res
-    .status(200)
-    .json({
-      activeOrders,
-      lateOrders,
-      deliveredOrders,
-      completedOrders,
-      cancelledOrders,
-    });
+  res.status(200).json({
+    activeOrders,
+    lateOrders,
+    deliveredOrders,
+    completedOrders,
+    cancelledOrders,
+  });
 };
 
 const cancelOrder = async (req, res) => {
@@ -757,6 +768,171 @@ const updateCancelRequestStatus = async (req, res) => {
   return res.status(201).json({ error: false, message: "Request Updated" });
 };
 
+const submitDispute = async (req, res) => {
+  const {
+    orderId,
+    gigId,
+    sellerId,
+    buyerId,
+    disputeInitiator,
+    packageId,
+    disputeSubject,
+    disputeDescription,
+  } = req.body;
+
+  const newConflict = new Conflict({
+    order: orderId,
+    gig: gigId,
+    seller: sellerId,
+    buyer: buyerId,
+    disputeInitiator,
+    package: packageId,
+    disputeSubject,
+    disputeDescription,
+  });
+  await newConflict.save();
+
+  const order = await Order.findById(newConflict.order).exec();
+  order.isDisputeOpened = true;
+  await order.save();
+
+  const orderActivity = new OrderActivity({
+    order: orderId,
+    activity: [
+      {
+        text: "Dispute Opened",
+        date: new Date(),
+      },
+    ],
+    gig: gigId,
+  });
+
+  orderActivity.save();
+
+  return res.status(201).json({ error: false, message: "Dispute Submitted" });
+};
+
+const submitDisputeResponse = async (req, res) => {
+  const { disputeId, responseSubject, responseDescription } = req.body;
+
+  const dispute = await Conflict.findById(disputeId).exec();
+  dispute.disputeResponseSubject = responseSubject;
+  dispute.disputeResponseDescription = responseDescription;
+  dispute.disputeStatus = "pending";
+  await dispute.save();
+
+  const orderActivity = new OrderActivity({
+    order: dispute.order,
+    activity: [
+      {
+        text: "Dispute Responded",
+        date: new Date(),
+      },
+    ],
+    gig: dispute.gig,
+  });
+
+  orderActivity.save();
+
+  return res
+    .status(201)
+    .json({ error: false, message: "Dispute Response Submitted" });
+};
+
+const getDispute = async (req, res) => {
+  const { disputeId } = req.body;
+  const dispute = await Conflict.findById(disputeId)
+    .populate("order")
+    .populate("gig")
+    .populate("seller")
+    .populate("buyer")
+    .populate("package")
+    .populate("disputeInitiator")
+    .exec();
+
+  // get chat messags
+
+  const chatId = await Chat.findOne({
+    order: dispute.order._id,
+  }).exec();
+
+  const chatMessages = await Message.find({
+    chat: chatId._id,
+  })
+    .populate("sender")
+    .populate("receiver")
+    .exec();
+
+  return res.status(200).json({ dispute, chatMessages });
+};
+
+const adminCancelOrder = async (req, res) => {
+  const { disputeId, orderId, buyerId, sellerId, gigId, packageId } = req.body;
+
+  const conflict = await Conflict.findById(disputeId).exec();
+  conflict.disputeStatus = "resolved";
+  conflict.disputeResolution = "cancelled";
+  await conflict.save();
+
+  // update order status
+  const order = await Order.findById(orderId).exec();
+  order.isOrderCancelled = true;
+  await order.save();
+
+  // create order activity
+  const orderActivity = new OrderActivity({
+    order: orderId,
+    activity: [
+      {
+        text: "Admin Cancelled Order",
+        date: new Date(),
+      },
+    ],
+    gig: gigId,
+  });
+  await orderActivity.save();
+
+  return res.status(201).json({ error: false, message: "Order Cancelled" });
+};
+
+const adminRestartOrder = async (req, res) => {
+  const { disputeId, orderId, buyerId, sellerId, gigId, packageId } = req.body;
+
+  // update dispute status
+  const conflict = await Conflict.findById(disputeId).exec();
+  conflict.disputeStatus = "resolved";
+  conflict.disputeResolution = "restarted";
+  await conflict.save();
+
+  // update order status
+  const currentDate = new Date();
+  const order = await Order.findById(orderId).exec();
+  order.isOrderCancelled = false;
+  order.isDisputeOpened = false;
+  order.isDeliverySubmitted = false;
+  order.isDeliveryAccepted = false;
+  order.orderEndDate = new Date(
+    currentDate.setDate(currentDate.getDate() + order.deliveryDays)
+  );
+  await order.save();
+
+  // create order activity
+  const orderActivity = new OrderActivity({
+    order: orderId,
+    activity: [
+      {
+        text: "Admin Restarted Order",
+        date: new Date(),
+      },
+    ],
+    gig: gigId,
+  });
+
+  await orderActivity.save();
+
+  return res.status(201).json({ error: false, message: "Order Restarted" });
+};
+
 export {
   createGig,
   fetchGig,
@@ -782,4 +958,9 @@ export {
   getAllSellerOrders,
   cancelOrder,
   updateCancelRequestStatus,
+  submitDispute,
+  getDispute,
+  submitDisputeResponse,
+  adminCancelOrder,
+  adminRestartOrder,
 };
