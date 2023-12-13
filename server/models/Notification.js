@@ -22,6 +22,14 @@ const notificationSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    orderId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Order",
+    },
+    disputeId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Conflict",
+    },
   },
   {
     timestamps: true,

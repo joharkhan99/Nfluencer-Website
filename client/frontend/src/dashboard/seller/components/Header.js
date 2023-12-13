@@ -240,12 +240,30 @@ const Header = () => {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="absolute right-0 z-50 mt-2 w-64 origin-top-right rounded-xl bg-white shadow-lg focus:outline-none p-2">
-                {notifications.length > 0 &&
+              <Menu.Items className="absolute right-0 z-50 mt-2 w-96 origin-top-right rounded-xl bg-white shadow-lg focus:outline-none p-2 border border-gray-300">
+                {notifications.length > 0 ? (
                   notifications.map((notification, index) => {
+                    let url = "";
+                    if (
+                      notification.type === "order-message" ||
+                      notification.type === "cancel-request" ||
+                      notification.type === "approved-request" ||
+                      notification.type === "rejected-request" ||
+                      notification.type === "review-order" ||
+                      notification.type === "requirements-submit" ||
+                      notification.type === "delivery-submit" ||
+                      notification.type === "dispute-raised"
+                    ) {
+                      url = `/gig/orders/${notification.orderId}`;
+                    }
+
                     return (
                       <Menu.Item>
-                        <Link className="text-gray-500 p-2 rounded-lg hover:bg-gray-100 flex gap-2 items-center">
+                        <Link
+                          className="text-gray-500 p-2 rounded-lg hover:bg-gray-100 flex gap-2 items-center"
+                          to={url}
+                          target="_blank"
+                        >
                           <img
                             src={notification.sender.avatar}
                             className="w-8 h-8 rounded-full"
@@ -253,19 +271,83 @@ const Header = () => {
                           />
                           <div className="flex text-sm flex-col items-start w-full">
                             <span className="flex w-full justify-between">
-                              <span>{notification.sender.name}</span>
+                              <span className="text-gray-800">
+                                {notification.sender.name}
+
+                                {notification.type === "delivery-submit" && (
+                                  <span className="text-xs text-gray-500 ml-2">
+                                    submitted their delivery
+                                  </span>
+                                )}
+
+                                {notification.type === "dispute-raised" && (
+                                  <span className="text-xs text-gray-500 ml-2">
+                                    raised a dispute
+                                  </span>
+                                )}
+
+                                {notification.type ===
+                                  "requirements-submit" && (
+                                  <span className="text-xs text-gray-500 ml-2">
+                                    submitted their requirements
+                                  </span>
+                                )}
+
+                                {notification.type === "review-order" && (
+                                  <span className="text-xs text-gray-500 ml-2">
+                                    reviewed your order
+                                  </span>
+                                )}
+
+                                {notification.type === "approved-request" && (
+                                  <span className="text-xs text-gray-500 ml-2">
+                                    approved your cancel request
+                                  </span>
+                                )}
+
+                                {notification.type === "rejected-request" && (
+                                  <span className="text-xs text-gray-500 ml-2">
+                                    rejected your cancel request
+                                  </span>
+                                )}
+
+                                {notification.type === "cancel-request" && (
+                                  <span className="text-xs text-gray-500 ml-2">
+                                    sent you a cancel request
+                                  </span>
+                                )}
+
+                                {notification.type === "order-message" && (
+                                  <span className="text-xs text-gray-500 ml-2">
+                                    sent you a message
+                                  </span>
+                                )}
+                              </span>
                               <span className="text-xs">
                                 {formatDate(notification.createdAt)}
                               </span>
                             </span>
                             <span className="w-full text-xs text-gray-500">
-                              {notification.content}
+                              {notification.content &&
+                                notification.content.substring(0, 40)}
+                              ...
                             </span>
                           </div>
                         </Link>
                       </Menu.Item>
                     );
-                  })}
+                  })
+                ) : (
+                  <Menu.Item>
+                    <div className="text-gray-500 p-2 rounded-lg hover:bg-gray-100 flex gap-2 items-center">
+                      <div className="flex flex-col items-start w-full">
+                        <span className="flex w-full justify-between">
+                          <span>No notifications</span>
+                        </span>
+                      </div>
+                    </div>
+                  </Menu.Item>
+                )}
               </Menu.Items>
             </Transition>
           </Menu>

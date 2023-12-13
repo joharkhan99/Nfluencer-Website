@@ -474,6 +474,16 @@ const getNotifications = async (req, res) => {
   return res.status(200).json({ notifications });
 };
 
+const getAdminNotifications = async (req, res) => {
+  const notifications = await Notification.find({})
+    .populate("sender")
+    .populate("receiver")
+    .sort({ createdAt: -1 })
+    .exec();
+
+  return res.status(200).json({ notifications });
+};
+
 export {
   registerUser,
   loginUser,
@@ -490,4 +500,5 @@ export {
   getAdminStats,
   fetchAllDisputes,
   getNotifications,
+  getAdminNotifications,
 };

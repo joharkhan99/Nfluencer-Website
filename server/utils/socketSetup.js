@@ -64,8 +64,9 @@ const socketSetup = (server, clientURL) => {
         const notification = new Notification({
           sender: data.sender,
           receiver: data.receiver,
-          type: "order-message",
+          type: data.type,
           content: data.content,
+          orderId: data.orderId,
         });
 
         await notification.save();

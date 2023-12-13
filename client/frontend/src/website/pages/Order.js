@@ -178,6 +178,21 @@ const Order = () => {
         alert(res.error);
         return;
       }
+
+      const socket = io(process.env.REACT_APP_API_URL);
+      setSocket(socket);
+
+      socket.emit("notification", {
+        sender: user._id,
+        receiver:
+          user._id === orderDetails.buyer._id
+            ? orderDetails.seller._id
+            : orderDetails.buyer._id,
+        type: `requirements-submit`,
+        content: `has submitted the requirements for your order`,
+        orderId,
+      });
+
       window.location.reload();
     } else {
       alert("Please fill in all requirements before submitting.");
@@ -293,6 +308,21 @@ const Order = () => {
       }
 
       setdeliveryModalOpen(false);
+
+      const socket = io(process.env.REACT_APP_API_URL);
+      setSocket(socket);
+
+      socket.emit("notification", {
+        sender: user._id,
+        receiver:
+          user._id === orderDetails.buyer._id
+            ? orderDetails.seller._id
+            : orderDetails.buyer._id,
+        type: `delivery-submit`,
+        content: `has submitted the delivery for your order`,
+        orderId,
+      });
+
       window.location.reload();
     }
     setIsFormSubmitting(false);
@@ -408,16 +438,27 @@ const Order = () => {
         }
       );
 
-      if (response.ok) {
-        window.location.reload();
-      } else {
-        console.error("Error submitting review");
-      }
+      const socket = io(process.env.REACT_APP_API_URL);
+      setSocket(socket);
+
+      socket.emit("notification", {
+        sender: user._id,
+        receiver:
+          user._id === orderDetails.buyer._id
+            ? orderDetails.seller._id
+            : orderDetails.buyer._id,
+        type: `review-order`,
+        content: `has left a ${rating} review on your order`,
+        orderId,
+      });
+
+      window.location.reload();
     } catch (error) {
       console.error("Error submitting review:", error);
     }
   };
 
+  const [socket, setSocket] = useState(null);
   const handleCancellationSubmit = async () => {
     if (!cancelReason || cancelReason.trim() === "") {
       alert("Please enter a reason for cancellation");
@@ -443,6 +484,20 @@ const Order = () => {
         }),
       }
     );
+
+    const socket = io(process.env.REACT_APP_API_URL);
+    setSocket(socket);
+
+    socket.emit("notification", {
+      sender: user._id,
+      receiver:
+        user._id === orderDetails.buyer._id
+          ? orderDetails.seller._id
+          : orderDetails.buyer._id,
+      type: "cancel-request",
+      content: cancelReason,
+      orderId,
+    });
 
     window.location.reload();
   };
@@ -499,6 +554,20 @@ const Order = () => {
       }
     );
 
+    const socket = io(process.env.REACT_APP_API_URL);
+    setSocket(socket);
+
+    socket.emit("notification", {
+      sender: user._id,
+      receiver:
+        user._id === orderDetails.buyer._id
+          ? orderDetails.seller._id
+          : orderDetails.buyer._id,
+      type: `${type}-request`,
+      content: `has ${type} the request`,
+      orderId,
+    });
+
     // if (response.error === false) {
     window.location.reload();
     // }
@@ -536,28 +605,22 @@ const Order = () => {
       }
     );
 
+    const socket = io(process.env.REACT_APP_API_URL);
+    setSocket(socket);
+
+    socket.emit("notification", {
+      sender: user._id,
+      receiver:
+        user._id === orderDetails.buyer._id
+          ? orderDetails.seller._id
+          : orderDetails.buyer._id,
+      type: `dispute-raised`,
+      content: `${user.name} has raised a dispute on this order.`,
+      orderId,
+    });
+
     window.location.reload();
   };
-
-  // const socket = io(process.env.REACT_APP_API_URL);
-  // useEffect(() => {
-  //   socket.on("notification", (notification) => {
-  //     console.log("New Notification:", notification);
-  //   });
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
-
-  // const [socket, setSocket] = useState(null);
-  // useEffect(() => {
-  //   const socket = io(process.env.REACT_APP_API_URL);
-  //   setSocket(socket);
-  //   socket.on("notification", (message) => {
-  //     console.log("New Notification:", message);
-  //   });
-  // }, [user]);
 
   if (isLoading) {
     return <Loader />;

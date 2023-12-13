@@ -15,6 +15,7 @@ import {
   getAdminStats,
   fetchAllDisputes,
   getNotifications,
+  getAdminNotifications,
 } from "../controllers/UserController.js";
 import authenticate from "../middleware/authenticate.js";
 const router = Router();
@@ -33,6 +34,7 @@ router.get("/admin-users", fetchAllUsers);
 router.get("/getAdminStats", getAdminStats);
 router.get("/admin-gigs", fetchAllGigs);
 router.get("/admin-disputes", fetchAllDisputes);
+router.post("/get-admin-notifications", getAdminNotifications);
 
 router.use(authenticate);
 router.post("/getuser", getUser);

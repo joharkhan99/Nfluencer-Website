@@ -120,10 +120,11 @@ const AdminTickets = () => {
                                 </td>
 
                                 <td className="p-3 py-5">
-                                  {dispute.disputeResponseSubject.substring(
-                                    0,
-                                    20
-                                  )}
+                                  {dispute.disputeResponseSubject &&
+                                    dispute.disputeResponseSubject.substring(
+                                      0,
+                                      20
+                                    )}
                                   ...
                                 </td>
 

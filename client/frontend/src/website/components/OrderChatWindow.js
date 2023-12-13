@@ -119,6 +119,7 @@ const OrderChatWindow = ({ orderChatUser, orderId }) => {
       receiver: selectedUser._id,
       type: "order-message",
       content: newMessage,
+      orderId,
     });
 
     setNewMessage("");

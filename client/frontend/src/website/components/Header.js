@@ -1,7 +1,7 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Squares2X2Icon } from "@heroicons/react/24/outline";
 import Cookies from "js-cookie";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setUser } from "../../redux/slices/UserSlice";
@@ -11,7 +11,9 @@ import {
   ArrowDownTrayIcon,
   UserPlusIcon,
   MagnifyingGlassIcon,
+  BellIcon,
 } from "@heroicons/react/24/outline";
+import { io } from "socket.io-client";
 
 function Header({ transparent = false, showCategoriesBar = false }) {
   const navigate = useNavigate();
@@ -24,6 +26,59 @@ function Header({ transparent = false, showCategoriesBar = false }) {
   };
 
   const user = useSelector((state) => state.user.user);
+  function formatDate(dateStr) {
+    const dateObj = new Date(dateStr);
+    const formattedDate = dateObj.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "numeric",
+    });
+
+    return formattedDate;
+  }
+
+  const [notifications, setNotifications] = React.useState([]);
+  const fetchNotifications = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/user/get-notifications`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": user.jwtToken,
+          },
+          body: JSON.stringify({
+            userId: user._id,
+          }),
+        }
+      );
+      const data = await response.json();
+      console.log("NOT", data);
+      if (data.error) {
+        setNotifications([]);
+        return;
+      }
+      setNotifications(data.notifications);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchNotifications();
+    }
+  }, [user]);
+
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const socket = io(process.env.REACT_APP_API_URL);
+    setSocket(socket);
+    socket.on("notification", (message) => {
+      fetchNotifications();
+    });
+  }, [user]);
 
   // console.log(user);
 
@@ -394,15 +449,6 @@ function Header({ transparent = false, showCategoriesBar = false }) {
                 ) : (
                   <>
                     <li>
-                      {/* <Link
-                        to="/dashboard"
-                        className={`text-sm px-4 py-2 hover:opacity-80 ${
-                          transparent ? "text-gray-800" : "text-white"
-                        }`}
-                      >
-                        Dashboard
-                      </Link> */}
-
                       <Link
                         to="/dashboard"
                         className={`rounded-xl text-sm px-4 py-3 hover:opacity-80 flex items-center gap-2 ${
@@ -415,6 +461,152 @@ function Header({ transparent = false, showCategoriesBar = false }) {
                         <span>Dashboard</span>
                       </Link>
                     </li>
+
+                    <li>
+                      <Menu
+                        as="div"
+                        className="relative inline-block text-left"
+                      >
+                        <div>
+                          <Menu.Button className="group bg-gray-100 rounded-full w-10 h-10">
+                            <div className="p-2.5">
+                              <BellIcon className="w-full h-full text-gray-700" />
+                            </div>
+                          </Menu.Button>
+                        </div>
+
+                        <Transition
+                          as={Fragment}
+                          enter="transition ease-out duration-100"
+                          enterFrom="transform opacity-0 scale-95"
+                          enterTo="transform opacity-100 scale-100"
+                          leave="transition ease-in duration-75"
+                          leaveFrom="transform opacity-100 scale-100"
+                          leaveTo="transform opacity-0 scale-95"
+                        >
+                          <Menu.Items className="absolute right-0 z-50 mt-2 w-96 origin-top-right rounded-xl bg-white shadow-lg focus:outline-none p-2 border border-gray-300">
+                            {notifications.length > 0 ? (
+                              notifications.map((notification, index) => {
+                                let url = "";
+                                if (
+                                  notification.type === "order-message" ||
+                                  notification.type === "cancel-request" ||
+                                  notification.type === "approved-request" ||
+                                  notification.type === "rejected-request" ||
+                                  notification.type === "review-order" ||
+                                  notification.type === "requirements-submit" ||
+                                  notification.type === "delivery-submit" ||
+                                  notification.type === "dispute-raised"
+                                ) {
+                                  url = `/gig/orders/${notification.orderId}`;
+                                }
+
+                                return (
+                                  <Menu.Item>
+                                    <Link
+                                      className="text-gray-500 p-2 rounded-lg hover:bg-gray-100 flex gap-2 items-center"
+                                      to={url}
+                                      target="_blank"
+                                    >
+                                      <img
+                                        src={notification.sender.avatar}
+                                        className="w-8 h-8 rounded-full"
+                                        alt=""
+                                      />
+                                      <div className="flex text-sm flex-col items-start w-full">
+                                        <span className="flex w-full justify-between">
+                                          <span className="text-gray-800">
+                                            {notification.sender.name}
+
+                                            {notification.type ===
+                                              "delivery-submit" && (
+                                              <span className="text-xs text-gray-500 ml-2">
+                                                submitted their delivery
+                                              </span>
+                                            )}
+
+                                            {notification.type ===
+                                              "dispute-raised" && (
+                                              <span className="text-xs text-gray-500 ml-2">
+                                                raised a dispute
+                                              </span>
+                                            )}
+
+                                            {notification.type ===
+                                              "requirements-submit" && (
+                                              <span className="text-xs text-gray-500 ml-2">
+                                                submitted their requirements
+                                              </span>
+                                            )}
+
+                                            {notification.type ===
+                                              "review-order" && (
+                                              <span className="text-xs text-gray-500 ml-2">
+                                                reviewed your order
+                                              </span>
+                                            )}
+
+                                            {notification.type ===
+                                              "approved-request" && (
+                                              <span className="text-xs text-gray-500 ml-2">
+                                                approved your cancel request
+                                              </span>
+                                            )}
+
+                                            {notification.type ===
+                                              "rejected-request" && (
+                                              <span className="text-xs text-gray-500 ml-2">
+                                                rejected your cancel request
+                                              </span>
+                                            )}
+
+                                            {notification.type ===
+                                              "cancel-request" && (
+                                              <span className="text-xs text-gray-500 ml-2">
+                                                sent you a cancel request
+                                              </span>
+                                            )}
+
+                                            {notification.type ===
+                                              "order-message" && (
+                                              <span className="text-xs text-gray-500 ml-2">
+                                                sent you a message
+                                              </span>
+                                            )}
+                                          </span>
+                                          <span className="text-xs">
+                                            {formatDate(notification.createdAt)}
+                                          </span>
+                                        </span>
+                                        <span className="w-full text-xs text-gray-500">
+                                          {notification.content &&
+                                            notification.content.substring(
+                                              0,
+                                              40
+                                            )}
+                                          ...
+                                        </span>
+                                      </div>
+                                    </Link>
+                                  </Menu.Item>
+                                );
+                              })
+                            ) : (
+                              <Menu.Item>
+                                <div className="text-gray-500 p-2 rounded-lg hover:bg-gray-100 flex gap-2 items-center">
+                                  <div className="flex flex-col items-start w-full">
+                                    <span className="flex w-full justify-between">
+                                      <span>No notifications</span>
+                                    </span>
+                                  </div>
+                                </div>
+                              </Menu.Item>
+                            )}
+                          </Menu.Items>
+                        </Transition>
+                      </Menu>
+                    </li>
+
                     <li>
                       <Menu as="div" className="relative text-left">
                         <div>
