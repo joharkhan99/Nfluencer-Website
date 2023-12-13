@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import { Link } from "react-router-dom";
-const Orders = () => {
+
+const PurchasedOrders = () => {
   const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
@@ -25,10 +26,10 @@ const Orders = () => {
     return formattedDate;
   };
 
-  const [sellerOrders, setSellerOrders] = useState({});
-  const getAllSellerOrders = async (seller) => {
+  const [buyerOrders, setBuyerOrders] = useState({});
+  const getAllBuyerOrders = async (seller) => {
     const res = await fetch(
-      `${process.env.REACT_APP_API_URL}/api/gig/getAllSellerOrders`,
+      `${process.env.REACT_APP_API_URL}/api/gig/getAllBuyerOrders`,
       {
         method: "POST",
         headers: {
@@ -45,13 +46,13 @@ const Orders = () => {
       return;
     }
 
-    setSellerOrders(data);
+    setBuyerOrders(data);
     console.log(data);
   };
 
   useEffect(() => {
     if (user) {
-      getAllSellerOrders(user);
+      getAllBuyerOrders(user);
     }
   }, [user]);
 
@@ -59,7 +60,7 @@ const Orders = () => {
     <div className="w-full">
       <div>
         <h2 className="font-extrabold tracking-tight text-3xl text-gray-800 block mb-10">
-          Manage Orders
+          Purchased Orders
         </h2>
 
         <div>
@@ -73,36 +74,35 @@ const Orders = () => {
                   <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm ">
                     <span>Active</span>
                     <span className="ml-1 bg-white rounded-sm text-nft-primary-light h-5 w-fit text-center text-sm px-0.5">
-                      {sellerOrders.activeOrders &&
-                        sellerOrders.activeOrders.length}
+                      {buyerOrders.activeOrders &&
+                        buyerOrders.activeOrders.length}
                     </span>
                   </Tab>
                   <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm">
                     <span>Late</span>
                     <span className="ml-1 bg-white rounded-sm text-nft-primary-light h-5 w-fit text-center text-sm px-0.5">
-                      {sellerOrders.lateOrders &&
-                        sellerOrders.lateOrders.length}
+                      {buyerOrders.lateOrders && buyerOrders.lateOrders.length}
                     </span>
                   </Tab>
                   <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm">
                     <span>Delivered</span>
                     <span className="ml-1 bg-white rounded-sm text-nft-primary-light h-5 w-fit text-center text-sm px-0.5">
-                      {sellerOrders.deliveredOrders &&
-                        sellerOrders.deliveredOrders.length}
+                      {buyerOrders.deliveredOrders &&
+                        buyerOrders.deliveredOrders.length}
                     </span>
                   </Tab>
                   <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm">
                     <span>Completed</span>
                     <span className="ml-1 bg-white rounded-sm text-nft-primary-light h-5 w-fit text-center text-sm px-0.5">
-                      {sellerOrders.completedOrders &&
-                        sellerOrders.completedOrders.length}
+                      {buyerOrders.completedOrders &&
+                        buyerOrders.completedOrders.length}
                     </span>
                   </Tab>
                   <Tab className="list-none rounded-md px-2 py-2 text-gray-500 font-medium relative cursor-pointer transition-colors outline-none text-sm">
                     <span>Cancelled</span>
                     <span className="ml-1 bg-white rounded-sm text-nft-primary-light h-5 w-fit text-center text-sm px-0.5">
-                      {sellerOrders.cancelledOrders &&
-                        sellerOrders.cancelledOrders.length}
+                      {buyerOrders.cancelledOrders &&
+                        buyerOrders.cancelledOrders.length}
                     </span>
                   </Tab>
                 </TabList>
@@ -115,7 +115,7 @@ const Orders = () => {
                       <thead className="text-xs text-gray-500 uppercase border-b">
                         <tr className="uppercase">
                           <th scope="col" className="p-3">
-                            Buyer
+                            Seller
                           </th>
                           <th scope="col" className="p-3">
                             Gig
@@ -136,8 +136,8 @@ const Orders = () => {
                       </thead>
 
                       <tbody>
-                        {sellerOrders.activeOrders &&
-                          sellerOrders.activeOrders.map((order, index) => {
+                        {buyerOrders.activeOrders &&
+                          buyerOrders.activeOrders.map((order, index) => {
                             return (
                               <tr
                                 className="hover:bg-gray-50 transition-colors"
@@ -146,11 +146,11 @@ const Orders = () => {
                                 <td className="p-3 py-5 text-gray-800">
                                   <div className="flex items-center gap-2">
                                     <img
-                                      src={order.buyer.avatar}
+                                      src={order.seller.avatar}
                                       alt=""
                                       className="w-11 h-11 rounded-full object-cover"
                                     />
-                                    <span>{order.buyer.name}</span>
+                                    <span>{order.seller.name}</span>
                                   </div>
                                 </td>
                                 <td className="p-3 py-5 text-gray-800">
@@ -228,7 +228,7 @@ const Orders = () => {
                       <thead className="text-xs text-gray-500 uppercase border-b">
                         <tr className="uppercase">
                           <th scope="col" className="p-3">
-                            Buyer
+                            Seller
                           </th>
                           <th scope="col" className="p-3">
                             Gig
@@ -249,8 +249,8 @@ const Orders = () => {
                       </thead>
 
                       <tbody>
-                        {sellerOrders.lateOrders &&
-                          sellerOrders.lateOrders.map((order, index) => {
+                        {buyerOrders.lateOrders &&
+                          buyerOrders.lateOrders.map((order, index) => {
                             return (
                               <tr
                                 className="hover:bg-gray-50 transition-colors"
@@ -259,11 +259,11 @@ const Orders = () => {
                                 <td className="p-3 py-5 text-gray-800">
                                   <div className="flex items-center gap-2">
                                     <img
-                                      src={order.buyer.avatar}
+                                      src={order.seller.avatar}
                                       alt=""
                                       className="w-11 h-11 rounded-full object-cover"
                                     />
-                                    <span>{order.buyer.name}</span>
+                                    <span>{order.seller.name}</span>
                                   </div>
                                 </td>
                                 <td className="p-3 py-5 text-gray-800">
@@ -341,7 +341,7 @@ const Orders = () => {
                       <thead className="text-xs text-gray-500 uppercase border-b">
                         <tr className="uppercase">
                           <th scope="col" className="p-3">
-                            Buyer
+                            Seller
                           </th>
                           <th scope="col" className="p-3">
                             Gig
@@ -362,8 +362,8 @@ const Orders = () => {
                       </thead>
 
                       <tbody>
-                        {sellerOrders.deliveredOrders &&
-                          sellerOrders.deliveredOrders.map((order, index) => {
+                        {buyerOrders.deliveredOrders &&
+                          buyerOrders.deliveredOrders.map((order, index) => {
                             return (
                               <tr
                                 className="hover:bg-gray-50 transition-colors"
@@ -372,11 +372,11 @@ const Orders = () => {
                                 <td className="p-3 py-5 text-gray-800">
                                   <div className="flex items-center gap-2">
                                     <img
-                                      src={order.buyer.avatar}
+                                      src={order.seller.avatar}
                                       alt=""
                                       className="w-11 h-11 rounded-full object-cover"
                                     />
-                                    <span>{order.buyer.name}</span>
+                                    <span>{order.seller.name}</span>
                                   </div>
                                 </td>
                                 <td className="p-3 py-5 text-gray-800">
@@ -454,7 +454,7 @@ const Orders = () => {
                       <thead className="text-xs text-gray-500 uppercase border-b">
                         <tr className="uppercase">
                           <th scope="col" className="p-3">
-                            Buyer
+                            Seller
                           </th>
                           <th scope="col" className="p-3">
                             Gig
@@ -475,8 +475,8 @@ const Orders = () => {
                       </thead>
 
                       <tbody>
-                        {sellerOrders.completedOrders &&
-                          sellerOrders.completedOrders.map((order, index) => {
+                        {buyerOrders.completedOrders &&
+                          buyerOrders.completedOrders.map((order, index) => {
                             return (
                               <tr
                                 className="hover:bg-gray-50 transition-colors"
@@ -485,11 +485,11 @@ const Orders = () => {
                                 <td className="p-3 py-5 text-gray-800">
                                   <div className="flex items-center gap-2">
                                     <img
-                                      src={order.buyer.avatar}
+                                      src={order.seller.avatar}
                                       alt=""
                                       className="w-11 h-11 rounded-full object-cover"
                                     />
-                                    <span>{order.buyer.name}</span>
+                                    <span>{order.seller.name}</span>
                                   </div>
                                 </td>
                                 <td className="p-3 py-5 text-gray-800">
@@ -567,7 +567,7 @@ const Orders = () => {
                       <thead className="text-xs text-gray-500 uppercase border-b">
                         <tr className="uppercase">
                           <th scope="col" className="p-3">
-                            Buyer
+                            Seller
                           </th>
                           <th scope="col" className="p-3">
                             Gig
@@ -588,8 +588,8 @@ const Orders = () => {
                       </thead>
 
                       <tbody>
-                        {sellerOrders.cancelledOrders &&
-                          sellerOrders.cancelledOrders.map((order, index) => {
+                        {buyerOrders.cancelledOrders &&
+                          buyerOrders.cancelledOrders.map((order, index) => {
                             return (
                               <tr
                                 className="hover:bg-gray-50 transition-colors"
@@ -598,11 +598,11 @@ const Orders = () => {
                                 <td className="p-3 py-5 text-gray-800">
                                   <div className="flex items-center gap-2">
                                     <img
-                                      src={order.buyer.avatar}
+                                      src={order.seller.avatar}
                                       alt=""
                                       className="w-11 h-11 rounded-full object-cover"
                                     />
-                                    <span>{order.buyer.name}</span>
+                                    <span>{order.seller.name}</span>
                                   </div>
                                 </td>
                                 <td className="p-3 py-5 text-gray-800">
@@ -680,4 +680,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default PurchasedOrders;

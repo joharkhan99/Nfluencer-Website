@@ -9,6 +9,8 @@ import {
   ClipboardDocumentListIcon,
   Cog8ToothIcon,
   ChatBubbleLeftEllipsisIcon,
+  ShoppingCartIcon,
+  ShieldExclamationIcon,
 } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import "../assets/styles/style.css";
@@ -127,6 +129,31 @@ const Sidebar = () => {
                 </Link>
               </li>
 
+              <li
+                className={`rounded-md p-2 cursor-pointer text-sm mb-2 ${
+                  activeLink === "/dashboard/purchased-orders" ||
+                  activeLink === "/dashboard/purchased-orders"
+                    ? "bg-nft-primary-light shadow-lg shadow-gray-200 text-white"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
+              >
+                <Link
+                  to="/dashboard/purchased-orders"
+                  className={`flex items-center gap-x-4 ${
+                    !sideBarOpen && "justify-center"
+                  }`}
+                >
+                  <ShoppingCartIcon className="w-6 h-6" />
+                  <span
+                    className={`${
+                      !sideBarOpen && "hidden"
+                    } origin-left duration-200 font-semibold`}
+                  >
+                    {sideBarOpen && <span>Purchased Orders</span>}
+                  </span>
+                </Link>
+              </li>
+
               {/* <li
                 className={`flex rounded-md p-2 cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-100 mb-2`}
               >
@@ -185,6 +212,30 @@ const Sidebar = () => {
                     } origin-left duration-200 font-semibold`}
                   >
                     {sideBarOpen && <span>Manage NFTs</span>}
+                  </span>
+                </Link>
+              </li>
+
+              <li
+                className={`rounded-md p-2 cursor-pointer text-sm mb-2 ${
+                  activeLink === "/dashboard/my-disputes"
+                    ? "bg-nft-primary-light shadow-lg shadow-gray-200 text-white"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
+              >
+                <Link
+                  to="/dashboard/my-disputes"
+                  className={`flex items-center gap-x-4 ${
+                    !sideBarOpen && "justify-center"
+                  }`}
+                >
+                  <ShieldExclamationIcon className="w-6 h-6" />
+                  <span
+                    className={`${
+                      !sideBarOpen && "hidden"
+                    } origin-left duration-200 font-semibold`}
+                  >
+                    {sideBarOpen && <span>View Disputes</span>}
                   </span>
                 </Link>
               </li>

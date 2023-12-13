@@ -36,6 +36,8 @@ import AdminGigs from "./dashboard/admin/AdminGigs";
 import AdminTickets from "./dashboard/admin/AdminTickets";
 import AdminUsers from "./dashboard/admin/AdminUsers";
 import Dispute from "./website/pages/Dispute";
+import PurchasedOrders from "./dashboard/seller/pages/PurchasedOrders";
+import MyDisputes from "./dashboard/seller/pages/MyDisputes";
 
 function App() {
   const dispatch = useDispatch();
@@ -154,6 +156,8 @@ function App() {
           <Route path="inbox" Component={SellerInbox} />
           <Route path="my-items" Component={MyItems} />
           <Route path="my-orders" Component={Orders} />
+          <Route path="purchased-orders" Component={PurchasedOrders} />
+          <Route path="my-disputes" Component={MyDisputes} />
         </Route>
       </Routes>
     </BrowserRouter>

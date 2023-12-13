@@ -728,6 +728,75 @@ const getAllSellerOrders = async (req, res) => {
   });
 };
 
+const getAllBuyerOrders = async (req, res) => {
+  const { userId } = req.body;
+  const sellerId = userId;
+
+  const activeOrders = await Order.find({
+    buyer: sellerId,
+    isRequirementSent: true,
+    isDeliveryAccepted: false,
+    isOrderCancelled: false,
+  })
+    .populate("seller")
+    .populate("buyer")
+    .populate("gig")
+    .populate("package")
+    .exec();
+
+  const currentDate = new Date();
+  const lateOrders = await Order.find({
+    buyer: sellerId,
+    isDeliveryAccepted: false, // Assuming you only want late orders that are not delivered
+    orderEndDate: { $lt: currentDate },
+  })
+    .populate("seller") // If you need to populate any references (e.g., seller, buyer, gig, package)
+    .populate("buyer")
+    .populate("gig")
+    .populate("package")
+    .exec();
+
+  const deliveredOrders = await Order.find({
+    buyer: sellerId,
+    isDeliveryAccepted: false,
+    isDeliverySubmitted: true,
+  })
+    .populate("seller") // If you need to populate any references (e.g., seller, buyer, gig, package)
+    .populate("buyer")
+    .populate("gig")
+    .populate("package")
+    .exec();
+
+  const completedOrders = await Order.find({
+    buyer: sellerId,
+    isDeliveryAccepted: true,
+    isDeliverySubmitted: true,
+  })
+    .populate("seller") // If you need to populate any references (e.g., seller, buyer, gig, package)
+    .populate("buyer")
+    .populate("gig")
+    .populate("package")
+    .exec();
+
+  const cancelledOrders = await Order.find({
+    buyer: sellerId,
+    isOrderCancelled: true,
+  })
+    .populate("seller") // If you need to populate any references (e.g., seller, buyer, gig, package)
+    .populate("buyer")
+    .populate("gig")
+    .populate("package")
+    .exec();
+
+  res.status(200).json({
+    activeOrders,
+    lateOrders,
+    deliveredOrders,
+    completedOrders,
+    cancelledOrders,
+  });
+};
+
 const cancelOrder = async (req, res) => {
   const {
     order,
@@ -980,4 +1049,5 @@ export {
   submitDisputeResponse,
   adminCancelOrder,
   adminRestartOrder,
+  getAllBuyerOrders,
 };
