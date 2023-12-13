@@ -395,7 +395,7 @@ function Header({ transparent = false, showCategoriesBar = false }) {
                   <>
                     <li>
                       {/* <Link
-                        to="/seller"
+                        to="/dashboard"
                         className={`text-sm px-4 py-2 hover:opacity-80 ${
                           transparent ? "text-gray-800" : "text-white"
                         }`}
@@ -404,7 +404,7 @@ function Header({ transparent = false, showCategoriesBar = false }) {
                       </Link> */}
 
                       <Link
-                        to="/seller"
+                        to="/dashboard"
                         className={`rounded-xl text-sm px-4 py-3 hover:opacity-80 flex items-center gap-2 ${
                           transparent
                             ? "bg-nft-primary-light text-white"

@@ -61,7 +61,7 @@ function Login() {
           dispatch(setUser(data.user));
           localStorage.setItem("user", JSON.stringify(data.user));
           Cookies.set("authId", data.token);
-          navigate("/seller");
+          navigate("/dashboard");
         })
         .catch((err) => {
           setIsSubmitting(false);

@@ -55,13 +55,13 @@ const Sidebar = () => {
             <ul className="overflow-auto h-screen custom-scrollbar">
               <li
                 className={`rounded-md p-2 cursor-pointer text-sm mb-2 ${
-                  activeLink === "/seller"
+                  activeLink === "/dashboard"
                     ? "bg-nft-primary-light shadow-lg shadow-gray-200 text-white"
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
               >
                 <Link
-                  to="/seller"
+                  to="/dashboard"
                   className={`flex items-center gap-x-4 ${
                     !sideBarOpen && "justify-center"
                   }`}
@@ -79,14 +79,14 @@ const Sidebar = () => {
 
               <li
                 className={`rounded-md p-2 cursor-pointer text-sm mb-2 ${
-                  activeLink === "/seller/gigs" ||
-                  activeLink === "/seller/newgig"
+                  activeLink === "/dashboard/gigs" ||
+                  activeLink === "/dashboard/newgig"
                     ? "bg-nft-primary-light shadow-lg shadow-gray-200 text-white"
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
               >
                 <Link
-                  to="/seller/gigs"
+                  to="/dashboard/gigs"
                   className={`flex items-center gap-x-4 ${
                     !sideBarOpen && "justify-center"
                   }`}
@@ -104,14 +104,14 @@ const Sidebar = () => {
 
               <li
                 className={`rounded-md p-2 cursor-pointer text-sm mb-2 ${
-                  activeLink === "/seller/my-orders" ||
-                  activeLink === "/seller/my-orders"
+                  activeLink === "/dashboard/my-orders" ||
+                  activeLink === "/dashboard/my-orders"
                     ? "bg-nft-primary-light shadow-lg shadow-gray-200 text-white"
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
               >
                 <Link
-                  to="/seller/my-orders"
+                  to="/dashboard/my-orders"
                   className={`flex items-center gap-x-4 ${
                     !sideBarOpen && "justify-center"
                   }`}
@@ -142,13 +142,13 @@ const Sidebar = () => {
 
               <li
                 className={`rounded-md p-2 cursor-pointer text-sm mb-2 ${
-                  activeLink === "/seller/inbox"
+                  activeLink === "/dashboard/inbox"
                     ? "bg-nft-primary-light shadow-lg shadow-gray-200 text-white"
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
               >
                 <Link
-                  to="/seller/inbox"
+                  to="/dashboard/inbox"
                   className={`flex items-center gap-x-4 ${
                     !sideBarOpen && "justify-center"
                   }`}
@@ -166,14 +166,14 @@ const Sidebar = () => {
 
               <li
                 className={`rounded-md p-2 cursor-pointer text-sm mb-2 ${
-                  activeLink === "/seller/nfts" ||
-                  activeLink === "/seller/newnft"
+                  activeLink === "/dashboard/nfts" ||
+                  activeLink === "/dashboard/newnft"
                     ? "bg-nft-primary-light shadow-lg shadow-gray-200 text-white"
                     : "text-gray-600 hover:bg-gray-100"
                 }`}
               >
                 <Link
-                  to="/seller/nfts"
+                  to="/dashboard/nfts"
                   className={`flex items-center gap-x-4 ${
                     !sideBarOpen && "justify-center"
                   }`}

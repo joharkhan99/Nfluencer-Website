@@ -238,7 +238,7 @@ const YourNFTs = ({ user }) => {
               Your NFTs
             </h2>
             <Link
-              to="/seller/newnft"
+              to="/dashboard/newnft"
               className="bg-nft-primary-light text-white w-fit p-3 rounded-full text-sm hover:opacity-80 flex items-center gap-2"
             >
               <PlusIcon className="w-6 h-6 object-contain" />

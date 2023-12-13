@@ -371,7 +371,7 @@ const SellerCreateGig = () => {
 
   const Navigate = useNavigate();
   const Done = () => {
-    Navigate("/seller/gigs");
+    Navigate("/dashboard/gigs");
   };
 
   const dispatch = useDispatch();

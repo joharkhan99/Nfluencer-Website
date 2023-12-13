@@ -620,7 +620,7 @@ const PurchasedNFTs = ({ user }) => {
               Purchased NFTs
             </h2>
             <Link
-              to="/seller/newnft"
+              to="/dashboard/newnft"
               className="bg-nft-primary-light text-white w-fit p-3 rounded-full text-sm hover:opacity-80 flex items-center gap-2"
             >
               <span>Explore NFTs Now</span>

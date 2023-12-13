@@ -204,7 +204,7 @@ export const SellerGigs = () => {
 
                 <div className="text-right p-4">
                   <Link
-                    to="/seller/newgig"
+                    to="/dashboard/newgig"
                     className="rounded-xl px-6 py-3 bg-nft-primary-light text-white font-semibold inline-block relative cursor-pointer hover:opacity-80 transition-colors shadow-lg shadow-purple-200"
                   >
                     Create New Gig

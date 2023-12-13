@@ -108,7 +108,7 @@ const SellerNewNFT = () => {
 
   useEffect(() => {
     if (!isWalletConnected) {
-      navigate("/seller");
+      navigate("/dashboard");
       return;
     }
   }, [isWalletConnected]);
@@ -336,7 +336,7 @@ const SellerNewNFT = () => {
         return;
       }
       toast.success("NFT created successfully");
-      navigate("/seller/nfts");
+      navigate("/dashboard/nfts");
     }
   };
 

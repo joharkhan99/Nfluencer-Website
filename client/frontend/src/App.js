@@ -138,14 +138,14 @@ function App() {
 
         {/* Dashboard Section */}
         <Route
-          path="seller"
+          path="dashboard"
           element={
             <ProtectedRoute>
               <SellerDashboardLayout />
             </ProtectedRoute>
           }
         >
-          <Route path="/seller" Component={SellerHomePage} />
+          <Route path="/dashboard" Component={SellerHomePage} />
           <Route path="about" Component={SellerAbout} />
           <Route path="gigs" Component={SellerGigs} />
           <Route path="newgig" Component={SellerCreateGig} />

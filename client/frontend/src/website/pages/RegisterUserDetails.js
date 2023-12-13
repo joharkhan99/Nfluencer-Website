@@ -136,36 +136,8 @@ function RegisterUserDetails() {
         dispatch(setUser(data.user));
         localStorage.setItem("user", JSON.stringify(data.user));
         Cookies.set("authId", data.user.jwtToken);
-        navigate("/seller");
+        navigate("/dashboard");
       }
-
-      // .then((response) => response.json())
-      // .then((data) => {
-
-      //   console.log(data);
-
-      //   if (data.error && data.usernameExist) {
-      //     setErrors({ username: data.message });
-      //     return;
-      //   }
-      //   if (data.error) {
-      //     alert(data.message);
-      //     return;
-      //   }
-
-      //   if (data.user) {
-      //     dispatch(setUser(data.user));
-      //     localStorage.setItem("user", JSON.stringify(data.user));
-      //     Cookies.set("authId", data.user.jwtToken);
-      //     navigate("/seller");
-      //   }
-      // })
-      // .catch((error) => {
-      //   console.error(error);
-      // })
-      // .finally(() => {
-      //   setIsSubmitting(false);
-      // });
     }
   };
 

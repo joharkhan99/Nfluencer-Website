@@ -46,7 +46,7 @@ const SellerManageNFT = () => {
                     Discover now
                   </Link>
                   <Link
-                    to="/seller/newnft"
+                    to="/dashboard/newnft"
                     className="block border-transparent border text-white bg-white font-semibold rounded-full p-4 px-7 text-sm bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-40 hover:opacity-80"
                   >
                     Create NFT
@@ -95,7 +95,7 @@ const SellerManageNFT = () => {
           <IncentiveNFTs user={user} />
 
           {/* <Link
-            to="/seller/my-items"
+            to="/dashboard/my-items"
             className="bg-nft-primary-light text-white font-medium text-base block p-5 rounded-xl max-w-sm w-full text-center mx-auto mt-10 hover:opacity-80"
           >
             Manage Your NFTs
