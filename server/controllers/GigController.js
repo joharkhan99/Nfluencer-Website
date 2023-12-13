@@ -1019,6 +1019,24 @@ const adminRestartOrder = async (req, res) => {
   return res.status(201).json({ error: false, message: "Order Restarted" });
 };
 
+const getAllUserDisputes = async (req, res) => {
+  const { userId } = req.body;
+
+  // get all disputes where user is buyer or seller
+  const disputes = await Conflict.find({
+    $or: [{ buyer: userId }, { seller: userId }],
+  })
+    .populate("order")
+    .populate("gig")
+    .populate("seller")
+    .populate("buyer")
+    .populate("package")
+    .populate("disputeInitiator")
+    .exec();
+
+  return res.status(200).json({ disputes });
+};
+
 export {
   createGig,
   fetchGig,
@@ -1050,4 +1068,5 @@ export {
   adminCancelOrder,
   adminRestartOrder,
   getAllBuyerOrders,
+  getAllUserDisputes,
 };

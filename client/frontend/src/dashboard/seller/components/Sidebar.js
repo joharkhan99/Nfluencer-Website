@@ -11,6 +11,7 @@ import {
   ChatBubbleLeftEllipsisIcon,
   ShoppingCartIcon,
   ShieldExclamationIcon,
+  NewspaperIcon,
 } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import "../assets/styles/style.css";
@@ -212,6 +213,30 @@ const Sidebar = () => {
                     } origin-left duration-200 font-semibold`}
                   >
                     {sideBarOpen && <span>Manage NFTs</span>}
+                  </span>
+                </Link>
+              </li>
+
+              <li
+                className={`rounded-md p-2 cursor-pointer text-sm mb-2 ${
+                  activeLink === "/dashboard/invoices"
+                    ? "bg-nft-primary-light shadow-lg shadow-gray-200 text-white"
+                    : "text-gray-600 hover:bg-gray-100"
+                }`}
+              >
+                <Link
+                  to="/dashboard/invoices"
+                  className={`flex items-center gap-x-4 ${
+                    !sideBarOpen && "justify-center"
+                  }`}
+                >
+                  <NewspaperIcon className="w-6 h-6" />
+                  <span
+                    className={`${
+                      !sideBarOpen && "hidden"
+                    } origin-left duration-200 font-semibold`}
+                  >
+                    {sideBarOpen && <span>Invoices</span>}
                   </span>
                 </Link>
               </li>

@@ -30,6 +30,7 @@ import {
   adminCancelOrder,
   adminRestartOrder,
   getAllBuyerOrders,
+  getAllUserDisputes,
 } from "../controllers/GigController.js";
 import multer from "multer";
 import authenticate from "../middleware/authenticate.js";
@@ -64,6 +65,7 @@ router.post("/submitRequirements", submitRequirements);
 router.post("/user-gigs", fetchUserGigs);
 router.post("/getAllSellerOrders", getAllSellerOrders);
 router.post("/getAllBuyerOrders", getAllBuyerOrders);
+router.post("/getAllUserDisputes", getAllUserDisputes);
 
 router.delete("/delete-gig", deleteUserGigs);
 

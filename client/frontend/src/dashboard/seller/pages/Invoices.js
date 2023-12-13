@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-const MyDisputes = () => {
+const Invoices = () => {
   const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const MyDisputes = () => {
     <div className="w-full">
       <div>
         <h2 className="font-extrabold tracking-tight text-3xl text-gray-800 block mb-10">
-          My Disputes
+          Your Invoices
         </h2>
 
         <div>
@@ -168,4 +168,4 @@ const MyDisputes = () => {
   );
 };
 
-export default MyDisputes;
+export default Invoices;
