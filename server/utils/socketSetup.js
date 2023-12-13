@@ -1,6 +1,7 @@
 import { Server } from "socket.io";
 import Message from "../models/Message.js";
 import Chat from "../models/Chat.js";
+import Notification from "../models/Notification.js";
 
 const socketSetup = (server, clientURL) => {
   const io = new Server(server, {
@@ -20,6 +21,7 @@ const socketSetup = (server, clientURL) => {
       });
 
       await message.save();
+
       return message;
     } else {
       const message = new Message({
@@ -36,6 +38,7 @@ const socketSetup = (server, clientURL) => {
   };
 
   io.on("connection", (socket) => {
+    console.log("a user connected", socket.id);
     socket.on("message", async (data) => {
       try {
         const message = await saveMessage(data);
@@ -54,6 +57,31 @@ const socketSetup = (server, clientURL) => {
     socket.on("disconnect", () => {
       io.emit("user-disconnected", socket.id);
     });
+
+    // for notification watch for notification model
+    socket.on("notification", async (data) => {
+      try {
+        const notification = new Notification({
+          sender: data.sender,
+          receiver: data.receiver,
+          type: "order-message",
+          content: data.content,
+        });
+
+        await notification.save();
+
+        io.emit("notification", data);
+      } catch (error) {
+        console.log(error);
+      }
+    });
+
+    // const notificationStream = Notification.watch();
+
+    // notificationStream.on("change", (data) => {
+    //   console.log(data);
+    //   io.emit("notification", data);
+    // });
   });
 };
 

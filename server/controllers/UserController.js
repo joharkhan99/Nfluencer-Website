@@ -8,6 +8,7 @@ import Gig from "../models/Gig.js";
 import Invoice from "../models/Invoice.js";
 import Order from "../models/Order.js";
 import Conflict from "../models/Conflict.js";
+import Notification from "../models/Notification.js";
 
 const encryptPassword = (password) => {
   const salt = bcrypt.genSaltSync(10);
@@ -461,6 +462,18 @@ const fetchAllDisputes = async (req, res) => {
   return res.status(200).json({ disputes });
 };
 
+const getNotifications = async (req, res) => {
+  const { userId } = req.body;
+
+  const notifications = await Notification.find({ receiver: userId })
+    .populate("sender")
+    .populate("receiver")
+    .sort({ createdAt: -1 })
+    .exec();
+
+  return res.status(200).json({ notifications });
+};
+
 export {
   registerUser,
   loginUser,
@@ -476,4 +489,5 @@ export {
   deleteGig,
   getAdminStats,
   fetchAllDisputes,
+  getNotifications,
 };

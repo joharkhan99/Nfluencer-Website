@@ -114,6 +114,13 @@ const OrderChatWindow = ({ orderChatUser, orderId }) => {
       chatType: "order",
     });
 
+    socket.emit("notification", {
+      sender: user._id,
+      receiver: selectedUser._id,
+      type: "order-message",
+      content: newMessage,
+    });
+
     setNewMessage("");
   };
 

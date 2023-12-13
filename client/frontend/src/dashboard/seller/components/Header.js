@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { MagnifyingGlassIcon, ClipboardIcon } from "@heroicons/react/20/solid";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import {
@@ -16,6 +16,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
+import { io } from "socket.io-client";
 
 const Header = () => {
   const [balance, setBalance] = useState(0);
@@ -69,6 +70,61 @@ const Header = () => {
       fetchWalletInfo();
     }
   }, [isWalletConnected]);
+
+  const [notifications, setNotifications] = useState([]);
+
+  const fetchNotifications = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/user/get-notifications`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": user.jwtToken,
+          },
+          body: JSON.stringify({
+            userId: user._id,
+          }),
+        }
+      );
+      const data = await response.json();
+      console.log("NOT", data);
+      if (data.error) {
+        setNotifications([]);
+        return;
+      }
+      setNotifications(data.notifications);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchNotifications();
+    }
+  }, [user]);
+
+  const [socket, setSocket] = useState(null);
+
+  useEffect(() => {
+    const socket = io(process.env.REACT_APP_API_URL);
+    setSocket(socket);
+    socket.on("notification", (message) => {
+      fetchNotifications();
+    });
+  }, [user]);
+
+  function formatDate(dateStr) {
+    const dateObj = new Date(dateStr);
+    const formattedDate = dateObj.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "numeric",
+    });
+
+    return formattedDate;
+  }
 
   return (
     <>
@@ -184,25 +240,32 @@ const Header = () => {
               leaveFrom="transform opacity-100 scale-100"
               leaveTo="transform opacity-0 scale-95"
             >
-              <Menu.Items className="absolute right-0 z-10 mt-2 w-52 origin-top-right rounded-xl bg-white shadow-lg focus:outline-none p-2">
-                <div>
-                  <Menu.Item>
-                    <a
-                      href="{option.href}"
-                      className="text-gray-500 block p-2 rounded-lg hover:bg-gray-100"
-                    >
-                      Link 1
-                    </a>
-                  </Menu.Item>
-                  <Menu.Item>
-                    <a
-                      href="{option.href}"
-                      className="text-gray-500 block p-2 rounded-lg hover:bg-gray-100"
-                    >
-                      Link 1
-                    </a>
-                  </Menu.Item>
-                </div>
+              <Menu.Items className="absolute right-0 z-50 mt-2 w-64 origin-top-right rounded-xl bg-white shadow-lg focus:outline-none p-2">
+                {notifications.length > 0 &&
+                  notifications.map((notification, index) => {
+                    return (
+                      <Menu.Item>
+                        <Link className="text-gray-500 p-2 rounded-lg hover:bg-gray-100 flex gap-2 items-center">
+                          <img
+                            src={notification.sender.avatar}
+                            className="w-8 h-8 rounded-full"
+                            alt=""
+                          />
+                          <div className="flex text-sm flex-col items-start w-full">
+                            <span className="flex w-full justify-between">
+                              <span>{notification.sender.name}</span>
+                              <span className="text-xs">
+                                {formatDate(notification.createdAt)}
+                              </span>
+                            </span>
+                            <span className="w-full text-xs text-gray-500">
+                              {notification.content}
+                            </span>
+                          </div>
+                        </Link>
+                      </Menu.Item>
+                    );
+                  })}
               </Menu.Items>
             </Transition>
           </Menu>

@@ -14,6 +14,7 @@ import {
   deleteGig,
   getAdminStats,
   fetchAllDisputes,
+  getNotifications,
 } from "../controllers/UserController.js";
 import authenticate from "../middleware/authenticate.js";
 const router = Router();
@@ -38,5 +39,6 @@ router.post("/getuser", getUser);
 router.post("/wallet", storeWallet);
 router.delete("/wallet", removeWallet);
 router.post("/chatUsers", getUsers);
+router.post("/get-notifications", getNotifications);
 
 export default router;

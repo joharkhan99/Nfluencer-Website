@@ -25,6 +25,7 @@ import { ethers } from "ethers";
 import axios from "axios";
 import { create as ipfsHttpClient } from "ipfs-http-client";
 import Web3Modal from "web3modal";
+import { io } from "socket.io-client";
 
 const Order = () => {
   const { orderId } = useParams();
@@ -537,6 +538,26 @@ const Order = () => {
 
     window.location.reload();
   };
+
+  // const socket = io(process.env.REACT_APP_API_URL);
+  // useEffect(() => {
+  //   socket.on("notification", (notification) => {
+  //     console.log("New Notification:", notification);
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
+
+  // const [socket, setSocket] = useState(null);
+  // useEffect(() => {
+  //   const socket = io(process.env.REACT_APP_API_URL);
+  //   setSocket(socket);
+  //   socket.on("notification", (message) => {
+  //     console.log("New Notification:", message);
+  //   });
+  // }, [user]);
 
   if (isLoading) {
     return <Loader />;
