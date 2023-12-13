@@ -1037,6 +1037,22 @@ const getAllUserDisputes = async (req, res) => {
   return res.status(200).json({ disputes });
 };
 
+const getAllUserInvoices = async (req, res) => {
+  const { userId } = req.body;
+
+  const invoices = await Invoice.find({
+    user: userId,
+  })
+    .populate("order")
+    .populate("gig")
+    .populate("seller")
+    .populate("buyer")
+    .populate("package")
+    .exec();
+
+  return res.status(200).json({ invoices });
+};
+
 export {
   createGig,
   fetchGig,
@@ -1069,4 +1085,5 @@ export {
   adminRestartOrder,
   getAllBuyerOrders,
   getAllUserDisputes,
+  getAllUserInvoices,
 };

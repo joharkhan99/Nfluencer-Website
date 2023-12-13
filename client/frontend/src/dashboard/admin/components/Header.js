@@ -12,6 +12,7 @@ import {
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const logout = () => {
     Cookies.remove("adminAuth");
     localStorage.removeItem("user");
@@ -34,11 +35,13 @@ const Header = () => {
 
   return (
     <>
-      <div className="p-4 px-6 flex justify-end items-center border-b border-gray-100 bg-white">
-        <div className="space-x-4 items-center flex justify-end">
+      <div className="p-4 px-6 flex justify-end items-center border-b border-gray-700 bg-gray-800">
+        <div className="space-x-4 items-center flex justify-between w-full">
+          <h1 className="text-white">Admin Dashboard</h1>
+
           <Menu as="div" className="relative text-left">
             <div>
-              <Menu.Button className="group shadow-md rounded-xl p-3 bg-nft-primary-light">
+              <Menu.Button className="group shadow-md rounded-xl p-3 bg-nft-primary-light text-white">
                 Admin
               </Menu.Button>
             </div>
@@ -55,9 +58,11 @@ const Header = () => {
               <Menu.Items className="absolute right-0 z-20 mt-2 w-64 origin-top-right rounded-xl bg-white shadow-xl focus:outline-none p-3 border border-gray-100">
                 <div>
                   <Menu.Item>
-                    <div className="w-full border-b pb-3 border-gray-200 mb-1">
+                    <div className="w-full border-b pb-3 border-gray-200 mb-3">
                       <div className="flex gap-3 items-center">
-                        <div>Admin</div>
+                        <div className="text-xl font-bold text-gray-800">
+                          Admin
+                        </div>
                       </div>
                     </div>
                   </Menu.Item>

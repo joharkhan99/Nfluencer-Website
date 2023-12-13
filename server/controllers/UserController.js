@@ -5,6 +5,9 @@ import generateToken from "../utils/tokenGenerator.js";
 import transporter from "../utils/emailConfig.js";
 import cloudinary from "../utils/cloudinaryConfig.js";
 import Gig from "../models/Gig.js";
+import Invoice from "../models/Invoice.js";
+import Order from "../models/Order.js";
+import Conflict from "../models/Conflict.js";
 
 const encryptPassword = (password) => {
   const salt = bcrypt.genSaltSync(10);
@@ -427,6 +430,37 @@ const deleteGig = async (req, res) => {
   }
 };
 
+const getAdminStats = async (req, res) => {
+  const users = await User.find({});
+  const gigs = await Gig.find({});
+  const invoices = await Invoice.find({});
+  const orders = await Order.find({});
+  const disputes = await Conflict.find({});
+
+  res.status(200).json({
+    stats: {
+      users: users.length,
+      gigs: gigs.length,
+      invoices: invoices.length,
+      orders: orders.length,
+      disputes: disputes.length,
+    },
+  });
+};
+
+const fetchAllDisputes = async (req, res) => {
+  const disputes = await Conflict.find({})
+    .populate("order")
+    .populate("gig")
+    .populate("seller")
+    .populate("buyer")
+    .populate("package")
+    .populate("disputeInitiator")
+    .exec();
+
+  return res.status(200).json({ disputes });
+};
+
 export {
   registerUser,
   loginUser,
@@ -440,4 +474,6 @@ export {
   deleteUser,
   fetchAllGigs,
   deleteGig,
+  getAdminStats,
+  fetchAllDisputes,
 };

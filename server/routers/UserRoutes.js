@@ -12,6 +12,8 @@ import {
   deleteUser,
   fetchAllGigs,
   deleteGig,
+  getAdminStats,
+  fetchAllDisputes,
 } from "../controllers/UserController.js";
 import authenticate from "../middleware/authenticate.js";
 const router = Router();
@@ -26,7 +28,10 @@ router.delete("/admin-delete-user", deleteUser);
 router.delete("/admin-delete-gig", deleteGig);
 
 router.get("/admin-users", fetchAllUsers);
+router.get("/admin-users", fetchAllUsers);
+router.get("/getAdminStats", getAdminStats);
 router.get("/admin-gigs", fetchAllGigs);
+router.get("/admin-disputes", fetchAllDisputes);
 
 router.use(authenticate);
 router.post("/getuser", getUser);

@@ -4,13 +4,23 @@ import AdminSidebar from "./components/AdminSidebar";
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
+
   const fetchAllUsers = async () => {
-    const res = await fetch(
-      `${process.env.REACT_APP_API_URL}/api/user/admin-users`
-    );
-    const data = await res.json();
-    console.log(data);
-    setUsers(data.users);
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/user/admin-users`
+      );
+      const data = await res.json();
+
+      if (data.error) {
+        console.error("Error fetching users:", data.error);
+        return;
+      }
+
+      setUsers(data.users);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
   };
 
   useEffect(() => {
@@ -19,28 +29,23 @@ const AdminUsers = () => {
 
   const deleteUser = async (user) => {
     if (window.confirm(`Are you sure you want to delete ${user.name}?`)) {
-      console.log("Deleting user");
-      const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/user/admin-delete-user`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: user._id }),
-        }
-      );
+      try {
+        await fetch(
+          `${process.env.REACT_APP_API_URL}/api/user/admin-delete-user`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userId: user._id }),
+          }
+        );
 
-      const data = await res.json();
-      if (data.error) {
-        return console.log(data.error);
+        fetchAllUsers();
+        // You might want to avoid using window.location.reload() for a smoother user experience
+      } catch (error) {
+        console.error("Error deleting user:", error);
       }
-
-      console.log(data);
-      fetchAllUsers();
-      window.location.reload();
-    } else {
-      console.log("Not deleting user");
     }
   };
 
@@ -51,18 +56,14 @@ const AdminUsers = () => {
       <div className="flex justify-between">
         <AdminSidebar />
 
-        <div className="w-3/4 p-5">
-          <h1>
-            <span className="font-semibold text-xl">Admin</span> Dashboard
-          </h1>
-
+        <div className="w-5/6 p-5">
           <div className="mt-5">
             <h2 className="font-semibold text-lg">Users</h2>
 
             <div className="mt-5 overflow-hidden">
               <div className="overflow-auto">
-                <table className="table-auto w-full overflow-auto">
-                  <thead>
+                <table className="table-auto w-full overflow-auto bg-white shadow-md rounded-xl">
+                  <thead className="bg-gray-100">
                     <tr>
                       <th className="px-4 py-2">Name</th>
                       <th className="px-4 py-2">Image</th>

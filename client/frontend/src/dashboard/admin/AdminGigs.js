@@ -3,14 +3,24 @@ import Header from "./components/Header";
 import AdminSidebar from "./components/AdminSidebar";
 
 const AdminGigs = () => {
-  const [Gigs, setGigs] = useState([]);
+  const [gigs, setGigs] = useState([]);
+
   const fetchAllGigs = async () => {
-    const res = await fetch(
-      `${process.env.REACT_APP_API_URL}/api/user/admin-gigs`
-    );
-    const data = await res.json();
-    console.log(data);
-    setGigs(data);
+    try {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/user/admin-gigs`
+      );
+      const data = await res.json();
+
+      if (data.error) {
+        console.error("Error fetching gigs:", data.error);
+        return;
+      }
+
+      setGigs(data);
+    } catch (error) {
+      console.error("Error fetching gigs:", error);
+    }
   };
 
   useEffect(() => {
@@ -23,30 +33,34 @@ const AdminGigs = () => {
         `Are you sure you want to delete ${gig.title.substring(0, 10)}...?`
       )
     ) {
-      console.log("Deleting gig");
-      const res = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/user/admin-delete-gig`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ gigId: gig._id }),
+      try {
+        const res = await fetch(
+          `${process.env.REACT_APP_API_URL}/api/user/admin-delete-gig`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ gigId: gig._id }),
+          }
+        );
+
+        const data = await res.json();
+        if (data.error) {
+          return console.log(data.error);
         }
-      );
 
-      const data = await res.json();
-      if (data.error) {
-        return console.log(data.error);
+        fetchAllGigs();
+        // You might want to avoid using window.location.reload() for a smoother user experience
+      } catch (error) {
+        console.error("Error deleting gig:", error);
       }
-
-      console.log(data);
-      fetchAllGigs();
-      window.location.reload();
-    } else {
-      console.log("Not deleting user");
     }
   };
+
+  if (!gigs) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -55,51 +69,57 @@ const AdminGigs = () => {
       <div className="flex justify-between">
         <AdminSidebar />
 
-        <div className="w-3/4 p-5">
-          <h1>
-            <span className="font-semibold text-xl">Admin</span> Dashboard
-          </h1>
-
+        <div className="w-5/6 p-5">
           <div className="mt-5">
             <h2 className="font-semibold text-lg">Gigs</h2>
 
             <div className="mt-5 overflow-hidden">
               <div className="overflow-auto">
-                <table className="table-auto w-full overflow-auto">
+                <table className="w-full border-collapse border border-gray-300">
                   <thead>
                     <tr>
-                      <th className="px-4 py-2">Title</th>
-                      <th className="px-4 py-2">Image</th>
-                      <th className="px-4 py-2">User</th>
-                      <th className="px-4 py-2">Category</th>
-                      <th className="px-4 py-2">Created Date</th>
-                      <th className="px-4 py-2">Actions</th>
+                      <th className="py-2 px-4 border-b">Title</th>
+                      <th className="py-2 px-4 border-b">Image</th>
+                      <th className="py-2 px-4 border-b">User</th>
+                      <th className="py-2 px-4 border-b">Category</th>
+                      <th className="py-2 px-4 border-b">Created Date</th>
+                      <th className="py-2 px-4 border-b">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {Gigs.map((gig) => (
-                      <tr key={gig._id}>
-                        <td className="border px-4 py-2">{gig.title}</td>
-                        <td className="border px-4 py-2">
-                          <img
-                            src={gig.images[0]}
-                            className="w-10 h-10"
-                            alt=""
-                          />
-                        </td>
-                        <td className="border px-4 py-2">{gig.user.name}</td>
-                        <td className="border px-4 py-2">{gig.category}</td>
-                        <td className="border px-4 py-2">{gig.createdAt}</td>
-                        <td className="border px-4 py-2">
-                          <button
-                            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                            onClick={() => deleteGig(gig)}
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
+                    {gigs.map((gig) => {
+                      if (gig.user) {
+                        return (
+                          <tr key={gig._id}>
+                            <td className="py-2 px-4 border-b">{gig.title}</td>
+                            <td className="py-2 px-4 border-b">
+                              <img
+                                src={gig.images[0]}
+                                className="w-10 h-10 object-cover rounded"
+                                alt=""
+                              />
+                            </td>
+                            <td className="py-2 px-4 border-b">
+                              {gig.user.name}
+                            </td>
+                            <td className="py-2 px-4 border-b">
+                              {gig.category}
+                            </td>
+                            <td className="py-2 px-4 border-b">
+                              {gig.createdAt}
+                            </td>
+                            <td className="py-2 px-4 border-b">
+                              <button
+                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                                onClick={() => deleteGig(gig)}
+                              >
+                                Delete
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      }
+                    })}
                   </tbody>
                 </table>
               </div>
