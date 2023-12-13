@@ -13,6 +13,7 @@ import OrderCancel from "../models/OrderCancellation.js";
 import Conflict from "../models/Conflict.js";
 import Chat from "../models/Chat.js";
 import Message from "../models/Message.js";
+import Invoice from "../models/Invoice.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -286,7 +287,7 @@ const createPaymentIntent = async (req, res) => {
 
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: Number(gigDetails.price) * 100,
+    amount: Number(gigDetails.price + gigDetails.platformFee) * 100,
     currency: "usd",
     automatic_payment_methods: {
       enabled: true,
@@ -301,6 +302,7 @@ const createPaymentIntent = async (req, res) => {
       price: gigDetails.price,
       buyer: gigDetails.buyer,
       seller: gigDetails.seller,
+      platformFee: gigDetails.platformFee,
     },
   });
 
@@ -321,6 +323,7 @@ const createOrder = async (req, res) => {
     paymentIntentClientSecret,
     paymentStatus,
     deliveryDays,
+    user,
   } = req.body;
 
   try {
@@ -345,6 +348,19 @@ const createOrder = async (req, res) => {
     });
 
     await newOrder.save();
+
+    // save invoice
+    const newInvoice = new Invoice({
+      order: newOrder._id,
+      gig: gigId,
+      seller: seller,
+      buyer: buyer,
+      package: packageId,
+      totalPrice: totalPrice,
+      platformFee: totalPrice * 0.1,
+      user: user,
+    });
+    await newInvoice.save();
 
     // create order activity
     const orderActivities = [{ text: "Order Placed", date: new Date() }];

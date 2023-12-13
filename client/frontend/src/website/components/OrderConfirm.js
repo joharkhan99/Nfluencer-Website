@@ -46,6 +46,7 @@ const OrderConfirm = () => {
           paymentIntentClientSecret: paymentIntentClientSecret,
           paymentStatus: paymentStatus,
           deliveryDays: deliveryDays,
+          user: user._id,
         }),
       }
     );

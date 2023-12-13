@@ -20,6 +20,7 @@ export default function OrderCheckout() {
   const navigate = useNavigate();
   const [packageInfo, setPackageInfo] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [platformFee, setPlatformFee] = useState(0); //10% of the total price
 
   const user = useSelector((state) => state.user.user);
 
@@ -54,6 +55,9 @@ export default function OrderCheckout() {
       }
     }
 
+    const platformFee = (_package.price * 10) / 100;
+    setPlatformFee(platformFee);
+
     setGigDetails({
       title: res[0].title,
       gigId: res[0]._id,
@@ -67,6 +71,7 @@ export default function OrderCheckout() {
         price: _package.price,
       },
       price: _package.price,
+      platformFee: platformFee,
     });
   };
 
@@ -181,10 +186,15 @@ export default function OrderCheckout() {
                   </span>
                 </div>
 
+                <div className="flex flex-row justify-between gap-1">
+                  <span>Platform Fee</span>
+                  <span className="text-gray-500">${platformFee}</span>
+                </div>
+
                 <div className="border-t mt-3 pt-3">
                   <div className="flex items-center justify-between text-gray-800 font-semibold text-lg">
                     <p>Total</p>
-                    <p>$ {packageInfo.price}</p>
+                    <p>$ {packageInfo.price + platformFee}</p>
                   </div>
                 </div>
               </div>
