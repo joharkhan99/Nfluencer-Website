@@ -667,6 +667,7 @@ const getAllSellerOrders = async (req, res) => {
     seller: sellerId,
     isRequirementSent: true,
     isDeliveryAccepted: false,
+    isOrderCancelled: false,
   })
     .populate("seller")
     .populate("buyer")
