@@ -125,6 +125,12 @@ function Login() {
                   )}
                 </div>
 
+                    <div class="flex flex-col text-sm text-gray-800">
+    <span class="font-semibold">Test User</span>
+    <span class="text-xs">E-mail: joharkhan@mailsac.com</span>
+    <span class="text-xs">Password: joharkhan@mailsac.com</span>
+</div>
+
                 <div className="mt-10">
                   <button
                     className="bg-nft-primary-light h-full py-5 px-10 rounded-xl font-semibold text-white hover:opacity-80 transition-colors text-sm w-full"
