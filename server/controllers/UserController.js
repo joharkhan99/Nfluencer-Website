@@ -9,6 +9,7 @@ import Invoice from "../models/Invoice.js";
 import Order from "../models/Order.js";
 import Conflict from "../models/Conflict.js";
 import Notification from "../models/Notification.js";
+import Chat from "../models/Chat.js";
 
 const encryptPassword = (password) => {
   const salt = bcrypt.genSaltSync(10);
@@ -333,14 +334,28 @@ const removeWallet = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-  const { username } = req.body;
+  const { userid } = req.body;
 
-  // excluse user with above username
-  // const users = await User.find({ username: { $ne: username } }, { password: 0 });
-  const users = await User.find(
-    { username: { $ne: username } },
-    { password: 0 }
+  // get all users from Chat schema if userid is in the users aray. populate the users array. exclude the user details of the userid
+  var users = await Chat.find({ users: { $elemMatch: { $eq: userid } } })
+    .populate("users", "-password")
+    .exec();
+
+  var filteredUsers = [];
+  for (let i = 0; i < users.length; i++) {
+    const usersArray = users[i].users;
+    // filteredUsers.push(usersArray);
+    let fu = usersArray.filter((user) => user._id.toString() !== userid);
+    if (fu.length > 0) filteredUsers.push(fu[0]);
+  }
+
+  // remove duplocates from filteredUsers array
+  filteredUsers = filteredUsers.filter(
+    (user, index, self) =>
+      index === self.findIndex((u) => u._id.toString() === user._id.toString())
   );
+
+  users = filteredUsers;
 
   if (!users) {
     return res.status(404).json({

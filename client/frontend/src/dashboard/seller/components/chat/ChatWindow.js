@@ -119,6 +119,8 @@ const ChatWindow = () => {
   const sendMessage = (e) => {
     e.preventDefault();
 
+    if (!newMessage.trim()) return;
+
     socket.emit("message", {
       text: newMessage,
       sender: user._id,

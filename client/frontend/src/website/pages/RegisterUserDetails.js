@@ -64,6 +64,10 @@ function RegisterUserDetails() {
       errors.name = "Name is required";
     }
 
+    if (name.length > 50) {
+      errors.name = "Name is too long. Maximum length is 50";
+    }
+
     if (!username.trim()) {
       errors.username = "Username is required";
     }
@@ -72,12 +76,24 @@ function RegisterUserDetails() {
       errors.languages = "Languages is required";
     }
 
+    if (languages.split(",").length > 5) {
+      errors.languages = "Maximum 5 languages allowed";
+    }
+
     if (!location.trim()) {
       errors.location = "Location is required";
     }
 
+    if (location.length > 50) {
+      errors.location = "Location is too long. Maximum length is 50";
+    }
+
     if (!bio.trim()) {
       errors.bio = "Bio is required";
+    }
+
+    if (bio.length > 200) {
+      errors.bio = "Bio is too long. Maximum length is 200";
     }
 
     if (!avatar) {
@@ -85,7 +101,7 @@ function RegisterUserDetails() {
     }
 
     if (username.includes(" ") || !/^[a-zA-Z0-9_-]*$/.test(username)) {
-      errors.username = "Avoid spaces or special characters";
+      errors.username = "Avoid spaces or special characters except _";
     }
 
     if (username.length < 3 || username.length > 20) {

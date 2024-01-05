@@ -84,24 +84,22 @@ function GigDetails() {
 
   const countViews = async () => {
     try {
-      await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/gig/countViews`,
-        {
-          gigId: gigId,
+      await fetch(`${process.env.REACT_APP_API_URL}/api/gig/countViews`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+        body: JSON.stringify({
+          gigId: gigId,
+        }),
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    if (gig) {
+    if (gigId) {
       countViews();
     }
   }, [gigId]);

@@ -17,12 +17,19 @@ function Register() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showVerifyEmail, setShowVerifyEmail] = useState(false);
+  const [termsChecked, setTermsChecked] = useState(false);
 
   const validateForm = () => {
     const errors = {};
 
     if (!email.trim()) {
       errors.email = "Email is required";
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = "Email address is invalid";
+    }
+    if (email.length > 50 || email.length < 6) {
+      errors.email = "Email address must be between 6 and 60 characters long";
     }
 
     if (!password.trim()) {
@@ -33,8 +40,8 @@ function Register() {
       errors.confirmPassword = "Confirm Password is required";
     }
 
-    if (password.length < 8) {
-      errors.password = "Password must be at least 8 characters long";
+    if (password.length < 6) {
+      errors.password = "Password must be at least 6 characters long";
     }
 
     if (password.length > 50) {
@@ -43,6 +50,10 @@ function Register() {
 
     if (password !== confirmPassword) {
       errors.confirmPassword = "Passwords do not match";
+    }
+
+    if (!termsChecked) {
+      errors.terms = "You must agree to the Terms and Conditions";
     }
 
     setErrors(errors);
@@ -176,6 +187,36 @@ function Register() {
                   {errors.confirmPassword && (
                     <span className="text-red-400 text-sm font-medium px-4">
                       {errors.confirmPassword}
+                    </span>
+                  )}
+                </div>
+
+                {/* terms and conditions checkbox */}
+                <div className="mb-6">
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      className="rounded-xl bg-gray-50 focus:bg-white border-2 border-gray-200 hover:bg-gray-100 focus.border-nft-primary-light w-4 h-4 p-4 outline-none accent-nft-primary-light cursor-pointer"
+                      id="terms"
+                      disabled={isSubmitting}
+                      checked={termsChecked}
+                      onChange={(e) => setTermsChecked(e.target.checked)}
+                    />
+                    <label className="ml-2 text-sm" htmlFor="terms">
+                      I agree to the{" "}
+                      <Link
+                        to="/terms-and-conditions"
+                        target="_blank"
+                        className="text-nft-primary-light font-medium"
+                      >
+                        Terms and Conditions of Use.
+                      </Link>
+                    </label>
+                  </div>
+
+                  {errors.terms && (
+                    <span className="text-red-400 text-sm font-medium px-4">
+                      {errors.terms}
                     </span>
                   )}
                 </div>

@@ -262,6 +262,8 @@ export const SellerHomePage = () => {
     setPercentIncrease(percentageIncrease);
   }, [ordersAsSeller, totalOrdersLastMonth, totalNewOrders]);
 
+  const [userViews, setUserViews] = useState([]);
+
   const getUserGigsViews = async () => {
     const res = await fetch(
       `${process.env.REACT_APP_API_URL}/api/gig/getUserGigsViews`,
@@ -277,11 +279,10 @@ export const SellerHomePage = () => {
       }
     );
     const data = await res.json();
-    console.log("getUserGigsViews", data);
     if (data.error) {
       return;
     }
-    console.log(data);
+    setUserViews(data);
   };
 
   useEffect(() => {
@@ -354,7 +355,7 @@ export const SellerHomePage = () => {
 
               <div className="flex items-center gap-4 group-hover:text-white">
                 <div className="text-2xl font-semibold text-gray-900 group-hover:text-white">
-                  12
+                  {userViews}
                 </div>
                 <div className="flex rounded-full p-1 px-2.5 text-xs items-center bg-green-200 gap-1">
                   <span>
@@ -512,30 +513,34 @@ export const SellerHomePage = () => {
                   {overviewOrders.map((order) => {
                     // if (order.gig)
                     return (
-                      <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
-                        <div className="flex items-center gap-5">
-                          <div className="bg-gray-100 p-1.5 rounded-full">
-                            <img
-                              src={order.seller.avatar}
-                              alt=""
-                              className="h-12 w-12 rounded-full"
-                            />
+                      order.seller && (
+                        <li className="flex justify-between items-center hover:bg-gray-100 rounded-lg mb-4">
+                          <div className="flex items-center gap-5">
+                            <div className="bg-gray-100 p-1.5 rounded-full">
+                              <img
+                                src={order.seller.avatar}
+                                alt=""
+                                className="h-12 w-12 rounded-full"
+                              />
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-xs text-gray-500">
+                                {order.seller.name}
+                              </span>
+                              <span className="text-lg font-bold">
+                                ${order.totalPrice}
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex flex-col">
-                            <span className="text-xs text-gray-500">
-                              {order.seller.name}
-                            </span>
-                            <span className="text-lg font-bold">
-                              ${order.totalPrice}
+                          <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
+                            <span className="text-xs text-gray-700 font-medium">
+                              {new Date(
+                                order.orderEndDate
+                              ).toLocaleDateString()}
                             </span>
                           </div>
-                        </div>
-                        <div className="rounded-full p-0 px-3  bg-gray-200 gap-1 text-center">
-                          <span className="text-xs text-gray-700 font-medium">
-                            {new Date(order.orderEndDate).toLocaleDateString()}
-                          </span>
-                        </div>
-                      </li>
+                        </li>
+                      )
                     );
                   })}
                 </ul>

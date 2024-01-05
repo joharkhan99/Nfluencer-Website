@@ -14,6 +14,7 @@ const ChatUsersList = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const user = useSelector((state) => state.user.user);
   const chatUser = useSelector((state) => state.chat.selectedChatUser);
+  const [searchInput, setSearchInput] = useState("");
 
   const fetchUsers = async () => {
     const res = await fetch(
@@ -24,7 +25,7 @@ const ChatUsersList = () => {
           "Content-Type": "application/json",
           "x-auth-token": user.jwtToken,
         },
-        body: JSON.stringify({ username: user.username }),
+        body: JSON.stringify({ userid: user._id }),
       }
     );
     const data = await res.json();
@@ -46,6 +47,10 @@ const ChatUsersList = () => {
     dispatch(setSelectedChatUser(user));
   };
 
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(searchInput.toLowerCase())
+  );
+
   return (
     <div className="bg-white rounded-xl w-full h-full overflow-y-auto custom-scrollbar">
       <div className="sticky top-0 left-0 w-full z-50 bg-white p-3">
@@ -57,7 +62,8 @@ const ChatUsersList = () => {
             type="text"
             className="text-sm rounded-xl pl-8 block w-full p-2.5 bg-gray-100 outline-none border ring-purple-700 focus:ring-2 focus:bg-transparent hover:bg-gray-200 hover:bg-opacity-70"
             placeholder="Search Chat..."
-            required
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
           />
         </div>
         <div className="mt-3">
@@ -109,9 +115,9 @@ const ChatUsersList = () => {
         </div>
       </div>
 
-      {users.length > 0 ? (
+      {filteredUsers.length > 0 ? (
         <ul className="pb-3">
-          {users.map((user, index) => (
+          {filteredUsers.map((user, index) => (
             <li
               className={`hover:bg-gray-100 p-3 cursor-pointer rounded-md ${
                 chatUser && chatUser._id === user._id && "bg-gray-200"
@@ -153,7 +159,11 @@ const ChatUsersList = () => {
             </li>
           ))}
         </ul>
-      ) : null}
+      ) : (
+        <div className="flex flex-col items-center justify-center gap-3 p-5">
+          <span className="text-gray-500">No Chats Found</span>
+        </div>
+      )}
     </div>
   );
 };

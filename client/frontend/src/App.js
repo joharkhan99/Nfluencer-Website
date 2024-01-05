@@ -39,6 +39,7 @@ import Dispute from "./website/pages/Dispute";
 import PurchasedOrders from "./dashboard/seller/pages/PurchasedOrders";
 import MyDisputes from "./dashboard/seller/pages/MyDisputes";
 import Invoices from "./dashboard/seller/pages/Invoices";
+import Policies from "./website/pages/Policies";
 
 function App() {
   const dispatch = useDispatch();
@@ -101,6 +102,7 @@ function App() {
       <Routes>
         {/* general */}
         <Route path="/signup" Component={Register} />
+        <Route path="/terms-and-conditions" Component={Policies} />
         <Route path="/login" Component={Login} />
         <Route
           path="/user-details/:verificationToken"

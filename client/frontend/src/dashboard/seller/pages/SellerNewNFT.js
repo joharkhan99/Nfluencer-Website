@@ -92,8 +92,14 @@ const SellerNewNFT = () => {
     if (!traitName) {
       errors.traitName = "Name cannot be empty";
     }
+    if (traitName.length < 2 || traitName.length > 20) {
+      errors.traitName = "Name must be between 2 and 20 characters long";
+    }
     if (!traitType) {
       errors.traitType = "Type cannot be empty";
+    }
+    if (traitType.length < 2 || traitType.length > 20) {
+      errors.traitType = "Type must be between 2 and 20 characters long";
     }
 
     setTraitErrors(errors);
@@ -148,14 +154,30 @@ const SellerNewNFT = () => {
     if (!name) {
       errors.name = "Name cannot be empty";
     }
+    if (name.length > 50) {
+      errors.name = "Name cannot be more than 50 characters";
+    }
     if (!description) {
       errors.description = "Description cannot be empty";
+    }
+    if (description.trim().length > 450 || description.trim().length < 10) {
+      errors.description =
+        "Description must be between 10 and 450 characters long";
     }
     if (!price) {
       errors.price = "Price cannot be empty";
     }
+    if (price < 0) {
+      errors.price = "Price cannot be less than 0";
+    }
+    if (price > 1000000) {
+      errors.price = "Price cannot be more than 1,000,000";
+    }
     if (!royalties) {
       errors.royalties = "Royalties cannot be empty";
+    }
+    if (royalties < 0 || royalties > 100) {
+      errors.royalties = "Royalties must be between 0 and 100";
     }
     if (!image) {
       errors.image = "Please add a File.";
@@ -705,7 +727,7 @@ const SellerNewNFT = () => {
                   </div>
                   <div className="w-full">
                     <label className="block font-semibold text-sm text-gray-800 mb-2">
-                      Royalties
+                      Royalties (in %)
                     </label>
                     <input
                       type="number"

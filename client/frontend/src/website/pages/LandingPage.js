@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../components/Header";
 import "../styles/style.css";
 
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   BuildingStorefrontIcon,
   ChartBarSquareIcon,
@@ -16,6 +16,11 @@ import {
   MicrophoneIcon,
   PaintBrushIcon,
 } from "@heroicons/react/24/outline";
+import {
+  setSearchedCategory,
+  setServiceSearchQuery,
+} from "../../redux/slices/SearchServiceSlice";
+import { useDispatch } from "react-redux";
 
 function LandingPage() {
   const responsive = {
@@ -53,6 +58,33 @@ function LandingPage() {
     },
   };
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    dispatch(setServiceSearchQuery(e));
+  };
+
+  const handlekeywordInputKeyDown = (e) => {
+    if (e.key === "Enter" && e.target.value.trim() !== "") {
+      navigate("/services");
+    }
+  };
+
+  const categories = [
+    { name: "Influencer Services" },
+    { name: "Live Streaming" },
+    { name: "Music Services" },
+    { name: "Art Services" },
+    { name: "Consulting Services" },
+    { name: "Coaching Services" },
+  ];
+
+  const handleCategorySearch = (cat) => {
+    dispatch(setSearchedCategory(cat));
+    navigate("/services");
+  };
+
   return (
     <>
       <div className="bg-transparent hombg lg:h-screen">
@@ -69,15 +101,15 @@ function LandingPage() {
                 </div>
 
                 <div className="flex flex-col md:flex-row bg-white rounded-xl p-4 py-2 pr-2 w-full mt-10 items-center gap-2">
-                  <div className="w-full">
-                    <div className="flex relative items-center border-r">
+                  <div className="w-full flex-1">
+                    <div className=" relative items-center w-full">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="gray"
-                        className="w-5 h-5 absolute"
+                        className="w-5 h-5 absolute top-2"
                       >
                         <path
                           strokeLinecap="round"
@@ -89,74 +121,38 @@ function LandingPage() {
                       <input
                         type="text"
                         placeholder="What are you looking for?"
-                        className="p-2 outline-none px-6 pl-10 md:w-80 text-gray-800 placeholder:text-gray-800 text-sm"
+                        className="p-2 outline-none px-6 pl-10 text-gray-800 placeholder:text-gray-800 text-sm w-full block"
+                        onChange={(e) => handleSearch(e.target.value)}
+                        onKeyDown={handlekeywordInputKeyDown}
                       />
                     </div>
                   </div>
-                  <div className="w-full">
-                    <select className="w-full outline-none text-gray-800 text-sm appearance-none text-center cursor-pointer">
-                      <option>Categories</option>
-                      <option>Photography</option>
-                      <option>Marketing</option>
-                      <option>Advertisement</option>
-                      <option>Social Media</option>
-                      <option>Writing</option>
-                      <option>Design & Creative</option>
-                    </select>
-                  </div>
-                  <div className="w-full">
-                    <button className="hover:opacity-80 bg-nft-primary-dark h-full py-5 w-full rounded-xl font-semibold text-white transition-colors text-sm">
+                  <div>
+                    <button
+                      className="hover:opacity-80 bg-nft-primary-dark h-full py-5 w-fit px-10 rounded-xl font-semibold text-white transition-colors text-sm"
+                      onClick={() => navigate("/services")}
+                    >
                       Search
                     </button>
                   </div>
                 </div>
 
                 <div className="mt-12 text-white">
-                  <span className="mb-5 block">Popular Searches</span>
-                  <div className="flex gap-2">
-                    <a
-                      href="ss"
-                      className="rounded-full bg-white text-gray-800 backdrop-blur-sm hover:bg-nft-primary-light text-sm p-2 px-4 hover:text-white transition-colors"
-                    >
-                      Designer
-                    </a>
-                    <a
-                      href="ss"
-                      className="rounded-full bg-white text-gray-800 backdrop-blur-sm hover:bg-nft-primary-light text-sm p-2 px-4 hover:text-white transition-colors"
-                    >
-                      Marketing
-                    </a>
-                    <a
-                      href="ss"
-                      className="rounded-full bg-white text-gray-800 backdrop-blur-sm hover:bg-nft-primary-light text-sm p-2 px-4 hover:text-white transition-colors"
-                    >
-                      Social Media
-                    </a>
-                    <a
-                      href="ss"
-                      className="rounded-full bg-white text-gray-800 backdrop-blur-sm hover:bg-nft-primary-light text-sm p-2 px-4 hover:text-white transition-colors"
-                    >
-                      Enterpreneur
-                    </a>
-                    <a
-                      href="ss"
-                      className="rounded-full bg-white text-gray-800 backdrop-blur-sm hover:bg-nft-primary-light text-sm p-2 px-4 hover:text-white transition-colors"
-                    >
-                      Speaker
-                    </a>
+                  <span className="mb-5 block">Recommended Searches</span>
+                  <div className="w-full gap-2">
+                    {categories.map((cat, index) => (
+                      <button
+                        key={index}
+                        className="rounded-full bg-white text-gray-800 backdrop-blur-sm hover:bg-nft-primary-light text-sm p-2 px-4 hover:text-white transition-colors m-0.5"
+                        onClick={() => handleCategorySearch(cat.name)}
+                      >
+                        {cat.name}
+                      </button>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
-            {/* <div className="w-full sm:w-1/2 ">
-              <div className="p-4">
-                <img
-                  src={require("../assets/slider8.png")}
-                  alt="Ismage"
-                  className="mb-[-50px] ml-[250px]"
-                />
-              </div>
-            </div> */}
           </div>
         </div>
       </div>

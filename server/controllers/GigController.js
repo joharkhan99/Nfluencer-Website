@@ -648,11 +648,18 @@ const countViews = async (req, res) => {
 const getUserGigsViews = async (req, res) => {
   try {
     const { userId } = req.body;
+
     const gigs = await Gig.find({ user: userId }).exec();
     const gigIds = gigs.map((gig) => gig._id);
-
     const gigViews = await GigView.find({ gigId: { $in: gigIds } }).exec();
-    res.status(200).json({ gigViews });
+
+    // extract the total views and sum them
+    const totalViews = gigViews.reduce((acc, item) => {
+      acc += item.totalViews;
+      return acc;
+    }, 0);
+
+    res.status(200).json(totalViews);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error", error: true });

@@ -14,6 +14,7 @@ import {
   BellIcon,
 } from "@heroicons/react/24/outline";
 import { io } from "socket.io-client";
+import { setSearchedCategory } from "../../redux/slices/SearchServiceSlice";
 
 function Header({ transparent = false, showCategoriesBar = false }) {
   const navigate = useNavigate();
@@ -80,10 +81,20 @@ function Header({ transparent = false, showCategoriesBar = false }) {
     });
   }, [user]);
 
-  // console.log(user);
+  const categories = [
+    { name: "Influencer Services" },
+    { name: "Live Streaming" },
+    { name: "Music Services" },
+    { name: "Art Services" },
+    { name: "Consulting Services" },
+    { name: "Coaching Services" },
+  ];
 
-  // if (!user) return <Loader />;
-  // else
+  const handleCategorySearch = (cat) => {
+    dispatch(setSearchedCategory(cat));
+    navigate("/services");
+  };
+
   return (
     <>
       <header
@@ -119,254 +130,17 @@ function Header({ transparent = false, showCategoriesBar = false }) {
                   <span>Categories</span>
                 </button>
                 <div
-                  className={`hidden group-hover:flex flex-col absolute p-10  bg-white text-gray-800 shadow-lg border border-gray-100 rounded-xl z-10`}
+                  className={`hidden group-hover:block absolute  bg-white text-gray-800 shadow-lg border border-gray-100 rounded-xl z-10 overflow-hidden`}
                 >
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-                    <div className="flex flex-col">
-                      <h3 className="mb-4 text-md text-gray-800 font-semibold">
-                        Design & Creative
-                      </h3>
-                      <Link
-                        to="/services"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
+                  <div className="flex flex-col gap-2 items-start">
+                    {categories.map((cat) => (
+                      <button
+                        className="text-sm text-gray-800 font-medium hover:bg-gray-100 p-3 w-full text-left"
+                        onClick={() => handleCategorySearch(cat.name)}
                       >
-                        Web Design
-                      </Link>
-                      <Link
-                        to="/services"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        UI and Interactive Design
-                      </Link>
-                      <Link
-                        to="/services"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Motion Graphics
-                      </Link>
-                      <Link
-                        to="/services"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Packaging Design
-                      </Link>
-                      <Link
-                        to="/services"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Game Design
-                      </Link>
-                      <Link
-                        to="/services"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Illustration
-                      </Link>
-                      <Link
-                        to="/services"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Publication
-                      </Link>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <h3 className="mb-4 text-md text-gray-800 font-semibold">
-                        Digital Marketing
-                      </h3>
-                      <Link
-                        to="/services"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Content Marketing
-                      </Link>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        SEO
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Pay-per-Click
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Social Media Marketing
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Influencer Marketing
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Email Marketing
-                      </a>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <h3 className="mb-4 text-md text-gray-800 font-semibold">
-                        Development & IT
-                      </h3>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Front-end development
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Back-end development
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Full stack development
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Application development
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        API development
-                      </a>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <h3 className="mb-4 text-md text-gray-800 font-semibold">
-                        Music & Audio
-                      </h3>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <h3 className="mb-4 text-md text-gray-800 font-semibold">
-                        Finance & Accounting
-                      </h3>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Financial accounting
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Managerial accounting
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Cost accounting
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Auditing
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Tax accounting
-                      </a>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <h3 className="mb-4 text-md text-gray-800 font-semibold">
-                        Programming & Tech
-                      </h3>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Web developer
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Computer programmer
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Computer systems engineer
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Systems analyst
-                      </a>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <h3 className="mb-4 text-md text-gray-800 font-semibold">
-                        Video & Animation
-                      </h3>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        2D animation videos
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        3D animation videos
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Motion graphic videos
-                      </a>
-                    </div>
-
-                    <div className="flex flex-col">
-                      <h3 className="mb-4 text-md text-gray-800 font-semibold">
-                        Writing & Translation
-                      </h3>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Script Translation
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Multimedia Localization
-                      </a>
-                      <a
-                        href="#z"
-                        className="text-sm text-gray-600 mt-1 hover:text-gray-800"
-                      >
-                        Commercial Translation
-                      </a>
-                    </div>
+                        {cat.name}
+                      </button>
+                    ))}
                   </div>
                 </div>
               </div>

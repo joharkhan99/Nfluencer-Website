@@ -12,6 +12,8 @@ import {
   ShoppingCartIcon,
   ShieldExclamationIcon,
   NewspaperIcon,
+  WrenchScrewdriverIcon,
+  BuildingStorefrontIcon,
 } from "@heroicons/react/24/outline";
 import React, { useEffect, useState } from "react";
 import "../assets/styles/style.css";
@@ -265,62 +267,50 @@ const Sidebar = () => {
                 </Link>
               </li>
 
-              <li className="text-sm text-gray-600 items-center mb-2">
-                <Disclosure>
-                  {({ open }) => (
-                    <>
-                      <Disclosure.Button className="flex gap-x-4 rounded-md cursor-pointer w-full items-center hover:bg-gray-100 p-2">
-                        <span>
-                          <Cog8ToothIcon className="w-6 h-6" />
-                        </span>
-                        <div
-                          className={`flex w-full justify-between origin-left duration-200 font-semibold ${
-                            !sideBarOpen && "hidden"
-                          }`}
-                        >
-                          {sideBarOpen && <span>Settings</span>}
+              <li
+                className={
+                  "rounded-md p-2 cursor-pointer text-sm mb-2 text-gray-600 hover:bg-gray-100"
+                }
+              >
+                <Link
+                  to="/services"
+                  target="_blank"
+                  className={`flex items-center gap-x-4 ${
+                    !sideBarOpen && "justify-center"
+                  }`}
+                >
+                  <WrenchScrewdriverIcon className="w-6 h-6" />
+                  <span
+                    className={`${
+                      !sideBarOpen && "hidden"
+                    } origin-left duration-200 font-semibold`}
+                  >
+                    {sideBarOpen && <span>Explore Services</span>}
+                  </span>
+                </Link>
+              </li>
 
-                          <span>
-                            <ChevronDownIcon
-                              className={`${
-                                open ? "rotate-180 transform" : ""
-                              } h-5 w-5`}
-                            />
-                          </span>
-                        </div>
-                      </Disclosure.Button>
-
-                      <Disclosure.Panel className="px-2 pt-3 text-sm text-gray-500">
-                        <ul className="bg-gray-100 rounded-lg p-2">
-                          <li
-                            className={`flex rounded-md cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-200 p-3`}
-                          >
-                            <span className="h-2 w-2 bg-gray-400 rounded-full"></span>
-                            <span
-                              className={`${
-                                !sideBarOpen && "hidden"
-                              } origin-left duration-200 font-semibold`}
-                            >
-                              Profile
-                            </span>
-                          </li>
-                          <li
-                            className={`flex rounded-md cursor-pointer hover:bg-light-white text-sm text-gray-600 items-center gap-x-4 hover:bg-gray-200 p-3`}
-                          >
-                            <span className="h-2 w-2 bg-blue-400 rounded-full"></span>
-                            <span
-                              className={`${
-                                !sideBarOpen && "hidden"
-                              } origin-left duration-200 font-semibold`}
-                            >
-                              Account
-                            </span>
-                          </li>
-                        </ul>
-                      </Disclosure.Panel>
-                    </>
-                  )}
-                </Disclosure>
+              <li
+                className={
+                  "rounded-md p-2 cursor-pointer text-sm mb-2 text-gray-600 hover:bg-gray-100"
+                }
+              >
+                <Link
+                  to="/marketplace"
+                  target="_blank"
+                  className={`flex items-center gap-x-4 ${
+                    !sideBarOpen && "justify-center"
+                  }`}
+                >
+                  <BuildingStorefrontIcon className="w-6 h-6" />
+                  <span
+                    className={`${
+                      !sideBarOpen && "hidden"
+                    } origin-left duration-200 font-semibold`}
+                  >
+                    {sideBarOpen && <span>NFT Marketplace</span>}
+                  </span>
+                </Link>
               </li>
             </ul>
           </div>

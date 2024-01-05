@@ -22,9 +22,20 @@ function Login() {
     if (!email.trim()) {
       errors.email = "Email is required";
     }
-
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = "Email address is invalid";
+    }
+    if (email.length > 50) {
+      errors.email = "Email address is too long";
+    }
     if (!password.trim()) {
       errors.password = "Password is required";
+    }
+    if (password.length < 6) {
+      errors.password = "Password must be at least 6 characters";
+    }
+    if (password.length > 50) {
+      errors.password = "Password is too long. Maximum length is 50";
     }
 
     setErrors(errors);

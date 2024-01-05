@@ -10,6 +10,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { Menu } from "@headlessui/react";
+import { useSelector } from "react-redux";
 
 const categories = [
   { name: "All" },
@@ -60,8 +61,22 @@ const Services = () => {
     }
   };
 
+  const searchServiceQuery = useSelector(
+    (state) => state.serviceSearch.searchQuery
+  );
+  const searchedCategory = useSelector(
+    (state) => state.serviceSearch.searchedCategory
+  );
+
   useEffect(() => {
     fetchGigs();
+
+    if (searchServiceQuery) {
+      setInputQuery(searchServiceQuery);
+    }
+    if (searchedCategory) {
+      setSelectedCategories([searchedCategory]);
+    }
   }, []);
 
   const handleCategoryChange = (e) => {
