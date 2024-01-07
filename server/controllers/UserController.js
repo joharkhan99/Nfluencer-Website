@@ -35,7 +35,7 @@ async function handleUpload(file) {
   return res.url;
 }
 const sendRegistrationEmail = async (email, token) => {
-  const emailLink = `${CLIENT_URL}/user-details/${token}`;
+  const emailLink = `${process.env.CLIENT_URL}/user-details/${token}`;
 
   const html = `
     <!DOCTYPE html>
